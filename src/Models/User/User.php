@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace DaydreamLab\User\Models\User;
 
 //use App\Model\Admin\OauthAccessToken;
 //use App\Model\AssetApi;

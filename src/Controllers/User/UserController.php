@@ -19,6 +19,13 @@ class UserController extends BaseController
     }
 
 
+
+    public function logout()
+    {
+        $this->service->logout();
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+/*
     public function getItem($id)
     {
         $this->service->find($id);
@@ -65,4 +72,5 @@ class UserController extends BaseController
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
+*/
 }
