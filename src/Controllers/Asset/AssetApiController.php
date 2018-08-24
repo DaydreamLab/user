@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Asset;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Asset\AssetApiService;
+use DaydreamLab\User\Services\Asset\AssetApiService;
 use DaydreamLab\User\Requests\Asset\AssetApiRemovePost;
 use DaydreamLab\User\Requests\Asset\AssetApiStorePost;
 use DaydreamLab\User\Requests\Asset\AssetApiStatePost;

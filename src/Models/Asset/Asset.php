@@ -42,8 +42,8 @@ class Asset extends BaseModel
      * @var array
      */
     protected $hidden = [
-        '_lft',
-        '_rgt',
+//        '_lft',
+//        '_rgt',
     ];
 
 

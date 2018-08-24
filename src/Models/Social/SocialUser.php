@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Social;
+namespace DaydreamLab\User\Models\Social;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
 

@@ -37,9 +37,9 @@ class CreateUsersTable extends Migration
             $table->unsignedTinyInteger('reset_password')->default(0);
             $table->string('timezone')->nullable();
             $table->char('locale', '2')->nullable();
+            $table->rememberToken();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }

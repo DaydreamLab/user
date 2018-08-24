@@ -24,10 +24,11 @@ class RoleStorePost extends AdminRequest
     public function rules()
     {
         return [
-            'id'            => 'nullable|integer',
-            'title'         => 'required|string',
-            'state'         => 'required|integer',
-            'description'   => 'nullable|string',
+            'id'                  => 'nullable|integer',
+            'parent_id'           => 'required|integer',
+            'title'               => 'string',
+            'enabled'             => 'required|integer|between:0,1',
+            'redirect'            => 'string'
         ];
     }
 }

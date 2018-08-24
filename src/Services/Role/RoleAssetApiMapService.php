@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Role;
+namespace DaydreamLab\User\Services\Role;
 
-use App\Repositories\Role\RoleAssetApiMapRepository;
+use DaydreamLab\User\Repositories\Role\RoleAssetApiMapRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 
 class RoleAssetApiMapService extends BaseService

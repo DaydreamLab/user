@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Password\Front;
+namespace DaydreamLab\User\Services\Password\Front;
 
-use App\Repositories\Password\Front\PasswordResetFrontRepository;
-use App\Services\Password\PasswordResetService;
+use DaydreamLab\User\Repositories\Password\Front\PasswordResetFrontRepository;
+use DaydreamLab\User\Services\Password\PasswordResetService;
 
 class PasswordResetFrontService extends PasswordResetService
 {

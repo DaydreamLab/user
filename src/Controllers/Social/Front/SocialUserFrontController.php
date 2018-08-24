@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Social\Front;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Social\Front\SocialUserFrontService;
+use DaydreamLab\User\Services\Social\Front\SocialUserFrontService;
 use DaydreamLab\User\Requests\Social\Front\SocialUserFrontRemovePost;
 use DaydreamLab\User\Requests\Social\Front\SocialUserFrontStorePost;
 use DaydreamLab\User\Requests\Social\Front\SocialUserFrontStatePost;

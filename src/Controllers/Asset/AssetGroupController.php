@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Asset;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Asset\AssetGroupService;
+use DaydreamLab\User\Services\Asset\AssetGroupService;
 use DaydreamLab\User\Requests\Asset\AssetGroupRemovePost;
 use DaydreamLab\User\Requests\Asset\AssetGroupStorePost;
 use DaydreamLab\User\Requests\Asset\AssetGroupStatePost;

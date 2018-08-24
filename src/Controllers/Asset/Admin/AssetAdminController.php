@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Asset\Admin;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Asset\Admin\AssetAdminService;
+use DaydreamLab\User\Services\Asset\Admin\AssetAdminService;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminRemovePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminStorePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminStatePost;

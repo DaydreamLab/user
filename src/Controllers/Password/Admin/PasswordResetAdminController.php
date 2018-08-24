@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Password\Admin;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Password\Admin\PasswordResetAdminService;
+use DaydreamLab\User\Services\Password\Admin\PasswordResetAdminService;
 use DaydreamLab\User\Requests\Password\Admin\PasswordResetAdminRemovePost;
 use DaydreamLab\User\Requests\Password\Admin\PasswordResetAdminStorePost;
 use DaydreamLab\User\Requests\Password\Admin\PasswordResetAdminStatePost;

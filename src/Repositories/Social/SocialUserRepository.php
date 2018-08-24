@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Social;
+namespace DaydreamLab\User\Repositories\Social;
 
 use DaydreamLab\JJAJ\Repositories\BaseRepository;
-use App\Models\Social\SocialUser;
+use DaydreamLab\User\Models\Social\SocialUser;
 
 class SocialUserRepository extends BaseRepository
 {

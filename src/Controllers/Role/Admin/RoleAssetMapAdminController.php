@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Role\Admin;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Role\Admin\RoleAssetMapAdminService;
+use DaydreamLab\User\Services\Role\Admin\RoleAssetMapAdminService;
 use DaydreamLab\User\Requests\Role\Admin\RoleAssetMapAdminRemovePost;
 use DaydreamLab\User\Requests\Role\Admin\RoleAssetMapAdminStorePost;
 use DaydreamLab\User\Requests\Role\Admin\RoleAssetMapAdminStatePost;

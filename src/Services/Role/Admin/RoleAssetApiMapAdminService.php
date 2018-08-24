@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Role\Admin;
+namespace DaydreamLab\User\Services\Role\Admin;
 
-use App\Repositories\Role\Admin\RoleAssetApiMapAdminRepository;
-use App\Services\Role\RoleAssetApiMapService;
+use DaydreamLab\User\Repositories\Role\Admin\RoleAssetApiMapAdminRepository;
+use DaydreamLab\User\Services\Role\RoleAssetApiMapService;
 
 class RoleAssetApiMapAdminService extends RoleAssetApiMapService
 {

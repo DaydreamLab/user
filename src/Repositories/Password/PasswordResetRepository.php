@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Password;
+namespace DaydreamLab\User\Repositories\Password;
 
 use DaydreamLab\JJAJ\Repositories\BaseRepository;
-use App\Models\Password\PasswordReset;
+use DaydreamLab\User\Models\Password\PasswordReset;
 
 class PasswordResetRepository extends BaseRepository
 {

@@ -335,6 +335,33 @@ return [
         'code'      => 500,
         'message'   => 'User front search fail'
     ],
+
+
+    // Find
+    'USER_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User find success'
+    ],
+    'USER_ADMIN_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User admin find success'
+    ],
+    'USER_FRONT_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User front find success'
+    ],
+    'USER_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User find fail'
+    ],
+    'USER_ADMIN_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User find search fail'
+    ],
+    'USER_FRONT_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User front find fail'
+    ],
     
     
     // User Role Map

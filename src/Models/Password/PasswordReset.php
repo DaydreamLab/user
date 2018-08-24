@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Password;
+namespace DaydreamLab\User\Models\Password;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
 
@@ -10,7 +10,7 @@ class PasswordReset extends BaseModel
      *
      * @var string
      */
-    protected $table = 'passwords_resets';
+    protected $table = 'password_resets';
 
 
     /**

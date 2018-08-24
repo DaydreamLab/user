@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Role\Front;
+namespace DaydreamLab\User\Repositories\Role\Front;
 
-use App\Repositories\Role\RoleAssetMapRepository;
-use App\Models\Role\Front\RoleAssetMapFront;
+use DaydreamLab\User\Repositories\Role\RoleAssetMapRepository;
+use DaydreamLab\User\Models\Role\Front\RoleAssetMapFront;
 
 class RoleAssetMapFrontRepository extends RoleAssetMapRepository
 {

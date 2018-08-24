@@ -73,7 +73,7 @@ class UserFrontController extends BaseController
 
 
     public function register(UserFrontRegisterPost $request)
-    {exit();
+    {
         $this->service->register($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);

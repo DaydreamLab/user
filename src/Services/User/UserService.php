@@ -3,12 +3,13 @@
 namespace DaydreamLab\User\Services\User;
 
 use DaydreamLab\User\Helpers\UserHelper;
+use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Kalnoy\Nestedset\Collection;
 
 class UserService extends BaseService
 {
@@ -58,8 +59,8 @@ class UserService extends BaseService
     public function login(Collection $input)
     {
         $auth = Auth::attempt([
-            'email' => Str::lower($input->email),
-            'password' => $input->password
+            'email'     => Str::lower($input->email),
+            'password'  => $input->password
         ]);
         if ($auth) {
             $user = Auth::user();

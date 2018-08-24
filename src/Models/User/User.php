@@ -2,20 +2,16 @@
 
 namespace DaydreamLab\User\Models\User;
 
-//use App\Model\Admin\OauthAccessToken;
-//use App\Model\AssetApi;
-//use App\Model\Category;
-//use App\Model\Role;
-//use App\Model\RoleAssetapiMap;
-//use App\Model\UserRoleMap;
+
+use DaydreamLab\User\Models\Role\Role;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
@@ -57,7 +53,9 @@ class User extends Authenticatable
         'activation',
         'activate_token',
         'reset_password',
-        'stripe_customer'
+        'stripe_customer',
+        'created_by',
+        'updated_by'
     ];
 
     /**
@@ -75,24 +73,6 @@ class User extends Authenticatable
     ];
 
 
-
-    public static function createUser($input)
-    {
-        $user = self::create($input);
-        if( $user->id != 0 ){
-
-            //STEP 2 user_role_map
-            //create default set GUEST
-
-            UserRoleMap::create([
-                'user_id'  =>  $user->id,
-                'role_id'  =>  6
-            ]);
-            return $user;
-        }
-
-        return false;
-    }
 
 
     public static function changePassword($user, $input)

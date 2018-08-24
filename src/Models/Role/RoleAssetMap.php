@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Role;
+namespace DaydreamLab\User\Models\Role;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
 

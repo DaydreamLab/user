@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Social\Admin;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Social\Admin\SocialUserAdminService;
+use DaydreamLab\User\Services\Social\Admin\SocialUserAdminService;
 use DaydreamLab\User\Requests\Social\Admin\SocialUserAdminRemovePost;
 use DaydreamLab\User\Requests\Social\Admin\SocialUserAdminStorePost;
 use DaydreamLab\User\Requests\Social\Admin\SocialUserAdminStatePost;

@@ -1,7 +1,7 @@
 <?php
-namespace App\Models\Social\Front;
+namespace DaydreamLab\User\Models\Social\Front;
 
-use App\Models\Social\SocialUser;
+use DaydreamLab\User\Models\Social\SocialUser;
 
 class SocialUserFront extends SocialUser
 {

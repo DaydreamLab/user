@@ -2,15 +2,20 @@
 
 namespace DaydreamLab\User\Services\User\Front;
 
-use App\Services\Password\PasswordResetService;
-use App\Services\Social\SocialUserService;
+use DaydreamLab\User\Models\Role\Role;
+use DaydreamLab\User\Notifications\RegisteredNotification;
+use DaydreamLab\User\Notifications\ResetPasswordNotification;
+use DaydreamLab\User\Services\Password\PasswordResetService;
+use DaydreamLab\User\Services\Social\SocialUserService;
 use Carbon\Carbon;
 use DaydreamLab\User\Helpers\UserHelper;
 use DaydreamLab\User\Models\User\UserRoleMap;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
+use DaydreamLab\User\Services\Upload\UploadService;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class UserFrontService extends UserService
@@ -164,6 +169,12 @@ class UserFrontService extends UserService
 
         $user                       = $this->create($data);
         if ($user) {
+            $guest_role = Role::where('title', 'Guest')->first();
+
+            UserRoleMap::create([
+                'user_id'  =>  $user->id,
+                'role_id'  =>  $guest_role->id
+            ]);
             $user->notify(new RegisteredNotification($user));
             $this->status = 'USER_REGISTER_SUCCESS';
         }

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Social\Admin;
+namespace DaydreamLab\User\Repositories\Social\Admin;
 
-use App\Repositories\Social\SocialUserRepository;
-use App\Models\Social\Admin\SocialUserAdmin;
+use DaydreamLab\User\Repositories\Social\SocialUserRepository;
+use DaydreamLab\User\Models\Social\Admin\SocialUserAdmin;
 
 class SocialUserAdminRepository extends SocialUserRepository
 {

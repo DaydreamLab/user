@@ -2,9 +2,11 @@
 namespace DaydreamLab\User\Models\Role;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
+use Kalnoy\Nestedset\NodeTrait;
 
 class Role extends BaseModel
 {
+    use NodeTrait;
     /**
      * The table associated with the model.
      *
@@ -19,12 +21,13 @@ class Role extends BaseModel
      * @var array
      */
     protected $fillable = [
+        'parent_id',
         'title',
-        'category_id',
         'state',
-        'description',
+        'redirect',
+        'canDelete',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 
 

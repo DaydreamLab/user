@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Role\Front;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Role\Front\RoleAssetMapFrontService;
+use DaydreamLab\User\Services\Role\Front\RoleAssetMapFrontService;
 use DaydreamLab\User\Requests\Role\Front\RoleAssetMapFrontRemovePost;
 use DaydreamLab\User\Requests\Role\Front\RoleAssetMapFrontStorePost;
 use DaydreamLab\User\Requests\Role\Front\RoleAssetMapFrontStatePost;

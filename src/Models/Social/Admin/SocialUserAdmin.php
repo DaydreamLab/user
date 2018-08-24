@@ -1,7 +1,7 @@
 <?php
-namespace App\Models\Social\Admin;
+namespace DaydreamLab\User\Models\Social\Admin;
 
-use App\Models\Social\SocialUser;
+use DaydreamLab\User\Models\Social\SocialUser;
 
 class SocialUserAdmin extends SocialUser
 {

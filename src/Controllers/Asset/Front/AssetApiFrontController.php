@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Asset\Front;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Asset\Front\AssetApiFrontService;
+use DaydreamLab\User\Services\Asset\Front\AssetApiFrontService;
 use DaydreamLab\User\Requests\Asset\Front\AssetApiFrontRemovePost;
 use DaydreamLab\User\Requests\Asset\Front\AssetApiFrontStorePost;
 use DaydreamLab\User\Requests\Asset\Front\AssetApiFrontStatePost;

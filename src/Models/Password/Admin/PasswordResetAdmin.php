@@ -1,7 +1,7 @@
 <?php
-namespace App\Models\Password\Admin;
+namespace DaydreamLab\User\Models\Password\Admin;
 
-use App\Models\Password\PasswordReset;
+use DaydreamLab\User\Models\Password\PasswordReset;
 
 class PasswordResetAdmin extends PasswordReset
 {

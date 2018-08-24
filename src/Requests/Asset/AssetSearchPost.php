@@ -21,7 +21,7 @@ class AssetSearchPost extends ListRequest
     public function rules()
     {
         $rules = [
-            'name'      => 'nullable|string',
+            'title'     => 'nullable|string',
             'state'     => [
                 'nullable',
                 'integer',

@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Password;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Password\PasswordResetService;
+use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\User\Requests\Password\PasswordResetRemovePost;
 use DaydreamLab\User\Requests\Password\PasswordResetStorePost;
 use DaydreamLab\User\Requests\Password\PasswordResetStatePost;

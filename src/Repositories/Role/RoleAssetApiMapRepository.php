@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Role;
+namespace DaydreamLab\User\Repositories\Role;
 
 use DaydreamLab\JJAJ\Repositories\BaseRepository;
-use App\Models\Role\RoleAssetApiMap;
+use DaydreamLab\User\Models\Role\RoleAssetApiMap;
 
 class RoleAssetApiMapRepository extends BaseRepository
 {

@@ -1,7 +1,7 @@
 <?php
-namespace App\Models\Password\Front;
+namespace DaydreamLab\User\Models\Password\Front;
 
-use App\Models\Password\PasswordReset;
+use DaydreamLab\User\Models\Password\PasswordReset;
 
 class PasswordResetFront extends PasswordReset
 {

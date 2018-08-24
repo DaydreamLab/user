@@ -1,14 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: daydreamlab
- * Date: 2018/4/26
- * Time: 下午5:01
- */
 
 namespace DaydreamLab\User\Helpers;
-use Illuminate\Support\Facades\Validator;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 
 class UserHelper
 {

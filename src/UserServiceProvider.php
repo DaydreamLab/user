@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User;
 
+use DaydreamLab\User\Middlewares\Admin;
 use Illuminate\Support\ServiceProvider;
 
 class UserServiceProvider extends ServiceProvider
@@ -15,6 +16,7 @@ class UserServiceProvider extends ServiceProvider
     {
         $this->publishes([__DIR__. '/constants' => config_path('constants')], 'user-configs');
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+
         include __DIR__. '/routes/api.php';
     }
 
@@ -25,6 +27,7 @@ class UserServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->make('DaydreamLab\User\Controllers\User\Front\UserFrontController');
+        $this->app->bind('DaydreamLab\User\Controllers\User\Front\UserFrontController');
+        $this->app['router']->aliasMiddleware('admin', Admin::class);
     }
 }

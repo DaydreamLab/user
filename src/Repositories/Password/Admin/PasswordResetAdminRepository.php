@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Password\Admin;
+namespace DaydreamLab\User\Repositories\Password\Admin;
 
-use App\Repositories\Password\PasswordResetRepository;
-use App\Models\Password\Admin\PasswordResetAdmin;
+use DaydreamLab\User\Repositories\Password\PasswordResetRepository;
+use DaydreamLab\User\Models\Password\Admin\PasswordResetAdmin;
 
 class PasswordResetAdminRepository extends PasswordResetRepository
 {

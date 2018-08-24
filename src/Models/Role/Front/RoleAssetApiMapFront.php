@@ -1,7 +1,7 @@
 <?php
-namespace App\Models\Role\Front;
+namespace DaydreamLab\User\Models\Role\Front;
 
-use App\Models\Role\RoleAssetApiMap;
+use DaydreamLab\User\Models\Role\RoleAssetApiMap;
 
 class RoleAssetApiMapFront extends RoleAssetApiMap
 {

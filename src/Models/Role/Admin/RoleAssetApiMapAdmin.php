@@ -1,7 +1,7 @@
 <?php
-namespace App\Models\Role\Admin;
+namespace DaydreamLab\User\Models\Role\Admin;
 
-use App\Models\Role\RoleAssetApiMap;
+use DaydreamLab\User\Models\Role\RoleAssetApiMap;
 
 class RoleAssetApiMapAdmin extends RoleAssetApiMap
 {

@@ -27,7 +27,7 @@ class AssetStorePost extends AdminRequest
         return [
             'id'        => 'nullable|integer',
             'parent_id' => 'nullable|integer',
-            'name'      => 'nullable|string',
+            'title'     => 'nullable|string',
             'path'      => 'nullable|string',
             'component' => 'nullable|string',
             'type'      => 'required|string',

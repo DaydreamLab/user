@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Social\Front;
+namespace DaydreamLab\User\Services\Social\Front;
 
-use App\Repositories\Social\Front\SocialUserFrontRepository;
-use App\Services\Social\SocialUserService;
+use DaydreamLab\User\Repositories\Social\Front\SocialUserFrontRepository;
+use DaydreamLab\User\Services\Social\SocialUserService;
 
 class SocialUserFrontService extends SocialUserService
 {

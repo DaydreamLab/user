@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Asset\Front;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Asset\Front\AssetGroupMapFrontService;
+use DaydreamLab\User\Services\Asset\Front\AssetGroupMapFrontService;
 use DaydreamLab\User\Requests\Asset\Front\AssetGroupMapFrontRemovePost;
 use DaydreamLab\User\Requests\Asset\Front\AssetGroupMapFrontStorePost;
 use DaydreamLab\User\Requests\Asset\Front\AssetGroupMapFrontStatePost;

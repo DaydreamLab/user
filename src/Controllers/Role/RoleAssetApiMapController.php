@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Controllers\Role;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use App\Services\Role\RoleAssetApiMapService;
+use DaydreamLab\User\Services\Role\RoleAssetApiMapService;
 use DaydreamLab\User\Requests\Role\RoleAssetApiMapRemovePost;
 use DaydreamLab\User\Requests\Role\RoleAssetApiMapStorePost;
 use DaydreamLab\User\Requests\Role\RoleAssetApiMapStatePost;
