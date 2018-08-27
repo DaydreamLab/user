@@ -2,6 +2,7 @@
 
 return [
 
+    // ----- Asset -----
     // Create
     'ASSET_CREATE_SUCCESS' => [
         'code'      => 200,
@@ -221,6 +222,34 @@ return [
     'ASSET_FRONT_FIND_FAIL' => [
         'code'      => 500,
         'message'   => 'Asset front find fail'
+    ],
+
+    // Get Group
+    'ASSET_GET_GROUPS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset get groups success'
+    ],
+    'ASSET_FRONT_GET_GROUPS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset front get groups success'
+    ],
+    'ASSET_ADMIN_GET_GROUPS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset admin get groups success'
+    ],
+
+    // Get Api
+    'ASSET_GET_APIS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset get apis success'
+    ],
+    'ASSET_FRONT_GET_APIS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset front get apis success'
+    ],
+    'ASSET_ADMIN_GET_APIS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset admin get apis success'
     ],
 
 
@@ -668,4 +697,452 @@ return [
         'code'      => 500,
         'message'   => 'Asset group map front find fail'
     ],
+
+
+    // ----- Asset Api -----
+    // Create
+    'ASSET_API_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api create success'
+    ],
+    'ASSET_API_ADMIN_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api admin create success'
+    ],
+    'ASSET_API_FRONT_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api front create success'
+    ],
+    'ASSET_API_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api create fail'
+    ],
+    'ASSET_API_ADMIN_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api admin create fail'
+    ],
+    'ASSET_API_FRONT_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api front create fail'
+    ],
+
+
+
+    // Update
+    'ASSET_API_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api update success'
+    ],
+    'ASSET_API_ADMIN_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api admin update success'
+    ],
+    'ASSET_API_FRONT_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api front update success'
+    ],
+
+    'ASSET_API_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api update fail'
+    ],
+    'ASSET_API_ADMIN_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api admin update fail'
+    ],
+    'ASSET_API_FRONT_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api front update fail'
+    ],
+
+
+    // Trash
+    'ASSET_API_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api trash success'
+    ],
+    'ASSET_API_ADMIN_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api admin trash success'
+    ],
+    'ASSET_API_FRONT_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api front trash success'
+    ],
+
+    'ASSET_API_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api trash fail'
+    ],
+    'ASSET_API_ADMIN_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api admin trash fail'
+    ],
+    'ASSET_API_FRONT_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api front trash fail'
+    ],
+
+
+
+    // Delete
+    'ASSET_API_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api delete success'
+    ],
+    'ASSET_API_ADMIN_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api admin delete success'
+    ],
+    'ASSET_API_FRONT_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api front delete success'
+    ],
+
+
+    'ASSET_API_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api delete fail'
+    ],
+    'ASSET_API_ADMIN_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api admin delete fail'
+    ],
+    'ASSET_API_FRONT_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api front delete fail'
+    ],
+
+
+    // Publish
+    'ASSET_API_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api publish success'
+    ],
+    'ASSET_API_ADMIN_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api admin publish success'
+    ],
+    'ASSET_API_FRONT_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api front publish success'
+    ],
+
+    'ASSET_API_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api publish fail'
+    ],
+    'ASSET_API_ADMIN_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api admin publish fail'
+    ],
+    'ASSET_API_FRONT_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api front publish fail'
+    ],
+
+
+    // Unpublish
+    'ASSET_API_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api unpublish success'
+    ],
+    'ASSET_API_ADMIN_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api admin unpublish success'
+    ],
+    'ASSET_API_FRONT_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api front unpublish success'
+    ],
+    'ASSET_API_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api unpublish fail'
+    ],
+    'ASSET_API_ADMIN_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api admin unpublish fail'
+    ],
+    'ASSET_API_FRONT_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api front unpublish fail'
+    ],
+
+
+    //Search
+    'ASSET_API_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api search success'
+    ],
+    'ASSET_API_ADMIN_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api admin search success'
+    ],
+    'ASSET_API_FRONT_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api front search success'
+    ],
+    'ASSET_API_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api search fail'
+    ],
+    'ASSET_API_ADMIN_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api admin search fail'
+    ],
+    'ASSET_API_FRONT_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api front search fail'
+    ],
+
+    // Find
+    'ASSET_API_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api find success'
+    ],
+    'ASSET_API_ADMIN_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api admin find success'
+    ],
+    'ASSET_API_FRONT_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api front find success'
+    ],
+    'ASSET_API_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api find fail'
+    ],
+    'ASSET_API_ADMIN_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api find search fail'
+    ],
+    'ASSET_API_FRONT_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api front find fail'
+    ],
+
+
+    // ----- Asset Api Map -----
+    // Create
+    'ASSET_API_MAP_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map create success'
+    ],
+    'ASSET_API_MAP_ADMIN_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map admin create success'
+    ],
+    'ASSET_API_MAP_FRONT_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map front create success'
+    ],
+    'ASSET_API_MAP_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map create fail'
+    ],
+    'ASSET_API_MAP_ADMIN_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map admin create fail'
+    ],
+    'ASSET_API_MAP_FRONT_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map front create fail'
+    ],
+
+
+
+    // Update
+    'ASSET_API_MAP_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map update success'
+    ],
+    'ASSET_API_MAP_ADMIN_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map admin update success'
+    ],
+    'ASSET_API_MAP_FRONT_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map front update success'
+    ],
+
+    'ASSET_API_MAP_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map update fail'
+    ],
+    'ASSET_API_MAP_ADMIN_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map admin update fail'
+    ],
+    'ASSET_API_MAP_FRONT_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map front update fail'
+    ],
+
+
+    // Trash
+    'ASSET_API_MAP_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map trash success'
+    ],
+    'ASSET_API_MAP_ADMIN_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map admin trash success'
+    ],
+    'ASSET_API_MAP_FRONT_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map front trash success'
+    ],
+
+    'ASSET_API_MAP_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map trash fail'
+    ],
+    'ASSET_API_MAP_ADMIN_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map admin trash fail'
+    ],
+    'ASSET_API_MAP_FRONT_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map front trash fail'
+    ],
+
+
+
+    // Delete
+    'ASSET_API_MAP_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map delete success'
+    ],
+    'ASSET_API_MAP_ADMIN_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map admin delete success'
+    ],
+    'ASSET_API_MAP_FRONT_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map front delete success'
+    ],
+
+
+    'ASSET_API_MAP_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map delete fail'
+    ],
+    'ASSET_API_MAP_ADMIN_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map admin delete fail'
+    ],
+    'ASSET_API_MAP_FRONT_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map front delete fail'
+    ],
+
+
+    // Publish
+    'ASSET_API_MAP_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map publish success'
+    ],
+    'ASSET_API_MAP_ADMIN_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map admin publish success'
+    ],
+    'ASSET_API_MAP_FRONT_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map front publish success'
+    ],
+
+    'ASSET_API_MAP_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map publish fail'
+    ],
+    'ASSET_API_MAP_ADMIN_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map admin publish fail'
+    ],
+    'ASSET_API_MAP_FRONT_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map front publish fail'
+    ],
+
+
+    // Unpublish
+    'ASSET_API_MAP_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map unpublish success'
+    ],
+    'ASSET_API_MAP_ADMIN_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map admin unpublish success'
+    ],
+    'ASSET_API_MAP_FRONT_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map front unpublish success'
+    ],
+    'ASSET_API_MAP_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map unpublish fail'
+    ],
+    'ASSET_API_MAP_ADMIN_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map admin unpublish fail'
+    ],
+    'ASSET_API_MAP_FRONT_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map front unpublish fail'
+    ],
+
+
+    //Search
+    'ASSET_API_MAP_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map search success'
+    ],
+    'ASSET_API_MAP_ADMIN_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map admin search success'
+    ],
+    'ASSET_API_MAP_FRONT_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map front search success'
+    ],
+    'ASSET_API_MAP_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map search fail'
+    ],
+    'ASSET_API_MAP_ADMIN_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map admin search fail'
+    ],
+    'ASSET_API_MAP_FRONT_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map front search fail'
+    ],
+
+    // Find
+    'ASSET_API_MAP_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map find success'
+    ],
+    'ASSET_API_MAP_ADMIN_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map admin find success'
+    ],
+    'ASSET_API_MAP_FRONT_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset api map front find success'
+    ],
+    'ASSET_API_MAP_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map find fail'
+    ],
+    'ASSET_API_MAP_ADMIN_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map find search fail'
+    ],
+    'ASSET_API_MAP_FRONT_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset api map front find fail'
+    ],
+
+
 ];

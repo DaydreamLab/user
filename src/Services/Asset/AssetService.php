@@ -17,7 +17,18 @@ class AssetService extends BaseService
         parent::__construct($repo);
     }
 
-    public function findGroups($id)
+
+    public function getApis($id)
+    {
+        $asset = $this->find($id);
+        $this->status =  Str::upper(Str::snake($this->type.'GetApisSuccess'));;
+        $this->response = $asset->groups;
+
+        return $asset->apis;
+    }
+
+
+    public function getGroups($id)
     {
         $asset = $this->find($id);
         $this->status =  Str::upper(Str::snake($this->type.'GetGroupsSuccess'));;

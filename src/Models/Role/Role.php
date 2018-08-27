@@ -14,7 +14,7 @@ class Role extends BaseModel
      */
     protected $table = 'roles';
 
-
+    protected $ordering = 'asc';
     /**
      * The attributes that are mass assignable.
      *
@@ -23,8 +23,8 @@ class Role extends BaseModel
     protected $fillable = [
         'parent_id',
         'title',
-        'state',
         'redirect',
+        'state',
         'canDelete',
         'created_by',
         'updated_by',

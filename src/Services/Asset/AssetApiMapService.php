@@ -3,16 +3,16 @@
 namespace DaydreamLab\User\Services\Asset;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\User\Repositories\Asset\AssetGroupMapRepository;
+use DaydreamLab\User\Repositories\Asset\AssetApiMapRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class AssetGroupMapService extends BaseService
+class AssetApiMapService extends BaseService
 {
-    protected $type = 'AssetGroupMap';
+    protected $type = 'AssetApiMap';
 
-    public function __construct(AssetGroupMapRepository $repo)
+    public function __construct(AssetApiMapRepository $repo)
     {
         parent::__construct($repo);
     }

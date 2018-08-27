@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
 use DaydreamLab\User\Services\Asset\Admin\AssetAdminService;
@@ -17,6 +18,23 @@ class AssetAdminController extends BaseController
     {
         parent::__construct($service);
     }
+
+
+    public function getApis($id)
+    {
+        $this->service->getApis($id);
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function getGroups($id)
+    {
+        $this->service->getGroups($id);
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
 
     public function getItem($id)
     {

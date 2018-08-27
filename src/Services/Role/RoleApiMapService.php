@@ -2,16 +2,15 @@
 
 namespace DaydreamLab\User\Services\Role;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\User\Repositories\Role\RoleAssetMapRepository;
+use DaydreamLab\User\Repositories\Role\RoleApiMapRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Support\Collection;
 
-class RoleAssetMapService extends BaseService
+class RoleApiMapService extends BaseService
 {
-    protected $type = 'RoleAssetMap';
+    protected $type = 'RoleAssetApiMap';
 
-    public function __construct(RoleAssetMapRepository $repo)
+    public function __construct(RoleApiMapRepository $repo)
     {
         parent::__construct($repo);
     }

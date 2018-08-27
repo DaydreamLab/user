@@ -1,23 +1,24 @@
 <?php
 
-namespace DaydreamLab\User\Controllers\Asset\Admin;
+namespace DaydreamLab\User\Controllers\Asset\Front;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use DaydreamLab\User\Services\Asset\Admin\AssetApiAdminService;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminRemovePost;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminStorePost;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminStatePost;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminSearchPost;
+use DaydreamLab\User\Services\Asset\Front\AssetApiMapFrontService;
+use DaydreamLab\User\Requests\Asset\Front\AssetApiMapFrontRemovePost;
+use DaydreamLab\User\Requests\Asset\Front\AssetApiMapFrontStorePost;
+use DaydreamLab\User\Requests\Asset\Front\AssetApiMapFrontStatePost;
+use DaydreamLab\User\Requests\Asset\Front\AssetApiMapFrontSearchPost;
 
-class AssetApiAdminController extends BaseController
+
+class AssetApiMapFrontController extends BaseController
 {
-    public function __construct(AssetApiAdminService $service)
+    public function __construct(AssetApiMapFrontService $service)
     {
         parent::__construct($service);
     }
+
 
     public function getItem($id)
     {
@@ -35,7 +36,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function remove(AssetApiAdminRemovePost $request)
+    public function remove(AssetApiMapFrontRemovePost $request)
     {
         $this->service->remove($request->rulesInput());
 
@@ -43,7 +44,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function state(AssetApiAdminStatePost $request)
+    public function state(AssetApiMapFrontStatePost $request)
     {
         $this->service->state($request->rulesInput());
 
@@ -51,7 +52,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function store(AssetApiAdminStorePost $request)
+    public function store(AssetApiMapFrontStorePost $request)
     {
         $this->service->store($request->rulesInput());
 
@@ -59,7 +60,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function search(AssetApiAdminSearchPost $request)
+    public function search(AssetApiMapFrontSearchPost $request)
     {
         $this->service->search($request->rulesInput());
 

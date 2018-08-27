@@ -3,17 +3,16 @@ namespace DaydreamLab\User\Models\Asset;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
 
-class AssetApi extends BaseModel
+class AssetApiMap extends BaseModel
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'assets_apis';
+    protected $table = 'assets_apis_maps';
 
 
-    protected $ordering = 'asc';
     /**
      * The attributes that are mass assignable.
      *
@@ -21,8 +20,7 @@ class AssetApi extends BaseModel
      */
     protected $fillable = [
         'asset_id',
-        'method',
-        'url',
+        'api_id',
         'created_by',
         'updated_by'
     ];
@@ -43,19 +41,8 @@ class AssetApi extends BaseModel
      * @var array
      */
     protected $appends = [
-        'asset_name'
     ];
 
 
-    public function asset()
-    {
-        return $this->belongsTo(Asset::class, 'asset_id', 'id');
-    }
-
-
-    public function getAssetNameAttribute()
-    {
-        return $this->asset()->first()->title;
-    }
 
 }

@@ -1,23 +1,23 @@
 <?php
 
-namespace DaydreamLab\User\Controllers\Asset\Admin;
+namespace DaydreamLab\User\Controllers\Role;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use DaydreamLab\User\Services\Asset\Admin\AssetApiAdminService;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminRemovePost;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminStorePost;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminStatePost;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminSearchPost;
+use DaydreamLab\User\Services\Role\RoleApiMapService;
+use DaydreamLab\User\Requests\Role\RoleApiMapRemovePost;
+use DaydreamLab\User\Requests\Role\RoleApiMapStorePost;
+use DaydreamLab\User\Requests\Role\RoleApiMapStatePost;
+use DaydreamLab\User\Requests\Role\RoleApiMapSearchPost;
 
-class AssetApiAdminController extends BaseController
+class RoleApiMapController extends BaseController
 {
-    public function __construct(AssetApiAdminService $service)
+    public function __construct(RoleApiMapService $service)
     {
         parent::__construct($service);
     }
+
 
     public function getItem($id)
     {
@@ -35,7 +35,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function remove(AssetApiAdminRemovePost $request)
+    public function remove(RoleApiMapRemovePost $request)
     {
         $this->service->remove($request->rulesInput());
 
@@ -43,7 +43,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function state(AssetApiAdminStatePost $request)
+    public function state(RoleApiMapStatePost $request)
     {
         $this->service->state($request->rulesInput());
 
@@ -51,7 +51,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function store(AssetApiAdminStorePost $request)
+    public function store(RoleApiMapStorePost $request)
     {
         $this->service->store($request->rulesInput());
 
@@ -59,7 +59,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function search(AssetApiAdminSearchPost $request)
+    public function search(RoleApiMapSearchPost $request)
     {
         $this->service->search($request->rulesInput());
 

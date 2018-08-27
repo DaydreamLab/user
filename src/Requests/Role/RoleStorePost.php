@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\Role;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
 class RoleStorePost extends AdminRequest
 {
@@ -24,11 +25,21 @@ class RoleStorePost extends AdminRequest
     public function rules()
     {
         return [
-            'id'                  => 'nullable|integer',
-            'parent_id'           => 'required|integer',
-            'title'               => 'string',
-            'enabled'             => 'required|integer|between:0,1',
-            'redirect'            => 'string'
+            'id'            => 'nullable|integer',
+            'parent_id'     => 'nullable|integer',
+            'title'         => 'required|string',
+            'redirect'      => 'required|string',
+            'state'         => [
+                'required',
+                'integer',
+                Rule::in([0,1,-2])
+            ],
+            'canDelete'     => [
+                'required',
+                'integer',
+                Rule::in([0,1])
+            ],
+            'description'   => 'nullable|string'
         ];
     }
 }

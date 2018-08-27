@@ -12,17 +12,15 @@ class RoleAssetMap extends BaseModel
      */
     protected $table = 'roles_assets_maps';
 
-
+    protected $ordering = 'asc';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'title',
-        'category_id',
-        'state',
-        'description',
+        'role_id',
+        'asset_id',
         'created_by',
         'updated_by'
     ];

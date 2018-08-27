@@ -1,10 +1,10 @@
 <?php
 
-namespace DaydreamLab\User\Requests\Role;
+namespace DaydreamLab\User\Requests\Role\Front;
 
-use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\User\Requests\Role\RoleApiMapSearchPost;
 
-class RoleAssetMapStorePost extends AdminRequest
+class RoleApiMapFrontSearchPost extends RoleApiMapSearchPost
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,9 @@ class RoleAssetMapStorePost extends AdminRequest
      */
     public function rules()
     {
-        return [
-            'role_id'       => 'required|integer',
-            'asset_ids'     => 'required|array',
-            'asset_ids.*'   => 'nullable|integer',
+        $rules = [
+            //
         ];
+        return array_merge($rules, parent::rules());
     }
 }

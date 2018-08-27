@@ -3,9 +3,8 @@
 namespace DaydreamLab\User\Requests\Asset;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
-use Illuminate\Validation\Rule;
 
-class AssetGroupStorePost extends AdminRequest
+class AssetApiMapStorePost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +24,9 @@ class AssetGroupStorePost extends AdminRequest
     public function rules()
     {
         return [
-            'id'            => 'nullable|integer',
-            'title'         => 'required|string',
-            'state'         => [
-                'required',
-                'integer',
-                Rule::in([0,1,-2])
-            ]
-
+            'asset_id'      => 'required|integer',
+            'api_ids'       => 'required|array',
+            'api_ids.*'     => 'required|integer',
         ];
     }
 }

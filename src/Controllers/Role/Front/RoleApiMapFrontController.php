@@ -1,23 +1,24 @@
 <?php
 
-namespace DaydreamLab\User\Controllers\Asset\Admin;
+namespace DaydreamLab\User\Controllers\Role\Front;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
-use DaydreamLab\User\Services\Asset\Admin\AssetApiAdminService;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminRemovePost;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminStorePost;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminStatePost;
-use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminSearchPost;
+use DaydreamLab\User\Services\Role\Front\RoleApiMapFrontService;
+use DaydreamLab\User\Requests\Role\Front\RoleApiMapFrontRemovePost;
+use DaydreamLab\User\Requests\Role\Front\RoleApiMapFrontStorePost;
+use DaydreamLab\User\Requests\Role\Front\RoleApiMapFrontStatePost;
+use DaydreamLab\User\Requests\Role\Front\RoleApiMapFrontSearchPost;
 
-class AssetApiAdminController extends BaseController
+
+class RoleApiMapFrontController extends BaseController
 {
-    public function __construct(AssetApiAdminService $service)
+    public function __construct(RoleApiMapFrontService $service)
     {
         parent::__construct($service);
     }
+
 
     public function getItem($id)
     {
@@ -35,7 +36,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function remove(AssetApiAdminRemovePost $request)
+    public function remove(RoleApiMapFrontRemovePost $request)
     {
         $this->service->remove($request->rulesInput());
 
@@ -43,7 +44,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function state(AssetApiAdminStatePost $request)
+    public function state(RoleApiMapFrontStatePost $request)
     {
         $this->service->state($request->rulesInput());
 
@@ -51,7 +52,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function store(AssetApiAdminStorePost $request)
+    public function store(RoleApiMapFrontStorePost $request)
     {
         $this->service->store($request->rulesInput());
 
@@ -59,7 +60,7 @@ class AssetApiAdminController extends BaseController
     }
 
 
-    public function search(AssetApiAdminSearchPost $request)
+    public function search(RoleApiMapFrontSearchPost $request)
     {
         $this->service->search($request->rulesInput());
 
