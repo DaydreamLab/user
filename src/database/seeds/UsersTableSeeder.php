@@ -21,7 +21,29 @@ class UsersTableSeeder extends Seeder
             'last_name' => 'Engineering Department',
             'redirect' => '/',
             'activation' => 1,
-            'activate_token' => 'sdfrwtghkklcxafeg45dfvzczxv',
+            'activate_token' => 'xxxxxxxxxxxxxxxx',
+            'created_by' => 1,
+        ]);
+
+        User::create([
+            'email' => 'admin@edenaresorts.com',
+            'password' => bcrypt('edenaresorts@2018'),
+            'first_name' => 'Admin',
+            'last_name' => 'Edena',
+            'redirect' => '/reservation',
+            'activation' => 1,
+            'activate_token' => 'xxxxxxxxxxxxxxxx',
+            'created_by' => 1,
+        ]);
+
+        User::create([
+            'email' => 'reservations@edenaresorts.com',
+            'password' => bcrypt('edenaresorts@2018'),
+            'first_name' => 'Rep ( frontdesk )',
+            'last_name' => 'Edena',
+            'redirect' => '/checkin',
+            'activation' => 1,
+            'activate_token' => 'xxxxxxxxxxxxxxxx',
             'created_by' => 1,
         ]);
 
@@ -32,7 +54,7 @@ class UsersTableSeeder extends Seeder
             'last_name' => 'Tsai',
             'redirect' => '/',
             'activation' => 1,
-            'activate_token' => 'abcdefghijklmnopqrstuvwxyzff',
+            'activate_token' => '556655665566556655665566',
             'created_by' => 1,
         ]);
 

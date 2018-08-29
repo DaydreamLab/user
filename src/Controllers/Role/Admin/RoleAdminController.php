@@ -18,6 +18,23 @@ class RoleAdminController extends BaseController
         parent::__construct($service);
     }
 
+
+    public function getAction($id)
+    {
+        $this->service->getAction($id);
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function getApis($id)
+    {
+        $this->service->getApis($id);
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
     public function getItem($id)
     {
         $this->service->find($id);
@@ -29,6 +46,22 @@ class RoleAdminController extends BaseController
     public function getItems()
     {
         $this->service->search(new Collection());
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function getPage($id)
+    {
+        $this->service->getPage($id);
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function getTree()
+    {
+        $this->service->getTree();
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

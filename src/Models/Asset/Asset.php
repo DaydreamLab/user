@@ -42,8 +42,9 @@ class Asset extends BaseModel
      * @var array
      */
     protected $hidden = [
-//        '_lft',
-//        '_rgt',
+        '_lft',
+        '_rgt',
+        'pivot'
     ];
 
 
@@ -53,7 +54,7 @@ class Asset extends BaseModel
      * @var array
      */
     protected $appends = [
-        'tree_lv',
+        //'tree_lv',
         'apis',
         'groups'
     ];
@@ -83,9 +84,9 @@ class Asset extends BaseModel
     }
 
 
-    public function getTreeLvAttribute()
-    {
-        return $this->_rgt - $this->_lft;
-    }
+//    public function getTreeLvAttribute()
+//    {
+//        return $this->_rgt - $this->_lft;
+//    }
 
 }

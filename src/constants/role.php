@@ -224,6 +224,45 @@ return [
         'message'   => 'Role front find fail'
     ],
 
+    'ROLE_GET_PAGE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role get page success'
+    ],
+    'ROLE_ADMIN_GET_PAGE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role admin get page success'
+    ],
+    'ROLE_FRONT_GET_PAGE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role front get page success'
+    ],
+
+    'ROLE_GET_TREE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role get tree success'
+    ],
+    'ROLE_ADMIN_GET_TREE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role admin get tree success'
+    ],
+    'ROLE_FRONT_GET_TREE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role front get tree success'
+    ],
+
+    'ROLE_GET_APIS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role get apis success'
+    ],
+    'ROLE_ADMIN_GET_APIS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role admin get apis success'
+    ],
+    'ROLE_FRONT_GET_APIS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role front get apis success'
+    ],
+
 
     // ----- Role Asset Map -----
     // Create
@@ -446,6 +485,20 @@ return [
         'code'      => 500,
         'message'   => 'Role asset map front find fail'
     ],
+
+    'ROLE_ASSET_MAP_GET_GRANT_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role asset map get grant success'
+    ],
+    'ROLE_ASSET_MAP_FRONT_GET_GRANT_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role asset map get grant success'
+    ],
+    'ROLE_ASSET_MAP_ADMIN_GET_GRANT_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role asset map get grant success'
+    ],
+
 
 
     // Role Asset Api Map

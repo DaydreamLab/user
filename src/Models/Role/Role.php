@@ -2,6 +2,8 @@
 namespace DaydreamLab\User\Models\Role;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
+use DaydreamLab\User\Models\Asset\Asset;
+use DaydreamLab\User\Models\Asset\AssetApi;
 use Kalnoy\Nestedset\NodeTrait;
 
 class Role extends BaseModel
@@ -37,6 +39,7 @@ class Role extends BaseModel
      * @var array
      */
     protected $hidden = [
+
     ];
 
 
@@ -46,8 +49,32 @@ class Role extends BaseModel
      * @var array
      */
     protected $appends = [
+        'assets',
+        'apis'
     ];
 
 
+    public function api()
+    {
+        return $this->belongsToMany(AssetApi::class, 'roles_apis_maps', 'role_id', 'api_id');
+    }
+
+
+    public function asset()
+    {
+        return $this->belongsToMany(Asset::class, 'roles_assets_maps', 'role_id', 'asset_id');
+    }
+
+
+    public function getApisAttribute()
+    {
+        return $this->api()->get();
+    }
+
+
+    public function getAssetsAttribute()
+    {
+        return $this->asset()->get();
+    }
 
 }

@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\Role\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
 use DaydreamLab\User\Services\Role\Admin\RoleAssetMapAdminService;
@@ -17,6 +18,15 @@ class RoleAssetMapAdminController extends BaseController
     {
         parent::__construct($service);
     }
+
+
+    public function getGrant($id)
+    {
+        $this->service->getGrant($id);
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
 
     public function getItem($id)
     {

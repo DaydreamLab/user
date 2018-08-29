@@ -71,7 +71,13 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
 
         // ----- Role -----
         Route::group(['prefix' => 'role'], function (){
+            Route::get('tree', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getTree');
             Route::get('{id}', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getItem');
+            Route::get('{id}/grant', 'DaydreamLab\User\Controllers\Role\Admin\RoleAssetMapAdminController@getGrant');
+            Route::get('{id}/page', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getPage');
+            Route::get('{id}/apis', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getApis');
+            Route::get('{id}/action', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getAction');
+
             Route::post('remove', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@remove');
             Route::post('state', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@state');
             Route::post('store','DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@store');
@@ -90,7 +96,6 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
                 });
             });
         });
-
 
 
     });

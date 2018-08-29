@@ -7,6 +7,11 @@ use Illuminate\Support\ServiceProvider;
 
 class UserServiceProvider extends ServiceProvider
 {
+
+
+    protected $commands = [
+        'DaydreamLab\User\Commands\InstallCommand',
+    ];
     /**
      * Bootstrap services.
      *
@@ -29,5 +34,6 @@ class UserServiceProvider extends ServiceProvider
     {
         $this->app->bind('DaydreamLab\User\Controllers\User\Front\UserFrontController');
         $this->app['router']->aliasMiddleware('admin', Admin::class);
+        $this->commands($this->commands);
     }
 }
