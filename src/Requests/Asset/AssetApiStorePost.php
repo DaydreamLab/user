@@ -25,7 +25,7 @@ class AssetApiStorePost extends AdminRequest
     {
         return [
             'id'            => 'nullable|integer',
-            'asset_id'      => 'required|integer',
+            //'asset_id'      => 'required|integer',
             'method'        => 'required|string',
             'url'           => 'required|string',
         ];

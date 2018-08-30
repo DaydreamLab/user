@@ -18,6 +18,7 @@ class CreateAssetsTable extends Migration
             $table->nestedSet();
             $table->string('title')->nullable();
             $table->string('path')->nullable();
+            $table->string('full_path')->nullable();
             $table->string('component')->nullable();
             $table->string('type');
             $table->tinyInteger('state');

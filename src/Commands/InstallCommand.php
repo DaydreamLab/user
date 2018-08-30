@@ -38,8 +38,7 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $this->call('jjaj:refresh', [
-        ]);
+        $this->call('jjaj:refresh');
 
         $this->call('db:seed', [
             '--class' => 'DaydreamLab\\User\\Database\\Seeds\\AssetsTableSeeder'
@@ -47,6 +46,10 @@ class InstallCommand extends Command
 
         $this->call('db:seed', [
             '--class' => 'DaydreamLab\\User\\Database\\Seeds\\AssetsApisTableSeeder'
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => 'DaydreamLab\\User\\Database\\Seeds\\AssetsApisMapsTableSeeder'
         ]);
 
         $this->call('db:seed', [
@@ -75,6 +78,10 @@ class InstallCommand extends Command
 
         $this->call('db:seed', [
             '--class' => 'DaydreamLab\\User\\Database\\Seeds\\UsersTableSeeder'
+        ]);
+
+        $this->call('vendor:publish', [
+            '--tag' => 'user-configs'
         ]);
     }
 }

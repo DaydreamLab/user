@@ -263,6 +263,32 @@ return [
         'message'   => 'Role front get apis success'
     ],
 
+    'ROLE_GET_APIS_IDS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role get apis ids success'
+    ],
+    'ROLE_ADMIN_GET_APIS_IDS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role admin get apis ids success'
+    ],
+    'ROLE_FRONT_GET_APIS_IDS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role front get apis ids success'
+    ],
+
+    'ROLE_GET_ACTION_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role get action success'
+    ],
+    'ROLE_ADMIN_GET_ACTION_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role admin get action success'
+    ],
+    'ROLE_FRONT_GET_ACTION_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role front get action success'
+    ],
+
 
     // ----- Role Asset Map -----
     // Create

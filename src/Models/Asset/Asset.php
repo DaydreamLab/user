@@ -25,6 +25,7 @@ class Asset extends BaseModel
         'parent_id',
         'title',
         'path',
+        'full_path',
         'component',
         'type',
         'state',
@@ -55,14 +56,14 @@ class Asset extends BaseModel
      */
     protected $appends = [
         //'tree_lv',
-        'apis',
-        'groups'
+        //'apis',
+        'groups',
     ];
 
 
-    public function apis()
+    public function api()
     {
-        return $this->hasMany(AssetApi::class, 'asset_id', 'id');
+        return $this->belongsToMany(AssetApi::class, 'assets_apis_maps', 'asset_id', 'api_id');
     }
 
 
@@ -74,7 +75,7 @@ class Asset extends BaseModel
 
     public function getApisAttribute()
     {
-        return $this->apis()->get();
+        return $this->api()->get();
     }
 
 
