@@ -26,13 +26,16 @@ class UserService extends BaseService
         $user = Auth::guard('api')->user();
         if (!Hash::check($input->old_password, $user->password)) {
             $this->status = 'USER_OLD_PASSWORD_INCORRECT';
-        } else {
+        }
+        else {
             $user->password = bcrypt($input->password);
             if ($user->save()) {
-                $this->logout();
                 $this->status = 'USER_CHANGE_PASSWORD_SUCCESS';
-            } else {
+                return true;
+            }
+            else {
                 $this->status = 'USER_CHANGE_PASSWORD_FAIL';
+                return false;
             }
         }
     }

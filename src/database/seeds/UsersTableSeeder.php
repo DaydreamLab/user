@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
             'last_name' => 'Engineering Department',
             'redirect' => '/',
             'activation' => 1,
-            'activate_token' => 'xxxxxxxxxxxxxxxx',
+            'activate_token' => 'abcdefghijklmnopqrstuvwxyz',
             'created_by' => 1,
         ]);
 
@@ -32,7 +32,7 @@ class UsersTableSeeder extends Seeder
             'last_name' => 'Edena',
             'redirect' => '/reservation',
             'activation' => 1,
-            'activate_token' => 'xxxxxxxxxxxxxxxx',
+            'activate_token' => 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
             'created_by' => 1,
         ]);
 
@@ -43,7 +43,7 @@ class UsersTableSeeder extends Seeder
             'last_name' => 'Edena',
             'redirect' => '/checkin',
             'activation' => 1,
-            'activate_token' => 'xxxxxxxxxxxxxxxx',
+            'activate_token' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
             'created_by' => 1,
         ]);
 

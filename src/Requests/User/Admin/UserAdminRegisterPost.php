@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Requests\User;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use Illuminate\Validation\Rule;
 
-class UserFrontRegisterPost extends AdminRequest
+class UserAdminRegisterPost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -37,9 +37,10 @@ class UserFrontRegisterPost extends AdminRequest
             'country'               => 'nullble|string',
             'state'                 => 'nullble|string',
             'city'                  => 'nullble|string',
-            'district'              => 'nullble|string',
             'address'               => 'nullble|string',
-            'zipcode'               => 'nullble|string'
+            'zipcode'               => 'nullble|string',
+            'timezone'              => 'nullable|string',
+            'locale'                => 'nullable|string',
         ];
     }
 }

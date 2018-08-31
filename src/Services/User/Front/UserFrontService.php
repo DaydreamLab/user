@@ -172,8 +172,9 @@ class UserFrontService extends UserService
             $guest_role = Role::where('title', 'Guest')->first();
 
             UserRoleMap::create([
-                'user_id'  =>  $user->id,
-                'role_id'  =>  $guest_role->id
+                'user_id'       >  $user->id,
+                'role_id'       =>  $guest_role->id,
+                'created_by'    => $user->id
             ]);
             $user->notify(new RegisteredNotification($user));
             $this->status = 'USER_REGISTER_SUCCESS';

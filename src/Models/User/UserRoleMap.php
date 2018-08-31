@@ -19,10 +19,8 @@ class UserRoleMap extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'title',
-        'category_id',
-        'state',
-        'description',
+        'user_id',
+        'role_id',
         'created_by',
         'updated_by'
     ];

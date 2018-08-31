@@ -27,6 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+
         'email',
         'password',
         'first_name',
@@ -38,22 +39,23 @@ class User extends Authenticatable
         'phone',
         'birthday',
         'timezone',
-        'locale',
+        'language',
         'school',
-        'work',
-        'work_email',
         'job',
         'country',
         'state',
         'city',
+        'district',
         'address',
         'zipcode',
         'created_by',
         'updated_by',
         'activation',
         'activate_token',
+        'redirect',
+        'block',
         'reset_password',
-        'stripe_customer',
+        'last_reset_at',
         'created_by',
         'updated_by'
     ];
@@ -72,7 +74,24 @@ class User extends Authenticatable
         'full_name',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
 
+        $user = Auth::guard('api')->user();
+
+        static::creating(function ($item) use($user) {
+            if ($user) {
+                $item->created_by = $user->id;
+            }
+        });
+
+        static::updating(function ($item) use ($user) {
+            if ($user) {
+                $item->updated_by = $user->id;
+            }
+        });
+    }
 
 
     public static function changePassword($user, $input)

@@ -100,6 +100,16 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
         });
 
 
+        // ----- User -----
+        Route::group(['prefix' => 'user'], function (){
+            Route::post('remove', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@remove');
+            Route::post('store', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@store');
+            Route::post('{id}', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getItem');
+
+        });
+
+
+
     });
 });
 
