@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Helpers\UserHelper;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Repositories\User\UserRepository;
@@ -26,10 +27,12 @@ class UserService extends BaseService
         $user = Auth::guard('api')->user();
         if (!Hash::check($input->old_password, $user->password)) {
             $this->status = 'USER_OLD_PASSWORD_INCORRECT';
+            return false;
         }
         else {
             $user->password = bcrypt($input->password);
             if ($user->save()) {
+                $user->token()->delete();
                 $this->status = 'USER_CHANGE_PASSWORD_SUCCESS';
                 return true;
             }
@@ -68,8 +71,13 @@ class UserService extends BaseService
         if ($auth) {
             $user = Auth::user();
             if ($user->activation) { // 帳號已啟用
-                $this->status = 'USER_LOGIN_SUCCESS';
-                $this->response = UserHelper::getUserLoginData($user);
+                if ($user->block) {
+                    $this->status = 'USER_IS_BLOCKED';
+                }
+                else {
+                    $this->status = 'USER_LOGIN_SUCCESS';
+                    $this->response = UserHelper::getUserLoginData($user);
+                }
             } else { // 帳號尚未啟用
                 $user->notify(new RegisteredNotification($user));
                 $this->status = 'USER_UNACTIVATED';
@@ -87,4 +95,5 @@ class UserService extends BaseService
         }
         $this->status = 'USER_LOGOUT_SUCCESS';
     }
+
 }

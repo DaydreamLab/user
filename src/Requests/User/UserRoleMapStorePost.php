@@ -24,10 +24,10 @@ class UserRoleMapStorePost extends AdminRequest
     public function rules()
     {
         return [
-            'id'            => 'nullable|integer',
-            'title'         => 'required|string',
-            'state'         => 'required|integer',
-            'description'   => 'nullable|string',
+            'user_id'       => 'required|integer',
+            'role_ids'      => 'required|array',
+            'role_ids.*'    => 'required|integer',
+            'redirect'      => 'required|string',
         ];
     }
 }

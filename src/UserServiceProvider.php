@@ -2,8 +2,11 @@
 
 namespace DaydreamLab\User;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Middlewares\Admin;
+use DaydreamLab\User\Middlewares\Expired;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class UserServiceProvider extends ServiceProvider
 {
@@ -34,6 +37,7 @@ class UserServiceProvider extends ServiceProvider
     {
         $this->app->bind('DaydreamLab\User\Controllers\User\Front\UserFrontController');
         $this->app['router']->aliasMiddleware('admin', Admin::class);
+        $this->app['router']->aliasMiddleware('expired', Expired::class);
         $this->commands($this->commands);
     }
 }

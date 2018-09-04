@@ -2,11 +2,10 @@
 
 namespace DaydreamLab\User\Requests\User\Admin;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\User\Requests\User\UserRoleMapStorePost;
-use Symfony\Component\HttpFoundation\HeaderBag;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
-class UserRoleMapAdminStorePost extends UserRoleMapStorePost
+class UserAdminBlockPost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +25,13 @@ class UserRoleMapAdminStorePost extends UserRoleMapStorePost
     public function rules()
     {
         $rules = [
-            //
+            'ids'       => 'required|array',
+            'ids.*'     => 'nullable|integer',
+            'block'     => [
+                'required',
+                Rule::in(0,1)
+            ],
         ];
-
-
         return array_merge($rules, parent::rules());
     }
 }

@@ -6,6 +6,10 @@ return [
         'message'   => 'Insufficient permission admin'
     ],
 
+    'USER_TOKEN_EXPIRED' => [
+        'code'      => 403,
+        'message'   => 'Token expired. Please login again'
+    ],
 
     // Check email
     'USER_EMAIL_IS_REGISTERED' => [
@@ -62,6 +66,10 @@ return [
     'USER_NOT_FOUND' => [
         'code'      => 400,
         'message'   => 'User not found'
+    ],
+    'USER_IS_BLOCKED' => [
+        'code'      => 403,
+        'message'   => 'User is blocked'
     ],
 
 
@@ -362,7 +370,73 @@ return [
         'code'      => 500,
         'message'   => 'User front find fail'
     ],
-    
+
+    'USER_GET_GRANT_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User get grant success'
+    ],
+    'USER_ADMIN_GET_GRANT_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User admin get grant success'
+    ],
+    'USER_FRONT_GET_GRANT_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User front get grant success'
+    ],
+
+    'USER_GET_PAGE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User get page success'
+    ],
+    'USER_ADMIN_GET_PAGE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User admin get page success'
+    ],
+    'USER_FRONT_GET_PAGE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User front get page success'
+    ],
+
+    'USER_GET_APIS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User get apis success'
+    ],
+    'USER_ADMIN_GET_APIS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User admin get apis success'
+    ],
+    'USER_FRONT_GET_APIS_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User front get apis success'
+    ],
+
+
+    'USER_BLOCK_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User block success'
+    ],
+    'USER_ADMIN_BLOCK_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User admin block success'
+    ],
+    'USER_FRONT_BLOCK_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User front block success'
+    ],
+    'USER_UNBLOCK_SUCCESS' => [
+        'code'      => 500,
+        'message'   => 'User unblock success'
+    ],
+    'USER_ADMIN_UNBLOCK_SUCCESS' => [
+        'code'      => 500,
+        'message'   => 'User admin unblock success'
+    ],
+    'USER_FRONT_UNBLOCK_SUCCESS' => [
+        'code'      => 500,
+        'message'   => 'User front unblock success'
+    ],
+
+
     
     // User Role Map
     // Create
@@ -585,5 +659,7 @@ return [
         'code'      => 500,
         'message'   => 'User role map front find fail'
     ],
+
+
 
 ];

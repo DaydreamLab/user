@@ -21,8 +21,8 @@ class UserSearchPost extends ListRequest
     public function rules()
     {
         $rules = [
-            'title' => 'nullable|string',
-            'state'     => [
+            'email'     => 'nullable|string',
+            'block'     => [
                 'nullable',
                 'integer',
                 Rule::in([0,1,-2])

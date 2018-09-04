@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User\Front;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\Role\Role;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
@@ -12,6 +13,7 @@ use DaydreamLab\User\Helpers\UserHelper;
 use DaydreamLab\User\Models\User\UserRoleMap;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
 use DaydreamLab\User\Services\Upload\UploadService;
+use DaydreamLab\User\Services\User\UserRoleMapService;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
@@ -28,16 +30,20 @@ class UserFrontService extends UserService
 
     protected $passwordResetService;
 
+    protected $userRoleMapService;
+
     public function __construct(UserFrontRepository $repo,
                                 SocialUserService $socialUserService,
                                 UploadService $uploadService,
-                                PasswordResetService $passwordResetService
+                                PasswordResetService $passwordResetService,
+                                UserRoleMapService $userRoleMapService
     )
 
     {
         $this->socialUserService    = $socialUserService;
         $this->uploadService        = $uploadService;
         $this->passwordResetService = $passwordResetService;
+        $this->userRoleMapService   = $userRoleMapService;
         parent::__construct($repo);
     }
 
@@ -133,15 +139,15 @@ class UserFrontService extends UserService
 
     public function forgotPasswordTokenValidate($token)
     {
-        $token = $this->passwordResetService->findBy('token', '=', $token)->first();
-        if ($token) {
-            if (Carbon::now() > new Carbon($token->expired_at)) {
+        $reset_token = $this->passwordResetService->findBy('token', '=', $token)->first();
+        if ($reset_token) {
+            if (Carbon::now() > new Carbon($reset_token->expired_at)) {
                 $this->status = 'USER_RESET_PASSWORD_TOKEN_EXPIRED';
                 return false;
             }
             else {
                 $this->status = 'USER_RESET_PASSWORD_TOKEN_VALID';
-                return $token;
+                return $reset_token;
             }
         }
         else {
@@ -163,19 +169,15 @@ class UserFrontService extends UserService
             return ;
         }
 
-        $data                       = $input->toArray();
-        $data['password']           = bcrypt($data['password']);
-        $data['activate_token']     = str_random(48);
+        $password  = $input->password;
+        $input->forget('password');
+        $input->put('password', bcrypt($password));
+        $input->put('activate_token', str_random(48));
 
-        $user                       = $this->create($data);
+        $user      = $this->add($input->toArray());
         if ($user) {
             $guest_role = Role::where('title', 'Guest')->first();
-
-            UserRoleMap::create([
-                'user_id'       >  $user->id,
-                'role_id'       =>  $guest_role->id,
-                'created_by'    => $user->id
-            ]);
+            $this->userRoleMapService->storeKeysMap(Helper::collect(['user_id' => $user->id, 'role_ids'=> [$guest_role->id]]));
             $user->notify(new RegisteredNotification($user));
             $this->status = 'USER_REGISTER_SUCCESS';
         }
@@ -192,7 +194,8 @@ class UserFrontService extends UserService
             $user = $this->findBy('email', '=', $token->email)->first();
             $user->password = bcrypt($input->password);
             if($user->save()){
-                $token->delete();
+                $token->reset_at = now();
+                $token->save();
                 $this->status = 'USER_RESET_PASSWORD_SUCCESS';
             }
             else{

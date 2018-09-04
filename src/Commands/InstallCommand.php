@@ -3,7 +3,7 @@
 namespace DaydreamLab\User\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class InstallCommand extends Command
 {
@@ -20,6 +20,30 @@ class InstallCommand extends Command
      * @var string
      */
     protected $description = 'Install DaydreamLab user component';
+
+
+    protected $seeder_namespace = 'DaydreamLab\\User\\Database\\Seeds\\';
+
+    protected $constants = [
+        'user',
+        'asset',
+        'role',
+        'input'
+    ];
+
+    protected $seeders = [
+        'AssetsTableSeeder',
+        'AssetsApisTableSeeder',
+        'AssetsApisMapsTableSeeder',
+        'AssetsGroupsTableSeeder',
+        'AssetsGroupsMapsTableSeeder',
+        'RolesTableSeeder',
+        'RolesAssetsMapsTableSeeder',
+        'RolesApisMapsTableSeeder',
+        'UsersRolesMapsTableSeeder',
+        'UsersTableSeeder',
+        'RolesTableSeeder',
+    ];
 
     /**
      * Create a new command instance.
@@ -40,48 +64,25 @@ class InstallCommand extends Command
     {
         $this->call('jjaj:refresh');
 
-        $this->call('db:seed', [
-            '--class' => 'DaydreamLab\\User\\Database\\Seeds\\AssetsTableSeeder'
-        ]);
+        foreach ($this->seeders as $seeder) {
+            $this->call('db:seed', [
+                '--class' => $this->seeder_namespace . $seeder
+            ]);
+        }
 
-        $this->call('db:seed', [
-            '--class' => 'DaydreamLab\\User\\Database\\Seeds\\AssetsApisTableSeeder'
-        ]);
-
-        $this->call('db:seed', [
-            '--class' => 'DaydreamLab\\User\\Database\\Seeds\\AssetsApisMapsTableSeeder'
-        ]);
-
-        $this->call('db:seed', [
-            '--class' => 'DaydreamLab\\User\\Database\\Seeds\\AssetsGroupsTableSeeder'
-        ]);
-
-        $this->call('db:seed', [
-            '--class' => 'DaydreamLab\\User\\Database\\Seeds\\AssetsGroupsMapsTableSeeder'
-        ]);
-
-        $this->call('db:seed', [
-            '--class' => 'DaydreamLab\\User\\Database\\Seeds\\RolesTableSeeder'
-        ]);
-
-        $this->call('db:seed', [
-            '--class' => 'DaydreamLab\\User\\Database\\Seeds\\RolesAssetsMapsTableSeeder'
-        ]);
-
-        $this->call('db:seed', [
-            '--class' => 'DaydreamLab\\User\\Database\\Seeds\\RolesApisMapsTableSeeder'
-        ]);
-
-        $this->call('db:seed', [
-            '--class' => 'DaydreamLab\\User\\Database\\Seeds\\UsersRolesMapsTableSeeder'
-        ]);
-
-        $this->call('db:seed', [
-            '--class' => 'DaydreamLab\\User\\Database\\Seeds\\UsersTableSeeder'
-        ]);
+        $this->deleteConstants();
 
         $this->call('vendor:publish', [
             '--tag' => 'user-configs'
         ]);
+    }
+
+
+    public function deleteConstants()
+    {
+        $constants_path     = 'config/constants/';
+        foreach ($this->constants as $constant) {
+            File::delete($constants_path . $constant . '.php');
+        }
     }
 }

@@ -18,20 +18,6 @@ class RoleAssetMapService extends BaseService
     }
 
 
-    public function getGrant($id)
-    {
-        $items = $this->findBy('role_id', '=', $id);
-        $ids = [];
-        foreach ($items as $item) {
-            $ids[] = $item->id;
-        }
-        $this->status = Str::upper(Str::snake($this->type.'GetGrantSuccess'));;
-        $this->response = $ids;
-
-        return $ids;
-    }
-
-
     public function store(Collection $input)
     {
         return parent::storeKeysMap($input);

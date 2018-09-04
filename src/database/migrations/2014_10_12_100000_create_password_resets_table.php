@@ -19,6 +19,7 @@ class CreatePasswordResetsTable extends Migration
             $table->string('token');
             $table->timestamps();
             $table->timestamp('expired_at')->nullable();
+            $table->timestamp('reset_at')->nullable();
         });
     }
 

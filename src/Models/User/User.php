@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Models\User;
 
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\Role\Role;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
@@ -17,9 +18,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable, CanResetPassword;
 
-    protected static $limit = 25;
+    protected $order_by = 'id';
 
-    protected static $ordering = 'asc';
+    protected $limit = 25;
+
+    protected $ordering = 'asc';
 
     /**
      * The attributes that are mass assignable.
@@ -72,7 +75,15 @@ class User extends Authenticatable
 
     protected $appends = [
         'full_name',
+        'roles'
     ];
+
+
+    public function accessToken()
+    {
+
+    }
+
 
     protected static function boot()
     {
@@ -92,25 +103,6 @@ class User extends Authenticatable
             }
         });
     }
-
-
-    public static function changePassword($user, $input)
-    {
-        if (!Hash::check($input['old_password'], $user->password)) {
-            return 'OLD_PASSWORD_INCORRECT';
-        }
-
-        $user->password = bcrypt($input['password']);
-        return $user->save();
-    }
-
-
-
-    public static function findByEmail($email)
-    {
-        return self::where('email', $email)->first();
-    }
-
 
     public static function getUserApis() {
         //Helper::show( Auth::guard('api')->user()->id );
@@ -182,52 +174,42 @@ class User extends Authenticatable
     }
 
 
-    public static function getUserRoles($user_id) {
-        $user = self::where('id', '=', $user_id)->first();
-
-        if($user->id) {
-
-            $sql = " SELECT users_roles_map.user_id, users_roles_map.role_id, roles.name, roles.enabled, roles.redirect FROM users_roles_map ";
-            $sql.= " INNER JOIN roles ";
-            $sql.= " ON users_roles_map.role_id = roles.id ";
-            $sql.= " WHERE users_roles_map.user_id = $user_id ";
-
-            $data = DB::select($sql);
-
-            //STEP 2 get current user redirect
-
-            $temp = [];
-            if( $user->redirect != '' ){
-                $temp['default'] = $user->redirect;
-                //$data['current_redirect'] = $user->redirect;
-            }else{
-                $temp['default'] = 'empty';
-                //$data['current_redirect'] = 'empty';
-            }
-            $data[count($data)] = (object) $temp;
-
-            //Helper::show($data);
-            //exit();
-
-            return $data;
-        }else{
-            return [];
-        }
-
-    }
-
     public function getFullNameAttribute()
     {
         return $this->last_name . ' '. $this->first_name;
     }
 
+    public function getLimit()
+    {
+        return $this->limit;
+    }
+
+
+    public function getOrdering()
+    {
+        return $this->ordering;
+    }
+
+
+    public function getRolesAttribute()
+    {
+        return $this->role()->get();
+    }
+
+
+    public function getOrderBy()
+    {
+        return $this->order_by;
+    }
+
+
     public function isAdmin()
     {
-        $super_user  = Role::where('name', 'Super User')->first();
-        $admin       = Role::where('name', 'Admin')->first();
+        $super_user  = Role::where('title', 'Super User')->first();
+        $admin       = Role::where('title', 'Admin')->first();
         $user        = Auth::user();
 
-        foreach ($user->roles()->get() as $role) {
+        foreach ($user->role()->get() as $role) {
             if ($role->_lft >= $super_user->_lft && $role->_rgt <= $super_user->_rgt) {
                 return true;
             }
@@ -239,94 +221,37 @@ class User extends Authenticatable
     }
 
 
-    public static function modify($id, $input)
-    {
-        $input['updated_by'] = $id;
-        return self::find($id)->update($input);
-    }
-
-
     public function oauthAccessToken(){
         return $this->hasMany(OauthAccessToken::class);
     }
 
-    public function roles()
+
+    public function role()
     {
-        return $this->belongsToMany(Role::class, 'users_roles_map');
+        return $this->belongsToMany(Role::class, 'users_roles_maps', 'user_id', 'role_id');
     }
 
-    public function sendPasswordResetNotification($token)
-    {
-        $user = self::findByEmail($this->email);
-        $user->notify(new ResetPasswordNotification($user, $token));
-    }
 
-    public static function setLimit($limit)
+    public function setLimit($limit)
     {
         if ($limit && $limit != ''){
-            self::$limit = $limit;
+            $this->limit = $limit;
         }
     }
 
-
-    public static function setOrdering($ordering)
+    public function setOrdering($ordering)
     {
         if ($ordering && $ordering != ''){
-            self::$ordering = $ordering;
+            $this->ordering = $ordering;
         }
     }
 
-    public static function user($id)
+
+    public function setOrderBy($order_by)
     {
-        return self::find($id);
-    }
-
-
-    public static function updateUserData($input, $id) {
-
-        $data = self::user($id);
-
-        if ( $data->update($input) ) {
-
-            return true;
-        }else{
-            return false;
+        if ($order_by && $order_by != ''){
+            $this->order_by = $order_by;
         }
     }
-
-
-
-    public static function updateUserRoles($request) {
-        $data = self::user($request->id);
-
-        if( $data->id != 0 ){
-            //STEP user_role_map
-            //delete
-            $map = UserRoleMap::where('user_id', $data->id)->get();
-            foreach( $map as $item ) {
-                $item->delete();
-            }
-            //create
-            foreach( $request->ids_map as $role_id ){
-                UserRoleMap::create([
-                    'user_id'   =>  $data->id,
-                    'role_id'  =>  $role_id
-                ]);
-            }
-            //STEP 2 update user table redirect
-            $data->redirect = $request->redirect;
-            $data->save();
-        }
-
-        return true;
-    }
-
-    public static function getUserbyEmail($email) {
-        //Helper::show($input);
-        //exit();
-        $data = self::where('email', '=', $email )->first();
-        return $data;
-    }
-
 
 }

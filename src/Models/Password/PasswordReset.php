@@ -22,6 +22,7 @@ class PasswordReset extends BaseModel
         'email',
         'token',
         'expired_at',
+        'reset_at',
     ];
 
 

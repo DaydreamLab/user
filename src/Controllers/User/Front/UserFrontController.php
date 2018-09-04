@@ -41,7 +41,6 @@ class UserFrontController extends BaseController
     }
 
 
-
     public function fblogin()
     {
         return Socialite::driver('facebook')->stateless()->redirect();
