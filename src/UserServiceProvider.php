@@ -35,7 +35,7 @@ class UserServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('DaydreamLab\User\Controllers\User\Front\UserFrontController');
+        //$this->app->bind('DaydreamLab\User\Controllers\User\Front\UserFrontController');
         $this->app['router']->aliasMiddleware('admin', Admin::class);
         $this->app['router']->aliasMiddleware('expired', Expired::class);
         $this->commands($this->commands);
