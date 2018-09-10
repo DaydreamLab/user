@@ -30,6 +30,7 @@ class UserStorePost extends AdminRequest
             'password_confirmation' => 'nullable|same:password',
             'first_name'            => 'required|string',
             'last_name'             => 'required|string',
+            'nickname'              => 'nullable|string',
             'gender'                => 'nullable|string',
             'image'                 => 'nullable|string',
             'birthday'              => 'nullable|date',
