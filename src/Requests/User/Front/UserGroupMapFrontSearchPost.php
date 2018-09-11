@@ -1,10 +1,10 @@
 <?php
 
-namespace DaydreamLab\User\Requests\Asset;
+namespace DaydreamLab\User\Requests\User\Front;
 
-use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\User\Requests\User\UserGroupMapSearchPost;
 
-class AssetApiStorePost extends AdminRequest
+class UserGroupMapFrontSearchPost extends UserGroupMapSearchPost
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,9 @@ class AssetApiStorePost extends AdminRequest
      */
     public function rules()
     {
-        return [
-            'id'            => 'nullable|integer',
-            'asset_id'      => 'required|integer',
-            'method'        => 'required|string',
-            'url'           => 'required|string',
+        $rules = [
+            //
         ];
+        return array_merge($rules, parent::rules());
     }
 }

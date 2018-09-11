@@ -62,7 +62,8 @@ class AssetApi extends BaseModel
 
     public function getAssetNameAttribute()
     {
-        return $this->asset()->first()->title;
+        $asset = $this->asset()->first();
+        return $asset ? $asset->title : null;
     }
 
 }

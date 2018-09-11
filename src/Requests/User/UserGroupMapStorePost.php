@@ -1,10 +1,10 @@
 <?php
 
-namespace DaydreamLab\User\Requests\Asset;
+namespace DaydreamLab\User\Requests\User;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class AssetApiStorePost extends AdminRequest
+class UserGroupMapStorePost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,9 @@ class AssetApiStorePost extends AdminRequest
     {
         return [
             'id'            => 'nullable|integer',
-            'asset_id'      => 'required|integer',
-            'method'        => 'required|string',
-            'url'           => 'required|string',
+            'title'         => 'required|string',
+            'state'         => 'required|integer',
+            'description'   => 'nullable|string',
         ];
     }
 }

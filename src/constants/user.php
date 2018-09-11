@@ -661,5 +661,531 @@ return [
     ],
 
 
+    // ----- User Group -----
+    // Create
+    'USER_GROUP_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group create success'
+    ],
+    'USER_GROUP_ADMIN_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin create success'
+    ],
+    'USER_GROUP_FRONT_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front create success'
+    ],
+    'USER_GROUP_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group create fail'
+    ],
+    'USER_GROUP_ADMIN_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group admin create fail'
+    ],
+    'USER_GROUP_FRONT_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group front create fail'
+    ],
 
+
+
+    // Update
+    'USER_GROUP_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group update success'
+    ],
+    'USER_GROUP_ADMIN_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin update success'
+    ],
+    'USER_GROUP_FRONT_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front update success'
+    ],
+
+    'USER_GROUP_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group update fail'
+    ],
+    'USER_GROUP_ADMIN_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group admin update fail'
+    ],
+    'USER_GROUP_FRONT_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group front update fail'
+    ],
+
+
+    // Trash
+    'USER_GROUP_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group trash success'
+    ],
+    'USER_GROUP_ADMIN_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin trash success'
+    ],
+    'USER_GROUP_FRONT_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front trash success'
+    ],
+
+    'USER_GROUP_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group trash fail'
+    ],
+    'USER_GROUP_ADMIN_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group admin trash fail'
+    ],
+    'USER_GROUP_FRONT_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group front trash fail'
+    ],
+
+
+
+    // Delete
+    'USER_GROUP_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group delete success'
+    ],
+    'USER_GROUP_ADMIN_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin delete success'
+    ],
+    'USER_GROUP_FRONT_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front delete success'
+    ],
+
+
+    'USER_GROUP_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group delete fail'
+    ],
+    'USER_GROUP_ADMIN_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group admin delete fail'
+    ],
+    'USER_GROUP_FRONT_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group front delete fail'
+    ],
+
+
+    // Publish
+    'USER_GROUP_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group publish success'
+    ],
+    'USER_GROUP_ADMIN_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin publish success'
+    ],
+    'USER_GROUP_FRONT_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front publish success'
+    ],
+
+    'USER_GROUP_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group publish fail'
+    ],
+    'USER_GROUP_ADMIN_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group admin publish fail'
+    ],
+    'USER_GROUP_FRONT_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group front publish fail'
+    ],
+
+
+    // Unpublish
+    'USER_GROUP_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group unpublish success'
+    ],
+    'USER_GROUP_ADMIN_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin unpublish success'
+    ],
+    'USER_GROUP_FRONT_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front unpublish success'
+    ],
+    'USER_GROUP_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group unpublish fail'
+    ],
+    'USER_GROUP_ADMIN_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group admin unpublish fail'
+    ],
+    'USER_GROUP_FRONT_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group front unpublish fail'
+    ],
+
+
+    // Archive
+    'USER_GROUP_ARCHIVE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group archive success'
+    ],
+    'USER_GROUP_ADMIN_ARCHIVE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin archive success'
+    ],
+    'USER_GROUP_FRONT_ARCHIVE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front archive success'
+    ],
+    'USER_GROUP_ARCHIVE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group archive fail'
+    ],
+    'USER_GROUP_ADMIN_ARCHIVE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group admin archive fail'
+    ],
+    'USER_GROUP_FRONT_ARCHIVE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group front archive fail'
+    ],
+
+    //Search
+    'USER_GROUP_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group search success'
+    ],
+    'USER_GROUP_ADMIN_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin search success'
+    ],
+    'USER_GROUP_FRONT_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front search success'
+    ],
+    'USER_GROUP_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group search fail'
+    ],
+    'USER_GROUP_ADMIN_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group admin search fail'
+    ],
+    'USER_GROUP_FRONT_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group front search fail'
+    ],
+
+    // Find
+    'USER_GROUP_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group find success'
+    ],
+    'USER_GROUP_ADMIN_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin find success'
+    ],
+    'USER_GROUP_FRONT_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front find success'
+    ],
+    'USER_GROUP_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group find fail'
+    ],
+    'USER_GROUP_ADMIN_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group find search fail'
+    ],
+    'USER_GROUP_FRONT_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group front find fail'
+    ],
+
+
+    //Get tree
+    'USER_GROUP_GET_TREE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group get tree success'
+    ],
+    'USER_GROUP_ADMIN_GET_TREE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin get tree success'
+    ],
+    'USER_GROUP_FRONT_GET_TREE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front get tree success'
+    ],
+
+
+
+    // ----- User Group Map -----
+    // Create
+    'USER_GROUP_MAP_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map create success'
+    ],
+    'USER_GROUP_MAP_ADMIN_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map admin create success'
+    ],
+    'USER_GROUP_MAP_FRONT_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map front create success'
+    ],
+    'USER_GROUP_MAP_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map create fail'
+    ],
+    'USER_GROUP_MAP_ADMIN_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map admin create fail'
+    ],
+    'USER_GROUP_MAP_FRONT_CREATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map front create fail'
+    ],
+
+
+
+    // Update
+    'USER_GROUP_MAP_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map update success'
+    ],
+    'USER_GROUP_MAP_ADMIN_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map admin update success'
+    ],
+    'USER_GROUP_MAP_FRONT_UPDATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map front update success'
+    ],
+
+    'USER_GROUP_MAP_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map update fail'
+    ],
+    'USER_GROUP_MAP_ADMIN_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map admin update fail'
+    ],
+    'USER_GROUP_MAP_FRONT_UPDATE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map front update fail'
+    ],
+
+
+    // Trash
+    'USER_GROUP_MAP_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map trash success'
+    ],
+    'USER_GROUP_MAP_ADMIN_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map admin trash success'
+    ],
+    'USER_GROUP_MAP_FRONT_TRASH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map front trash success'
+    ],
+
+    'USER_GROUP_MAP_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map trash fail'
+    ],
+    'USER_GROUP_MAP_ADMIN_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map admin trash fail'
+    ],
+    'USER_GROUP_MAP_FRONT_TRASH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map front trash fail'
+    ],
+
+
+
+    // Delete
+    'USER_GROUP_MAP_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map delete success'
+    ],
+    'USER_GROUP_MAP_ADMIN_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map admin delete success'
+    ],
+    'USER_GROUP_MAP_FRONT_DELETE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map front delete success'
+    ],
+
+
+    'USER_GROUP_MAP_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map delete fail'
+    ],
+    'USER_GROUP_MAP_ADMIN_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map admin delete fail'
+    ],
+    'USER_GROUP_MAP_FRONT_DELETE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map front delete fail'
+    ],
+
+
+    // Publish
+    'USER_GROUP_MAP_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map publish success'
+    ],
+    'USER_GROUP_MAP_ADMIN_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map admin publish success'
+    ],
+    'USER_GROUP_MAP_FRONT_PUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map front publish success'
+    ],
+
+    'USER_GROUP_MAP_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map publish fail'
+    ],
+    'USER_GROUP_MAP_ADMIN_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map admin publish fail'
+    ],
+    'USER_GROUP_MAP_FRONT_PUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map front publish fail'
+    ],
+
+
+    // Unpublish
+    'USER_GROUP_MAP_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map unpublish success'
+    ],
+    'USER_GROUP_MAP_ADMIN_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map admin unpublish success'
+    ],
+    'USER_GROUP_MAP_FRONT_UNPUBLISH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map front unpublish success'
+    ],
+    'USER_GROUP_MAP_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map unpublish fail'
+    ],
+    'USER_GROUP_MAP_ADMIN_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map admin unpublish fail'
+    ],
+    'USER_GROUP_MAP_FRONT_UNPUBLISH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map front unpublish fail'
+    ],
+
+
+    // Archive
+    'USER_GROUP_MAP_ARCHIVE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map archive success'
+    ],
+    'USER_GROUP_MAP_ADMIN_ARCHIVE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map admin archive success'
+    ],
+    'USER_GROUP_MAP_FRONT_ARCHIVE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map front archive success'
+    ],
+    'USER_GROUP_MAP_ARCHIVE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map archive fail'
+    ],
+    'USER_GROUP_MAP_ADMIN_ARCHIVE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map admin archive fail'
+    ],
+    'USER_GROUP_MAP_FRONT_ARCHIVE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map front archive fail'
+    ],
+
+    //Search
+    'USER_GROUP_MAP_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map search success'
+    ],
+    'USER_GROUP_MAP_ADMIN_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map admin search success'
+    ],
+    'USER_GROUP_MAP_FRONT_SEARCH_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map front search success'
+    ],
+    'USER_GROUP_MAP_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map search fail'
+    ],
+    'USER_GROUP_MAP_ADMIN_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map admin search fail'
+    ],
+    'USER_GROUP_MAP_FRONT_SEARCH_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map front search fail'
+    ],
+
+    // Find
+    'USER_GROUP_MAP_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map find success'
+    ],
+    'USER_GROUP_MAP_ADMIN_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map admin find success'
+    ],
+    'USER_GROUP_MAP_FRONT_FIND_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map front find success'
+    ],
+    'USER_GROUP_MAP_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map find fail'
+    ],
+    'USER_GROUP_MAP_ADMIN_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map find search fail'
+    ],
+    'USER_GROUP_MAP_FRONT_FIND_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group map front find fail'
+    ],
+
+
+    //Get tree
+    'USER_GROUP_MAP_GET_TREE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map get tree success'
+    ],
+    'USER_GROUP_MAP_ADMIN_GET_TREE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map admin get tree success'
+    ],
+    'USER_GROUP_MAP_FRONT_GET_TREE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map front get tree success'
+    ],
 ];
