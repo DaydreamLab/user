@@ -56,14 +56,14 @@ class Asset extends BaseModel
      */
     protected $appends = [
         //'tree_lv',
-        //'apis',
+        'apis',
         'groups',
     ];
 
 
     public function api()
     {
-        return $this->belongsToMany(AssetApi::class, 'assets_apis_maps', 'asset_id', 'api_id');
+        return $this->hasMany(AssetApi::class, 'asset_id', 'id');
     }
 
 

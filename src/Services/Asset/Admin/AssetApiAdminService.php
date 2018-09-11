@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Repositories\Asset\Admin\AssetApiAdminRepository;
 use DaydreamLab\User\Services\Asset\AssetApiService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class AssetApiAdminService extends AssetApiService
 {
@@ -35,7 +36,9 @@ class AssetApiAdminService extends AssetApiService
             return $api;
         }
         else {
-            $this->assetApiMapAdminService->storeKeysMap(new Collection([
+            $map = $this->assetApiMapAdminService->findBy('api_id', '=', $input->id)->first();
+            $map->delete();
+            $this->assetApiMapAdminService->storeKeysMap(Helper::collect([
                 'asset_id'  => $input->asset_id,
                 'api_ids'   => [
                     $input->id
@@ -44,4 +47,22 @@ class AssetApiAdminService extends AssetApiService
             return $this->modify($input->toArray());
         }
     }
+
+
+    public function storeMaps(Collection $input)
+    {
+        foreach ($input->api_ids as $api_id) {
+            $api    = $this->find($api_id);
+            $update = $api->update(['asset_id' => $input->asset_id]);
+            if (!$update) {
+                $this->status = Str::upper(Str::snake($this->type.'StoreMapFail'));
+                $this->response = null;
+                return false;
+            }
+        }
+        $this->status = Str::upper(Str::snake($this->type.'StoreMapSuccess'));
+        $this->response = null;
+        return true;
+    }
+
 }

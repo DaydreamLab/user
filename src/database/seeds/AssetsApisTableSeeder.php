@@ -16,21 +16,21 @@ class AssetsApisTableSeeder extends Seeder
     {
         //Frontdesks
         AssetApi::create([
-            //'asset_id' => '5',
+            'asset_id' => '5',
             'method' => 'add',
             'url' => '/admin/frontdesk',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '5',
+            'asset_id' => '5',
             'method' => 'edit',
             'url' => '/admin/frontdesk',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '5',
+            'asset_id' => '5',
             'method' => 'delete',
             'url' => '/admin/frontdesks',
             'created_by' => 1,
@@ -38,35 +38,35 @@ class AssetsApisTableSeeder extends Seeder
 
         //Asset
         AssetApi::create([
-            //'asset_id' => '8',
+            'asset_id' => '8',
             'method' => 'add',
             'url' => '/admin/asset',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '8',
+            'asset_id' => '8',
             'method' => 'edit',
             'url' => '/admin/asset',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '8',
+            'asset_id' => '8',
             'method' => 'delete',
             'url' => '/admin/assets',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '8',
+            'asset_id' => '8',
             'method' => 'updateStatus',
             'url' => '/admin/asset/status',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '8',
+            'asset_id' => '8',
             'method' => 'grant',
             'url' => '/admin/asset/*/groups',
             'created_by' => 1,
@@ -74,21 +74,21 @@ class AssetsApisTableSeeder extends Seeder
 
         //Asset Group
         AssetApi::create([
-            //'asset_id' => '10',
+            'asset_id' => '10',
             'method' => 'add',
             'url' => '/admin/assets/group',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '10',
+            'asset_id' => '10',
             'method' => 'edit',
             'url' => '/admin/assets/group',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '10',
+            'asset_id' => '10',
             'method' => 'delete',
             'url' => '/admin/assets/groups',
             'created_by' => 1,
@@ -96,21 +96,21 @@ class AssetsApisTableSeeder extends Seeder
 
         //Member
         AssetApi::create([
-            //'asset_id' => '13',
+            'asset_id' => '13',
             'method' => 'add',
             'url' => '/admin/user',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '13',
+            'asset_id' => '13',
             'method' => 'edit',
             'url' => '/admin/user/*',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '13',
+            'asset_id' => '13',
             'method' => 'delete',
             'url' => '/admin/users',
             'created_by' => 1,
@@ -118,63 +118,65 @@ class AssetsApisTableSeeder extends Seeder
 
         //Manager
         AssetApi::create([
-            //'asset_id' => '16',
+            'asset_id' => '16',
             'method' => 'add',
             'url' => '/admin/user',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '16',
+            'asset_id' => '16',
             'method' => 'edit',
             'url' => '/admin/user/*',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '16',
+            'asset_id' => '16',
             'method' => 'delete',
             'url' => '/admin/users',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '16',
+            'asset_id' => '16',
             'method' => 'grant',
             'url' => '/admin/user/*/grant',
             'created_by' => 1,
         ]);
+
+
         //Role
         AssetApi::create([
-            //'asset_id' => '26',
+            'asset_id' => '26',
             'method' => 'add',
             'url' => '/admin/role',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '26',
+            'asset_id' => '26',
             'method' => 'edit',
             'url' => '/admin/role',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '26',
+            'asset_id' => '26',
             'method' => 'delete',
             'url' => '/admin/roles',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '26',
+            'asset_id' => '26',
             'method' => 'grant',
             'url' => '/admin/role/*/grant',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '26',
+            'asset_id' => '26',
             'method' => 'apis',
             'url' => '/admin/role/*/apis',
             'created_by' => 1,
@@ -182,35 +184,35 @@ class AssetsApisTableSeeder extends Seeder
 
         //Reservation
         AssetApi::create([
-            //'asset_id' => '31',
+            'asset_id' => '31',
             'method' => 'edit',
             'url' => '/admin/reservation/*',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '31',
+            'asset_id' => '31',
             'method' => 'update',
             'url' => '/admin/reservation/status',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '31',
+            'asset_id' => '31',
             'method' => 'updateRequest',
             'url' => '/admin/request/status',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '31',
+            'asset_id' => '31',
             'method' => 'search',
             'url' => '/admin/reservations/search',
             'created_by' => 1,
         ]);
 
         AssetApi::create([
-            //'asset_id' => '31',
+            'asset_id' => '31',
             'method' => 'add',
             'url' => '/admin/reservations/create',
             'created_by' => 1,
@@ -218,7 +220,7 @@ class AssetsApisTableSeeder extends Seeder
 
         //Check-in & Check-out Log
         AssetApi::create([
-            //'asset_id' => '34',
+            'asset_id' => '34',
             'method' => 'search',
             'url' => '/admin/checkinouthistory/search',
             'created_by' => 1,
@@ -226,7 +228,7 @@ class AssetsApisTableSeeder extends Seeder
 
         //Subscription
         AssetApi::create([
-            //'asset_id' => '38',
+            'asset_id' => '38',
             'method' => 'export',
             'url' => '/',
             'created_by' => 1,

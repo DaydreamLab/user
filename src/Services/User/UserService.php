@@ -24,15 +24,25 @@ class UserService extends BaseService
 
     public function changePassword(Collection $input)
     {
-        $user = Auth::guard('api')->user();
+        if ($input->has('id')) {
+            $user = $this->find($input->id);
+        }
+        else {
+            $user = Auth::guard('api')->user();
+        }
+
         if (!Hash::check($input->old_password, $user->password)) {
             $this->status = 'USER_OLD_PASSWORD_INCORRECT';
+            $this->response = null;
             return false;
         }
         else {
             $user->password = bcrypt($input->password);
             if ($user->save()) {
-                $user->token()->delete();
+                if ($user->token()) {
+                    $user->token()->delete();
+                }
+
                 $this->status = 'USER_CHANGE_PASSWORD_SUCCESS';
                 return true;
             }
@@ -52,12 +62,14 @@ class UserService extends BaseService
      */
     public function checkEmail($email)
     {
-        $user = $this->findBy('email', '=', $email);
-        if ($user->count()) {
+        $user = $this->findBy('email', '=', $email)->first();
+        if ($user) {
             $this->status = 'USER_EMAIL_IS_REGISTERED';
-        } else {
+        }
+        else {
             $this->status = 'USER_EMAIL_IS_NOT_REGISTERED';
         }
+
         return $user;
     }
 

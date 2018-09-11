@@ -20,7 +20,7 @@ class AssetApi extends BaseModel
      * @var array
      */
     protected $fillable = [
-        //'asset_id',
+        'asset_id',
         'method',
         'url',
         'created_by',
@@ -43,14 +43,13 @@ class AssetApi extends BaseModel
      * @var array
      */
     protected $appends = [
-        'asset',
         'asset_name'
     ];
 
 
     public function asset()
     {
-        return $this->belongsToMany(Asset::class, 'assets_apis_maps', 'api_id', 'asset_id');
+        return $this->belongsTo(Asset::class, 'asset_id', 'id');
     }
 
 

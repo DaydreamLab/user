@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Controllers\Asset\Admin;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
+use DaydreamLab\User\Requests\AssetApiAdminStoreMapsPost;
 use Illuminate\Support\Collection;
 use DaydreamLab\User\Services\Asset\Admin\AssetApiAdminService;
 use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminRemovePost;
@@ -54,6 +55,14 @@ class AssetApiAdminController extends BaseController
     public function store(AssetApiAdminStorePost $request)
     {
         $this->service->store($request->rulesInput());
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function storeMaps(AssetApiAdminStoreMapsPost $request)
+    {
+        $this->service->storeMaps($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

@@ -7,6 +7,7 @@ use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserAdminService extends UserService
@@ -61,8 +62,17 @@ class UserAdminService extends UserService
         foreach ($user->roles as $role) {
             $apis = $apis->merge($role->apis);
         }
+
+        $response = [];
+        foreach ($apis as $api) {
+            if (!array_key_exists($api->asset_id, $response)) {
+                $response[$api->asset_id] = [];
+            }
+            $response[$api->asset_id][] = $api->method;
+        }
+
         $this->status = Str::upper(Str::snake($this->type.'GetApisSuccess'));;
-        $this->response = $apis;
+        $this->response = $response;
 
         return $apis;
     }
@@ -108,15 +118,11 @@ class UserAdminService extends UserService
         if ($input->has('id') ) {
             // 有填密碼
             if(!$input->get('password') == '') {
-                $result = parent::changePassword($input);
-                if (!$result) {
-                    return false;
-                }
+                $password = $input->get('password');
             }
-            else {
-                $input->forget('password');
-                $input->forget('password_confirmation');
-            }
+            $input->forget('password');
+            $input->forget('password_confirmation');
+            $input->put('password', bcrypt($password));
         }
         else {
             $password = $input->password;
@@ -124,6 +130,15 @@ class UserAdminService extends UserService
             $input->put('password', bcrypt($password));
             $input->put('activate_token', Str::random(48));
         }
+
+
+        if (!$input->has('id')) {
+            $user = $this->checkEmail($input->email);
+            if ($user) {
+                return false;
+            }
+        }
+
 
         $result = parent::store($input);
         if (gettype($result) == 'boolean') {    //更新使用者
@@ -138,6 +153,7 @@ class UserAdminService extends UserService
                 'role_ids'=> [$input->role_id]
             ];
         }
+
         $this->userRoleMapAdminService->storeKeysMap(Helper::collect($map));
 
         return $result;

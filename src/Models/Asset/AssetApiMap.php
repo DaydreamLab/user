@@ -41,8 +41,8 @@ class AssetApiMap extends BaseModel
      * @var array
      */
     protected $appends = [
-    ];
 
+    ];
 
 
 }

@@ -2,8 +2,10 @@
 
 namespace DaydreamLab\User\Services\Asset\Admin;
 
+
 use DaydreamLab\User\Repositories\Asset\Admin\AssetAdminRepository;
 use DaydreamLab\User\Services\Asset\AssetService;
+
 
 class AssetAdminService extends AssetService
 {
@@ -13,4 +15,5 @@ class AssetAdminService extends AssetService
     {
         parent::__construct($repo);
     }
+
 }

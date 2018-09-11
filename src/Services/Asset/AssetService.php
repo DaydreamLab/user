@@ -23,7 +23,7 @@ class AssetService extends BaseService
     {
         $asset = $this->find($id);
         $this->status =  Str::upper(Str::snake($this->type.'GetApisSuccess'));;
-        $this->response = $asset->groups;
+        $this->response = $asset->apis;
 
         return $asset->apis;
     }
