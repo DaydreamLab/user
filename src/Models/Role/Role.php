@@ -27,6 +27,7 @@ class Role extends BaseModel
         'title',
         'redirect',
         'state',
+        'order',
         'canDelete',
         'created_by',
         'updated_by',
@@ -39,7 +40,9 @@ class Role extends BaseModel
      * @var array
      */
     protected $hidden = [
-
+        '_lft',
+        '_rgt',
+        'ancestors'
     ];
 
 
@@ -50,7 +53,8 @@ class Role extends BaseModel
      */
     protected $appends = [
         'assets',
-        'apis'
+        'apis',
+        'tree_title'
     ];
 
 

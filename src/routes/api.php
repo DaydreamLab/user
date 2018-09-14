@@ -70,7 +70,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
             Route::get('{id}', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getItem');
             Route::get('{id}/grant', 'DaydreamLab\User\Controllers\Role\Admin\RoleAssetMapAdminController@getGrant');
             Route::get('{id}/page', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getPage');
-            Route::get('{id}/apisids', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getApisIds');
+            Route::get('{id}/apiids', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getApiIds');
             Route::get('{id}/apis', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getApis');
             Route::get('{id}/action', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getAction');
 

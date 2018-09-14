@@ -22,7 +22,7 @@ class User extends Authenticatable
 
     protected $limit = 25;
 
-    protected $ordering = 'asc';
+    protected $order = 'asc';
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +30,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-
         'email',
         'password',
         'first_name',
@@ -79,12 +78,6 @@ class User extends Authenticatable
     ];
 
 
-    public function accessToken()
-    {
-
-    }
-
-
     protected static function boot()
     {
         parent::boot();
@@ -104,76 +97,6 @@ class User extends Authenticatable
         });
     }
 
-    public static function getUserApis() {
-        //Helper::show( Auth::guard('api')->user()->id );
-
-        //get roles by user_id
-        $ids_roles = [];
-
-        $roles = UserRoleMap::where('user_id', '=', Auth::guard('api')->user()->id)->orderBy('role_id', 'asc')->get();
-        foreach( $roles as $role ) {
-            $ids_roles[] = $role->role_id;
-        }
-        //Helper::show( $ids_roles );
-        //get api_id and group by api_id with roles in roles_assetspis_map table
-        $ids_apis = [];
-
-        $assets_apis = RoleAssetapiMap::whereIn('role_id', $ids_roles)->groupBy('api_id')->orderBy('api_id', 'asc')->get();
-        //$assets_apis = DB::table('roles_assetapis_map')->whereIn('role_id', $ids_roles)->groupBy('api_id')->orderBy('api_id', 'asc')->get();
-
-        foreach ($assets_apis as $item) {
-            $ids_apis[] = $item->api_id;
-        }
-        //Helper::show( $ids_apis );
-        //get api data
-        $data = AssetApi::whereIn('id', $ids_apis)->orderBy('id', 'asc')->get();
-
-        $apis = [];
-        //$data = self::all();
-        /*
-                foreach( $data as $item ) {
-                    if( !isset( $apis[$item->asset_id] ) ){
-                        $temp = [];
-                        $temp[] = $item;
-                        $apis[$item->asset_id] = $temp;
-                    }else{
-                        $temp = $apis[$item->asset_id];
-                        $temp[] = $item;
-                        $apis[$item->asset_id] = $temp;
-                    }
-                }
-        */
-
-        foreach( $data as $item ) {
-            if( !isset( $apis[$item->asset_id] ) ){
-                $temp = [];
-                $temp[$item->method] = true;
-                $apis[$item->asset_id] = (object) $temp;
-            }else{
-                $temp = (array) $apis[$item->asset_id];
-                $temp[$item->method] = true;
-                $apis[$item->asset_id] = (object) $temp;
-            }
-        }
-
-        /*
-                foreach( $apis as $index ){
-                    foreach($index as $item){
-                        unset($item->id);
-                        unset($item->asset_id);
-                        unset($item->url);
-                        unset($item->created_by);
-                        unset($item->updated_by);
-                        unset($item->created_at);
-                        unset($item->updated_at);
-                    }
-                }
-        */
-
-        return $apis;
-    }
-
-
     public function getFullNameAttribute()
     {
         return $this->last_name . ' '. $this->first_name;
@@ -185,9 +108,9 @@ class User extends Authenticatable
     }
 
 
-    public function getOrdering()
+    public function getOrder()
     {
-        return $this->ordering;
+        return $this->order;
     }
 
 
@@ -221,11 +144,6 @@ class User extends Authenticatable
     }
 
 
-    public function oauthAccessToken(){
-        return $this->hasMany(OauthAccessToken::class);
-    }
-
-
     public function role()
     {
         return $this->belongsToMany(Role::class, 'users_roles_maps', 'user_id', 'role_id');
@@ -239,10 +157,11 @@ class User extends Authenticatable
         }
     }
 
-    public function setOrdering($ordering)
+
+    public function setOrder($order)
     {
-        if ($ordering && $ordering != ''){
-            $this->ordering = $ordering;
+        if ($order && $order != ''){
+            $this->order = $order;
         }
     }
 

@@ -22,8 +22,34 @@ class AssetsTableSeeder extends Seeder
      */
     public function run()
     {
+        $this->migrateTest();
+
+        $service    = new AssetService(new AssetRepository(new Asset()));
+
+        $combine_path = function ($parent_id, $full_path) use (&$combine_path, $service) {
+            if($parent_id == 1) {
+                return $full_path;
+            }
+            else {
+                $parent = $service->find($parent_id);
+                $full_path = $parent->path . $full_path;
+                return $combine_path($parent->parent_id, $full_path);
+            }
+        };
+
+        $assets     = $service->search(Helper::collect(['limit' => 10000]));
+        $assets->forget('pagination');
+        foreach ($assets as $asset) {
+            $full_path = $asset->path;
+            $asset->full_path = $combine_path($asset->parent_id, $full_path);
+            $asset->save();
+        }
+
+    }
 
 
+    public function migrate()
+    {
         Asset::create([
 
             'title'      => 'ROOT',
@@ -509,28 +535,111 @@ class AssetsTableSeeder extends Seeder
 
             ],
         ]); //最外面
+    }
 
-
-
-        $service    = new AssetService(new AssetRepository(new Asset()));
-
-        $combine_path = function ($parent_id, $full_path) use (&$combine_path, $service) {
-            if($parent_id == 1) {
-                return $full_path;
-            }
-            else {
-                $parent = $service->find($parent_id);
-                $full_path = $parent->path . $full_path;
-                return $combine_path($parent->parent_id, $full_path);
-            }
-        };
-
-        $assets     = $service->search(Helper::collect(['limit' => 10000]));
-        foreach ($assets as $asset) {
-            $full_path = $asset->path;
-            $asset->full_path = $combine_path($asset->parent_id, $full_path);
-            $asset->save();
-        }
-
+    public function migrateTest()
+    {
+        Asset::create([
+            'title'         => 'ROOT',
+            'path'          => '',
+            'component'     => '',
+            'type'          => '',
+            'redirect'      => '',
+            'icon'          => '',
+            'state'         => 1,
+            'showNav'       => 1,
+            'ordering'      => 1,
+            'created_by'    => 1,
+            'children'      => [
+                [
+                    'title'         => 'A',
+                    'path'          => '/A',
+                    'component'     => 'a',
+                    'type'          => 'a',
+                    'redirect'      => 'a',
+                    'icon'          => 'a',
+                    'state'         => 1,
+                    'showNav'       => 1,
+                    'ordering'      => 1,
+                    'created_by'    => 1,
+                    'children'      => [
+                        [
+                            'title'         => 'A1',
+                            'path'          => '/A1',
+                            'component'     => 'a1',
+                            'type'          => 'a1',
+                            'redirect'      => 'a1',
+                            'icon'          => 'a1',
+                            'state'         => 1,
+                            'showNav'       => 1,
+                            'ordering'      => 1,
+                            'created_by'    => 1,
+                        ],
+                        [
+                            'title'         => 'A2',
+                            'path'          => '/A2',
+                            'component'     => 'a2',
+                            'type'          => 'a2',
+                            'redirect'      => 'a2',
+                            'icon'          => 'a2',
+                            'state'         => 1,
+                            'showNav'       => 1,
+                            'ordering'      => 2,
+                            'created_by'    => 1,
+                        ],
+                        [
+                            'title'         => 'A3',
+                            'path'          => '/A3',
+                            'component'     => 'a3',
+                            'type'          => 'a3',
+                            'redirect'      => 'a3',
+                            'icon'          => 'a3',
+                            'state'         => 1,
+                            'showNav'       => 1,
+                            'ordering'      => 3,
+                            'created_by'    => 1,
+                        ],
+                    ]
+                ],
+                [
+                    'title'         => 'B',
+                    'path'          => '/B',
+                    'component'     => 'b',
+                    'type'          => 'b',
+                    'redirect'      => 'b',
+                    'icon'          => 'b',
+                    'state'         => 1,
+                    'showNav'       => 1,
+                    'ordering'      => 2,
+                    'created_by'    => 1,
+                    'children'      => [
+                        [
+                            'title'         => 'B1',
+                            'path'          => '/B1',
+                            'component'     => 'b1',
+                            'type'          => 'b1',
+                            'redirect'      => 'b1',
+                            'icon'          => 'b1',
+                            'state'         => 1,
+                            'showNav'       => 1,
+                            'ordering'      => 1,
+                            'created_by'    => 1,
+                        ],
+                        [
+                            'title'         => 'B2',
+                            'path'          => '/B2',
+                            'component'     => 'b2',
+                            'type'          => 'b2',
+                            'redirect'      => 'b2',
+                            'icon'          => 'b2',
+                            'state'         => 1,
+                            'showNav'       => 1,
+                            'ordering'      => 2,
+                            'created_by'    => 1,
+                        ],
+                    ]
+                ],
+            ]
+        ]);
     }
 }

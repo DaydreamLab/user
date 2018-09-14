@@ -2,6 +2,7 @@
 namespace DaydreamLab\User\Models\Asset\Admin;
 
 use DaydreamLab\User\Models\Asset\Asset;
+use Kalnoy\Nestedset\NodeTrait;
 
 class AssetAdmin extends Asset
 {

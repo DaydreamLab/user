@@ -15,17 +15,19 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         Role::create([
-            'title'      => 'ROOT',
-            'state'   => 1,
+            'title'     => 'ROOT',
+            'state'     => 1,
             'redirect'  => '/',
             'canDelete' => 0,
             'created_by'=> 1,
+            'ordering'  => 1,
             'children'  => [
                 [
                     'title' => 'Super User',
                     'state' => 1,
                     'redirect' => '/',
                     'canDelete' =>0,
+                    'ordering'  => 1,
                     'created_by'=> 1,
                 ],
                 [
@@ -33,6 +35,7 @@ class RolesTableSeeder extends Seeder
                     'state' => 1,
                     'redirect' => '/reservation',
                     'canDelete' => 0,
+                    'ordering'  => 2,
                     'created_by'=> 1,
                     'children' => [
                         [
@@ -40,6 +43,7 @@ class RolesTableSeeder extends Seeder
                             'state' => 1,
                             'redirect' => '/users',
                             'canDelete' =>0,
+                            'ordering'  => 1,
                             'created_by'=> 1,
                         ],
                         [
@@ -47,6 +51,7 @@ class RolesTableSeeder extends Seeder
                             'state' => 1,
                             'redirect' => '/checkin',
                             'canDelete' =>0,
+                            'ordering'  => 2,
                             'created_by'=> 1,
                         ],
                     ],
@@ -56,6 +61,7 @@ class RolesTableSeeder extends Seeder
                     'state' => 1,
                     'redirect' => '/',
                     'canDelete' =>0,
+                    'ordering'  => 3,
                     'created_by'=> 1,
                 ],
             ],

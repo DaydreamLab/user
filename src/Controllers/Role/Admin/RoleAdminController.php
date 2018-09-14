@@ -35,9 +35,9 @@ class RoleAdminController extends BaseController
     }
 
 
-    public function getApisIds($id)
+    public function getApiIds($id)
     {
-        $this->service->getApisIds($id);
+        $this->service->getApiIds($id);
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

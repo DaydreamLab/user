@@ -29,6 +29,31 @@ return [
         'message'   => 'Asset front create fail'
     ],
 
+    // Create Nested
+    'ASSET_CREATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset create nested success'
+    ],
+    'ASSET_ADMIN_CREATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset admin create nested success'
+    ],
+    'ASSET_FRONT_CREATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset front create nested success'
+    ],
+    'ASSET_CREATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset create fail'
+    ],
+    'ASSET_ADMIN_CREATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset admin create nested fail'
+    ],
+    'ASSET_FRONT_CREATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset front create nested fail'
+    ],
 
 
     // Update
@@ -58,6 +83,31 @@ return [
         'message'   => 'Asset front update fail'
     ],
 
+    // Update Nested
+    'ASSET_UPDATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset update nested success'
+    ],
+    'ASSET_ADMIN_UPDATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset admin update nested success'
+    ],
+    'ASSET_FRONT_UPDATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset front update nested success'
+    ],
+    'ASSET_UPDATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset update nested fail'
+    ],
+    'ASSET_ADMIN_UPDATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset admin update nested fail'
+    ],
+    'ASSET_FRONT_UPDATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset front update nested fail'
+    ],
 
     // Trash
     'ASSET_TRASH_SUCCESS' => [

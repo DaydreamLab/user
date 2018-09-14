@@ -37,6 +37,7 @@ class AssetStorePost extends AdminRequest
                 'integer',
                 Rule::in([0,1,-2])
             ],
+            'ordering'  => 'nullable|integer',
             'redirect'  => 'nullable|string',
             'showNav'   => 'integer|between:0,1',
         ];

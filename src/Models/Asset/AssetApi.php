@@ -34,6 +34,7 @@ class AssetApi extends BaseModel
      * @var array
      */
     protected $hidden = [
+        'pivot'
     ];
 
 
@@ -43,7 +44,7 @@ class AssetApi extends BaseModel
      * @var array
      */
     protected $appends = [
-        'asset_name'
+        'asset_title'
     ];
 
 
@@ -59,7 +60,7 @@ class AssetApi extends BaseModel
     }
 
 
-    public function getAssetNameAttribute()
+    public function getAssetTitleAttribute()
     {
         $asset = $this->asset()->first();
         return $asset ? $asset->title : null;

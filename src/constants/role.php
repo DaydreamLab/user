@@ -30,6 +30,31 @@ return [
     ],
 
 
+    // Create Nested
+    'ROLE_CREATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role create nested success'
+    ],
+    'ROLE_ADMIN_CREATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role admin create nested success'
+    ],
+    'ROLE_FRONT_CREATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role front create nested success'
+    ],
+    'ROLE_CREATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role create nested fail'
+    ],
+    'ROLE_ADMIN_CREATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role admin create nested fail'
+    ],
+    'ROLE_FRONT_CREATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role front create nested fail'
+    ],
 
     // Update
     'ROLE_UPDATE_SUCCESS' => [
@@ -58,6 +83,31 @@ return [
         'message'   => 'Role front update fail'
     ],
 
+    // Update Nested
+    'ROLE_UPDATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role update success'
+    ],
+    'ROLE_ADMIN_UPDATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role admin update success'
+    ],
+    'ROLE_FRONT_UPDATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role front update success'
+    ],
+    'ROLE_UPDATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role update fail'
+    ],
+    'ROLE_ADMIN_UPDATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role admin update fail'
+    ],
+    'ROLE_FRONT_UPDATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role front update fail'
+    ],
 
     // Trash
     'ROLE_TRASH_SUCCESS' => [

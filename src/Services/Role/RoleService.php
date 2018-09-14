@@ -61,7 +61,7 @@ class RoleService extends BaseService
     }
 
 
-    public function getApisIds($role_id)
+    public function getApiIds($role_id)
     {
         $apis = $this->find($role_id)->apis;
         $ids = [];

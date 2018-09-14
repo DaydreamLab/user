@@ -20,14 +20,6 @@ class RoleAssetMapAdminController extends BaseController
     }
 
 
-    public function getGrant($id)
-    {
-        $this->service->getGrant($id);
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
     public function getItem($id)
     {
         $this->service->find($id);

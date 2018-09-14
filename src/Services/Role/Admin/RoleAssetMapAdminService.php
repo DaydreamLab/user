@@ -15,17 +15,4 @@ class RoleAssetMapAdminService extends RoleAssetMapService
         parent::__construct($repo);
     }
 
-
-    public function getGrant($id)
-    {
-        $items = $this->findBy('role_id', '=', $id);
-        $ids = [];
-        foreach ($items as $item) {
-            $ids[] = $item->id;
-        }
-        $this->status = Str::upper(Str::snake($this->type.'GetGrantSuccess'));;
-        $this->response = $ids;
-
-        return $ids;
-    }
 }

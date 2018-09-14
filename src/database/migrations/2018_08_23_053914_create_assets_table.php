@@ -25,10 +25,10 @@ class CreateAssetsTable extends Migration
             $table->string('redirect')->nullable();
             $table->string('icon');
             $table->boolean('showNav');
+            $table->unsignedInteger('ordering');
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();
-            $table->unsignedInteger('ordering')->nullable();
         });
     }
 

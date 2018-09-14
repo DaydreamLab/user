@@ -39,6 +39,7 @@ class RoleStorePost extends AdminRequest
                 'integer',
                 Rule::in([0,1])
             ],
+            'order'         => 'nullable|integer',
             'description'   => 'nullable|string'
         ];
     }

@@ -21,6 +21,7 @@ class CreateRolesTable extends Migration
             $table->tinyInteger('state')->default(1);
             $table->unsignedTinyInteger('canDelete')->default(1);
             $table->text('description')->nullable();
+            $table->unsignedInteger('ordering');
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();

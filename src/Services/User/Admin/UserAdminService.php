@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Services\User\Admin;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
@@ -105,6 +106,7 @@ class UserAdminService extends UserService
         foreach ($user->roles as $role) {
             $assets = $assets->merge($role->assets);
         }
+
         $tree = $assets->toTree();
         $this->status = Str::upper(Str::snake($this->type.'GetPageSuccess'));;
         $this->response = $tree;
