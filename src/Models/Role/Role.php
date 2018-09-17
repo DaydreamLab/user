@@ -42,6 +42,7 @@ class Role extends BaseModel
     protected $hidden = [
         '_lft',
         '_rgt',
+        'pivot',
         'ancestors'
     ];
 

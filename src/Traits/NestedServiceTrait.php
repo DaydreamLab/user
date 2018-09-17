@@ -29,9 +29,18 @@ trait NestedServiceTrait
             }
             else { // 沒有 ordering
                 $last_child =  $parent->children()->get()->last();
-                $input->put('ordering',$last_child->ordering + 1);
-                $node   = $this->add($input);
-                $node->afterNode($last_child)->save();
+                if ($last_child) {
+                    $ordering = $last_child->ordering + 1;
+                    $input->put('ordering', $ordering);
+                    $node   = $this->add($input);
+                    $node->afterNode($last_child)->save();
+                }
+                else {
+                    $ordering =  1;
+                    $input->put('ordering', $ordering);
+                    $node   = $this->add($input);
+                    $parent->appendNode($node);
+                }
             }
         }
         else {

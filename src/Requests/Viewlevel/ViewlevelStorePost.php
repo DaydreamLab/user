@@ -1,10 +1,10 @@
 <?php
 
-namespace DaydreamLab\User\Requests\User;
+namespace DaydreamLab\User\Requests\Viewlevel;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class UserGroupStorePost extends AdminRequest
+class ViewlevelStorePost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,10 @@ class UserGroupStorePost extends AdminRequest
     {
         return [
             'id'            => 'nullable|integer',
-            'parent_id'     => 'nullable|integer',
             'title'         => 'required|string',
             'description'   => 'nullable|string',
-            'ordering'      => 'nullable|integer',
+            'rules'         => 'required|array',
+            'rules.*'       => 'nullable|integer',
         ];
     }
 }

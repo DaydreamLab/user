@@ -1,10 +1,11 @@
 <?php
 
-namespace DaydreamLab\User\Requests\User;
+namespace DaydreamLab\User\Requests\Viewlevel;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
-class UserGroupStorePost extends AdminRequest
+class ViewlevelStatePost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +25,13 @@ class UserGroupStorePost extends AdminRequest
     public function rules()
     {
         return [
-            'id'            => 'nullable|integer',
-            'parent_id'     => 'nullable|integer',
-            'title'         => 'required|string',
-            'description'   => 'nullable|string',
-            'ordering'      => 'nullable|integer',
+            'ids'       => 'required|array',
+            'ids.*'     => 'required|integer',
+            'state'     => [
+                'required',
+                'integer',
+                Rule::in([0,1,-2])
+            ]
         ];
     }
 }

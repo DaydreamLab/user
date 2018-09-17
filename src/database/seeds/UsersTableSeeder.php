@@ -55,12 +55,14 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('daydream5182'),
             'first_name' => 'Jordan',
             'last_name' => 'Tsai',
-            'nickname' => '喬丹',
+            'nickname' => 'Jordan',
             'redirect' => '/',
             'activation' => 1,
             'activate_token' => '556655665566556655665566',
             'created_by' => 1,
         ]);
+
+
 
     }
 }

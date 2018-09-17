@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersGroupsTable extends Migration
+class CreateViewlevelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateUsersGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_groups', function (Blueprint $table) {
+        Schema::create('viewlevels', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->nestedSet();
             $table->text('description')->nullable();
+            $table->text('rules')->nullable();
             $table->unsignedInteger('ordering')->default(1);
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by')->nullable();
@@ -32,6 +32,6 @@ class CreateUsersGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_groups');
+        Schema::dropIfExists('viewlevels');
     }
 }

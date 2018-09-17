@@ -689,6 +689,33 @@ return [
     ],
 
 
+    // Create Nested
+    'USER_GROUP_CREATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group create nested success'
+    ],
+    'USER_GROUP_ADMIN_CREATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin create nested success'
+    ],
+    'USER_GROUP_FRONT_CREATE_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front create nested success'
+    ],
+    'USER_GROUP_CREATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group create nested fail'
+    ],
+    'USER_GROUP_ADMIN_CREATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group admin create nested fail'
+    ],
+    'USER_GROUP_FRONT_CREATE_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'User group front create nested fail'
+    ],
+
+
 
     // Update
     'USER_GROUP_UPDATE_SUCCESS' => [

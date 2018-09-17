@@ -1,18 +1,16 @@
 <?php
-namespace DaydreamLab\User\Models\User;
+namespace DaydreamLab\User\Models\Viewlevel;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
-use Kalnoy\Nestedset\NodeTrait;
 
-class UserGroup extends BaseModel
+class Viewlevel extends BaseModel
 {
-    use NodeTrait;
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'users_groups';
+    protected $table = 'viewlevels';
 
 
     /**
@@ -23,6 +21,7 @@ class UserGroup extends BaseModel
     protected $fillable = [
         'title',
         'description',
+        'rules',
         'ordering',
         'created_by',
         'updated_by'
@@ -35,11 +34,6 @@ class UserGroup extends BaseModel
      * @var array
      */
     protected $hidden = [
-        '_lft',
-        '_rgt',
-        'pivot',
-        'created_at',
-        'updated_at'
     ];
 
 
@@ -52,5 +46,8 @@ class UserGroup extends BaseModel
     ];
 
 
+    protected $casts = [
+        'rules' => 'array'
+    ];
 
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace DaydreamLab\User\Requests\User;
+namespace DaydreamLab\User\Requests\Viewlevel;
 
 use DaydreamLab\JJAJ\Requests\ListRequest;
 use Illuminate\Validation\Rule;
 
-class UserGroupSearchPost extends ListRequest
+class ViewlevelSearchPost extends ListRequest
 {
 
     public function authorize()
@@ -21,7 +21,12 @@ class UserGroupSearchPost extends ListRequest
     public function rules()
     {
         $rules = [
-            'search'    => 'nullable|string',
+            'title' => 'nullable|string',
+            'state'     => [
+                'nullable',
+                'integer',
+                Rule::in([0,1,-2])
+            ]
         ];
 
         return array_merge(parent::rules(), $rules);

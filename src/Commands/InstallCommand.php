@@ -28,7 +28,8 @@ class InstallCommand extends Command
         'user',
         'asset',
         'role',
-        'input'
+        'input',
+        'viewlevel'
     ];
 
     protected $seeders = [
@@ -41,7 +42,10 @@ class InstallCommand extends Command
         //'RolesApisMapsTableSeeder',
         'UsersRolesMapsTableSeeder',
         'UsersTableSeeder',
+        'UsersGroupsTableSeeder',
+        'UsersGroupsMapsTableSeeder',
         //'RolesTableSeeder',
+        'ViewlevelsTableSeeder',
     ];
 
     /**

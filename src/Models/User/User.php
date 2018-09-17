@@ -74,7 +74,8 @@ class User extends Authenticatable
 
     protected $appends = [
         'full_name',
-        'roles'
+        'roles',
+        'groups'
     ];
 
 
@@ -97,9 +98,16 @@ class User extends Authenticatable
         });
     }
 
+
     public function getFullNameAttribute()
     {
         return $this->last_name . ' '. $this->first_name;
+    }
+
+
+    public function getGroupsAttribute()
+    {
+        return $this->usergroup()->get();
     }
 
     public function getLimit()
@@ -171,6 +179,12 @@ class User extends Authenticatable
         if ($order_by && $order_by != ''){
             $this->order_by = $order_by;
         }
+    }
+
+
+    public function usergroup()
+    {
+        return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id');
     }
 
 }
