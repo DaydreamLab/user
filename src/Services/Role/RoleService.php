@@ -5,11 +5,14 @@ namespace DaydreamLab\User\Services\Role;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Repositories\Role\RoleRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
+use DaydreamLab\User\Traits\NestedServiceTrait;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class RoleService extends BaseService
 {
+    use NestedServiceTrait;
+
     protected $type = 'Role';
 
     public function __construct(RoleRepository $repo)
@@ -96,6 +99,6 @@ class RoleService extends BaseService
 
     public function store(Collection $input)
     {
-        return parent::storeNested($input);
+        return $this->storeNested($input);
     }
 }
