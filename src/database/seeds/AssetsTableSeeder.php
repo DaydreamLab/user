@@ -22,7 +22,8 @@ class AssetsTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->migrateTest();
+        $this->migrate();
+        //$this->migrateTest();
 
         $service    = new AssetService(new AssetRepository(new Asset()));
 
@@ -60,7 +61,7 @@ class AssetsTableSeeder extends Seeder
             'icon'      => '',
             'state'     => 1,
             'showNav'   => 1,
-            'ordering'  => null,
+            'ordering'  => 1,
             'created_by'=> 1,
             'children'  => [
                 [
