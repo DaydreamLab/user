@@ -34,17 +34,17 @@ class InstallCommand extends Command
 
     protected $seeders = [
         'AssetsTableSeeder',
-        //'AssetsApisTableSeeder',
-        //'AssetsGroupsTableSeeder',
-        //'AssetsGroupsMapsTableSeeder',
+        'AssetsApisTableSeeder',
+        'AssetsGroupsTableSeeder',
+        'AssetsGroupsMapsTableSeeder',
         'RolesTableSeeder',
-        //'RolesAssetsMapsTableSeeder',
-        //'RolesApisMapsTableSeeder',
+        'RolesAssetsMapsTableSeeder',
+        'RolesApisMapsTableSeeder',
         'UsersRolesMapsTableSeeder',
         'UsersTableSeeder',
         'UsersGroupsTableSeeder',
         'UsersGroupsMapsTableSeeder',
-        //'RolesTableSeeder',
+        'RolesTableSeeder',
         'ViewlevelsTableSeeder',
     ];
 
@@ -65,7 +65,7 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $this->call('jjaj:refresh');
+        //$this->call('jjaj:refresh');
 
         foreach ($this->seeders as $seeder) {
             $this->call('db:seed', [

@@ -102,6 +102,7 @@ class UserAdminService extends UserService
     public function getPage($id = null)
     {
         $id == null ? $user = Auth::guard('api')->user() : $user = $this->find($id);
+
         $assets = new \Kalnoy\Nestedset\Collection();
         foreach ($user->roles as $role) {
             $assets = $assets->merge($role->assets);
