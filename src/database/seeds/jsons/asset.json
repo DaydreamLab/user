@@ -41,7 +41,7 @@
     },
     {
       "title": "Features",
-      "path": "",
+      "path": "#",
       "component": "",
       "type": "separator",
       "redirect": "",
@@ -303,7 +303,7 @@
     },
     {
       "title": "System",
-      "path": "",
+      "path": "#",
       "component": "",
       "type": "separator",
       "redirect": "",
