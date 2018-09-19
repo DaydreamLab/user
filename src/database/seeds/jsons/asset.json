@@ -867,6 +867,5 @@
         "children": []
       }
     ]
-  },
-  { "path": "*", "redirect": "/error/404", "enabled": 1, "showNav": false }
+  }
 ]
