@@ -2,11 +2,9 @@
 
 namespace DaydreamLab\User;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Middlewares\Admin;
 use DaydreamLab\User\Middlewares\Expired;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Passport\Passport;
 
 class UserServiceProvider extends ServiceProvider
 {

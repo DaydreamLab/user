@@ -2,10 +2,9 @@
 
 namespace DaydreamLab\User\Services\Role;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Traits\NestedServiceTrait;
 use DaydreamLab\User\Repositories\Role\RoleRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
-use DaydreamLab\User\Traits\NestedServiceTrait;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
