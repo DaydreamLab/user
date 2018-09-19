@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Database\Seeds;
+namespace DaydreamLab\User\Database\Seeds\Deprecated;
 
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserGroup;

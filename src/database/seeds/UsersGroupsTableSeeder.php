@@ -58,6 +58,5 @@ class UsersGroupsTableSeeder extends Seeder
         $public->appendNode($registered);
         $public->appendNode($superuser);
 
-
     }
 }

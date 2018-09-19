@@ -79,7 +79,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
             Route::post('store','DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@store');
             Route::post('search','DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@search');
 
-            Route::group(['prefix' => 'apis'], function (){
+            Route::group(['prefix' => 'api'], function (){
                 Route::group(['prefix' => 'map'], function (){
                     Route::post('store', 'DaydreamLab\User\Controllers\Role\Admin\RoleApiMapAdminController@store');
                 });

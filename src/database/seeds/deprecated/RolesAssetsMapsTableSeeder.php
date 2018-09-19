@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Database\Seeds;
+namespace DaydreamLab\User\Database\Seeds\Deprecated;
 
 use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Role\RoleAssetMap;

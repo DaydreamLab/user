@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Database\Seeds;
+namespace DaydreamLab\User\Database\Seeds\Deprecated;
 
 use DaydreamLab\User\Models\Asset\AssetApiMap;
 use Illuminate\Database\Seeder;

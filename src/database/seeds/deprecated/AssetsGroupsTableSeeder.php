@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Database\Seeds;
+namespace DaydreamLab\User\Database\Seeds\Deprecated;
 
 use Illuminate\Database\Seeder;
 use DaydreamLab\User\Models\Asset\AssetGroup;

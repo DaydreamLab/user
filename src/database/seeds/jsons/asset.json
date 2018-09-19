@@ -1,0 +1,517 @@
+[{
+  "title": "ROOT",
+  "path": "",
+  "component": "",
+  "type": "",
+  "redirect": "",
+  "icon": "",
+  "state": 1,
+  "showNave": 0,
+  "ordering": 1,
+  "created_by": 1,
+  "children":[
+    {
+      "title": "",
+      "path": "/",
+      "component": "",
+      "type": "alias",
+      "redirect": "",
+      "icon": "home",
+      "state": 1,
+      "showNave": 0,
+      "ordering": 1,
+      "created_by": 1,
+      "children": [
+        {
+          "title": "Dashboard",
+          "path": "",
+          "component": "index",
+          "type": "menu",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 1,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": []
+        }
+      ],
+      "apis": []
+    },
+    {
+      "title": "Features",
+      "path": "",
+      "component": "",
+      "type": "separator",
+      "redirect": "",
+      "icon": "",
+      "state": 1,
+      "showNave": 0,
+      "ordering": 1,
+      "created_by": 1,
+      "children": [],
+      "apis": []
+    },
+    {
+      "title": "Roles",
+      "path": "/role",
+      "component": "",
+      "type": "alias",
+      "redirect": "",
+      "icon": "user",
+      "state": 1,
+      "showNave": 0,
+      "ordering": 1,
+      "created_by": 1,
+      "children": [
+        {
+          "title": "Role List",
+          "path": "",
+          "component": "role/list",
+          "type": "menu",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 1,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": [
+            {
+              "method" : "add",
+              "url" : "/admin/role/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "edit",
+              "url" : "/admin/role/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "delete",
+              "url" : "/admin/role/remove",
+              "created_by" : 1
+            },
+            {
+              "method" : "grant_asset",
+              "url" : "/admin/role/asset/map/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "grant_api",
+              "url" : "/admin/role/apis/map/store",
+              "created_by" : 1
+            }
+          ]
+        },
+        {
+          "title": "Assign Asset for Role",
+          "path": "/grant/asset",
+          "component": "role/grant/asset",
+          "type": "function",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 0,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": []
+        },
+        {
+          "title": "Assign API for Role",
+          "path": "/grant/api",
+          "component": "role/grant/api",
+          "type": "function",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 0,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": []
+        },
+        {
+          "title": "Edit Role",
+          "path": "/edit",
+          "component": "role/edit",
+          "type": "function",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 0,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": []
+        }
+      ],
+      "apis": []
+    },
+    {
+      "title": "Users",
+      "path": "/user",
+      "component": "",
+      "type": "alias",
+      "redirect": "",
+      "icon": "users",
+      "state": 1,
+      "showNave": 0,
+      "ordering": 1,
+      "created_by": 1,
+      "children": [
+        {
+          "title": "User List",
+          "path": "",
+          "component": "user/list",
+          "type": "menu",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 1,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": [
+            {
+              "method" : "add",
+              "url" : "/admin/user/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "edit",
+              "url" : "/admin/user/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "delete",
+              "url" : "/admin/user/remove",
+              "created_by" : 1
+            },
+            {
+              "method" : "block",
+              "url" : "/admin/user/block",
+              "created_by" : 1
+            },
+            {
+              "method" : "grant_group",
+              "url" : "",
+              "created_by" : 1
+            },
+            {
+              "method" : "grant_role",
+              "url" : "/admin/user/role/map/store",
+              "created_by" : 1
+            }
+          ]
+        },
+        {
+          "title": "Edit User",
+          "path": "",
+          "component": "user/edit",
+          "type": "function",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 0,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": []
+        },
+        {
+          "title": "Assign Group for User",
+          "path": "/grant/group",
+          "component": "user/grant/group",
+          "type": "function",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 0,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": []
+        },
+        {
+          "title": "Assign Role for User",
+          "path": "/grant/role",
+          "component": "user/grant/role",
+          "type": "function",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 0,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": []
+        },
+        {
+          "title": "User Group",
+          "path": "/group",
+          "component": "user/group/list",
+          "type": "menu",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 1,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": [
+            {
+              "method" : "add",
+              "url" : "",
+              "created_by" : 1
+            },
+            {
+              "method" : "edit",
+              "url" : "",
+              "created_by" : 1
+            },
+            {
+              "method" : "delete",
+              "url" : "",
+              "created_by" : 1
+            },
+            {
+              "method" : "updateState",
+              "url" : "",
+              "created_by" : 1
+            }
+          ]
+        },
+        {
+          "title": "Edit User Group",
+          "path": "/group/edit",
+          "component": "user/group/edit",
+          "type": "function",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 0,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": []
+        }
+      ],
+      "apis": []
+    },
+    {
+      "title": "System",
+      "path": "",
+      "component": "",
+      "type": "separator",
+      "redirect": "",
+      "icon": "",
+      "state": 1,
+      "showNave": 0,
+      "ordering": 1,
+      "created_by": 1,
+      "children": [],
+      "apis": []
+    },
+    {
+      "title": "APIs",
+      "path": "/api",
+      "component": "",
+      "type": "alias",
+      "redirect": "",
+      "icon": "th-list",
+      "state": 1,
+      "showNave": 0,
+      "ordering": 1,
+      "created_by": 1,
+      "children": [
+        {
+          "title": "API List",
+          "path": "",
+          "component": "api/list",
+          "type": "menu",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 1,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": [
+            {
+              "method" : "add",
+              "url" : "/admin/asset/api/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "edit",
+              "url" : "/admin/asset/api/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "delete",
+              "url" : "/admin/asset/api/remove",
+              "created_by" : 1
+            }
+          ]
+        },
+        {
+          "title": "Edit API",
+          "path": "/edit",
+          "component": "api/edit",
+          "type": "menu",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 1,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": []
+        }
+      ],
+      "apis": []
+    },
+    {
+      "title": "Assets",
+      "path": "/asset",
+      "component": "",
+      "type": "alias",
+      "redirect": "",
+      "icon": "",
+      "state": 1,
+      "showNave": 0,
+      "ordering": 1,
+      "created_by": 1,
+      "children": [
+        {
+          "title": "Asset List",
+          "path": "",
+          "component": "asset/list",
+          "type": "menu",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 1,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis": [
+            {
+              "method" : "add",
+              "url" : "/admin/asset/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "edit",
+              "url" : "/admin/asset/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "delete",
+              "url" : "/admin/asset/remove",
+              "created_by" : 1
+            },
+            {
+              "method" : "updateState",
+              "url" : "/admin/asset/state",
+              "created_by" : 1
+            },
+            {
+              "method" : "grant_group",
+              "url" : "/admin/asset/groups/map/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "grant_role",
+              "url" : "/admin/asset/{asset_id}/map/store",
+              "created_by" : 1
+            }
+          ]
+        },
+        {
+          "title": "Assign Group for Asset",
+          "path": "/grant/group",
+          "component": "asset/grant/group",
+          "type": "function",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 0,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis":[]
+        },
+        {
+          "title": "Assign API for Asset",
+          "path": "/grant/api",
+          "component": "asset/grant/api",
+          "type": "function",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 0,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis":[]
+        },
+        {
+          "title": "Asset Group",
+          "path": "/group",
+          "component": "asset/group/list",
+          "type": "menu",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 1,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis":[]
+        },
+        {
+          "title": "Edit Asset Group",
+          "path": "/group/edit",
+          "component": "asset/group/edit",
+          "type": "function",
+          "redirect": "",
+          "icon": "",
+          "state": 1,
+          "showNave": 0,
+          "ordering": 1,
+          "created_by": 1,
+          "children": [],
+          "apis":[
+            {
+              "method" : "add",
+              "url" : "/admin/asset/group/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "edit",
+              "url" : "/admin/asset/group/store",
+              "created_by" : 1
+            },
+            {
+              "method" : "delete",
+              "url" : "/admin/asset/group/remove",
+              "created_by" : 1
+            },
+            {
+              "method" : "updateState",
+              "url" : "/admin/asset/group/state",
+              "created_by" : 1
+            }
+          ]
+        }
+
+      ],
+      "apis": []
+    }
+  ],
+  "apis": []
+}]

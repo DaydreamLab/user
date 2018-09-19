@@ -2,7 +2,10 @@
 
 namespace DaydreamLab\User\Database\Seeds;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\User\User;
+use DaydreamLab\User\Models\User\UserGroupMap;
+use DaydreamLab\User\Models\User\UserRoleMap;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -14,55 +17,38 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
-            'email' => 'technique@daydream-lab.com',
-            'password' => bcrypt('daydream5182'),
-            'first_name' => 'Daydream Lab',
-            'last_name' => 'Engineering Department',
-            'nickname' => '白日夢工程部',
-            'redirect' => '/',
-            'activation' => 1,
-            'activate_token' => 'abcdefghijklmnopqrstuvwxyz',
-            'created_by' => 1,
-        ]);
+        $data = json_decode(file_get_contents(__DIR__.'/jsons/user.json'), true);
 
-        User::create([
-            'email' => 'admin@edenaresorts.com',
-            'password' => bcrypt('edenaresorts@2018'),
-            'first_name' => 'Admin',
-            'last_name' => 'Edena',
-            'nickname' => '訂房部門',
-            'redirect' => '/reservation',
-            'activation' => 1,
-            'activate_token' => 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
-            'created_by' => 1,
-        ]);
+        $this->migrate($data, null);
+    }
 
-        User::create([
-            'email' => 'reservations@edenaresorts.com',
-            'password' => bcrypt('edenaresorts@2018'),
-            'first_name' => 'Rep ( frontdesk )',
-            'last_name' => 'Edena',
-            'nickname' => '櫃檯部門',
-            'redirect' => '/checkin',
-            'activation' => 1,
-            'activate_token' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-            'created_by' => 1,
-        ]);
+    public function migrate($data, $parent)
+    {
+        foreach ($data as $item)
+        {
+            $groups     = $item['groups'];
+            $roles      = $item['roles'];
+            unset($item['groups']);
+            unset($item['roles']);
 
-        User::create([
-            'email' => 'jordan@daydream-lab.com',
-            'password' => bcrypt('daydream5182'),
-            'first_name' => 'Jordan',
-            'last_name' => 'Tsai',
-            'nickname' => 'Jordan',
-            'redirect' => '/',
-            'activation' => 1,
-            'activate_token' => '556655665566556655665566',
-            'created_by' => 1,
-        ]);
+            $item['password'] = bcrypt($item['password']);
+            $user = User::create($item);
+            foreach ($groups as $group)
+            {
+                $temp_group['user_id']  = $user->id;
+                $temp_group['group_id'] = $group;
+                $temp_group['created_by'] = 1;
+                UserGroupMap::create($temp_group);
+            }
 
-
+            foreach ($roles as $role)
+            {
+                $temp_role['user_id']  = $user->id;
+                $temp_role['role_id'] = $role;
+                $temp_role['created_by'] = 1;
+                UserRoleMap::create($temp_role);
+            }
+        }
 
     }
 }
