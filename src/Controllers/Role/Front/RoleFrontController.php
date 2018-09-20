@@ -10,6 +10,7 @@ use DaydreamLab\User\Requests\Role\Front\RoleFrontRemovePost;
 use DaydreamLab\User\Requests\Role\Front\RoleFrontStorePost;
 use DaydreamLab\User\Requests\Role\Front\RoleFrontStatePost;
 use DaydreamLab\User\Requests\Role\Front\RoleFrontSearchPost;
+use DaydreamLab\User\Requests\Role\Front\RoleFrontOrderingPost;
 
 
 class RoleFrontController extends BaseController
@@ -31,6 +32,14 @@ class RoleFrontController extends BaseController
     public function getItems()
     {
         $this->service->search(new Collection());
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function ordering(RoleFrontOrderingPost $request)
+    {
+        $this->service->ordering($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

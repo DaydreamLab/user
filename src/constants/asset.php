@@ -971,6 +971,34 @@ return [
         'message'   => 'Asset api front find fail'
     ],
 
+
+    // Ordering
+    'ASSET_UPDATE_ORDERING_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset update ordering success'
+    ],
+    'ASSET_ADMIN_UPDATE_ORDERING_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset admin update ordering success'
+    ],
+    'ASSET_FRONT_UPDATE_ORDERING_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset front update ordering success'
+    ],
+    'ASSET_UPDATE_ORDERING_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset update ordering fail'
+    ],
+    'ASSET_ADMIN_UPDATE_ORDERING_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset admin update ordering fail'
+    ],
+    'ASSET_FRONT_UPDATE_ORDERING_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset front update ordering fail'
+    ],
+
+
     // Store Map
     'ASSET_API_STORE_MAP_SUCCESS' => [
         'code'      => 200,

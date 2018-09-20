@@ -11,6 +11,7 @@ use DaydreamLab\User\Requests\Asset\Admin\AssetAdminRemovePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminStorePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminStatePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminSearchPost;
+use DaydreamLab\User\Requests\Asset\Admin\AssetAdminOrderingPost;
 
 class AssetAdminController extends BaseController
 {
@@ -47,6 +48,14 @@ class AssetAdminController extends BaseController
     public function getItems()
     {
         $this->service->search(new Collection());
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function ordering(AssetAdminOrderingPost $request)
+    {
+        $this->service->ordering($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

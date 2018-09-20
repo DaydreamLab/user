@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\Asset;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
 use DaydreamLab\User\Services\Asset\AssetService;
@@ -10,6 +11,7 @@ use DaydreamLab\User\Requests\Asset\AssetRemovePost;
 use DaydreamLab\User\Requests\Asset\AssetStorePost;
 use DaydreamLab\User\Requests\Asset\AssetStatePost;
 use DaydreamLab\User\Requests\Asset\AssetSearchPost;
+use DaydreamLab\User\Requests\Asset\AssetOrderingPost;
 
 class AssetController extends BaseController
 {
@@ -33,6 +35,14 @@ class AssetController extends BaseController
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
+
+
+    public function ordering(AssetOrderingPost $request)
+{
+    $this->service->ordering($request->rulesInput());
+
+    return ResponseHelper::response($this->service->status, $this->service->response);
+}
 
 
     public function remove(AssetRemovePost $request)

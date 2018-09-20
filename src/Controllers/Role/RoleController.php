@@ -10,6 +10,7 @@ use DaydreamLab\User\Requests\Role\RoleRemovePost;
 use DaydreamLab\User\Requests\Role\RoleStorePost;
 use DaydreamLab\User\Requests\Role\RoleStatePost;
 use DaydreamLab\User\Requests\Role\RoleSearchPost;
+use DaydreamLab\User\Requests\Role\RoleOrderingPost;
 
 class RoleController extends BaseController
 {
@@ -30,6 +31,14 @@ class RoleController extends BaseController
     public function getItems()
     {
         $this->service->search(new Collection());
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function ordering(RoleOrderingPost $request)
+    {
+        $this->service->ordering($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

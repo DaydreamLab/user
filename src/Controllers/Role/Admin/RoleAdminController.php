@@ -10,6 +10,7 @@ use DaydreamLab\User\Requests\Role\Admin\RoleAdminRemovePost;
 use DaydreamLab\User\Requests\Role\Admin\RoleAdminStorePost;
 use DaydreamLab\User\Requests\Role\Admin\RoleAdminStatePost;
 use DaydreamLab\User\Requests\Role\Admin\RoleAdminSearchPost;
+use DaydreamLab\User\Requests\Role\Admin\RoleAdminOrderingPost;
 
 class RoleAdminController extends BaseController
 {
@@ -70,6 +71,14 @@ class RoleAdminController extends BaseController
     public function getTree()
     {
         $this->service->getTree();
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function ordering(RoleAdminOrderingPost $request)
+    {
+        $this->service->ordering($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

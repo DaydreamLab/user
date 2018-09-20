@@ -10,6 +10,7 @@ use DaydreamLab\User\Requests\Asset\Front\AssetFrontRemovePost;
 use DaydreamLab\User\Requests\Asset\Front\AssetFrontStorePost;
 use DaydreamLab\User\Requests\Asset\Front\AssetFrontStatePost;
 use DaydreamLab\User\Requests\Asset\Front\AssetFrontSearchPost;
+use DaydreamLab\User\Requests\Asset\Front\AssetFrontOrderingPost;
 
 
 class AssetFrontController extends BaseController
@@ -35,6 +36,13 @@ class AssetFrontController extends BaseController
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
 
+
+    public function ordering(AssetFrontOrderingPost $request)
+    {
+        $this->service->ordering($request->rulesInput());
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
 
     public function remove(AssetFrontRemovePost $request)
     {

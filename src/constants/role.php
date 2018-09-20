@@ -274,6 +274,36 @@ return [
         'message'   => 'Role front find fail'
     ],
 
+
+    // Ordering
+    'ROLE_UPDATE_ORDERING_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role update ordering success'
+    ],
+    'ROLE_ADMIN_UPDATE_ORDERING_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role admin update ordering success'
+    ],
+    'ROLE_FRONT_UPDATE_ORDERING_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role front update ordering success'
+    ],
+    'ROLE_UPDATE_ORDERING_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role update ordering fail'
+    ],
+    'ROLE_ADMIN_UPDATE_ORDERING_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role admin update ordering fail'
+    ],
+    'ROLE_FRONT_UPDATE_ORDERING_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role front update ordering fail'
+    ],
+    
+    
+    
+    // Page
     'ROLE_GET_PAGE_SUCCESS' => [
         'code'      => 200,
         'message'   => 'Role get page success'
@@ -287,6 +317,8 @@ return [
         'message'   => 'Role front get page success'
     ],
 
+    
+    // Tree
     'ROLE_GET_TREE_SUCCESS' => [
         'code'      => 200,
         'message'   => 'Role get tree success'
@@ -300,6 +332,7 @@ return [
         'message'   => 'Role front get tree success'
     ],
 
+    // Api
     'ROLE_GET_APIS_SUCCESS' => [
         'code'      => 200,
         'message'   => 'Role get apis success'
@@ -313,6 +346,8 @@ return [
         'message'   => 'Role front get apis success'
     ],
 
+    
+    // Api ids
     'ROLE_GET_APIS_IDS_SUCCESS' => [
         'code'      => 200,
         'message'   => 'Role get apis ids success'
@@ -326,6 +361,8 @@ return [
         'message'   => 'Role front get apis ids success'
     ],
 
+    
+    // Action
     'ROLE_GET_ACTION_SUCCESS' => [
         'code'      => 200,
         'message'   => 'Role get action success'

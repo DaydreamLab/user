@@ -32,6 +32,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
             Route::post('state', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@state');
             Route::post('store','DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@store');
             Route::post('search','DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@search');
+            Route::post('ordering','DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@ordering');
 
 
 
@@ -78,6 +79,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
             Route::post('state', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@state');
             Route::post('store','DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@store');
             Route::post('search','DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@search');
+            Route::post('ordering','DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@ordering');
 
             Route::group(['prefix' => 'api'], function (){
                 Route::group(['prefix' => 'map'], function (){

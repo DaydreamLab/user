@@ -4,11 +4,14 @@ namespace DaydreamLab\User\Repositories\Role;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Repositories\BaseRepository;
+use DaydreamLab\JJAJ\Traits\NestedRepositoryTrait;
 use DaydreamLab\User\Models\Role\Role;
 use Illuminate\Support\Collection;
 
 class RoleRepository extends BaseRepository
 {
+    use NestedRepositoryTrait;
+
     public function __construct(Role $model)
     {
         parent::__construct($model);
