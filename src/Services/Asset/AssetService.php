@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\Asset;
 
+use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Traits\NestedServiceTrait;
 use DaydreamLab\User\Repositories\Asset\AssetRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
@@ -44,7 +45,7 @@ class AssetService extends BaseService
     public function store(Collection $input)
     {
         // 計算full path
-        if ($input->has('parent_id') && $input->get('parent_id') != '') {
+        if (!InputHelper::null($input, 'parent_id')) {
             $parent_id  = $input->parent_id;
             $parent     = $this->find($parent_id);
             $full_path  = $parent->full_path . $input->path;

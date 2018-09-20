@@ -55,7 +55,7 @@ class AssetAdminController extends BaseController
 
     public function ordering(AssetAdminOrderingPost $request)
     {
-        $this->service->ordering($request->rulesInput());
+        $this->service->orderingNested($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
