@@ -39,7 +39,7 @@ class AssetController extends BaseController
 
     public function ordering(AssetOrderingPost $request)
 {
-    $this->service->ordering($request->rulesInput());
+    $this->service->orderingNested($request->rulesInput());
 
     return ResponseHelper::response($this->service->status, $this->service->response);
 }
@@ -63,7 +63,7 @@ class AssetController extends BaseController
 
     public function store(AssetStorePost $request)
     {
-        $this->service->store($request->rulesInput());
+        $this->service->storeNested($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

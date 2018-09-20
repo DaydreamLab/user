@@ -300,7 +300,33 @@ return [
         'code'      => 500,
         'message'   => 'Role front update ordering fail'
     ],
-    
+
+
+    // Ordering Nested
+    'ROLE_UPDATE_ORDERING_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role update ordering nested success'
+    ],
+    'ROLE_ADMIN_UPDATE_ORDERING_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role admin update ordering nested success'
+    ],
+    'ROLE_FRONT_UPDATE_ORDERING_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Role front update ordering nested success'
+    ],
+    'ROLE_UPDATE_ORDERING_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role update ordering nested fail'
+    ],
+    'ROLE_ADMIN_UPDATE_ORDERING_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role admin update ordering nested fail'
+    ],
+    'ROLE_FRONT_UPDATE_ORDERING_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Role front update ordering nested fail'
+    ],
     
     
     // Page

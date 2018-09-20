@@ -998,6 +998,32 @@ return [
         'message'   => 'Asset front update ordering fail'
     ],
 
+    // Ordering Nested
+    'ASSET_UPDATE_ORDERING_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset update ordering nested success'
+    ],
+    'ASSET_ADMIN_UPDATE_ORDERING_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset admin update ordering nested success'
+    ],
+    'ASSET_FRONT_UPDATE_ORDERING_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset front update ordering nested success'
+    ],
+    'ASSET_UPDATE_ORDERING_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset update ordering nested fail'
+    ],
+    'ASSET_ADMIN_UPDATE_ORDERING_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset admin update ordering nested fail'
+    ],
+    'ASSET_FRONT_UPDATE_ORDERING_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset front update ordering nested fail'
+    ],
+
 
     // Store Map
     'ASSET_API_STORE_MAP_SUCCESS' => [
