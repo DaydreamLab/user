@@ -16,7 +16,7 @@ class CreateAssetsTable extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->increments('id');
             $table->nestedSet();
-            $table->unsignedInteger('ordering');
+            $table->unsignedInteger('ordering')->nullable()->default(1);
             $table->string('title')->nullable();
             $table->string('path')->nullable();
             $table->string('full_path')->nullable();

@@ -49,8 +49,13 @@ class UserGroup extends BaseModel
      * @var array
      */
     protected $appends = [
+        'veiwlevels'
     ];
 
 
+    public function getViewlevelsAttribute()
+    {
+
+    }
 
 }

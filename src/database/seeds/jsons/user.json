@@ -9,7 +9,7 @@
     "activation": 1,
     "activate_token": "admin",
     "created_by": null,
-    "groups":[4],
+    "groups":[5],
     "roles":[2]
   },
   {
@@ -22,7 +22,7 @@
     "activation": 1,
     "activate_token": "jordan",
     "created_by": null,
-    "groups":[4],
+    "groups":[5],
     "roles":[2]
   }
 ]

@@ -37,6 +37,7 @@ class InstallCommand extends Command
         'RolesTableSeeder',
         'UsersGroupsTableSeeder',
         'UsersTableSeeder',
+        'ViewlevelsTableSeeder',
     ];
 
     /**

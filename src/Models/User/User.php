@@ -2,17 +2,12 @@
 
 namespace DaydreamLab\User\Models\User;
 
-
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\Role\Role;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
-use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -75,7 +70,8 @@ class User extends Authenticatable
     protected $appends = [
         'full_name',
         'roles',
-        'groups'
+        'groups',
+        'viewlevels',
     ];
 
 

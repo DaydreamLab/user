@@ -40,7 +40,7 @@ class ViewlevelsTableSeeder extends Seeder
         Viewlevel::create([
             'title'     => 'Super User',
             'ordering'  => 4,
-            'rules'     => [7],
+            'rules'     => [5],
             'created_by'=> 1
         ]);
     }
