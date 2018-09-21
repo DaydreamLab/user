@@ -19,7 +19,7 @@ class AssetsTableSeeder extends Seeder
      */
     public function run()
     {
-        $data = json_decode(file_get_contents(__DIR__.'/jsons/asset-test.json'), true);
+        $data = json_decode(file_get_contents(__DIR__.'/jsons/asset.json'), true);
 
         $this->migrate($data, null);
 
