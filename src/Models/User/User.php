@@ -130,6 +130,12 @@ class User extends Authenticatable
     }
 
 
+    public function getViewlevelsAttribute()
+    {
+
+    }
+
+
     public function isAdmin()
     {
         $super_user  = Role::where('title', 'Super User')->first();
