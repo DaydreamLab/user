@@ -1,0 +1,217 @@
+[
+  {
+    "title": "Root",
+    "path": "",
+    "component": "",
+    "type": "",
+    "redirect": "",
+    "icon": "",
+    "state": 1,
+    "showNav": 0,
+    "ordering": 1,
+    "created_by": 1,
+    "children": [
+      {
+        "title": "A",
+        "path": "/A",
+        "component": "",
+        "type": "alias",
+        "redirect": "",
+        "icon": "home",
+        "state": 1,
+        "showNav": 1,
+        "ordering": 1,
+        "created_by": 1,
+        "children": [
+          {
+            "title": "A1",
+            "path": "/A1",
+            "component": "role/list",
+            "type": "menu",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 1,
+            "ordering": 1,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "A2",
+            "path": "/A2",
+            "component": "role/grant/asset",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 2,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "A3",
+            "path": "/A3",
+            "component": "role/grant/api",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 3,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          }
+        ],
+        "apis": []
+      },
+      {
+        "title": "B",
+        "path": "/B",
+        "component": "",
+        "type": "alias",
+        "redirect": "",
+        "icon": "user",
+        "state": 1,
+        "showNav": 1,
+        "ordering": 2,
+        "created_by": 1,
+        "children": [
+          {
+            "title": "B1",
+            "path": "/B1",
+            "component": "role/list",
+            "type": "menu",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 1,
+            "ordering": 1,
+            "created_by": 1,
+            "children": [
+              {
+                "title": "B1-1",
+                "path": "/B1-1",
+                "component": "role/list",
+                "type": "menu",
+                "redirect": "",
+                "icon": "",
+                "state": 1,
+                "showNav": 1,
+                "ordering": 1,
+                "created_by": 1,
+                "children": [],
+                "apis": []
+              },
+              {
+                "title": "B1-2",
+                "path": "/B1-2",
+                "component": "role/list",
+                "type": "menu",
+                "redirect": "",
+                "icon": "",
+                "state": 1,
+                "showNav": 1,
+                "ordering": 2,
+                "created_by": 1,
+                "children": [],
+                "apis": []
+              }
+            ],
+            "apis": []
+          },
+          {
+            "title": "B2",
+            "path": "/B2",
+            "component": "role/grant/asset",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 2,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "B3",
+            "path": "/B3",
+            "component": "role/grant/api",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 3,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          }
+        ],
+        "apis": []
+      },
+      {
+        "title": "C",
+        "path": "/C",
+        "component": "",
+        "type": "alias",
+        "redirect": "",
+        "icon": "user",
+        "state": 1,
+        "showNav": 1,
+        "ordering": 3,
+        "created_by": 1,
+        "children": [
+          {
+            "title": "C1",
+            "path": "/C1",
+            "component": "role/list",
+            "type": "menu",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 1,
+            "ordering": 1,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "C2",
+            "path": "/C2",
+            "component": "role/grant/asset",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 2,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "C3",
+            "path": "/C3",
+            "component": "role/grant/api",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 3,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          }
+        ],
+        "apis": []
+      }
+    ],
+    "apis": []
+  }
+]
