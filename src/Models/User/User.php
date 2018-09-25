@@ -132,7 +132,12 @@ class User extends Authenticatable
 
     public function getViewlevelsAttribute()
     {
-
+        $groups = [] ;
+        foreach ($this->groups as $group)
+        {
+            $groups[] = $group->id;
+        }
+        return $groups;
     }
 
 

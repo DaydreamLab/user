@@ -24,5 +24,19 @@
     "created_by": null,
     "groups":[5],
     "roles":[2]
+  },
+  {
+    "email": "jordan1@daydream-lab.com",
+    "password": "daydream5182",
+    "first_name": "Tsai",
+    "last_name": "Jordan",
+    "nickname": "Jordan",
+    "redirect": "/",
+    "activation": 1,
+    "activate_token": "jordan",
+    "created_by": null,
+    "groups":[4],
+    "roles":[2]
   }
+
 ]

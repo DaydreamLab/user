@@ -128,6 +128,16 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
             });
         });
 
+
+        Route::group(['prefix' => 'viewlevel'], function (){
+            Route::get('{id}', 'DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController@getItem');
+            Route::post('remove', 'DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController@remove');
+            Route::post('state', 'DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController@state');
+            Route::post('store','DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController@store');
+            Route::post('search','DaydreamLab\User\Controllers\AViewlevelsset\Admin\ViewlevelAdminController@search');
+
+        });
+
     });
 });
 
