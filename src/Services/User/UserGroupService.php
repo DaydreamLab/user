@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use DaydreamLab\JJAJ\Traits\NestedServiceTrait;
 use DaydreamLab\User\Repositories\User\UserGroupRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
-use DaydreamLab\User\Traits\NestedServiceTrait;
 use Illuminate\Support\Collection;
 
 class UserGroupService extends BaseService

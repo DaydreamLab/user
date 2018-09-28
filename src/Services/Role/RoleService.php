@@ -100,4 +100,10 @@ class RoleService extends BaseService
     {
         return $this->storeNested($input);
     }
+
+
+    public function remove(Collection $input)
+    {
+        return $this->removeNested($input);
+    }
 }

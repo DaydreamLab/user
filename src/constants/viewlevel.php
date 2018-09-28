@@ -273,30 +273,30 @@ return [
         'message'   => 'Viewlevel front search fail'
     ],
 
-    // Find
-    'VIEWLEVEL_FIND_SUCCESS' => [
+    // Get Item
+    'VIEWLEVEL_GET_ITEM_SUCCESS' => [
             'code'      => 200,
-            'message'   => 'Viewlevel find success'
+            'message'   => 'Viewlevel get item success'
     ],
-    'VIEWLEVEL_ADMIN_FIND_SUCCESS' => [
+    'VIEWLEVEL_ADMIN_GET_ITEM_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'Viewlevel admin find success'
+        'message'   => 'Viewlevel admin get item success'
     ],
-    'VIEWLEVEL_FRONT_FIND_SUCCESS' => [
+    'VIEWLEVEL_FRONT_GET_ITEM_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'Viewlevel front find success'
+        'message'   => 'Viewlevel front get item success'
     ],
-    'VIEWLEVEL_FIND_FAIL' => [
+    'VIEWLEVEL_GET_ITEM_FAIL' => [
         'code'      => 500,
-        'message'   => 'Viewlevel find fail'
+        'message'   => 'Viewlevel get item fail'
     ],
-    'VIEWLEVEL_ADMIN_FIND_FAIL' => [
+    'VIEWLEVEL_ADMIN_GET_ITEM_FAIL' => [
         'code'      => 500,
-        'message'   => 'Viewlevel find search fail'
+        'message'   => 'Viewlevel get item search fail'
     ],
-    'VIEWLEVEL_FRONT_FIND_FAIL' => [
+    'VIEWLEVEL_FRONT_GET_ITEM_FAIL' => [
         'code'      => 500,
-        'message'   => 'Viewlevel front find fail'
+        'message'   => 'Viewlevel front get item fail'
     ],
 
 
