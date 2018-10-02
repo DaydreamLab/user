@@ -63,7 +63,7 @@ class AssetsTableSeeder extends Seeder
             foreach ($apis as $api)
             {
                 $api['asset_id'] = $asset->id;
-                AssetApi::create($api);
+                $asset_api = AssetApi::create($api);
             }
 
             if (count($children))
