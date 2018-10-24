@@ -43,6 +43,8 @@ class ViewlevelsTableSeeder extends Seeder
             'rules'     => [5],
             'created_by'=> 1
         ]);
+
+
     }
 
 
