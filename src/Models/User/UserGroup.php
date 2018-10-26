@@ -50,6 +50,7 @@ class UserGroup extends BaseModel
      */
     protected $appends = [
         //'veiwlevels'
+        'tree_title'
     ];
 
 
