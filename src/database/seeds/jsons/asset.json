@@ -67,7 +67,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "Role List",
+            "title": "Role Manage",
             "path": "",
             "component": "role/list",
             "type": "menu",
@@ -164,7 +164,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "User List",
+            "title": "User Manage",
             "path": "",
             "component": "user/list",
             "type": "menu",
@@ -210,7 +210,7 @@
           },
           {
             "title": "Edit User",
-            "path": "",
+            "path": "/edit",
             "component": "user/edit",
             "type": "function",
             "redirect": "",
@@ -329,7 +329,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "API List",
+            "title": "API Manage",
             "path": "",
             "component": "api/list",
             "type": "menu",
@@ -362,7 +362,7 @@
             "title": "Edit API",
             "path": "/edit",
             "component": "api/edit",
-            "type": "menu",
+            "type": "function",
             "redirect": "",
             "icon": "",
             "state": 1,
@@ -388,7 +388,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "Asset List",
+            "title": "Asset Manage",
             "path": "",
             "component": "asset/list",
             "type": "menu",
