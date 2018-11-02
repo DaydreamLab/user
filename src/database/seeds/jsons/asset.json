@@ -366,7 +366,7 @@
             "redirect": "",
             "icon": "",
             "state": 1,
-            "showNav": 1,
+            "showNav": 0,
             "ordering": 2,
             "created_by": 1,
             "children": [],
