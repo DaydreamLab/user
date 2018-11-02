@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Traits\NestedServiceTrait;
 use DaydreamLab\User\Repositories\User\UserGroupRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class UserGroupService extends BaseService
 {
@@ -22,5 +23,31 @@ class UserGroupService extends BaseService
     public function store(Collection $input)
     {
         return $this->storeNested($input);
+    }
+
+
+    public function tree()
+    {
+        $tree = $this->findBy('id', '!=', 1)->toTree();
+
+        $this->status =  Str::upper(Str::snake($this->type . 'GetTreeSuccess'));
+        $this->response = $tree;
+
+        return $tree;
+    }
+
+
+    public function treeList()
+    {
+        $tree = $this->findBy('id', '!=', 1)->toFlatTree();
+
+        $tree = $tree->map(function ($item, $key) {
+            return $item->only(['id', 'tree_list_title']);
+        });
+
+        $this->status =  Str::upper(Str::snake($this->type . 'GetTreeListSuccess'));
+        $this->response = $tree;
+
+        return $tree;
     }
 }

@@ -952,6 +952,21 @@ return [
     ],
 
 
+    //Get Tree List
+    'USER_GROUP_GET_TREE_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group get tree list success'
+    ],
+    'USER_GROUP_ADMIN_GET_TREE_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group admin get tree list success'
+    ],
+    'USER_GROUP_FRONT_GET_TREE_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group front get tree list success'
+    ],
+
+
 
     // ----- User Group Map -----
     // Create
@@ -1215,4 +1230,5 @@ return [
         'code'      => 200,
         'message'   => 'User group map front get tree success'
     ],
+
 ];
