@@ -54,9 +54,16 @@ class UserGroup extends BaseModel
     ];
 
 
-    public function getViewlevelsAttribute()
+
+    public function getTreeListTitleAttribute()
     {
-        return 1;
+        $depth = $this->depth-1;
+        $str = '';
+        for ($j = 0 ; $j < $depth ; $j++) {
+            $str .= '-';
+        }
+
+        return $depth == 0  ? $this->title : $str . ' '. $this->title;
     }
 
 }
