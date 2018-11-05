@@ -12,6 +12,9 @@ class Viewlevel extends BaseModel
      */
     protected $table = 'viewlevels';
 
+    protected $order_by = 'id';
+
+    protected $order = 'asc';
 
     /**
      * The attributes that are mass assignable.

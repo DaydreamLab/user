@@ -14,6 +14,9 @@ class UserGroup extends BaseModel
      */
     protected $table = 'users_groups';
 
+    protected $order_by = 'id';
+
+    protected $order = 'asc';
 
     /**
      * The attributes that are mass assignable.
