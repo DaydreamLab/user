@@ -2,9 +2,10 @@
 
 namespace DaydreamLab\User\Database\Seeds;
 
-use DaydreamLab\User\Models\User\User;
-use DaydreamLab\User\Models\User\UserGroup;
-use DaydreamLab\User\Models\Viewlevel\Viewlevel;
+use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Models\Viewlevel\Admin\ViewlevelAdmin;
+use DaydreamLab\User\Repositories\Viewlevel\Admin\ViewlevelAdminRepository;
+use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use Illuminate\Database\Seeder;
 
 class ViewlevelsTableSeeder extends Seeder
@@ -16,36 +17,34 @@ class ViewlevelsTableSeeder extends Seeder
      */
     public function run()
     {
-        Viewlevel::create([
+        $service = new ViewlevelAdminService(new ViewlevelAdminRepository(new ViewlevelAdmin()));
+
+        $service->store(Helper::collect([
             'title'     => 'Public',
-            'ordering'  => 1,
             'rules'     => [2],
-            'created_by'=> 1
-        ]);
+        ]));
 
-        Viewlevel::create([
+        $service->store(Helper::collect([
             'title'     => 'Guest',
-            'ordering'  => 2,
             'rules'     => [3],
-            'created_by'=> 1
-        ]);
+        ]));
 
-        Viewlevel::create([
+        $service->store(Helper::collect([
             'title'     => 'Registered',
             'ordering'  => 3,
-            'rules'     => [4],
-            'created_by'=> 1
-        ]);
+            'rules'     => [2,4],
+        ]));
 
-        Viewlevel::create([
+
+        $service->store(Helper::collect([
+            'title'     => 'Administrator',
+            'rules'     => [2,3,4,5],
+        ]));
+
+        $service->store(Helper::collect([
             'title'     => 'Super User',
             'ordering'  => 4,
-            'rules'     => [5],
-            'created_by'=> 1
-        ]);
-
-
+            'rules'     => [2,3,4,5,6],
+        ]));
     }
-
-
 }

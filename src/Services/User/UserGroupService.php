@@ -2,15 +2,17 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\NestedServiceTrait;
 use DaydreamLab\User\Repositories\User\UserGroupRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
+use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class UserGroupService extends BaseService
 {
-    use NestedServiceTrait;
+    use NestedServiceTrait ;
 
     protected $type = 'UserGroup';
 

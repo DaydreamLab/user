@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Models\User;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\Role\Role;
+use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -86,6 +87,9 @@ class User extends Authenticatable
             if ($user) {
                 $item->created_by = $user->id;
             }
+            else{
+                $item->created_by = 1;
+            }
         });
 
         static::updating(function ($item) use ($user) {
@@ -133,26 +137,28 @@ class User extends Authenticatable
 
     public function getViewlevelsAttribute()
     {
-        $groups = [] ;
+        $access_ids = [];
         foreach ($this->groups as $group)
         {
-            $groups[] = $group->id;
+            $viewlevel = Viewlevel::where('title', '=', $group->description)->first();
+            $access_ids = array_merge($access_ids, $viewlevel->rules);
         }
-        return $groups;
+
+        return $access_ids;
     }
 
 
     public function isAdmin()
     {
-        $super_user  = Role::where('title', 'Super User')->first();
-        $admin       = Role::where('title', 'Admin')->first();
+        $super_user  = UserGroup::where('title', 'Super User')->first();
+        $admin       = UserGroup::where('title', 'Administrator')->first();
         $user        = Auth::user();
-
-        foreach ($user->role()->get() as $role) {
-            if ($role->_lft >= $super_user->_lft && $role->_rgt <= $super_user->_rgt) {
+        //foreach ($user->role()->get() as $role) {
+        foreach ($user->usergroup()->get() as $group) {
+            if ($group->_lft >= $super_user->_lft && $group->_rgt <= $super_user->_rgt) {
                 return true;
             }
-            elseif ($role->_lft >= $admin->_lft && $role->_rgt <= $admin->_rgt) {
+            elseif ($group->_lft >= $admin->_lft && $group->_rgt <= $admin->_rgt) {
                 return true;
             }
         }

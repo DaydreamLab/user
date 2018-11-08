@@ -8,8 +8,7 @@
     "redirect": "/",
     "activation": 1,
     "activate_token": "admin",
-    "created_by": null,
-    "groups":[5],
+    "groups":[6],
     "roles":[2]
   },
   {
@@ -21,35 +20,19 @@
     "redirect": "/",
     "activation": 1,
     "activate_token": "jordan",
-    "created_by": null,
-    "groups":[5],
+    "groups":[6],
     "roles":[2]
   },
   {
-    "email": "jordan1@daydream-lab.com",
+    "email": "registered@daydream-lab.com",
     "password": "daydream5182",
-    "first_name": "Tsai",
-    "last_name": "Jordan",
-    "nickname": "Jordan",
+    "first_name": "Registered",
+    "last_name": "Registered",
+    "nickname": "Registered",
     "redirect": "/",
     "activation": 1,
-    "activate_token": "jordan",
-    "created_by": null,
-    "groups":[4],
-    "roles":[2]
-  },
-  {
-    "email": "jordan2@daydream-lab.com",
-    "password": "daydream5182",
-    "first_name": "Tsai",
-    "last_name": "Jordan",
-    "nickname": "Jordan",
-    "redirect": "/",
-    "activation": 1,
-    "activate_token": "jordan",
-    "created_by": null,
+    "activate_token": "Registered",
     "groups":[4],
     "roles":[2]
   }
-
 ]

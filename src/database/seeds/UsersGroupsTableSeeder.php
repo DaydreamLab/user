@@ -2,8 +2,13 @@
 
 namespace DaydreamLab\User\Database\Seeds;
 
-use DaydreamLab\User\Models\User\User;
-use DaydreamLab\User\Models\User\UserGroup;
+use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Models\User\Admin\UserGroupAdmin;
+use DaydreamLab\User\Repositories\User\Admin\UserGroupAdminRepository;
+use DaydreamLab\User\Services\User\Admin\UserGroupAdminService;
+use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
+use DaydreamLab\User\Repositories\Viewlevel\Admin\ViewlevelAdminRepository;
+use DaydreamLab\User\Models\Viewlevel\Admin\ViewlevelAdmin;
 use Illuminate\Database\Seeder;
 
 class UsersGroupsTableSeeder extends Seeder
@@ -15,48 +20,55 @@ class UsersGroupsTableSeeder extends Seeder
      */
     public function run()
     {
-        $root =  UserGroup::create([
+        $viewlevelAdminService = new ViewlevelAdminService(new ViewlevelAdminRepository(new ViewlevelAdmin()));
+        $service = new UserGroupAdminService(new UserGroupAdminRepository(new UserGroupAdmin()), $viewlevelAdminService);
+
+        $root = UserGroupAdmin::create([
             'title'         => 'ROOT',
             'description'   => 'ROOT',
-            'ordering'      => 1,
-            'created_by'    => 1,
+            'ordering'      => 1
         ]);
 
-
-        $public = UserGroup::create([
+        $public = $service->store(Helper::collect([
+            'parent_id'     => $root->id,
             'title'         => 'Public',
             'description'   => 'Public',
-            'ordering'      => 1,
-            'created_by'    => 1,
-        ]);
+        ]));
 
-        $guest = UserGroup::create([
+        $guest = $service->store(Helper::collect([
+            'parent_id'     => $root->id,
             'title'         => 'Guest',
             'description'   => 'Guest',
-            'ordering'      => 1,
-            'created_by'    => 1,
-        ]);
+        ]));
 
-        $registered = UserGroup::create([
+
+        $registered = $service->store(Helper::collect([
+            'parent_id'     => $root->id,
             'title'         => 'Registered',
             'description'   => 'Registered',
-            'ordering'      => 2,
-            'created_by'    => 2,
-        ]);
+        ]));
 
 
-        $superuser = UserGroup::create([
+        $administator = $service->store(Helper::collect([
+            'parent_id'     => $root->id,
+            'title'         => 'Administrator',
+            'description'   => 'Administrator',
+        ]));
+
+
+        $superuser = $service->store(Helper::collect([
+            'parent_id'     => $root->id,
             'title'         => 'Super User',
             'description'   => 'Super User',
-            'ordering'      => 3,
-            'created_by'    => 1,
-        ]);
+        ]));
 
 
-        $root->appendNode($public);
-        $public->appendNode($guest);
-        $public->appendNode($registered);
-        $public->appendNode($superuser);
+
+//        $root->appendNode($public);
+//        $public->appendNode($guest);
+//        $public->appendNode($registered);
+//        $public->appendNode($administator);
+//        $public->appendNode($superuser);
 
     }
 }
