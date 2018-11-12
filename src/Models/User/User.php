@@ -74,6 +74,7 @@ class User extends Authenticatable
         'roles',
         'groups',
         'viewlevels',
+        'access_ids',
     ];
 
 
@@ -97,6 +98,23 @@ class User extends Authenticatable
                 $item->updated_by = $user->id;
             }
         });
+    }
+
+
+    public function getAccessIdsAttribute()
+    {
+        $access_ids = [];
+
+        $all = Viewlevel::all();
+        foreach ($all as $viewlevel)
+        {
+            if (Helper::hasPermission($viewlevel->rules, $this->viewlevels))
+            {
+                $access_ids[] = $viewlevel->id;
+            }
+        }
+
+        return $access_ids;
     }
 
 
@@ -137,14 +155,14 @@ class User extends Authenticatable
 
     public function getViewlevelsAttribute()
     {
-        $access_ids = [];
+        $access_groups = [];
         foreach ($this->groups as $group)
         {
             $viewlevel = Viewlevel::where('title', '=', $group->description)->first();
-            $access_ids = array_merge($access_ids, $viewlevel->rules);
+            $access_groups = array_merge($access_groups, $viewlevel->rules);
         }
 
-        return $access_ids;
+        return $access_groups;
     }
 
 
