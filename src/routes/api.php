@@ -112,6 +112,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
                 Route::post('search', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@search');
                 Route::post('remove', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@remove');
                 Route::post('store', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@store');
+                Route::get('tree', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@tree');
                 Route::get('treeList', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@treeList');
                 Route::get('{id}', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getItem');
 
