@@ -17,10 +17,14 @@ class UserAdminService extends UserService
 
     protected $userRoleMapAdminService;
 
+    protected $userGroupMapAdminService;
+
     public function __construct(UserAdminRepository $repo,
-                                UserRoleMapAdminService $userRoleMapAdminService)
+                                UserRoleMapAdminService $userRoleMapAdminService,
+                                UserGroupMapAdminService $userGroupMapAdminService)
     {
-        $this->userRoleMapAdminService = $userRoleMapAdminService;
+        $this->userRoleMapAdminService  = $userRoleMapAdminService;
+        $this->userGroupMapAdminService = $userGroupMapAdminService;
         parent::__construct($repo);
     }
 
@@ -145,19 +149,30 @@ class UserAdminService extends UserService
 
         $result = parent::store($input);
         if (gettype($result) == 'boolean') {    //更新使用者
-            $map = [
-                'user_id'=> $input->id,
-                'role_ids'=> [$input->role_id]
+            $role_map = [
+                'user_id'   => $input->id,
+                'role_ids'   => $input->role_ids
+            ];
+
+            $group_map = [
+                'user_id'   => $input->id,        //新增使用者
+                'group_ids'  => $input->group_ids
             ];
         }
         else {
-            $map = [
-                'user_id'=> $result->id,        //新增使用者
-                'role_ids'=> [$input->role_id]
+            $role_map = [
+                'user_id'   => $result->id,        //新增使用者
+                'role_ids'   => $input->role_ids
+            ];
+
+            $group_map = [
+                'user_id'   => $result->id,
+                'group_ids'  => $input->group_ids
             ];
         }
 
-        $this->userRoleMapAdminService->storeKeysMap(Helper::collect($map));
+        $this->userRoleMapAdminService->storeKeysMap(Helper::collect($role_map));
+        $this->userGroupMapAdminService->storeKeysMap(Helper::collect($group_map));
 
         return $result;
     }

@@ -26,6 +26,11 @@ class UserSearchPost extends ListRequest
                 'nullable',
                 'integer',
                 Rule::in([0,1,-2])
+            ],
+            'activation'    => [
+                'nullable',
+                'integer',
+                Rule::in([0,1])
             ]
         ];
 
