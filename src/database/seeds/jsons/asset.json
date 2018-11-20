@@ -40,6 +40,231 @@
         ],
         "apis": []
       },
+
+      {
+        "title": "System",
+        "path": "",
+        "component": "",
+        "type": "separator",
+        "redirect": "",
+        "icon": "",
+        "state": 1,
+        "showNav": 1,
+        "ordering": 5,
+        "created_by": 1,
+        "children": [],
+        "apis": []
+      },
+      {
+        "title": "APIs",
+        "path": "/api",
+        "component": "",
+        "type": "alias",
+        "redirect": "",
+        "icon": "th-list",
+        "state": 1,
+        "showNav": 1,
+        "ordering": 6,
+        "created_by": 1,
+        "children": [
+          {
+            "title": "API Manage",
+            "path": "",
+            "component": "api/list",
+            "type": "menu",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 1,
+            "ordering": 1,
+            "created_by": 1,
+            "children": [],
+            "apis": [
+              {
+                "method": "add",
+                "url": "/admin/asset/api/store",
+                "created_by": 1
+              },
+              {
+                "method": "edit",
+                "url": "/admin/asset/api/store",
+                "created_by": 1
+              },
+              {
+                "method": "delete",
+                "url": "/admin/asset/api/remove",
+                "created_by": 1
+              }
+            ]
+          },
+          {
+            "title": "Edit API",
+            "path": "/edit",
+            "component": "api/edit",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 2,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          }
+        ],
+        "apis": []
+      },
+      {
+        "title": "Assets",
+        "path": "/asset",
+        "component": "",
+        "type": "alias",
+        "redirect": "",
+        "icon": "th-list",
+        "state": 1,
+        "showNav": 1,
+        "ordering": 7,
+        "created_by": 1,
+        "children": [
+          {
+            "title": "Asset Manage",
+            "path": "",
+            "component": "asset/list",
+            "type": "menu",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 1,
+            "ordering": 1,
+            "created_by": 1,
+            "children": [],
+            "apis": [
+              {
+                "method": "add",
+                "url": "/admin/asset/store",
+                "created_by": 1
+              },
+              {
+                "method": "edit",
+                "url": "/admin/asset/store",
+                "created_by": 1
+              },
+              {
+                "method": "delete",
+                "url": "/admin/asset/remove",
+                "created_by": 1
+              },
+              {
+                "method": "updateState",
+                "url": "/admin/asset/state",
+                "created_by": 1
+              },
+              {
+                "method": "grant_group",
+                "url": "/admin/asset/groups/map/store",
+                "created_by": 1
+              },
+              {
+                "method": "grant_role",
+                "url": "/admin/asset/{asset_id}/map/store",
+                "created_by": 1
+              }
+            ]
+          },
+          {
+            "title": "Edit Asset",
+            "path": "/edit",
+            "component": "asset/edit",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 2,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "Assign Group for Asset",
+            "path": "/grant/group",
+            "component": "asset/grant/group",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 3,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "Assign API for Asset",
+            "path": "/grant/api",
+            "component": "asset/grant/api",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 4,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "Asset Group",
+            "path": "/group",
+            "component": "asset/group/list",
+            "type": "menu",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 1,
+            "ordering": 5,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "Edit Asset Group",
+            "path": "/group/edit",
+            "component": "asset/group/edit",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 6,
+            "created_by": 1,
+            "children": [],
+            "apis": [
+              {
+                "method": "add",
+                "url": "/admin/asset/group/store",
+                "created_by": 1
+              },
+              {
+                "method": "edit",
+                "url": "/admin/asset/group/store",
+                "created_by": 1
+              },
+              {
+                "method": "delete",
+                "url": "/admin/asset/group/remove",
+                "created_by": 1
+              },
+              {
+                "method": "updateState",
+                "url": "/admin/asset/group/state",
+                "created_by": 1
+              }
+            ]
+          }
+        ],
+        "apis": []
+      },
       {
         "title": "Features",
         "path": "",
@@ -298,230 +523,6 @@
             "created_by": 1,
             "children": [],
             "apis": []
-          }
-        ],
-        "apis": []
-      },
-      {
-        "title": "System",
-        "path": "",
-        "component": "",
-        "type": "separator",
-        "redirect": "",
-        "icon": "",
-        "state": 1,
-        "showNav": 1,
-        "ordering": 5,
-        "created_by": 1,
-        "children": [],
-        "apis": []
-      },
-      {
-        "title": "APIs",
-        "path": "/api",
-        "component": "",
-        "type": "alias",
-        "redirect": "",
-        "icon": "th-list",
-        "state": 1,
-        "showNav": 1,
-        "ordering": 6,
-        "created_by": 1,
-        "children": [
-          {
-            "title": "API Manage",
-            "path": "",
-            "component": "api/list",
-            "type": "menu",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 1,
-            "ordering": 1,
-            "created_by": 1,
-            "children": [],
-            "apis": [
-              {
-                "method": "add",
-                "url": "/admin/asset/api/store",
-                "created_by": 1
-              },
-              {
-                "method": "edit",
-                "url": "/admin/asset/api/store",
-                "created_by": 1
-              },
-              {
-                "method": "delete",
-                "url": "/admin/asset/api/remove",
-                "created_by": 1
-              }
-            ]
-          },
-          {
-            "title": "Edit API",
-            "path": "/edit",
-            "component": "api/edit",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 2,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          }
-        ],
-        "apis": []
-      },
-      {
-        "title": "Assets",
-        "path": "/asset",
-        "component": "",
-        "type": "alias",
-        "redirect": "",
-        "icon": "th-list",
-        "state": 1,
-        "showNav": 1,
-        "ordering": 7,
-        "created_by": 1,
-        "children": [
-          {
-            "title": "Asset Manage",
-            "path": "",
-            "component": "asset/list",
-            "type": "menu",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 1,
-            "ordering": 1,
-            "created_by": 1,
-            "children": [],
-            "apis": [
-              {
-                "method": "add",
-                "url": "/admin/asset/store",
-                "created_by": 1
-              },
-              {
-                "method": "edit",
-                "url": "/admin/asset/store",
-                "created_by": 1
-              },
-              {
-                "method": "delete",
-                "url": "/admin/asset/remove",
-                "created_by": 1
-              },
-              {
-                "method": "updateState",
-                "url": "/admin/asset/state",
-                "created_by": 1
-              },
-              {
-                "method": "grant_group",
-                "url": "/admin/asset/groups/map/store",
-                "created_by": 1
-              },
-              {
-                "method": "grant_role",
-                "url": "/admin/asset/{asset_id}/map/store",
-                "created_by": 1
-              }
-            ]
-          },
-          {
-            "title": "Edit Asset",
-            "path": "/edit",
-            "component": "asset/edit",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 2,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "Assign Group for Asset",
-            "path": "/grant/group",
-            "component": "asset/grant/group",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 3,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "Assign API for Asset",
-            "path": "/grant/api",
-            "component": "asset/grant/api",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 4,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "Asset Group",
-            "path": "/group",
-            "component": "asset/group/list",
-            "type": "menu",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 1,
-            "ordering": 5,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "Edit Asset Group",
-            "path": "/group/edit",
-            "component": "asset/group/edit",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 6,
-            "created_by": 1,
-            "children": [],
-            "apis": [
-              {
-                "method": "add",
-                "url": "/admin/asset/group/store",
-                "created_by": 1
-              },
-              {
-                "method": "edit",
-                "url": "/admin/asset/group/store",
-                "created_by": 1
-              },
-              {
-                "method": "delete",
-                "url": "/admin/asset/group/remove",
-                "created_by": 1
-              },
-              {
-                "method": "updateState",
-                "url": "/admin/asset/group/state",
-                "created_by": 1
-              }
-            ]
           }
         ],
         "apis": []
