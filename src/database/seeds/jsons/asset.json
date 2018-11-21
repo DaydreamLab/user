@@ -24,7 +24,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "Dashboard",
+            "title": "ASSET_USER_DASHBOARD_TITLE",
             "path": "",
             "component": "index",
             "type": "menu",
@@ -42,7 +42,7 @@
       },
 
       {
-        "title": "System",
+        "title": "ASSET_SEPARATOR_SYSTEM_TITLE",
         "path": "",
         "component": "",
         "type": "separator",
@@ -56,7 +56,7 @@
         "apis": []
       },
       {
-        "title": "APIs",
+        "title": "ASSET_USER_APIS_TITLE",
         "path": "/api",
         "component": "",
         "type": "alias",
@@ -68,7 +68,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "API Manage",
+            "title": "ASSET_USER_API_MANAGE_TITLE",
             "path": "",
             "component": "api/list",
             "type": "menu",
@@ -98,7 +98,7 @@
             ]
           },
           {
-            "title": "Edit API",
+            "title": "ASSET_USER_API_EDIT_TITLE",
             "path": "/edit",
             "component": "api/edit",
             "type": "function",
@@ -115,7 +115,7 @@
         "apis": []
       },
       {
-        "title": "Assets",
+        "title": "ASSET_USER_ASSETS_TITLE",
         "path": "/asset",
         "component": "",
         "type": "alias",
@@ -127,7 +127,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "Asset Manage",
+            "title": "ASSET_USER_ASSET_MANAGE_TITLE",
             "path": "",
             "component": "asset/list",
             "type": "menu",
@@ -172,7 +172,7 @@
             ]
           },
           {
-            "title": "Edit Asset",
+            "title": "ASSET_USER_ASSET_EDIT_TITLE",
             "path": "/edit",
             "component": "asset/edit",
             "type": "function",
@@ -186,7 +186,7 @@
             "apis": []
           },
           {
-            "title": "Assign Group for Asset",
+            "title": "ASSET_USER_ASSET_ASSIGN_GROUP_TITLE",
             "path": "/grant/group",
             "component": "asset/grant/group",
             "type": "function",
@@ -200,7 +200,7 @@
             "apis": []
           },
           {
-            "title": "Assign API for Asset",
+            "title": "ASSET_USER_ASSET_ASSIGN_API_TITLE",
             "path": "/grant/api",
             "component": "asset/grant/api",
             "type": "function",
@@ -214,7 +214,7 @@
             "apis": []
           },
           {
-            "title": "Asset Group",
+            "title": "ASSET_USER_ASSET_GROUPS_TITLE",
             "path": "/group",
             "component": "asset/group/list",
             "type": "menu",
@@ -228,7 +228,7 @@
             "apis": []
           },
           {
-            "title": "Edit Asset Group",
+            "title": "ASSET_USER_ASSET_GROUP_EDIT_TITLE",
             "path": "/group/edit",
             "component": "asset/group/edit",
             "type": "function",
@@ -266,7 +266,7 @@
         "apis": []
       },
       {
-        "title": "Features",
+        "title": "ASSET_SEPARATOR_FEATURES_TITLE",
         "path": "",
         "component": "",
         "type": "separator",
@@ -280,7 +280,7 @@
         "apis": []
       },
       {
-        "title": "Roles",
+        "title": "ASSET_USER_ROLES_TITLE",
         "path": "/role",
         "component": "",
         "type": "alias",
@@ -292,7 +292,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "Role Manage",
+            "title": "ASSET_USER_ROLE_MANAGE_TITLE",
             "path": "",
             "component": "role/list",
             "type": "menu",
@@ -332,7 +332,7 @@
             ]
           },
           {
-            "title": "Assign Asset for Role",
+            "title": "ASSET_USER_ROLE_ASSIGN_ASSET_TITLE",
             "path": "/grant/asset",
             "component": "role/grant/asset",
             "type": "function",
@@ -346,7 +346,7 @@
             "apis": []
           },
           {
-            "title": "Assign API for Role",
+            "title": "ASSET_USER_ROLE_ASSIGN_API_TITLE",
             "path": "/grant/api",
             "component": "role/grant/api",
             "type": "function",
@@ -360,7 +360,7 @@
             "apis": []
           },
           {
-            "title": "Edit Role",
+            "title": "ASSET_USER_ROLE_EDIT_TITLE",
             "path": "/edit",
             "component": "role/edit",
             "type": "function",
@@ -377,7 +377,7 @@
         "apis": []
       },
       {
-        "title": "Users",
+        "title": "ASSET_USER_USERS_TITLE",
         "path": "/user",
         "component": "",
         "type": "alias",
@@ -389,7 +389,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "User Manage",
+            "title": "ASSET_USER_USER_MANAGE_TITLE",
             "path": "",
             "component": "user/list",
             "type": "menu",
@@ -434,7 +434,7 @@
             ]
           },
           {
-            "title": "Edit User",
+            "title": "ASSET_USER_USER_EDIT_TITLE",
             "path": "/edit",
             "component": "user/edit",
             "type": "function",
@@ -476,7 +476,7 @@
             "apis": []
           },
           {
-            "title": "User Group",
+            "title": "ASSET_USER_USER_GROUPS_TITLE",
             "path": "/group",
             "component": "user/group/list",
             "type": "menu",
@@ -511,7 +511,7 @@
             ]
           },
           {
-            "title": "Edit User Group",
+            "title": "ASSET_USER_USER_GROUP_EDIT_TITLE",
             "path": "/group/edit",
             "component": "user/group/edit",
             "type": "function",
