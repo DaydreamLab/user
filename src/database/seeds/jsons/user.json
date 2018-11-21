@@ -7,20 +7,20 @@
     "nickname": "Admin",
     "redirect": "/",
     "activation": 1,
-    "activate_token": "admin",
+    "activate_token": "superuser",
     "groups":[6],
     "roles":[2]
   },
   {
-    "email": "jordan@daydream-lab.com",
+    "email": "administrator@daydream-lab.com",
     "password": "daydream5182",
-    "first_name": "Tsai",
-    "last_name": "Jordan",
-    "nickname": "Jordan",
+    "first_name": "Daydream Lab",
+    "last_name": "Admin",
+    "nickname": "Admin",
     "redirect": "/",
     "activation": 1,
-    "activate_token": "jordan",
-    "groups":[6],
+    "activate_token": "administrator",
+    "groups":[5],
     "roles":[2]
   },
   {
@@ -35,4 +35,5 @@
     "groups":[4],
     "roles":[2]
   }
+
 ]

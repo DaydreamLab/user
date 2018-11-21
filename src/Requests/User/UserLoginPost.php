@@ -26,7 +26,7 @@ class UserLoginPost extends AdminRequest
     {
         return [
             'email'     => 'required|email',
-            'password'  => 'required|string|min:8|max:16'
+            'password'  => 'required|string'
         ];
     }
 }
