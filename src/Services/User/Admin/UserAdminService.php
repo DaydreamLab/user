@@ -19,12 +19,19 @@ class UserAdminService extends UserService
 
     protected $userGroupMapAdminService;
 
+    protected $search_keys = [
+        'first_name',
+        'last_name',
+        'email',
+    ];
+
     public function __construct(UserAdminRepository $repo,
                                 UserRoleMapAdminService $userRoleMapAdminService,
                                 UserGroupMapAdminService $userGroupMapAdminService)
     {
         $this->userRoleMapAdminService  = $userRoleMapAdminService;
         $this->userGroupMapAdminService = $userGroupMapAdminService;
+
         parent::__construct($repo);
     }
 
@@ -117,6 +124,32 @@ class UserAdminService extends UserService
         $this->response = $tree;
 
         return $tree;
+    }
+
+    public function search(Collection $input)
+    {
+        $input_groups = $input->get('groups');
+        $input->forget('groups');
+
+        $search_result = parent::search($input);
+
+        $items = new Collection();
+        foreach ($search_result as $user)
+        {
+            foreach ($user->groups as $group)
+            {
+                if ($input_groups == $group->id)
+                {
+                    $items->push($user);
+                    break;
+                }
+            }
+        }
+
+        $items  = $this->repo->paginate($items, $input->get('limit'));
+        $this->response = $items;
+
+        return $items;
     }
 
 

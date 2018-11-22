@@ -31,7 +31,9 @@ class UserSearchPost extends ListRequest
                 'nullable',
                 'integer',
                 Rule::in([0,1])
-            ]
+            ],
+            'search'    => 'nullable|string',
+            'groups'    => 'nullable|integer'
         ];
 
         return array_merge(parent::rules(), $rules);

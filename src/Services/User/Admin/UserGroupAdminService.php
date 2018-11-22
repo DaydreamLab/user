@@ -15,10 +15,11 @@ class UserGroupAdminService extends UserGroupService
         addNested as traitAddNested;
     }
 
-    protected  $viewlevelAdminService;
+    protected $viewlevelAdminService;
 
     protected $type = 'UserGroupAdmin';
 
+    protected $search_keys = ['title'];
 
     public function __construct(UserGroupAdminRepository $repo, ViewlevelAdminService $viewlevelAdminService)
     {
