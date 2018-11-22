@@ -25,15 +25,16 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
 
         // ----- Asset -----
         Route::group(['prefix' => 'asset'], function (){
-            Route::get('{id}', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@getItem');
-            Route::get('{id}/groups', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@getGroups');
-            Route::get('{id}/apis', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@getApis');
+
             Route::post('remove', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@remove');
             Route::post('state', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@state');
             Route::post('store','DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@store');
             Route::post('search','DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@search');
             Route::post('ordering','DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@ordering');
-
+            Route::get('treeList', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@treeList');
+            Route::get('{id}', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@getItem');
+            Route::get('{id}/groups', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@getGroups');
+            Route::get('{id}/apis', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@getApis');
 
 
             Route::group(['prefix' => 'api'], function (){

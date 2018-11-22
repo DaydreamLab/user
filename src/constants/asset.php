@@ -1076,6 +1076,22 @@ return [
         'message'   => 'Asset api front store map fail'
     ],
 
+    // Get Tree List
+    'ASSET_GET_TREE_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset get tree list success'
+    ],
+    'ASSET_ADMIN_GET_TREE_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset admin get tree list success'
+    ],
+    'ASSET_FRONT_GET_TREE_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset front get tree list success'
+    ],
+
+
+
 //    // ----- Asset Api Map -----
 //    // Create
 //    'ASSET_API_MAP_CREATE_SUCCESS' => [
