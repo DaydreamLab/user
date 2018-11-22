@@ -313,4 +313,18 @@ return [
         'code'      => 200,
         'message'   => 'Viewlevel front get tree success'
     ],
+
+    //Get List
+    'VIEWLEVEL_GET_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Viewlevel get list success'
+    ],
+    'VIEWLEVEL_ADMIN_GET_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Viewlevel admin get list success'
+    ],
+    'VIEWLEVEL_FRONT_GET_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Viewlevel front get list success'
+    ],
 ];
