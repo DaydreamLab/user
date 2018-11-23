@@ -41,7 +41,7 @@ class AssetAdminController extends BaseController
     {
         $this->service->getItem($id);
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return ResponseHelper:: response($this->service->status, $this->service->response);
     }
 
 

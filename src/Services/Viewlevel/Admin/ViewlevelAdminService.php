@@ -33,6 +33,6 @@ class ViewlevelAdminService extends ViewlevelService
         $this->status   =  Str::upper(Str::snake($this->type .'GetListSuccess'));
         $this->response = $data;
 
-        return $items;
+        return $data;
     }
 }
