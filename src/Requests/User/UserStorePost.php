@@ -45,7 +45,7 @@ class UserStorePost extends AdminRequest
             'address'               => 'nullable|string',
             'zipcode'               => 'nullable|string',
             'timezone'              => 'nullable|string',
-            'language'              => 'nullable|string',
+            'locale'                => 'nullable|string',
         ];
     }
 }

@@ -40,7 +40,7 @@ class CreateUsersTable extends Migration
             $table->unsignedTinyInteger('reset_password')->default(0);
             $table->timestamp('last_reset_at')->nullable();
             $table->string('timezone')->nullable();
-            $table->char('language', '5')->nullable();
+            $table->string('locale')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();

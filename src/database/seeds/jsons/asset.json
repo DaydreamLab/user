@@ -490,22 +490,22 @@
             "apis": [
               {
                 "method": "add",
-                "url": "",
+                "url": "/user/group/store",
                 "created_by": 1
               },
               {
                 "method": "edit",
-                "url": "",
+                "url": "/user/group/store",
                 "created_by": 1
               },
               {
                 "method": "delete",
-                "url": "",
+                "url": "/user/group/remove",
                 "created_by": 1
               },
               {
                 "method": "updateState",
-                "url": "",
+                "url": "/user/group/state",
                 "created_by": 1
               }
             ]

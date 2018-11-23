@@ -138,7 +138,7 @@ class UserAdminService extends UserService
         {
             foreach ($user->groups as $group)
             {
-                if ($input_groups == $group->id)
+                if ($input_groups == $group->id || $input_groups == '')
                 {
                     $items->push($user);
                     break;

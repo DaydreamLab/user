@@ -19,7 +19,9 @@ class RolesTableSeeder extends Seeder
     {
         $data = json_decode(file_get_contents(__DIR__.'/jsons/role.json'), true);
 
-        $this->migrate($data, null);
+        $root = Role::find(1);
+
+        $this->migrate($data, $root);
     }
 
     public function migrate($data, $parent)

@@ -38,7 +38,7 @@ class User extends Authenticatable
         'phone',
         'birthday',
         'timezone',
-        'language',
+        'locale',
         'school',
         'job',
         'country',
