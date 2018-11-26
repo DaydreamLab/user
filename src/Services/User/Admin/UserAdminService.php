@@ -165,12 +165,12 @@ class UserAdminService extends UserService
     {
         if ($input->has('id') ) {
             // 有填密碼
-            if(!$input->get('password') == '') {
+            if($input->get('password') != '') {
                 $password = $input->get('password');
+                $input->forget('password');
+                $input->forget('password_confirmation');
+                $input->put('password', bcrypt($password));
             }
-            $input->forget('password');
-            $input->forget('password_confirmation');
-            $input->put('password', bcrypt($password));
         }
         else {
             $password = $input->password;

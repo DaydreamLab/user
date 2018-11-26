@@ -36,13 +36,16 @@ class AssetsTableSeeder extends Seeder
             }
         };
 
-        $assets     = $service->search(Helper::collect(['limit' => 10000]));
+        $assets     = $service->getRepo()->findBy('id' , '!=', 1);
         $assets->forget('pagination');
+
         foreach ($assets as $asset) {
             $full_path = $asset->path;
+
             $asset->full_path = $combine_path($asset->parent_id, $full_path);
             $asset->save();
         }
+
     }
 
     public function migrate($data, $parent)
