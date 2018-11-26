@@ -22,7 +22,7 @@ class RoleAdminService extends RoleService
         $data = [];
         foreach ($result as $item)
         {
-            if ($item->title != 'Super User')
+            if ($this->user->groups->contains('title', 'Super User') || $item->title != 'Super User')
             {
                 $data[] = $item;
             }

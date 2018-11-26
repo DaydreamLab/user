@@ -29,34 +29,34 @@ class UsersGroupsTableSeeder extends Seeder
             'ordering'      => 1
         ]);
 
-        $public = $service->storeNested(Helper::collect([
+        $public = $service->store(Helper::collect([
             'parent_id'     => $root->id,
             'title'         => 'Public',
             'description'   => 'Public',
         ]));
 
-        $guest = $service->storeNested(Helper::collect([
+        $guest = $service->store(Helper::collect([
             'parent_id'     => $root->id,
             'title'         => 'Guest',
             'description'   => 'Guest',
         ]));
 
 
-        $registered = $service->storeNested(Helper::collect([
+        $registered = $service->store(Helper::collect([
             'parent_id'     => $root->id,
             'title'         => 'Registered',
             'description'   => 'Registered',
         ]));
 
 
-        $administator = $service->storeNested(Helper::collect([
+        $administator = $service->store(Helper::collect([
             'parent_id'     => $root->id,
             'title'         => 'Administrator',
             'description'   => 'Administrator',
         ]));
 
 
-        $superuser = $service->storeNested(Helper::collect([
+        $superuser = $service->store(Helper::collect([
             'parent_id'     => $root->id,
             'title'         => 'Super User',
             'description'   => 'Super User',

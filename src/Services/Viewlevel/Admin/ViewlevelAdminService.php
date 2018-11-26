@@ -27,7 +27,18 @@ class ViewlevelAdminService extends ViewlevelService
             $temp = [];
             $temp['id'] = $item->id;
             $temp['title'] = $item->title;
-            $data[] = $temp;
+
+            if ($temp['title'] == 'Super User')
+            {
+                if ($this->user->groups->contains('title', 'Super User'))
+                {
+                    $data[] = $temp;
+                }
+            }
+            else
+            {
+                $data[] = $temp;
+            }
         }
 
         $this->status   =  Str::upper(Str::snake($this->type .'GetListSuccess'));
