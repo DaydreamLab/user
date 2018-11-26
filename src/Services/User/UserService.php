@@ -9,6 +9,7 @@ use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 

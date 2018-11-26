@@ -41,4 +41,23 @@ class UserGroupAdminService extends UserGroupService
         }
         return $item;
     }
+
+
+    public function tree()
+    {
+        $result = parent::tree();
+
+        $data = [];
+        foreach ($result as $item)
+        {
+            if ($item->title != 'Super User')
+            {
+                $data[] = $item;
+            }
+        }
+
+        $this->response = $data;
+
+        return $data;
+    }
 }

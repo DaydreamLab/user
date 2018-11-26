@@ -8,6 +8,7 @@ use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -23,6 +24,10 @@ class UserAdminService extends UserService
         'first_name',
         'last_name',
         'email',
+    ];
+
+    protected $eagers = [
+        //'usergroup'
     ];
 
     public function __construct(UserAdminRepository $repo,
@@ -131,14 +136,17 @@ class UserAdminService extends UserService
         $input_groups = $input->get('groups');
         $input->forget('groups');
 
+        $input->put('eagers', $this->eagers);
+
         $search_result = parent::search($input);
 
+        //
         $items = new Collection();
         foreach ($search_result as $user)
         {
-            foreach ($user->groups as $group)
+            foreach ($user->usergroup as $group)
             {
-                if ($input_groups == $group->id || $input_groups == '')
+                if ($input_groups == '' || $input_groups == $group->id)
                 {
                     $items->push($user);
                     break;

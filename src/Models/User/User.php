@@ -67,7 +67,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        //'roles'
+        'roles'
     ];
 
     protected $appends = [
@@ -99,6 +99,8 @@ class User extends Authenticatable
                 $item->updated_by = $user->id;
             }
         });
+
+
     }
 
 

@@ -89,10 +89,11 @@ class RoleService extends BaseService
 
     public function getTree()
     {
+        $items = $this->repo->getTree();
         $this->status = Str::upper(Str::snake($this->type.'GetTreeSuccess'));;
-        $this->response = $this->repo->getTree();
+        $this->response = $items;
 
-        return true;
+        return $items;
     }
 
 
