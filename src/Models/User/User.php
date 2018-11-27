@@ -172,13 +172,25 @@ class User extends Authenticatable
     {
         $super_user  = UserGroup::where('title', 'Super User')->first();
         $admin       = UserGroup::where('title', 'Administrator')->first();
-        $user        = Auth::user();
-        //foreach ($user->role()->get() as $role) {
-        foreach ($user->usergroup()->get() as $group) {
+
+        foreach ($this->groups as $group) {
             if ($group->_lft >= $super_user->_lft && $group->_rgt <= $super_user->_rgt) {
                 return true;
             }
             elseif ($group->_lft >= $admin->_lft && $group->_rgt <= $admin->_rgt) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public function isSuperUser()
+    {
+        $super_user  = UserGroup::where('title', 'Super User')->first();
+
+        foreach ($this->groups as $group) {
+            if ($group->_lft >= $super_user->_lft && $group->_rgt <= $super_user->_rgt) {
                 return true;
             }
         }

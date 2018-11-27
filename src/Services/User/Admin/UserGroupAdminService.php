@@ -43,14 +43,39 @@ class UserGroupAdminService extends UserGroupService
     }
 
 
-    public function tree()
+    public function search(Collection $input)
     {
-        $result = parent::tree();
+        if (!$this->user->isSuperUser())
+        {
+            $input->put('where', [
+                [
+                    'key'       => 'title',
+                    'operator'  => '!=',
+                    'value'     => 'Super User'
+                ]
+            ]);
+        }
+
+        return parent::search($input);
+    }
+
+
+
+    public function treeList()
+    {
+        $result =  parent::treeList();
 
         $data = [];
         foreach ($result as $item)
         {
-            if ($this->user->groups->contains('title', 'Super User') || $item->title != 'Super User')
+            if ($item['tree_list_title'] == 'Super User')
+            {
+                if ($this->user->isSuperUser())
+                {
+                    $data[] = $item;
+                }
+            }
+            else
             {
                 $data[] = $item;
             }
@@ -60,4 +85,5 @@ class UserGroupAdminService extends UserGroupService
 
         return $data;
     }
+
 }

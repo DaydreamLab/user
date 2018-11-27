@@ -30,7 +30,7 @@ class ViewlevelAdminService extends ViewlevelService
 
             if ($temp['title'] == 'Super User')
             {
-                if ($this->user->groups->contains('title', 'Super User'))
+                if ($this->user->isSuperUser())
                 {
                     $data[] = $temp;
                 }

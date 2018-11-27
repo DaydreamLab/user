@@ -137,7 +137,16 @@ class UserAdminService extends UserService
         $input_groups = $input->get('groups');
         $input->forget('groups');
 
-        $input->put('eagers', $this->eagers);
+        if (!$this->user->isSuperUser())
+        {
+            $input->put('where', [
+                [
+                    'key'       => 'email',
+                    'operator'  => '!=',
+                    'value'     => 'admin@daydream-lab.com'
+                ]
+            ]);
+        }
 
         $search_result = parent::search($input);
 
