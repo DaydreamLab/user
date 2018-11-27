@@ -445,7 +445,13 @@
             "ordering": 2,
             "created_by": 1,
             "children": [],
-            "apis": []
+            "apis": [
+              {
+                "method": "grant_role",
+                "url": "/admin/user/role/map/store",
+                "created_by": 1
+              }
+            ]
           },
           {
             "title": "Assign Group for User",

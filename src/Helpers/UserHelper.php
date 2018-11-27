@@ -8,6 +8,7 @@ class UserHelper
 {
     public static function getUserLoginData($user)
     {
+
         $tokenResult = $user->createToken(env('APP_NAME'));
         $token       = $tokenResult->token;
         $token->expires_at = now()->addDays(7);
@@ -19,6 +20,7 @@ class UserHelper
         $data['phone']       = $user->phone;
         $data['id']          = $user->id;
         $data['redirect']    = $user->redirect;
+        $data['groups']      = $user->groups;
         return (object)$data;
     }
 
