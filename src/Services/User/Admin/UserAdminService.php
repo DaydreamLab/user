@@ -27,7 +27,8 @@ class UserAdminService extends UserService
     ];
 
     protected $eagers = [
-        //'usergroup'
+        //'usergroup',
+        //'roles'
     ];
 
     public function __construct(UserAdminRepository $repo,

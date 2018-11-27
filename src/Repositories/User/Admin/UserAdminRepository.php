@@ -11,4 +11,10 @@ class UserAdminRepository extends UserRepository
     {
         parent::__construct($model);
     }
+
+
+    public function find($id)
+    {
+        return $this->model->with('roles')->find($id);
+    }
 }

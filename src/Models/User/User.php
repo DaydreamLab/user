@@ -67,12 +67,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'roles'
     ];
 
     protected $appends = [
         'full_name',
-        'roles',
+        //'roles',
         'groups',
         'viewlevels',
         'access_ids',
@@ -146,7 +145,7 @@ class User extends Authenticatable
 
     public function getRolesAttribute()
     {
-        return $this->role()->get();
+        return $this->roles()->get();
     }
 
 
@@ -187,7 +186,7 @@ class User extends Authenticatable
     }
 
 
-    public function role()
+    public function roles()
     {
         return $this->belongsToMany(Role::class, 'users_roles_maps', 'user_id', 'role_id');
     }
