@@ -21,7 +21,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
     });
 
     // ----- Admin Routes -----
-    Route::group(['middleware' => ['api', 'auth:api', 'expired', 'admin'], 'prefix' => 'admin'], function (){
+    Route::group(['middleware' => ['auth:api', 'expired', 'admin'], 'prefix' => 'admin'], function (){
 
         // ----- Asset -----
         Route::group(['prefix' => 'asset'], function (){

@@ -41,6 +41,7 @@ class UserGroup extends BaseModel
         '_lft',
         '_rgt',
         'pivot',
+        'ancestors',
         'created_at',
         'updated_at'
     ];
@@ -53,7 +54,7 @@ class UserGroup extends BaseModel
      */
     protected $appends = [
         //'veiwlevels'
-        'tree_title'
+        'tree_title',
     ];
 
 
