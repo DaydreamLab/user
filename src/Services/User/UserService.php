@@ -2,7 +2,11 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use DaydreamLab\JJAJ\Events\Add;
+use DaydreamLab\JJAJ\Events\Modify;
+use DaydreamLab\JJAJ\Events\Remove;
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Events\Login;
 use DaydreamLab\User\Helpers\UserHelper;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Repositories\User\UserRepository;
@@ -17,9 +21,21 @@ class UserService extends BaseService
 {
     protected $type = 'User';
 
+    protected $model_name = 'User';
+
+
     public function __construct(UserRepository $repo)
     {
         parent::__construct($repo);
+    }
+
+    public function add(Collection $input)
+    {
+        $item = parent::add($input);
+
+        event(new Add($item, $this->model_name, $input, $this->user));
+
+        return $item;
     }
 
 
@@ -81,8 +97,10 @@ class UserService extends BaseService
             'email'     => Str::lower($input->email),
             'password'  => $input->password
         ]);
+
+        $user = Auth::user() ?: null;
+        $login = false;
         if ($auth) {
-            $user = Auth::user();
             if ($user->activation) { // 帳號已啟用
                 if ($user->block) {
                     $this->status = 'USER_IS_BLOCKED';
@@ -90,6 +108,7 @@ class UserService extends BaseService
                 else {
                     $this->status = 'USER_LOGIN_SUCCESS';
                     $this->response = UserHelper::getUserLoginData($user);
+                    $login = true;
                 }
             } else { // 帳號尚未啟用
                 $user->notify(new RegisteredNotification($user));
@@ -98,6 +117,8 @@ class UserService extends BaseService
         } else {
             $this->status = 'USER_EMAIL_OR_PASSWORD_INCORRECT';
         }
+
+        event(new Login($this->model_name, $login,  $this->status, $user));
     }
 
     public function logout()
@@ -107,6 +128,26 @@ class UserService extends BaseService
             $user->token()->delete();
         }
         $this->status = 'USER_LOGOUT_SUCCESS';
+    }
+
+
+    public function modify(Collection $input)
+    {
+        $result =  parent::modify($input);
+
+        event(new Modify($this->find($input->id), $this->model_name, $result, $input, $this->user));
+
+        return $result;
+    }
+
+
+    public function remove(Collection $input)
+    {
+        $result =  parent::remove($input);
+
+        event(new Remove($this->model_name, $result, $input, $this->user));
+
+        return $result;
     }
 
 }

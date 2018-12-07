@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Services\User\Admin;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
@@ -44,6 +45,7 @@ class UserAdminService extends UserService
 
     public function block(Collection $input)
     {
+        $result = false;
         foreach ($input->ids as $key => $id) {
             $user           = $this->find($id);
             $user->block    = $input->block;
@@ -60,6 +62,7 @@ class UserAdminService extends UserService
             $action = 'Unblock';
         }
 
+        event(new Block($this->model_name, $result, $input, $this->user));
 
         if($result) {
             $this->status =  Str::upper(Str::snake($this->type. $action . 'Success'));
@@ -69,6 +72,8 @@ class UserAdminService extends UserService
         }
 
         $this->response = null;
+
+
         return $result;
     }
 
@@ -156,10 +161,21 @@ class UserAdminService extends UserService
         {
             foreach ($user->usergroup as $group)
             {
-                if ($input_groups == '' || $input_groups == $group->id)
+                if ($input_groups == '')
                 {
-                    $items->push($user);
-                    break;
+                    if (in_array($group->id, $this->user->viewlevels))
+                    {
+                        $items->push($user);
+                        break;
+                    }
+                }
+                else
+                {
+                    if($input_groups == $group->id)
+                    {
+                        $items->push($user);
+                        break;
+                    }
                 }
             }
         }
@@ -185,6 +201,7 @@ class UserAdminService extends UserService
         else {
             $password = $input->password;
             $input->forget('password');
+            $input->forget('password_confirmation');
             $input->put('password', bcrypt($password));
             $input->put('activate_token', Str::random(48));
         }

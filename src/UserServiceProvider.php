@@ -2,11 +2,10 @@
 
 namespace DaydreamLab\User;
 
-use DaydreamLab\JJAJ\Exceptions\BaseExceptionHandler;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
+use DaydreamLab\User\Listeners\UserEventSubscriber;
 use DaydreamLab\User\Middlewares\Admin;
+
 use DaydreamLab\User\Middlewares\Expired;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
 
 class UserServiceProvider extends ServiceProvider
@@ -36,9 +35,9 @@ class UserServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register(UserEventServiceProvider::class);
         $this->app['router']->aliasMiddleware('admin', Admin::class);
         $this->app['router']->aliasMiddleware('expired', Expired::class);
-
         $this->commands($this->commands);
     }
 }
