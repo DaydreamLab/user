@@ -33,7 +33,7 @@ class CreateUsersTable extends Migration
             $table->string('district')->nullable();
             $table->string('address')->nullable();
             $table->string('zipcode')->nullable();
-            $table->boolean('activation')->default(1);
+            $table->boolean('activation')->default(0);
             $table->string('activate_token');
             $table->string('redirect')->nullable();
             $table->unsignedTinyInteger('block')->default(0);

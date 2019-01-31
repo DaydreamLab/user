@@ -6,8 +6,8 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
         Route::post('register', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@register');
         Route::get('activate/{token}', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@activate');
         Route::post('password/reset', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@changePassword');
-        Route::get('fblogin', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@fblogin');
-        Route::get('fblogin/callback', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@fbCallback');
+        Route::get('login/facebook', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@fbLogin');
+        Route::get('login/facebook/callback', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@fbCallback');
         Route::get('logout', 'DaydreamLab\User\Controllers\User\UserController@logout');
         Route::post('login', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@login');
 

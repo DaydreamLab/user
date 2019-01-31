@@ -3,7 +3,6 @@
 namespace DaydreamLab\User\Services\User\Front;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\User\Models\Role\Role;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
 use DaydreamLab\User\Services\Password\PasswordResetService;
@@ -19,6 +18,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\User;
 
 class UserFrontService extends UserService
 {
@@ -72,21 +72,22 @@ class UserFrontService extends UserService
     }
 
 
-    public function fblogin()
+    public function fbLogin()
     {
-        $fb_user = Socialite::driver('facebook')->fields([
-            'name',
-            'first_name',
-            'last_name',
-            'email',
-            'gender',
-        ])->stateless()->user();
+        $fb_user = Socialite::driver('facebook')
+            ->fields([
+                'name',
+                'first_name',
+                'last_name',
+                'email',
+                ])
+            ->stateless()->user();
 
         $social_user = $this->socialUserService->findBy('provider_id', '=', $fb_user->id)->first();
         if ($social_user) {     // 登入
             $user = $this->find($social_user->user_id);
             if ($user) {
-                $data = UserHelper::getUserLoginData($user);
+                $data = $this->helper->getUserLoginData($user);
                 // 更新 token
                 $social_user->token = $fb_user->token;
                 $social_user->save();
@@ -99,41 +100,48 @@ class UserFrontService extends UserService
             }
         }
         else {                  //註冊
-
-            if (!$fb_user->offsetExists('email')) {
-                $this->status = 'SOCIAL_USER_REGISTER_EMAIL_NECESSARY';
-                $this->response = $fb_user->user;
-            }
-
-            $social_data['provider_id']    = $fb_user->id;
-            $social_data['provider']       = 'facebook';
-            $social_data['token']          = $fb_user->token;
-            $social_user                   = $this->socialUserService->create($social_data);
-
-            $user['first_name'] = $fb_user->user['first_name'];
-            $user['last_name']  = $fb_user->user['last_name'];
-            $user['email']      = $fb_user->user['email'];
-
-            $file_name          = $this->uploadService->avatar($fb_user->avatar);
-            $user['image']      = asset('storage/users/'.$file_name);
-            $user['password']   = bcrypt(str_random('8'));
-            $user['activation']      = 1;
-            $user['activate_token']  = str_random(64);
-            $user['reset_password']  = 1;
-
-            $user = $this->create($user);
-            $data = UserHelper::getUserLoginData($user);
-
-            UserRoleMap::create([
-                'user_id'   =>  $user->id,
-                'role_id'  =>  6
-            ]);
-            $social_user->user_id = $user->id;
-            $social_user->save();
-
-            $this->status = 'SOCIAL_USER_LOGIN_SUCCESS';
-            $this->response = $data ;
+            return $this->fbRegister($fb_user);
         }
+
+        return $social_user;
+    }
+
+
+    /**
+     * @param $user User
+     */
+    public function fbRegister($fb_user)
+    {
+        if (!$fb_user->offsetExists('email')) {
+            $this->status = 'SOCIAL_USER_REGISTER_EMAIL_REQUIRED';
+            return false;
+        }
+
+        if ($this->checkEmail($fb_user->email))
+        {
+            return false;
+        }
+
+        $user_data  = $this->helper->mergeDataFbUserCreate($fb_user);
+        $user       = $this->create($user_data);
+        if (!$user)
+        {
+            $this->status = 'USER_CREATE_FAIL';
+            return false;
+        }
+
+        $social_data = $this->helper->mergeDataFbSocialUserCreate($fb_user, $user->id);
+        $social      = $this->socialUserService->create($social_data);
+        if (!$social)
+        {
+            $this->status = 'SOCIAL_USER_CREATE_FAIL';
+            return false;
+        }
+
+        $this->status = 'SOCIAL_USER_LOGIN_SUCCESS';
+        $this->response = $this->helper->getUserLoginData($user) ;
+
+        return $user;
     }
 
 
@@ -165,7 +173,7 @@ class UserFrontService extends UserService
     public function register(Collection $input)
     {
         $exist = $this->checkEmail($input->email);
-        if ($exist->count()) {
+        if ($exist) {
             return ;
         }
 
@@ -174,10 +182,8 @@ class UserFrontService extends UserService
         $input->put('password', bcrypt($password));
         $input->put('activate_token', str_random(48));
 
-        $user      = $this->add($input->toArray());
+        $user      = $this->add($input);
         if ($user) {
-            $guest_role = Role::where('title', 'Guest')->first();
-            $this->userRoleMapService->storeKeysMap(Helper::collect(['user_id' => $user->id, 'role_ids'=> [$guest_role->id]]));
             $user->notify(new RegisteredNotification($user));
             $this->status = 'USER_REGISTER_SUCCESS';
         }
@@ -222,4 +228,6 @@ class UserFrontService extends UserService
             $this->status = 'USER_NOT_FOUND';
         }
     }
+
+
 }

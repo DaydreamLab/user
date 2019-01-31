@@ -29,6 +29,7 @@ class InstallCommand extends Command
         'asset',
         'role',
         'input',
+        'social',
         'viewlevel'
     ];
 
@@ -66,6 +67,7 @@ class InstallCommand extends Command
         }
 
         $this->deleteConstants();
+
 
         $this->call('vendor:publish', [
             '--tag' => 'user-configs'

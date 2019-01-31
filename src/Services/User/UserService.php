@@ -23,10 +23,13 @@ class UserService extends BaseService
 
     protected $model_name = 'User';
 
+    protected $helper;
+
 
     public function __construct(UserRepository $repo)
     {
         parent::__construct($repo);
+        $this->helper = new UserHelper();
     }
 
     public function add(Collection $input)
@@ -107,7 +110,7 @@ class UserService extends BaseService
                 }
                 else {
                     $this->status = 'USER_LOGIN_SUCCESS';
-                    $this->response = UserHelper::getUserLoginData($user);
+                    $this->response = $this->helper->getUserLoginData($user);
                     $login = true;
                 }
             } else { // 帳號尚未啟用

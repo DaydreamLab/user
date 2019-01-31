@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Models\User;
 
+use DaydreamLab\Cms\Models\Item\Item;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\Role\Role;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
@@ -234,4 +235,9 @@ class User extends Authenticatable
         return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id');
     }
 
+
+    public function test()
+    {
+        return $this->hasOne(Item::class);
+    }
 }
