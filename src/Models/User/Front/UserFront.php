@@ -1,6 +1,7 @@
 <?php
 namespace DaydreamLab\User\Models\User\Front;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\User\User;
 
 class UserFront extends User
@@ -13,4 +14,18 @@ class UserFront extends User
     protected $table = 'users';
 
 
+    protected $hidden = [
+        'id',
+    ];
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function($item){
+            $item->created_by = $item->id;
+            $item->save();
+        });
+    }
 }

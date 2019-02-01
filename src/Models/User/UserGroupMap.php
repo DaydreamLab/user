@@ -21,8 +21,6 @@ class UserGroupMap extends BaseModel
     protected $fillable = [
         'user_id',
         'group_id',
-        'created_by',
-        'updated_by'
     ];
 
 
@@ -44,5 +42,9 @@ class UserGroupMap extends BaseModel
     ];
 
 
+    protected static function boot()
+    {
+        //parent::boot();
+    }
 
 }

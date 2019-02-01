@@ -9,9 +9,9 @@ use Laravel\Socialite\Two\User;
 
 class UserHelper
 {
-    public function getUserLoginData($user)
-    {
 
+    public function getUserLoginData($user, $admin = true)
+    {
         $tokenResult = $user->createToken(env('APP_NAME'));
         $token       = $tokenResult->token;
         $token->expires_at = now()->addDays(7);
@@ -19,11 +19,13 @@ class UserHelper
         $data['token']       = $tokenResult->accessToken;
         $data['first_name']  = $user->first_name;
         $data['last_name']   = $user->last_name;
-        $data['phone_code']  = $user->phone_code;
-        $data['phone']       = $user->phone;
-        $data['id']          = $user->id;
-        $data['redirect']    = $user->redirect;
-        $data['groups']      = $user->groups;
+        if ($admin)
+        {
+            $data['id']          = $user->id;
+            $data['redirect']    = $user->redirect;
+            $data['groups']      = $user->groups;
+        }
+
         return (object)$data;
     }
 
@@ -41,6 +43,8 @@ class UserHelper
         $data['avatar']         = $fb_user->avatar;
         $data['password']       = bcrypt(Str::random(16));
         $data['activate_token'] = Str::random(128);
+        $data['activation']     = 1;
+        $data['redirect']       = '/';
 
         return $data;
     }

@@ -37,7 +37,7 @@ class UsersTableSeeder extends Seeder
             {
                 $temp_group['user_id']  = $user->id;
                 $temp_group['group_id'] = $group;
-                $temp_group['created_by'] = 1;
+                //$temp_group['created_by'] = 1;
                 UserGroupMap::create($temp_group);
             }
 

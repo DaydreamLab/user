@@ -12,6 +12,7 @@ use DaydreamLab\User\Helpers\UserHelper;
 use DaydreamLab\User\Models\User\UserRoleMap;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
 use DaydreamLab\User\Services\Upload\UploadService;
+use DaydreamLab\User\Services\User\UserGroupMapService;
 use DaydreamLab\User\Services\User\UserRoleMapService;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
@@ -32,19 +33,23 @@ class UserFrontService extends UserService
 
     protected $userRoleMapService;
 
-    public function __construct(UserFrontRepository $repo,
-                                SocialUserService $socialUserService,
-                                UploadService $uploadService,
-                                PasswordResetService $passwordResetService,
-                                UserRoleMapService $userRoleMapService
+    protected $userGroupMapService;
+
+    public function __construct(UserFrontRepository     $repo,
+                                SocialUserService       $socialUserService,
+                                UploadService           $uploadService,
+                                PasswordResetService    $passwordResetService,
+                                UserRoleMapService      $userRoleMapService,
+                                UserGroupMapService     $userGroupMapService
     )
 
     {
+        parent::__construct($repo);
         $this->socialUserService    = $socialUserService;
         $this->uploadService        = $uploadService;
         $this->passwordResetService = $passwordResetService;
         $this->userRoleMapService   = $userRoleMapService;
-        parent::__construct($repo);
+        $this->userGroupMapService  = $userGroupMapService;
     }
 
 
@@ -72,6 +77,24 @@ class UserFrontService extends UserService
     }
 
 
+    public function create($data)
+    {
+        $user = parent::create($data);
+
+        if ($user)
+        {
+            $this->userGroupMapService->storeKeysMap(
+                Helper::collect([
+                    'user_id'   => $user->id,
+                    'group_ids' => [config('daydreamlab-user.register.group')]
+                ])
+            );
+        }
+
+        return $user;
+    }
+
+
     public function fbLogin()
     {
         $fb_user = Socialite::driver('facebook')
@@ -87,7 +110,7 @@ class UserFrontService extends UserService
         if ($social_user) {     // 登入
             $user = $this->find($social_user->user_id);
             if ($user) {
-                $data = $this->helper->getUserLoginData($user);
+                $data = $this->helper->getUserLoginData($user, false);
                 // 更新 token
                 $social_user->token = $fb_user->token;
                 $social_user->save();
@@ -130,6 +153,7 @@ class UserFrontService extends UserService
             return false;
         }
 
+
         $social_data = $this->helper->mergeDataFbSocialUserCreate($fb_user, $user->id);
         $social      = $this->socialUserService->create($social_data);
         if (!$social)
@@ -139,7 +163,7 @@ class UserFrontService extends UserService
         }
 
         $this->status = 'SOCIAL_USER_LOGIN_SUCCESS';
-        $this->response = $this->helper->getUserLoginData($user) ;
+        $this->response = $this->helper->getUserLoginData($user, false) ;
 
         return $user;
     }
