@@ -41,10 +41,4 @@ class UserGroupMap extends BaseModel
     protected $appends = [
     ];
 
-
-    protected static function boot()
-    {
-        //parent::boot();
-    }
-
 }
