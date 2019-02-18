@@ -5,6 +5,8 @@ use DaydreamLab\JJAJ\Models\BaseModel;
 
 class UserGroupMap extends BaseModel
 {
+    protected static $record_changer = false;
+
     /**
      * The table associated with the model.
      *
