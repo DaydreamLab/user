@@ -45,7 +45,7 @@ class UsersTableSeeder extends Seeder
             {
                 $temp_role['user_id']  = $user->id;
                 $temp_role['role_id'] = $role;
-                $temp_role['created_by'] = 1;
+                //$temp_role['created_by'] = 1;
                 UserRoleMap::create($temp_role);
             }
         }
