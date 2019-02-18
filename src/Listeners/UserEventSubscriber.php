@@ -110,7 +110,7 @@ class UserEventSubscriber
     public function subscribe($events)
     {
         $events->listen(
-            'DaydreamLab\JJAJ\Events\Add',
+            'DaydreamLab\User\Events\Add',
             'DaydreamLab\User\Listeners\UserEventSubscriber@onAdd'
         );
 
@@ -128,13 +128,13 @@ class UserEventSubscriber
 
 
         $events->listen(
-            'DaydreamLab\JJAJ\Events\Modify',
+            'DaydreamLab\User\Events\Modify',
             'DaydreamLab\User\Listeners\UserEventSubscriber@onModify'
         );
 
 
         $events->listen(
-            'DaydreamLab\JJAJ\Events\Remove',
+            'DaydreamLab\User\Events\Remove',
             'DaydreamLab\User\Listeners\UserEventSubscriber@onRemove'
         );
 

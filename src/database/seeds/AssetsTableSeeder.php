@@ -36,7 +36,7 @@ class AssetsTableSeeder extends Seeder
             }
         };
 
-        $assets     = $service->getRepo()->findBy('id' , '!=', 1);
+        $assets     = $service->findBy('id' , '!=', 1);
         $assets->forget('pagination');
 
         foreach ($assets as $asset) {

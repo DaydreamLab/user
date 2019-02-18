@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\User\Services\User;
 
-use DaydreamLab\JJAJ\Events\Add;
-use DaydreamLab\JJAJ\Events\Modify;
-use DaydreamLab\JJAJ\Events\Remove;
+use DaydreamLab\User\Events\Add;
+use DaydreamLab\User\Events\Modify;
+use DaydreamLab\User\Events\Remove;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Events\Login;
 use DaydreamLab\User\Helpers\UserHelper;
@@ -13,7 +13,6 @@ use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 

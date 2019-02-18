@@ -170,6 +170,12 @@ class User extends Authenticatable
     }
 
 
+    public function hasAttribute($attribute)
+    {
+        return in_array($attribute, $this->fillable);
+    }
+
+
     public function isAdmin()
     {
         $super_user  = UserGroup::where('title', 'Super User')->first();
