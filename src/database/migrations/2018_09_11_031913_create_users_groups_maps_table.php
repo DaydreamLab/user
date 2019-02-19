@@ -17,8 +17,6 @@ class CreateUsersGroupsMapsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('group_id');
-            //$table->unsignedInteger('created_by');
-            //$table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

@@ -45,7 +45,6 @@ class RolesTableSeeder extends Seeder
             {
                 $temp_asset['role_id']  = $role->id;
                 $temp_asset['asset_id'] = $asset;
-                $temp_asset['created_by'] = 1;
                 RoleAssetMap::create($temp_asset);
             }
 
@@ -54,7 +53,6 @@ class RolesTableSeeder extends Seeder
             {
                 $temp_api['role_id']    = $role->id;
                 $temp_api['api_id']     = $api;
-                $temp_api['created_by'] = 1;
                 RoleApiMap::create($temp_api);
             }
 

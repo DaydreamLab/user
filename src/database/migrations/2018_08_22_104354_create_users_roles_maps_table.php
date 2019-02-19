@@ -17,8 +17,6 @@ class CreateUsersRolesMapsTable extends Migration
             $table->increments('id');
             $table->Integer('user_id');
             $table->Integer('role_id');
-//            $table->unsignedInteger('created_by')->nullable();
-//            $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

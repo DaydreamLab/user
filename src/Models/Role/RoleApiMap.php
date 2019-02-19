@@ -21,8 +21,6 @@ class RoleApiMap extends BaseModel
     protected $fillable = [
         'role_id',
         'api_id',
-        'created_by',
-        'updated_by'
     ];
 
 

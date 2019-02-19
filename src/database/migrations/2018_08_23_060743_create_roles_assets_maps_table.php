@@ -17,8 +17,6 @@ class CreateRolesAssetsMapsTable extends Migration
             $table->increments('id');
             $table->Integer('role_id');
             $table->Integer('asset_id');
-            $table->unsignedInteger('created_by');
-            $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

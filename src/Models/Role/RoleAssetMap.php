@@ -21,8 +21,6 @@ class RoleAssetMap extends BaseModel
     protected $fillable = [
         'role_id',
         'asset_id',
-        'created_by',
-        'updated_by'
     ];
 
 

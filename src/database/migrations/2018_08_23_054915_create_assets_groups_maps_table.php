@@ -17,8 +17,6 @@ class CreateAssetsGroupsMapsTable extends Migration
             $table->increments('id');
             $table->Integer('asset_id');
             $table->Integer('group_id');
-            $table->unsignedInteger('created_by');
-            $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }
