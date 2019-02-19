@@ -2,9 +2,13 @@
 namespace DaydreamLab\User\Models\Viewlevel;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
+use DaydreamLab\JJAJ\Traits\RecordChanger;
 
 class Viewlevel extends BaseModel
 {
+    use RecordChanger {
+        RecordChanger::boot as traitBoot;
+    }
     /**
      * The table associated with the model.
      *
@@ -53,4 +57,9 @@ class Viewlevel extends BaseModel
         'rules' => 'array'
     ];
 
+
+    public static function boot()
+    {
+        self::traitBoot();
+    }
 }

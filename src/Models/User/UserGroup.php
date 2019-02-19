@@ -2,11 +2,15 @@
 namespace DaydreamLab\User\Models\User;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
+use DaydreamLab\JJAJ\Traits\RecordChanger;
 use Kalnoy\Nestedset\NodeTrait;
 
 class UserGroup extends BaseModel
 {
-    use NodeTrait;
+    use NodeTrait,
+        RecordChanger {
+        RecordChanger::boot as traitBoot;
+    }
     /**
      * The table associated with the model.
      *
@@ -57,6 +61,11 @@ class UserGroup extends BaseModel
         'tree_title',
     ];
 
+
+    public static function boot()
+    {
+        self::traitBoot();
+    }
 
 
     public function getTreeListTitleAttribute()
