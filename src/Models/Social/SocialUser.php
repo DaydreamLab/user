@@ -46,9 +46,4 @@ class SocialUser extends BaseModel
     ];
 
 
-    protected static function boot()
-    {
-
-    }
-
 }
