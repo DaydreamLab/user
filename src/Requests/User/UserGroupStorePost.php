@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\User;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
 class UserGroupStorePost extends AdminRequest
 {
@@ -28,6 +29,11 @@ class UserGroupStorePost extends AdminRequest
             'parent_id'     => 'nullable|integer',
             'title'         => 'required|string',
             'description'   => 'nullable|string',
+            'redirect'      => 'nullable|string',
+            'canDelete'     => [
+                'nullable',
+                Rule::in([0,1])
+            ],
             'ordering'      => 'nullable|integer',
         ];
     }

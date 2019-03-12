@@ -3,6 +3,7 @@ namespace DaydreamLab\User\Models\User;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
+use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Asset\AssetApi;
 use Kalnoy\Nestedset\NodeTrait;
 
@@ -31,6 +32,8 @@ class UserGroup extends BaseModel
     protected $fillable = [
         'title',
         'description',
+        'redirect',
+        'canDelete',
         'ordering',
         'created_by',
         'updated_by'
@@ -58,8 +61,8 @@ class UserGroup extends BaseModel
      * @var array
      */
     protected $appends = [
-        //'assets',
-        //'apis',
+        'assets',
+        'apis',
         //'veiwlevels'
         'tree_title',
     ];
@@ -73,7 +76,7 @@ class UserGroup extends BaseModel
 
     public function asset()
     {
-        return $this->belongsToMany(A, 'users_groups_assets_maps', 'group_id', 'asset_id');
+        return $this->belongsToMany(Asset::class, 'users_groups_assets_maps', 'group_id', 'asset_id');
     }
 
 

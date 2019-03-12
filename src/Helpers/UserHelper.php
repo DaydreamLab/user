@@ -10,7 +10,7 @@ use Laravel\Socialite\Two\User;
 class UserHelper
 {
 
-    public function getUserLoginData($user, $admin = true)
+    public function getUserLoginData($user)
     {
         $tokenResult = $user->createToken(env('APP_NAME'));
         $token       = $tokenResult->token;
@@ -19,7 +19,7 @@ class UserHelper
         $data['token']       = $tokenResult->accessToken;
         $data['first_name']  = $user->first_name;
         $data['last_name']   = $user->last_name;
-        if ($admin)
+        if ($user->isAdmin())
         {
             $data['id']          = $user->id;
             $data['redirect']    = $user->redirect;

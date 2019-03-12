@@ -1,0 +1,55 @@
+[
+  {
+    "title": "Root",
+    "description": "Root",
+    "children": [
+      {
+        "title": "Public",
+        "description": "Public",
+        "children": [
+        ],
+        "assets" : [],
+        "apis":[]
+      },
+      {
+        "title": "Guest",
+        "description": "Guest",
+        "children": [
+        ],
+        "assets" : [],
+        "apis":[]
+      },
+      {
+        "title": "Registered",
+        "description": "Registered",
+        "children": [
+        ],
+        "assets" : [],
+        "apis":[]
+      },
+      {
+        "title": "Administrator",
+        "description": "Administrator",
+        "children": [
+        ],
+        "redirect": "/",
+        "canDelete": 0,
+        "assets" : [],
+        "apis":[]
+
+      },
+      {
+        "title": "Super User",
+        "description": "Super User",
+        "children": [
+        ],
+        "redirect": "/",
+        "canDelete": 1,
+        "assets" : [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],
+        "apis":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]
+      }
+    ],
+    "assets" : [],
+    "apis":[]
+  }
+]

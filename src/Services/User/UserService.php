@@ -123,6 +123,7 @@ class UserService extends BaseService
         event(new Login($this->model_name, $login,  $this->status, $user));
     }
 
+
     public function logout()
     {
         $user = Auth::guard('api')->user();

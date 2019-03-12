@@ -3,7 +3,11 @@
 namespace DaydreamLab\User\Database\Seeds;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Models\Asset\AssetApiMap;
 use DaydreamLab\User\Models\User\Admin\UserGroupAdmin;
+use DaydreamLab\User\Models\User\UserGroup;
+use DaydreamLab\User\Models\User\UserGroupApiMap;
+use DaydreamLab\User\Models\User\UserGroupAssetMap;
 use DaydreamLab\User\Repositories\User\Admin\UserGroupAdminRepository;
 use DaydreamLab\User\Services\User\Admin\UserGroupAdminService;
 use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
@@ -23,52 +27,50 @@ class UsersGroupsTableSeeder extends Seeder
         $viewlevelAdminService = new ViewlevelAdminService(new ViewlevelAdminRepository(new ViewlevelAdmin()));
         $service = new UserGroupAdminService(new UserGroupAdminRepository(new UserGroupAdmin()), $viewlevelAdminService);
 
-        $root = UserGroupAdmin::create([
-            'title'         => 'ROOT',
-            'description'   => 'ROOT',
-            'ordering'      => 1
-        ]);
+        $data = json_decode(file_get_contents(__DIR__.'/jsons/usergroup.json'), true);
+        $this->migrate($data, null);
 
-        $public = $service->store(Helper::collect([
-            'parent_id'     => $root->id,
-            'title'         => 'Public',
-            'description'   => 'Public',
-        ]));
-
-        $guest = $service->store(Helper::collect([
-            'parent_id'     => $root->id,
-            'title'         => 'Guest',
-            'description'   => 'Guest',
-        ]));
+    }
 
 
-        $registered = $service->store(Helper::collect([
-            'parent_id'     => $root->id,
-            'title'         => 'Registered',
-            'description'   => 'Registered',
-        ]));
+    public function migrate($data, $parent)
+    {
+        foreach ($data as $item)
+        {
+            $assets     = $item['assets'];
+            $apis       = $item['apis'];
+            $children   = $item['children'];
+            unset($item['children']);
+            unset($item['apis']);
+            unset($item['assets']);
 
+            $group = UserGroup::create($item);
+            if ($parent)
+            {
+                $parent->appendNode($group);
+            }
 
-        $administator = $service->store(Helper::collect([
-            'parent_id'     => $root->id,
-            'title'         => 'Administrator',
-            'description'   => 'Administrator',
-        ]));
+            foreach ($apis as $api)
+            {
+                UserGroupApiMap::create([
+                    'group_id'  => $group->id,
+                    'api_id'    => $api
+                ]);
+            }
 
+            foreach ($assets as $asset)
+            {
+                UserGroupAssetMap::create([
+                    'group_id'  => $group->id,
+                    'asset_id'  => $asset
+                ]);
+            }
 
-        $superuser = $service->store(Helper::collect([
-            'parent_id'     => $root->id,
-            'title'         => 'Super User',
-            'description'   => 'Super User',
-        ]));
-
-
-
-//        $root->appendNode($public);
-//        $public->appendNode($guest);
-//        $public->appendNode($registered);
-//        $public->appendNode($administator);
-//        $public->appendNode($superuser);
+            if (count($children))
+            {
+                self::migrate($children, $group);
+            }
+        }
 
     }
 }

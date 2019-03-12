@@ -17,6 +17,8 @@ class CreateUsersGroupsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->nestedSet();
+            $table->string('redirect')->nullable();
+            $table->string('canDelete')->nullable()->default(0);
             $table->text('description')->nullable();
             $table->unsignedInteger('ordering')->default(1);
             $table->unsignedInteger('created_by');
