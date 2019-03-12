@@ -24,7 +24,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "ASSET_USER_DASHBOARD_TITLE",
+            "title": "COM_CPANEL",
             "path": "",
             "component": "index",
             "type": "menu",
@@ -42,7 +42,7 @@
       },
 
       {
-        "title": "ASSET_SEPARATOR_SYSTEM_TITLE",
+        "title": "COM_DEV",
         "path": "",
         "component": "",
         "type": "separator",
@@ -56,7 +56,7 @@
         "apis": []
       },
       {
-        "title": "ASSET_USER_APIS_TITLE",
+        "title": "COM_DEV_APIS_TITLE",
         "path": "/api",
         "component": "",
         "type": "alias",
@@ -68,7 +68,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "ASSET_USER_API_MANAGE_TITLE",
+            "title": "COM_DEV_API_MANAGER_TITLE",
             "path": "",
             "component": "api/list",
             "type": "menu",
@@ -98,7 +98,7 @@
             ]
           },
           {
-            "title": "ASSET_USER_API_EDIT_TITLE",
+            "title": "COM_DEV_API_EDIT_TITLE",
             "path": "/edit",
             "component": "api/edit",
             "type": "function",
@@ -115,7 +115,7 @@
         "apis": []
       },
       {
-        "title": "ASSET_USER_ASSETS_TITLE",
+        "title": "COM_DEV_ASSETS_TITLE",
         "path": "/asset",
         "component": "",
         "type": "alias",
@@ -127,7 +127,7 @@
         "created_by": 1,
         "children": [
           {
-            "title": "ASSET_USER_ASSET_MANAGE_TITLE",
+            "title": "COM_DEV_ASSET_MANAGER_TITLE",
             "path": "",
             "component": "asset/list",
             "type": "menu",
@@ -172,7 +172,7 @@
             ]
           },
           {
-            "title": "ASSET_USER_ASSET_EDIT_TITLE",
+            "title": "COM_DEV_ASSET_EDIT_TITLE",
             "path": "/edit",
             "component": "asset/edit",
             "type": "function",
@@ -186,7 +186,7 @@
             "apis": []
           },
           {
-            "title": "ASSET_USER_ASSET_ASSIGN_GROUP_TITLE",
+            "title": "COM_DEV_ASSET_ASSIGN_GROUP_TITLE",
             "path": "/grant/group",
             "component": "asset/grant/group",
             "type": "function",
@@ -200,7 +200,7 @@
             "apis": []
           },
           {
-            "title": "ASSET_USER_ASSET_ASSIGN_API_TITLE",
+            "title": "COM_DEV_ASSET_ASSIGN_API_TITLE",
             "path": "/grant/api",
             "component": "asset/grant/api",
             "type": "function",
@@ -214,7 +214,7 @@
             "apis": []
           },
           {
-            "title": "ASSET_USER_ASSET_GROUPS_TITLE",
+            "title": "COM_DEV_ASSET_GROUP_MANAGER_TITLE",
             "path": "/group",
             "component": "asset/group/list",
             "type": "menu",
@@ -228,7 +228,7 @@
             "apis": []
           },
           {
-            "title": "ASSET_USER_ASSET_GROUP_EDIT_TITLE",
+            "title": "COM_DEV_ASSET_GROUP_EDIT_TITLE",
             "path": "/group/edit",
             "component": "asset/group/edit",
             "type": "function",
@@ -266,7 +266,7 @@
         "apis": []
       },
       {
-        "title": "ASSET_SEPARATOR_FEATURES_TITLE",
+        "title": "COM_USERS",
         "path": "",
         "component": "",
         "type": "separator",
@@ -280,116 +280,19 @@
         "apis": []
       },
       {
-        "title": "ASSET_USER_ROLES_TITLE",
-        "path": "/role",
-        "component": "",
-        "type": "alias",
-        "redirect": "",
-        "icon": "user",
-        "state": 1,
-        "showNav": 1,
-        "ordering": 3,
-        "created_by": 1,
-        "children": [
-          {
-            "title": "ASSET_USER_ROLE_MANAGE_TITLE",
-            "path": "",
-            "component": "role/list",
-            "type": "menu",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 1,
-            "ordering": 1,
-            "created_by": 1,
-            "children": [],
-            "apis": [
-              {
-                "method": "add",
-                "url": "/admin/role/store",
-                "created_by": 1
-              },
-              {
-                "method": "edit",
-                "url": "/admin/role/store",
-                "created_by": 1
-              },
-              {
-                "method": "delete",
-                "url": "/admin/role/remove",
-                "created_by": 1
-              },
-              {
-                "method": "grant_asset",
-                "url": "/admin/role/asset/map/store",
-                "created_by": 1
-              },
-              {
-                "method": "grant_api",
-                "url": "/admin/role/apis/map/store",
-                "created_by": 1
-              }
-            ]
-          },
-          {
-            "title": "ASSET_USER_ROLE_ASSIGN_ASSET_TITLE",
-            "path": "/grant/asset",
-            "component": "role/grant/asset",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 2,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "ASSET_USER_ROLE_ASSIGN_API_TITLE",
-            "path": "/grant/api",
-            "component": "role/grant/api",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 3,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "ASSET_USER_ROLE_EDIT_TITLE",
-            "path": "/edit",
-            "component": "role/edit",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 4,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          }
-        ],
-        "apis": []
-      },
-      {
-        "title": "ASSET_USER_USERS_TITLE",
+        "title": "COM_USERS",
         "path": "/user",
         "component": "",
         "type": "alias",
         "redirect": "",
         "icon": "users",
         "state": 1,
-        "showNav": 1,
+        "showNav": 0,
         "ordering": 4,
         "created_by": 1,
         "children": [
           {
-            "title": "ASSET_USER_USER_MANAGE_TITLE",
+            "title": "COM_USERS_USER_MANAGER_TITLE",
             "path": "",
             "component": "user/list",
             "type": "menu",
@@ -434,7 +337,7 @@
             ]
           },
           {
-            "title": "ASSET_USER_USER_EDIT_TITLE",
+            "title": "COM_USERS_USER_EDIT_TITLE",
             "path": "/edit",
             "component": "user/edit",
             "type": "function",
@@ -445,44 +348,10 @@
             "ordering": 2,
             "created_by": 1,
             "children": [],
-            "apis": [
-              {
-                "method": "grant_role",
-                "url": "/admin/user/role/map/store",
-                "created_by": 1
-              }
-            ]
-          },
-          {
-            "title": "Assign Group for User",
-            "path": "/grant/group",
-            "component": "user/grant/group",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 3,
-            "created_by": 1,
-            "children": [],
             "apis": []
           },
           {
-            "title": "Assign Role for User",
-            "path": "/grant/role",
-            "component": "user/grant/role",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 4,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "ASSET_USER_USER_GROUPS_TITLE",
+            "title": "COM_USERS_GROUPS_MANAGER_TITLE",
             "path": "/group",
             "component": "user/group/list",
             "type": "menu",
@@ -513,11 +382,21 @@
                 "method": "updateState",
                 "url": "/user/group/state",
                 "created_by": 1
+              },
+              {
+                "method": "grant_asset",
+                "url": "/admin/group/asset/map/store",
+                "created_by": 1
+              },
+              {
+                "method": "grant_api",
+                "url": "/admin/group/apis/map/store",
+                "created_by": 1
               }
             ]
           },
           {
-            "title": "ASSET_USER_USER_GROUP_EDIT_TITLE",
+            "title": "COM_USERS_GROUPS_EDIT_TITLE",
             "path": "/group/edit",
             "component": "user/group/edit",
             "type": "function",
@@ -526,6 +405,34 @@
             "state": 1,
             "showNav": 0,
             "ordering": 6,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "COM_USERS_GROUPS_ASSIGN_ASSET_TITLE",
+            "path": "/group/grant/asset",
+            "component": "user/group/grant/asset",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 7,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "COM_USERS_GROUPS_ASSIGN_API_TITLE",
+            "path": "/group/grant/api",
+            "component": "user/group/grant/api",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 8,
             "created_by": 1,
             "children": [],
             "apis": []

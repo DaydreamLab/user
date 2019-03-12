@@ -18,6 +18,7 @@ class UserAdminController extends BaseController
     public function __construct(UserAdminService $service)
     {
         parent::__construct($service);
+        $this->service = $service;
     }
 
 
