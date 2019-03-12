@@ -90,7 +90,7 @@ class UserGroup extends BaseModel
     {
         $depth = $this->depth-1;
         $str = '';
-        for ($j = 0 ; $j < $depth ; $j++) {
+        for ($j = 0 ; $j < $depth ; $j++ ) {
             $str .= '-';
         }
 
