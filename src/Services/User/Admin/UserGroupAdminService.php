@@ -5,6 +5,8 @@ namespace DaydreamLab\User\Services\User\Admin;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\NestedServiceTrait;
 use DaydreamLab\User\Repositories\User\Admin\UserGroupAdminRepository;
+use DaydreamLab\User\Services\User\UserGroupApiMapService;
+use DaydreamLab\User\Services\User\UserGroupAssetMapService;
 use DaydreamLab\User\Services\User\UserGroupService;
 use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use Illuminate\Support\Collection;
@@ -16,16 +18,25 @@ class UserGroupAdminService extends UserGroupService
         addNested as traitAddNested;
     }
 
+    protected $userGroupApiMapService;
+
+    protected $userGroupAssetMapService;
+
     protected $viewlevelAdminService;
 
     protected $type = 'UserGroupAdmin';
 
     protected $search_keys = ['title'];
 
-    public function __construct(UserGroupAdminRepository $repo, ViewlevelAdminService $viewlevelAdminService)
+    public function __construct(UserGroupAdminRepository $repo,
+                                UserGroupApiMapService $userGroupApiMapService,
+                                UserGroupAssetMapService $userGroupAssetMapService,
+                                ViewlevelAdminService $viewlevelAdminService)
     {
         parent::__construct($repo);
         $this->viewlevelAdminService = $viewlevelAdminService;
+        $this->userGroupApiMapService = $userGroupApiMapService;
+        $this->userGroupAssetMapService = $userGroupAssetMapService;
         $this->repo = $repo;
     }
 
