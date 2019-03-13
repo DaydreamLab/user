@@ -25,11 +25,9 @@ class UserAdminStorePost extends UserStorePost
     public function rules()
     {
         $rules = [
-            'role_ids'          => 'required|array',
-            'role_ids.*'        => 'required|integer',
             'group_ids'         => 'required|array',
             'group_ids.*'       => 'required|integer',
-            'redirect'          => 'nullable|string',
+            //'redirect'          => 'nullable|string',
             'block'             => [
                 'required',
                 Rule::in(0,1)

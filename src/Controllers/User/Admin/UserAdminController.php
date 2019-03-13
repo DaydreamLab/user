@@ -22,6 +22,14 @@ class UserAdminController extends BaseController
     }
 
 
+    public function getAction()
+    {
+        $this->service->getAction();
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
     public function block(UserAdminBlockPost $request)
     {
         $this->service->block($request->rulesInput());
@@ -33,14 +41,6 @@ class UserAdminController extends BaseController
     public function getApis()
     {
         $this->service->getApis();
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function getGrant($id)
-    {
-        $this->service->getGrant($id);
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

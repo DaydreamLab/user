@@ -17,8 +17,6 @@ class UserAdminService extends UserService
 {
     protected $type = 'UserAdmin';
 
-    protected $userRoleMapAdminService;
-
     protected $userGroupMapAdminService;
 
     protected $search_keys = [
@@ -33,13 +31,10 @@ class UserAdminService extends UserService
     ];
 
     public function __construct(UserAdminRepository $repo,
-                                UserRoleMapAdminService $userRoleMapAdminService,
                                 UserGroupMapAdminService $userGroupMapAdminService)
     {
-        $this->userRoleMapAdminService  = $userRoleMapAdminService;
-        $this->userGroupMapAdminService = $userGroupMapAdminService;
-
         parent::__construct($repo);
+        $this->userGroupMapAdminService = $userGroupMapAdminService;
     }
 
 
@@ -78,12 +73,52 @@ class UserAdminService extends UserService
     }
 
 
+    public function getAction()
+    {
+        $user = Auth::guard('api')->user();
+        $groups = $user->groups;
+
+        $response = [];
+        foreach ($groups as $group)
+        {
+            $group_apis      = $group->apis;
+
+            $assets = [];
+            foreach ($group_apis as $group_api) {
+                $temp_api           = $group_api->only('id', 'method');
+                $temp_api['name']   = $temp_api['method'];
+
+                $temp_asset             = $group_api->asset->only('id', 'title');
+                $temp_asset['disabled'] = true;
+                $temp_asset['child']    = [];
+                if(!in_array($temp_asset, $assets)) {
+                    $assets[]   = $temp_asset;
+                    $response[] = $temp_asset;
+                }
+
+                foreach ($response as $key => $item) {
+                    if ($item['id'] == $temp_asset['id'] && !in_array($temp_api, $item['child'])) {
+                        $response[$key]['child'][] = $temp_api;
+                    }
+                }
+            }
+        }
+
+
+        $this->status = Str::upper(Str::snake($this->type.'GetActionSuccess'));;
+        $this->response = $response;
+
+        return $response;
+    }
+
+
+
     public function getApis()
     {
         $user = Auth::guard('api')->user();
         $apis = new Collection();
-        foreach ($user->roles as $role) {
-            $apis = $apis->merge($role->apis);
+        foreach ($user->groups as $group) {
+            $apis = $apis->merge($group->apis);
         }
 
         $response = [];
@@ -101,33 +136,13 @@ class UserAdminService extends UserService
     }
 
 
-    public function getGrant($id)
-    {
-        $user       = $this->find($id);
-        $redirect   = $user->redirect;
-        $roles      = [];
-        foreach ($user->roles as $role) {
-            $temp = $role->only('id','title', 'state', 'redirect');
-            $temp['role_id'] = $temp['id'];
-            $temp['user_id'] = $user->id;
-            $roles[]         = $temp;
-        }
-
-        $data['roles'] = $roles;
-        $data['redirect'] = $redirect;
-        $this->status = Str::upper(Str::snake($this->type.'GetGrantSuccess'));;
-        $this->response = (object)$data;
-        return true;
-    }
-
-
     public function getPage($id = null)
     {
         $id == null ? $user = Auth::guard('api')->user() : $user = $this->find($id);
 
         $assets = new \Kalnoy\Nestedset\Collection();
-        foreach ($user->roles as $role) {
-            $assets = $assets->merge($role->assets);
+        foreach ($user->groups as $group) {
+            $assets = $assets->merge($group->assets);
         }
 
         $tree = $assets->toTree();
@@ -217,29 +232,18 @@ class UserAdminService extends UserService
 
         $result = parent::store($input);
         if (gettype($result) == 'boolean') {    //更新使用者
-            $role_map = [
-                'user_id'   => $input->id,
-                'role_ids'   => $input->role_ids
-            ];
-
             $group_map = [
                 'user_id'   => $input->id,        //新增使用者
                 'group_ids'  => $input->group_ids
             ];
         }
         else {
-            $role_map = [
-                'user_id'   => $result->id,        //新增使用者
-                'role_ids'   => $input->role_ids
-            ];
-
             $group_map = [
                 'user_id'   => $result->id,
                 'group_ids'  => $input->group_ids
             ];
         }
 
-        $this->userRoleMapAdminService->storeKeysMap(Helper::collect($role_map));
         $this->userGroupMapAdminService->storeKeysMap(Helper::collect($group_map));
 
         return $result;

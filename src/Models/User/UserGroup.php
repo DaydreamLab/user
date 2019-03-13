@@ -48,7 +48,7 @@ class UserGroup extends BaseModel
     protected $hidden = [
         '_lft',
         '_rgt',
-        'pivot',
+        //'pivot',
         'ancestors',
         'created_at',
         'updated_at'
@@ -86,6 +86,12 @@ class UserGroup extends BaseModel
     }
 
 
+    public function getAssetsAttribute()
+    {
+        return $this->asset()->get();
+    }
+
+
     public function getTreeListTitleAttribute()
     {
         $depth = $this->depth-1;
@@ -98,8 +104,4 @@ class UserGroup extends BaseModel
     }
 
 
-    public function getAssetsAttribute()
-    {
-        return $this->asset()->get();
-    }
 }

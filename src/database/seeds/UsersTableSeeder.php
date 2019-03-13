@@ -41,13 +41,13 @@ class UsersTableSeeder extends Seeder
                 UserGroupMap::create($temp_group);
             }
 
-            foreach ($roles as $role)
-            {
-                $temp_role['user_id']  = $user->id;
-                $temp_role['role_id'] = $role;
-                //$temp_role['created_by'] = 1;
-                UserRoleMap::create($temp_role);
-            }
+//            foreach ($roles as $role)
+//            {
+//                $temp_role['user_id']  = $user->id;
+//                $temp_role['role_id'] = $role;
+//                //$temp_role['created_by'] = 1;
+//                UserRoleMap::create($temp_role);
+//            }
         }
 
     }

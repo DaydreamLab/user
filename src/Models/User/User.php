@@ -4,7 +4,6 @@ namespace DaydreamLab\User\Models\User;
 
 use DaydreamLab\Cms\Models\Item\Item;
 use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\User\Models\Role\Role;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
@@ -52,7 +51,7 @@ class User extends Authenticatable
         'updated_by',
         'activation',
         'activate_token',
-        'redirect',
+        //'redirect',
         'block',
         'reset_password',
         'last_reset_at',
@@ -145,12 +144,6 @@ class User extends Authenticatable
     }
 
 
-    public function getRolesAttribute()
-    {
-        return $this->roles()->get();
-    }
-
-
     public function getOrderBy()
     {
         return $this->order_by;
@@ -203,12 +196,6 @@ class User extends Authenticatable
             }
         }
         return false;
-    }
-
-
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, 'users_roles_maps', 'user_id', 'role_id');
     }
 
 

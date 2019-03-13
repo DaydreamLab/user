@@ -35,6 +35,10 @@ class UserGroupStorePost extends AdminRequest
                 Rule::in([0,1])
             ],
             'ordering'      => 'nullable|integer',
+            'api_ids'       => 'required|array',
+            'api_ids.*'     => 'nullable|integer',
+            'asset_ids'     => 'required|array',
+            'asset_ids.*'   => 'nullable|integer',
         ];
     }
 }

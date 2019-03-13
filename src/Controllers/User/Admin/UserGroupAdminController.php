@@ -16,7 +16,33 @@ class UserGroupAdminController extends BaseController
     public function __construct(UserGroupAdminService $service)
     {
         parent::__construct($service);
+        $this->service = $service;
     }
+
+
+    public function getAction($group_id)
+    {
+        $this->service->getAction($group_id);
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function getApis($group_id)
+    {
+        $this->service->getApis($group_id);
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function getApiIds($group_id)
+    {
+        $this->service->getApiIds($group_id);
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
 
     public function getItem($id)
     {
@@ -29,6 +55,14 @@ class UserGroupAdminController extends BaseController
     public function getItems()
     {
         $this->service->search(new Collection());
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function getPage($group_id)
+    {
+        $this->service->getPage($group_id);
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

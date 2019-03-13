@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Controllers\User\Front;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
@@ -22,6 +23,7 @@ class UserFrontController extends BaseController
     public function __construct(UserFrontService $service)
     {
         parent::__construct($service);
+        $this->service = $service;
     }
 
 

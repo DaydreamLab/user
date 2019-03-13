@@ -70,11 +70,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
         Route::group(['prefix' => 'role'], function (){
             Route::get('tree', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getTree');
             Route::get('{id}', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getItem');
-            Route::get('{id}/grant', 'DaydreamLab\User\Controllers\Role\Admin\RoleAssetMapAdminController@getGrant');
-            Route::get('{id}/page', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getPage');
-            Route::get('{id}/apiids', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getApiIds');
-            Route::get('{id}/apis', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getApis');
-            Route::get('{id}/action', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@getAction');
+
 
             Route::post('remove', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@remove');
             Route::post('state', 'DaydreamLab\User\Controllers\Role\Admin\RoleAdminController@state');
@@ -102,11 +98,12 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
             Route::post('search', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@search');
             Route::get('page', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getSelfPage');
             Route::get('apis', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getApis');
+            Route::get('action', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getAction');
             Route::post('remove', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@remove');
             Route::post('store', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@store');
             Route::get('{id}', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getItem');
             Route::get('{id}/page', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getUserPage');
-            Route::get('{id}/grant', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getGrant');
+            Route::get('{id}/apis', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getUserPage');
 
 
             Route::group(['prefix' => 'group'], function (){
@@ -117,10 +114,15 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
                 Route::get('treeList', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@treeList');
                 Route::get('{id}', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getItem');
 
+                /**
+                 *
+                 */
+                Route::get('{id}/page', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getPage');
+                Route::get('{id}/apiids', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getApiIds');
+                Route::get('{id}/apis', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getApis');
+                Route::get('{id}/action', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getAction');
 
-                Route::group(['prefix' => 'map'], function (){
-                    Route::post('store', 'DaydreamLab\User\Controllers\User\Admin\UserRoleMapAdminController@store');
-                });
+
             });
 
 

@@ -8,12 +8,9 @@ use DaydreamLab\User\Notifications\ResetPasswordNotification;
 use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\User\Services\Social\SocialUserService;
 use Carbon\Carbon;
-use DaydreamLab\User\Helpers\UserHelper;
-use DaydreamLab\User\Models\User\UserRoleMap;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
 use DaydreamLab\User\Services\Upload\UploadService;
 use DaydreamLab\User\Services\User\UserGroupMapService;
-use DaydreamLab\User\Services\User\UserRoleMapService;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
@@ -31,15 +28,12 @@ class UserFrontService extends UserService
 
     protected $passwordResetService;
 
-    protected $userRoleMapService;
-
     protected $userGroupMapService;
 
     public function __construct(UserFrontRepository     $repo,
                                 SocialUserService       $socialUserService,
                                 UploadService           $uploadService,
                                 PasswordResetService    $passwordResetService,
-                                UserRoleMapService      $userRoleMapService,
                                 UserGroupMapService     $userGroupMapService
     )
 
@@ -48,7 +42,6 @@ class UserFrontService extends UserService
         $this->socialUserService    = $socialUserService;
         $this->uploadService        = $uploadService;
         $this->passwordResetService = $passwordResetService;
-        $this->userRoleMapService   = $userRoleMapService;
         $this->userGroupMapService  = $userGroupMapService;
     }
 

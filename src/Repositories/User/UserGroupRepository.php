@@ -14,12 +14,7 @@ class UserGroupRepository extends BaseRepository
     public function __construct(UserGroup $model)
     {
         parent::__construct($model);
-    }
-
-
-    public function getPage($role_id)
-    {
-        return $this->find($role_id)->assets->toTree();
+        $this->model = $model;
     }
 
 

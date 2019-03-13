@@ -35,7 +35,7 @@ class CreateUsersTable extends Migration
             $table->string('zipcode')->nullable();
             $table->boolean('activation')->default(0);
             $table->string('activate_token');
-            $table->string('redirect')->nullable();
+            //$table->string('redirect')->nullable();
             $table->unsignedTinyInteger('block')->default(0);
             $table->unsignedTinyInteger('reset_password')->default(0);
             $table->timestamp('last_reset_at')->nullable();

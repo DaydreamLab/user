@@ -147,8 +147,6 @@ return [
 
 
 
-
-
     // Create
     'USER_CREATE_SUCCESS' => [
         'code'      => 200,
@@ -371,46 +369,8 @@ return [
         'message'   => 'User front get item fail'
     ],
 
-    'USER_GET_GRANT_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User get grant success'
-    ],
-    'USER_ADMIN_GET_GRANT_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User admin get grant success'
-    ],
-    'USER_FRONT_GET_GRANT_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User front get grant success'
-    ],
 
-    'USER_GET_PAGE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User get page success'
-    ],
-    'USER_ADMIN_GET_PAGE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User admin get page success'
-    ],
-    'USER_FRONT_GET_PAGE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User front get page success'
-    ],
-
-    'USER_GET_APIS_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User get apis success'
-    ],
-    'USER_ADMIN_GET_APIS_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User admin get apis success'
-    ],
-    'USER_FRONT_GET_APIS_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User front get apis success'
-    ],
-
-
+    // Block
     'USER_BLOCK_SUCCESS' => [
         'code'      => 200,
         'message'   => 'User block success'
@@ -437,227 +397,48 @@ return [
     ],
 
 
-    
-    // User Role Map
-    // Create
-    'USER_ROLE_MAP_CREATE_SUCCESS' => [
+    // Get Page
+    'USER_GET_PAGE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User role map create success'
+        'message'   => 'User get page success'
     ],
-    'USER_ROLE_MAP_ADMIN_CREATE_SUCCESS' => [
+    'USER_ADMIN_GET_PAGE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User role map admin create success'
+        'message'   => 'User admin get page success'
     ],
-    'USER_ROLE_MAP_FRONT_CREATE_SUCCESS' => [
+    'USER_FRONT_GET_PAGE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User role map front create success'
-    ],
-    'USER_ROLE_MAP_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map create fail'
-    ],
-    'USER_ROLE_MAP_ADMIN_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map admin create fail'
-    ],
-    'USER_ROLE_MAP_FRONT_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map front create fail'
+        'message'   => 'User front get page success'
     ],
 
 
-
-    // Update
-    'USER_ROLE_MAP_UPDATE_SUCCESS' => [
+    // Get APis
+    'USER_GET_APIS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User role map update success'
+        'message'   => 'User get apis success'
     ],
-    'USER_ROLE_MAP_ADMIN_UPDATE_SUCCESS' => [
+    'USER_ADMIN_GET_APIS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User role map admin update success'
+        'message'   => 'User admin get apis success'
     ],
-    'USER_ROLE_MAP_FRONT_UPDATE_SUCCESS' => [
+    'USER_FRONT_GET_APIS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User role map front update success'
-    ],
-
-    'USER_ROLE_MAP_UPDATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map update fail'
-    ],
-    'USER_ROLE_MAP_ADMIN_UPDATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map admin update fail'
-    ],
-    'USER_ROLE_MAP_FRONT_UPDATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map front update fail'
+        'message'   => 'User front get apis success'
     ],
 
 
-    // Trash
-    'USER_ROLE_MAP_TRASH_SUCCESS' => [
+    // Get Action
+    'USER_GET_ACTION_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User role map trash success'
+        'message'   => 'User get action success'
     ],
-    'USER_ROLE_MAP_ADMIN_TRASH_SUCCESS' => [
+    'USER_ADMIN_GET_ACTION_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User role map admin trash success'
+        'message'   => 'User admin get action success'
     ],
-    'USER_ROLE_MAP_FRONT_TRASH_SUCCESS' => [
+    'USER_FRONT_GET_ACTION_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User role map front trash success'
-    ],
-
-    'USER_ROLE_MAP_TRASH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map trash fail'
-    ],
-    'USER_ROLE_MAP_ADMIN_TRASH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map admin trash fail'
-    ],
-    'USER_ROLE_MAP_FRONT_TRASH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map front trash fail'
-    ],
-
-
-
-    // Delete
-    'USER_ROLE_MAP_DELETE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map delete success'
-    ],
-    'USER_ROLE_MAP_ADMIN_DELETE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map admin delete success'
-    ],
-    'USER_ROLE_MAP_FRONT_DELETE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map front delete success'
-    ],
-
-
-    'USER_ROLE_MAP_DELETE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map delete fail'
-    ],
-    'USER_ROLE_MAP_ADMIN_DELETE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map admin delete fail'
-    ],
-    'USER_ROLE_MAP_FRONT_DELETE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map front delete fail'
-    ],
-
-
-    // Publish
-    'USER_ROLE_MAP_PUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map publish success'
-    ],
-    'USER_ROLE_MAP_ADMIN_PUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map admin publish success'
-    ],
-    'USER_ROLE_MAP_FRONT_PUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map front publish success'
-    ],
-
-    'USER_ROLE_MAP_PUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map publish fail'
-    ],
-    'USER_ROLE_MAP_ADMIN_PUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map admin publish fail'
-    ],
-    'USER_ROLE_MAP_FRONT_PUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map front publish fail'
-    ],
-
-
-    // Unpublish
-    'USER_ROLE_MAP_UNPUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map unpublish success'
-    ],
-    'USER_ROLE_MAP_ADMIN_UNPUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map admin unpublish success'
-    ],
-    'USER_ROLE_MAP_FRONT_UNPUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map front unpublish success'
-    ],
-    'USER_ROLE_MAP_UNPUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map unpublish fail'
-    ],
-    'USER_ROLE_MAP_ADMIN_UNPUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map admin unpublish fail'
-    ],
-    'USER_ROLE_MAP_FRONT_UNPUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map front unpublish fail'
-    ],
-
-
-    //Search
-    'USER_ROLE_MAP_SEARCH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map search success'
-    ],
-    'USER_ROLE_MAP_ADMIN_SEARCH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map admin search success'
-    ],
-    'USER_ROLE_MAP_FRONT_SEARCH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map front search success'
-    ],
-    'USER_ROLE_MAP_SEARCH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map search fail'
-    ],
-    'USER_ROLE_MAP_ADMIN_SEARCH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map admin search fail'
-    ],
-    'USER_ROLE_MAP_FRONT_SEARCH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map front search fail'
-    ],
-
-    // Get Item
-    'USER_ROLE_MAP_GET_ITEM_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map get item success'
-    ],
-    'USER_ROLE_MAP_ADMIN_GET_ITEM_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map admin get item success'
-    ],
-    'USER_ROLE_MAP_FRONT_GET_ITEM_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User role map front get item success'
-    ],
-    'USER_ROLE_MAP_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map get item fail'
-    ],
-    'USER_ROLE_MAP_ADMIN_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map get item search fail'
-    ],
-    'USER_ROLE_MAP_FRONT_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User role map front get item fail'
+        'message'   => 'User front get action success'
     ],
 
 
@@ -967,268 +748,64 @@ return [
     ],
 
 
-
-    // ----- User Group Map -----
-    // Create
-    'USER_GROUP_MAP_CREATE_SUCCESS' => [
+    //Get Api Ids
+    'USER_GROUP_GET_API_IDS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map create success'
+        'message'   => 'User group get api ids success'
     ],
-    'USER_GROUP_MAP_ADMIN_CREATE_SUCCESS' => [
+    'USER_GROUP_ADMIN_GET_API_IDS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map admin create success'
+        'message'   => 'User group admin get api ids success'
     ],
-    'USER_GROUP_MAP_FRONT_CREATE_SUCCESS' => [
+    'USER_GROUP_FRONT_GET_API_IDS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map front create success'
-    ],
-    'USER_GROUP_MAP_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map create fail'
-    ],
-    'USER_GROUP_MAP_ADMIN_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map admin create fail'
-    ],
-    'USER_GROUP_MAP_FRONT_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map front create fail'
+        'message'   => 'User group front get api ids success'
     ],
 
 
-
-    // Update
-    'USER_GROUP_MAP_UPDATE_SUCCESS' => [
+    // Get Page
+    'USER_GROUP_GET_PAGE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map update success'
+        'message'   => 'User group get page success'
     ],
-    'USER_GROUP_MAP_ADMIN_UPDATE_SUCCESS' => [
+    'USER_GROUP_ADMIN_GET_PAGE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map admin update success'
+        'message'   => 'User group admin get page success'
     ],
-    'USER_GROUP_MAP_FRONT_UPDATE_SUCCESS' => [
+    'USER_GROUP_FRONT_GET_PAGE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map front update success'
-    ],
-
-    'USER_GROUP_MAP_UPDATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map update fail'
-    ],
-    'USER_GROUP_MAP_ADMIN_UPDATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map admin update fail'
-    ],
-    'USER_GROUP_MAP_FRONT_UPDATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map front update fail'
+        'message'   => 'User group front get page success'
     ],
 
 
-    // Trash
-    'USER_GROUP_MAP_TRASH_SUCCESS' => [
+    //Get Apis
+    'USER_GROUP_GET_APIS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map trash success'
+        'message'   => 'User group get apis success'
     ],
-    'USER_GROUP_MAP_ADMIN_TRASH_SUCCESS' => [
+    'USER_GROUP_ADMIN_GET_APIS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map admin trash success'
+        'message'   => 'User group admin get apis success'
     ],
-    'USER_GROUP_MAP_FRONT_TRASH_SUCCESS' => [
+    'USER_GROUP_FRONT_GET_APIS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map front trash success'
-    ],
-
-    'USER_GROUP_MAP_TRASH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map trash fail'
-    ],
-    'USER_GROUP_MAP_ADMIN_TRASH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map admin trash fail'
-    ],
-    'USER_GROUP_MAP_FRONT_TRASH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map front trash fail'
+        'message'   => 'User group front get apis success'
     ],
 
 
-
-    // Delete
-    'USER_GROUP_MAP_DELETE_SUCCESS' => [
+    // Get Action
+    'USER_GROUP_GET_ACTION_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map delete success'
+        'message'   => 'User group get action success'
     ],
-    'USER_GROUP_MAP_ADMIN_DELETE_SUCCESS' => [
+    'USER_GROUP_ADMIN_GET_ACTION_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map admin delete success'
+        'message'   => 'User group admin get action success'
     ],
-    'USER_GROUP_MAP_FRONT_DELETE_SUCCESS' => [
+    'USER_GROUP_FRONT_GET_ACTION_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group map front delete success'
-    ],
-
-
-    'USER_GROUP_MAP_DELETE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map delete fail'
-    ],
-    'USER_GROUP_MAP_ADMIN_DELETE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map admin delete fail'
-    ],
-    'USER_GROUP_MAP_FRONT_DELETE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map front delete fail'
+        'message'   => 'User group front get action success'
     ],
 
-
-    // Publish
-    'USER_GROUP_MAP_PUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map publish success'
-    ],
-    'USER_GROUP_MAP_ADMIN_PUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map admin publish success'
-    ],
-    'USER_GROUP_MAP_FRONT_PUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map front publish success'
-    ],
-
-    'USER_GROUP_MAP_PUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map publish fail'
-    ],
-    'USER_GROUP_MAP_ADMIN_PUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map admin publish fail'
-    ],
-    'USER_GROUP_MAP_FRONT_PUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map front publish fail'
-    ],
-
-
-    // Unpublish
-    'USER_GROUP_MAP_UNPUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map unpublish success'
-    ],
-    'USER_GROUP_MAP_ADMIN_UNPUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map admin unpublish success'
-    ],
-    'USER_GROUP_MAP_FRONT_UNPUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map front unpublish success'
-    ],
-    'USER_GROUP_MAP_UNPUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map unpublish fail'
-    ],
-    'USER_GROUP_MAP_ADMIN_UNPUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map admin unpublish fail'
-    ],
-    'USER_GROUP_MAP_FRONT_UNPUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map front unpublish fail'
-    ],
-
-
-    // Archive
-    'USER_GROUP_MAP_ARCHIVE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map archive success'
-    ],
-    'USER_GROUP_MAP_ADMIN_ARCHIVE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map admin archive success'
-    ],
-    'USER_GROUP_MAP_FRONT_ARCHIVE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map front archive success'
-    ],
-    'USER_GROUP_MAP_ARCHIVE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map archive fail'
-    ],
-    'USER_GROUP_MAP_ADMIN_ARCHIVE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map admin archive fail'
-    ],
-    'USER_GROUP_MAP_FRONT_ARCHIVE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map front archive fail'
-    ],
-
-    //Search
-    'USER_GROUP_MAP_SEARCH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map search success'
-    ],
-    'USER_GROUP_MAP_ADMIN_SEARCH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map admin search success'
-    ],
-    'USER_GROUP_MAP_FRONT_SEARCH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map front search success'
-    ],
-    'USER_GROUP_MAP_SEARCH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map search fail'
-    ],
-    'USER_GROUP_MAP_ADMIN_SEARCH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map admin search fail'
-    ],
-    'USER_GROUP_MAP_FRONT_SEARCH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map front search fail'
-    ],
-
-    // Get Item
-    'USER_GROUP_MAP_GET_ITEM_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map get item success'
-    ],
-    'USER_GROUP_MAP_ADMIN_GET_ITEM_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map admin get item success'
-    ],
-    'USER_GROUP_MAP_FRONT_GET_ITEM_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map front get item success'
-    ],
-    'USER_GROUP_MAP_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map get item fail'
-    ],
-    'USER_GROUP_MAP_ADMIN_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map get item search fail'
-    ],
-    'USER_GROUP_MAP_FRONT_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'User group map front get item fail'
-    ],
-
-
-    //Get tree
-    'USER_GROUP_MAP_GET_TREE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map get tree success'
-    ],
-    'USER_GROUP_MAP_ADMIN_GET_TREE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map admin get tree success'
-    ],
-    'USER_GROUP_MAP_FRONT_GET_TREE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User group map front get tree success'
-    ],
 
 ];
