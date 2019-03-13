@@ -193,6 +193,34 @@ return [
         'message'   => 'Asset front search fail'
     ],
 
+
+    // Ordering Nested
+    'ASSET_UPDATE_ORDERING_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset update ordering nested success'
+    ],
+    'ASSET_ADMIN_UPDATE_ORDERING_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset admin update ordering nested success'
+    ],
+    'ASSET_FRONT_UPDATE_ORDERING_NESTED_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset front update ordering nested success'
+    ],
+    'ASSET_UPDATE_ORDERING_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset update ordering nested fail'
+    ],
+    'ASSET_ADMIN_UPDATE_ORDERING_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset admin update ordering nested fail'
+    ],
+    'ASSET_FRONT_UPDATE_ORDERING_NESTED_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Asset front update ordering nested fail'
+    ],
+
+
     // Get Item
     'ASSET_GET_ITEM_SUCCESS' => [
             'code'      => 200,
@@ -245,6 +273,21 @@ return [
     'ASSET_ADMIN_GET_APIS_SUCCESS' => [
         'code'      => 200,
         'message'   => 'Asset admin get apis success'
+    ],
+
+
+    // Get Tree List
+    'ASSET_GET_TREE_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset get tree list success'
+    ],
+    'ASSET_ADMIN_GET_TREE_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset admin get tree list success'
+    ],
+    'ASSET_FRONT_GET_TREE_LIST_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Asset front get tree list success'
     ],
 
 
@@ -500,200 +543,6 @@ return [
 
 
 
-    // Update
-    'ASSET_GROUP_MAP_UPDATE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map update success'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_UPDATE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map admin update success'
-    ],
-    'ASSET_GROUP_MAP_FRONT_UPDATE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map front update success'
-    ],
-
-    'ASSET_GROUP_MAP_UPDATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map update fail'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_UPDATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map admin update fail'
-    ],
-    'ASSET_GROUP_MAP_FRONT_UPDATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map front update fail'
-    ],
-
-
-    // Trash
-    'ASSET_GROUP_MAP_TRASH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map trash success'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_TRASH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map admin trash success'
-    ],
-    'ASSET_GROUP_MAP_FRONT_TRASH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map front trash success'
-    ],
-
-    'ASSET_GROUP_MAP_TRASH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map trash fail'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_TRASH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map admin trash fail'
-    ],
-    'ASSET_GROUP_MAP_FRONT_TRASH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map front trash fail'
-    ],
-
-
-
-    // Delete
-    'ASSET_GROUP_MAP_DELETE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map delete success'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_DELETE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map admin delete success'
-    ],
-    'ASSET_GROUP_MAP_FRONT_DELETE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map front delete success'
-    ],
-
-
-    'ASSET_GROUP_MAP_DELETE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map delete fail'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_DELETE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map admin delete fail'
-    ],
-    'ASSET_GROUP_MAP_FRONT_DELETE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map front delete fail'
-    ],
-
-
-    // Publish
-    'ASSET_GROUP_MAP_PUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map publish success'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_PUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map admin publish success'
-    ],
-    'ASSET_GROUP_MAP_FRONT_PUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map front publish success'
-    ],
-
-    'ASSET_GROUP_MAP_PUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map publish fail'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_PUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map admin publish fail'
-    ],
-    'ASSET_GROUP_MAP_FRONT_PUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map front publish fail'
-    ],
-
-
-    // Unpublish
-    'ASSET_GROUP_MAP_UNPUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map unpublish success'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_UNPUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map admin unpublish success'
-    ],
-    'ASSET_GROUP_MAP_FRONT_UNPUBLISH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map front unpublish success'
-    ],
-    'ASSET_GROUP_MAP_UNPUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map unpublish fail'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_UNPUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map admin unpublish fail'
-    ],
-    'ASSET_GROUP_MAP_FRONT_UNPUBLISH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map front unpublish fail'
-    ],
-
-
-    //Search
-    'ASSET_GROUP_MAP_SEARCH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map search success'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_SEARCH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map admin search success'
-    ],
-    'ASSET_GROUP_MAP_FRONT_SEARCH_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map front search success'
-    ],
-    'ASSET_GROUP_MAP_SEARCH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map search fail'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_SEARCH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map admin search fail'
-    ],
-    'ASSET_GROUP_MAP_FRONT_SEARCH_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map front search fail'
-    ],
-
-    // Get Item
-    'ASSET_GROUP_MAP_GET_ITEM_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map get item success'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_GET_ITEM_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map admin get item success'
-    ],
-    'ASSET_GROUP_MAP_FRONT_GET_ITEM_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map front get item success'
-    ],
-    'ASSET_GROUP_MAP_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map get item fail'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map get item search fail'
-    ],
-    'ASSET_GROUP_MAP_FRONT_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map front get item fail'
-    ],
-
-
     // ----- Asset Api -----
     // Create
     'ASSET_API_CREATE_SUCCESS' => [
@@ -917,97 +766,31 @@ return [
     ],
 
 
-    // Ordering
-    'ASSET_UPDATE_ORDERING_SUCCESS' => [
+    // ----- Asset Api Map-----
+    // Create
+    'ASSET_API_MAP_CREATE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'Asset update ordering success'
+        'message'   => 'Asset api map create success'
     ],
-    'ASSET_ADMIN_UPDATE_ORDERING_SUCCESS' => [
+    'ASSET_API_MAP_ADMIN_CREATE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'Asset admin update ordering success'
+        'message'   => 'Asset api map admin create success'
     ],
-    'ASSET_FRONT_UPDATE_ORDERING_SUCCESS' => [
+    'ASSET_API_MAP_FRONT_CREATE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'Asset front update ordering success'
+        'message'   => 'Asset api map front create success'
     ],
-    'ASSET_UPDATE_ORDERING_FAIL' => [
+    'ASSET_API_MAP_CREATE_FAIL' => [
         'code'      => 500,
-        'message'   => 'Asset update ordering fail'
+        'message'   => 'Asset api map create fail'
     ],
-    'ASSET_ADMIN_UPDATE_ORDERING_FAIL' => [
+    'ASSET_API_MAP_ADMIN_CREATE_FAIL' => [
         'code'      => 500,
-        'message'   => 'Asset admin update ordering fail'
+        'message'   => 'Asset api map admin create fail'
     ],
-    'ASSET_FRONT_UPDATE_ORDERING_FAIL' => [
+    'ASSET_API_MAP_FRONT_CREATE_FAIL' => [
         'code'      => 500,
-        'message'   => 'Asset front update ordering fail'
-    ],
-
-    // Ordering Nested
-    'ASSET_UPDATE_ORDERING_NESTED_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset update ordering nested success'
-    ],
-    'ASSET_ADMIN_UPDATE_ORDERING_NESTED_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset admin update ordering nested success'
-    ],
-    'ASSET_FRONT_UPDATE_ORDERING_NESTED_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset front update ordering nested success'
-    ],
-    'ASSET_UPDATE_ORDERING_NESTED_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset update ordering nested fail'
-    ],
-    'ASSET_ADMIN_UPDATE_ORDERING_NESTED_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset admin update ordering nested fail'
-    ],
-    'ASSET_FRONT_UPDATE_ORDERING_NESTED_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset front update ordering nested fail'
-    ],
-
-
-    // Store Map
-    'ASSET_API_STORE_MAP_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset api store map success'
-    ],
-    'ASSET_API_ADMIN_STORE_MAP_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset api admin store map success'
-    ],
-    'ASSET_API_FRONT_STORE_MAP_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset api front store map success'
-    ],
-    'ASSET_API_STORE_MAP_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset api store map fail'
-    ],
-    'ASSET_API_ADMIN_STORE_MAP_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset api admin store map fail'
-    ],
-    'ASSET_API_FRONT_STORE_MAP_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset api front store map fail'
-    ],
-
-    // Get Tree List
-    'ASSET_GET_TREE_LIST_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset get tree list success'
-    ],
-    'ASSET_ADMIN_GET_TREE_LIST_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset admin get tree list success'
-    ],
-    'ASSET_FRONT_GET_TREE_LIST_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset front get tree list success'
+        'message'   => 'Asset api map front create fail'
     ],
 
 

@@ -150,19 +150,24 @@ class UserGroupAdminService extends UserGroupService
 
     public function store(Collection $input)
     {
+        $api_ids    = $input->api_ids;
+        $asset_ids  = $input->asset_ids;
+        $input->forget('api_ids');
+        $input->forget('asset_ids');
+
         $result =  parent::store($input);
         $group_id = gettype($result) == 'boolean' ? $input->id : $result->id;
 
 
         $this->userGroupApiMapService->storeKeysMap(Helper::collect([
             'group_id' => $group_id,
-            'api_ids'   => $input->api_ids
+            'api_ids'   => $api_ids
         ]));
 
 
         $this->userGroupAssetMapService->storeKeysMap(Helper::collect([
             'group_id'  => $group_id,
-            'asset_ids' => $input->asset_ids
+            'asset_ids' => $asset_ids
         ]));
 
         return $result;

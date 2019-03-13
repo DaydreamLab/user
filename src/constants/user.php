@@ -808,4 +808,27 @@ return [
     ],
 
 
+    // ----- User Group Map -----
+    // Create
+    'USER_GROUP_MAP_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group map create success'
+    ],
+
+
+    // ----- User Group Asset Map -----
+    // Create
+    'USER_GROUP_ASSET_MAP_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group asset map create success'
+    ],
+
+
+    // ----- User Group Api Map -----
+    // Create
+    'USER_GROUP_API_MAP_CREATE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User group api map create success'
+    ],
+
 ];

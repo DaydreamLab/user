@@ -2,8 +2,10 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Repositories\User\UserGroupMapRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
+use Illuminate\Support\Collection;
 
 class UserGroupMapService extends BaseService
 {
@@ -12,5 +14,11 @@ class UserGroupMapService extends BaseService
     public function __construct(UserGroupMapRepository $repo)
     {
         parent::__construct($repo);
+    }
+
+
+    public function store(Collection $input)
+    {
+        return parent::storeKeysMap($input);
     }
 }
