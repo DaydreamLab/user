@@ -22,7 +22,7 @@ class UserHelper
         if ($user->isAdmin())
         {
             $data['id']          = $user->id;
-            $data['redirect']    = $user->redirect;
+            $data['redirect']    = $user->groups->first()->redirect;
             $data['groups']      = $user->groups;
         }
 

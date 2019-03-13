@@ -28,31 +28,6 @@ return [
         'message'   => 'Viewlevel front create fail'
     ],
 
-    // Create Nested
-    'VIEWLEVEL_CREATE_NESTED_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Viewlevel create nested success'
-    ],
-    'VIEWLEVEL_ADMIN_CREATE_NESTED_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Viewlevel admin create nested success'
-    ],
-    'VIEWLEVEL_FRONT_CREATE_NESTED_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Viewlevel front create nested success'
-    ],
-    'VIEWLEVEL_CREATE_NESTED_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Viewlevel create nested fail'
-    ],
-    'VIEWLEVEL_ADMIN_CREATE_NESTED_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Viewlevel admin create nested fail'
-    ],
-    'VIEWLEVEL_FRONT_CREATE_NESTED_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Viewlevel front create nested fail'
-    ],
 
     // Update
     'VIEWLEVEL_UPDATE_SUCCESS' => [
@@ -67,7 +42,6 @@ return [
         'code'      => 200,
         'message'   => 'Viewlevel front update success'
     ],
-
     'VIEWLEVEL_UPDATE_FAIL' => [
         'code'      => 500,
         'message'   => 'Viewlevel update fail'
@@ -81,32 +55,6 @@ return [
         'message'   => 'Viewlevel front update fail'
     ],
 
-    // Update Nested
-    'VIEWLEVEL_UPDATE_NESTED_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Viewlevel update nested success'
-    ],
-    'VIEWLEVEL_ADMIN_UPDATE_NESTED_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Viewlevel admin update nested success'
-    ],
-    'VIEWLEVEL_FRONT_UPDATE_NESTED_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Viewlevel front update nested success'
-    ],
-
-    'VIEWLEVEL_UPDATE_NESTED_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Viewlevel update nested fail'
-    ],
-    'VIEWLEVEL_ADMIN_UPDATE_NESTED_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Viewlevel admin update nested fail'
-    ],
-    'VIEWLEVEL_FRONT_UPDATE_NESTED_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Viewlevel front update nested fail'
-    ],
 
     // Trash
     'VIEWLEVEL_TRASH_SUCCESS' => [
@@ -300,20 +248,6 @@ return [
     ],
 
 
-    //Get tree
-    'VIEWLEVEL_GET_TREE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Viewlevel get tree success'
-    ],
-    'VIEWLEVEL_ADMIN_GET_TREE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Viewlevel admin get tree success'
-    ],
-    'VIEWLEVEL_FRONT_GET_TREE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Viewlevel front get tree success'
-    ],
-
     //Get List
     'VIEWLEVEL_GET_LIST_SUCCESS' => [
         'code'      => 200,
@@ -326,5 +260,32 @@ return [
     'VIEWLEVEL_FRONT_GET_LIST_SUCCESS' => [
         'code'      => 200,
         'message'   => 'Viewlevel front get list success'
+    ],
+
+
+    // Ordering
+    'VIEWLEVEL_UPDATE_ORDERING_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Viewlevel update ordering success'
+    ],
+    'VIEWLEVEL_ADMIN_UPDATE_ORDERING_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Viewlevel admin update ordering success'
+    ],
+    'VIEWLEVEL_FRONT_UPDATE_ORDERING_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Viewlevel front update ordering success'
+    ],
+    'VIEWLEVEL_UPDATE_ORDERING_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Viewlevel update ordering fail'
+    ],
+    'VIEWLEVEL_ADMIN_UPDATE_ORDERING_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Viewlevel admin update ordering fail'
+    ],
+    'VIEWLEVEL_FRONT_UPDATE_ORDERING_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Viewlevel front update ordering fail'
     ],
 ];

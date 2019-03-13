@@ -498,31 +498,31 @@ return [
 
 
 
-    // Update
-    'USER_GROUP_UPDATE_SUCCESS' => [
+    // Update Nested
+    'USER_GROUP_UPDATE_NESTED_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group update success'
+        'message'   => 'User group update nested success'
     ],
-    'USER_GROUP_ADMIN_UPDATE_SUCCESS' => [
+    'USER_GROUP_ADMIN_UPDATE_NESTED_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group admin update success'
+        'message'   => 'User group admin update nested success'
     ],
-    'USER_GROUP_FRONT_UPDATE_SUCCESS' => [
+    'USER_GROUP_FRONT_UPDATE_NESTED_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User group front update success'
+        'message'   => 'User group front update nested success'
     ],
 
-    'USER_GROUP_UPDATE_FAIL' => [
+    'USER_GROUP_UPDATE_NESTED_FAIL' => [
         'code'      => 500,
-        'message'   => 'User group update fail'
+        'message'   => 'User group update nested fail'
     ],
-    'USER_GROUP_ADMIN_UPDATE_FAIL' => [
+    'USER_GROUP_ADMIN_UPDATE_NESTED_FAIL' => [
         'code'      => 500,
-        'message'   => 'User group admin update fail'
+        'message'   => 'User group admin update nested fail'
     ],
-    'USER_GROUP_FRONT_UPDATE_FAIL' => [
+    'USER_GROUP_FRONT_UPDATE_NESTED_FAIL' => [
         'code'      => 500,
-        'message'   => 'User group front update fail'
+        'message'   => 'User group front update nested fail'
     ],
 
 

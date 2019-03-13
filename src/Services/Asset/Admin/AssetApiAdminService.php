@@ -25,7 +25,7 @@ class AssetApiAdminService extends AssetApiService
     public function store(Collection $input)
     {
         if ($input->get('id') == null || $input->get('id') == '') {
-            $api = $this->add($input->toArray());
+            $api = $this->add($input);
             $this->assetApiMapAdminService->storeKeysMap(Helper::collect([
                 'asset_id'  => $input->asset_id,
                 'api_ids'   => [
@@ -44,7 +44,7 @@ class AssetApiAdminService extends AssetApiService
                     $input->id
                 ]
             ]));
-            return $this->modify($input->toArray());
+            return $this->modify($input);
         }
     }
 

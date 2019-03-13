@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 class UserGroupService extends BaseService
 {
-    use NestedServiceTrait ;
+    use NestedServiceTrait;
 
     protected $type = 'UserGroup';
 

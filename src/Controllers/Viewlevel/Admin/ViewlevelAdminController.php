@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Controllers\Viewlevel\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
+use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminOrderingPost;
 use Illuminate\Support\Collection;
 use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminRemovePost;
@@ -40,6 +41,15 @@ class ViewlevelAdminController extends BaseController
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
+
+
+    public function ordering(ViewlevelAdminOrderingPost $request)
+    {
+        $this->service->ordering($request->rulesInput());
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
 
 
     public function remove(ViewlevelAdminRemovePost $request)
