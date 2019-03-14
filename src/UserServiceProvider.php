@@ -26,7 +26,6 @@ class UserServiceProvider extends ServiceProvider
         $this->publishes([__DIR__. '/Configs' => config_path()], 'user-configs');
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         include __DIR__. '/routes/api.php';
-
     }
 
     /**
