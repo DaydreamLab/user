@@ -228,9 +228,4 @@ class User extends Authenticatable
         return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id');
     }
 
-
-    public function test()
-    {
-        return $this->hasOne(Item::class);
-    }
 }
