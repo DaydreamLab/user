@@ -39,7 +39,6 @@
         ],
         "apis": []
       },
-
       {
         "title": "COM_DEV",
         "path": "",
@@ -418,6 +417,20 @@
             "state": 1,
             "showNav": 0,
             "ordering": 8,
+            "created_by": 1,
+            "children": [],
+            "apis": []
+          },
+          {
+            "title": "COM_USERS_LOG",
+            "path": "/log",
+            "component": "user/group/log",
+            "type": "menu",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 1,
+            "ordering": 9,
             "created_by": 1,
             "children": [],
             "apis": []
