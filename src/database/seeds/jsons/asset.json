@@ -427,7 +427,7 @@
             "component": "user/log",
             "type": "menu",
             "redirect": "",
-            "icon": "",
+            "icon": "clipboard-user",
             "state": 1,
             "showNav": 1,
             "ordering": 9,
