@@ -424,7 +424,7 @@
           {
             "title": "COM_USERS_LOG",
             "path": "/log",
-            "component": "user/group/log",
+            "component": "user/log",
             "type": "menu",
             "redirect": "",
             "icon": "",

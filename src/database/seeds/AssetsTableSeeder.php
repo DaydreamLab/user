@@ -40,6 +40,7 @@ class AssetsTableSeeder extends Seeder
         $assets->forget('pagination');
 
         foreach ($assets as $asset) {
+
             $full_path = $asset->path;
 
             $asset->full_path = $combine_path($asset->parent_id, $full_path);
