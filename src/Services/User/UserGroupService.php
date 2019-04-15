@@ -41,7 +41,23 @@ class UserGroupService extends BaseService
 
     public function tree()
     {
-        $tree = $this->findBy('id', '!=', 1)->toTree();
+        $tree = $this->search(Helper::collect([
+            'where'    =>  [
+                [
+                    'key'       => 'id',
+                    'operator'  => '!=',
+                    'value'     => '1'
+                ]
+            ],
+            'special_queries'   => [
+                [
+                    'type'      => 'whereIn',
+                    'key'       => 'access',
+                    'value'     => $this->access_ids
+                ]
+            ],
+            'paginate'  => false
+        ]));
 
         $this->status =  Str::upper(Str::snake($this->type . 'GetTreeSuccess'));
         $this->response = $tree;
