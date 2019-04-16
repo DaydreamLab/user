@@ -57,8 +57,9 @@ class UserEventSubscriber
 
     public function onLogin($event)
     {
+
         $input = Helper::collect([
-            'created_by' => $event->user ? $event->user->id : $event->user,
+            'created_by' => $event->user  ? $event->user->id : 0,
             'action'     => $event->action,
             'result'     => $event->result,
             'type'       => $event->type,
