@@ -113,7 +113,7 @@ class UserService extends BaseService
                     $login = true;
                 }
             } else { // 帳號尚未啟用
-                //$user->notify(new RegisteredNotification($user));
+                $user->notify(new RegisteredNotification($user));
                 $this->status = 'USER_UNACTIVATED';
             }
         } else {
