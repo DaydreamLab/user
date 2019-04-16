@@ -27,9 +27,8 @@ class UserAdminStorePost extends UserStorePost
         $rules = [
             'group_ids'         => 'required|array',
             'group_ids.*'       => 'required|integer',
-            //'redirect'          => 'nullable|string',
             'block'             => [
-                'required',
+                'nullable',
                 Rule::in(0,1)
             ],
             'reset_password'    => [
