@@ -384,15 +384,15 @@ return [
         'message'   => 'User front block success'
     ],
     'USER_UNBLOCK_SUCCESS' => [
-        'code'      => 500,
+        'code'      => 200,
         'message'   => 'User unblock success'
     ],
     'USER_ADMIN_UNBLOCK_SUCCESS' => [
-        'code'      => 500,
+        'code'      => 200,
         'message'   => 'User admin unblock success'
     ],
     'USER_FRONT_UNBLOCK_SUCCESS' => [
-        'code'      => 500,
+        'code'      => 200,
         'message'   => 'User front unblock success'
     ],
 
