@@ -65,21 +65,8 @@ class UserGroupService extends BaseService
         return $tree;
     }
 
-
-//    public function treeList()
-//    {
-//        $tree = $this->findBy('id', '!=', 1)->toFlatTree();
-//
-//        $tree = $tree->map(function ($item, $key) {
-//            return $item->only(['id', 'tree_list_title']);
-//        });
-//
-//        $this->status =  Str::upper(Str::snake($this->type . 'GetTreeListSuccess'));
-//        $this->response = $tree;
-//
-//        return $tree;
-//    }
-
+    // 這只會建立使用者可以 access 的 user group 並且把不能 access 的標記 disabled = 1
+    // 並且成樹狀列表
     public function treeList()
     {
         $with_ancestor_viewlevels = [];
@@ -94,7 +81,6 @@ class UserGroupService extends BaseService
                     $with_ancestor_viewlevels[] = $ancestor->id;
                 }
             }
-
         }
 
         $tree = $this->findBySpecial('whereIn', 'id', $with_ancestor_viewlevels)->toFlatTree();
@@ -109,7 +95,7 @@ class UserGroupService extends BaseService
             {
                 $item->disabled = 1;
             }
-            return $item->only(['id', 'tree_list_title', 'disabled']);
+            return $item->only(['id', 'tree_title', 'disabled']);
         });
 
         $this->status =  Str::upper(Str::snake($this->type . 'GetTreeListSuccess'));

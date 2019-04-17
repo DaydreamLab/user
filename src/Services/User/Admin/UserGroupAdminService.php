@@ -133,18 +133,11 @@ class UserGroupAdminService extends UserGroupService
 
     public function search(Collection $input)
     {
-        if (!$this->user->isSuperUser())
-        {
-            $input->put('where', [
-                [
-                    'key'       => 'title',
-                    'operator'  => '!=',
-                    'value'     => 'Super User'
-                ]
-            ]);
-        }
+        $items = $this->repo->paginate($this->treeList(), 10);
 
-        return parent::search($input);
+        $this->response = $items;
+
+        return $items;
     }
 
 
@@ -172,32 +165,6 @@ class UserGroupAdminService extends UserGroupService
         ]));
 
         return $result;
-    }
-
-
-    public function treeList()
-    {
-        $result =  parent::treeList();
-
-        $data = [];
-        foreach ($result as $item)
-        {
-            if ($item['tree_list_title'] == 'Super User')
-            {
-                if ($this->user->isSuperUser())
-                {
-                    $data[] = $item;
-                }
-            }
-            else
-            {
-                $data[] = $item;
-            }
-        }
-
-        $this->response = $data;
-
-        return $data;
     }
 
 }
