@@ -133,11 +133,11 @@ class UserGroupAdminService extends UserGroupService
 
     public function search(Collection $input)
     {
-        $items = $this->repo->paginate($this->treeList(), 10);
+//        $items = $this->repo->paginate($this->treeList(), 10);
+//
+//        $this->response = $items;
 
-        $this->response = $items;
-
-        return $items;
+        return parent::search($input);
     }
 
 
