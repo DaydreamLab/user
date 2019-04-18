@@ -3,10 +3,13 @@
 namespace DaydreamLab\User\Services\User\Admin;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Helpers\InputHelper;
+use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -204,30 +207,31 @@ class UserAdminService extends UserService
 
     public function store(Collection $input)
     {
-        if ($input->has('id') ) {
-            // 有填密碼
-            if($input->get('password') != '') {
-                $password = $input->get('password');
-                $input->forget('password');
-                $input->forget('password_confirmation');
-                $input->put('password', bcrypt($password));
-            }
-        }
-        else {
-            $password = $input->password;
-            $input->forget('password');
-            $input->forget('password_confirmation');
-            $input->put('password', bcrypt($password));
-            $input->put('activate_token', Str::random(48));
-        }
-
-
-        if (!$input->has('id')) {
+        if (InputHelper::null($input, 'id')) {
             $user = $this->checkEmail($input->email);
             if ($user) {
                 return false;
             }
+
+            if (InputHelper::null($input, 'password'))
+            {
+                throw new HttpResponseException(ResponseHelper::genResponse('INPUT_INVALID', (object)['password' => ['password can\'t be null']]));
+            }
+            else
+            {
+                $input->put('password', bcrypt($input->password));
+                $input->put('activate_token', Str::random(48));
+            }
         }
+        else
+        {
+            if (!InputHelper::null($input, 'password'))
+            {
+                $input->put('password', bcrypt($input->password));
+            }
+        }
+
+        $input->forget('password_confirmation');
 
 
         $result = parent::store($input);

@@ -25,16 +25,19 @@ class UserAdminStorePost extends UserStorePost
     public function rules()
     {
         $rules = [
-            'group_ids'         => 'required|array',
-            'group_ids.*'       => 'required|integer',
-            'block'             => [
+            'group_ids'             => 'required|array',
+            'group_ids.*'           => 'required|integer',
+            'block'                 => [
                 'nullable',
                 Rule::in(0,1)
             ],
-            'reset_password'    => [
+            'reset_password'        => [
                 'required',
                 Rule::in(0,1)
             ],
+            'activation'            => 'nullable|boolean',
+            'password'              => 'nullable|string|min:8|max:16',
+            'password_confirmation' => 'nullable|same:password',
 
         ];
         return array_merge($rules, parent::rules());

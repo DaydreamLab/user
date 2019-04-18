@@ -24,7 +24,6 @@ class UserFrontStorePost extends UserStorePost
     public function rules()
     {
         $rules = [
-            //
         ];
         return array_merge($rules, parent::rules());
     }
