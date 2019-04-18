@@ -169,6 +169,14 @@ class User extends Authenticatable
     }
 
 
+    public function higherPermissionThan($user_id)
+    {
+        $compared_user = self::find($user_id);
+
+        return Helper::hasPermission($compared_user->viewlevels, $this->viewlevels);
+    }
+
+
     public function isAdmin()
     {
         $super_user  = UserGroup::where('title', 'Super User')->first();
