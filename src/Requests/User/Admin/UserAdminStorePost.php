@@ -35,7 +35,11 @@ class UserAdminStorePost extends UserStorePost
                 'required',
                 Rule::in(0,1)
             ],
-            'activation'            => 'nullable|boolean',
+            'activation'            => [
+                'required',
+                'string',
+                Rule::in(['true', 'false'])
+            ],
             'password'              => 'nullable|string|min:8|max:16',
             'password_confirmation' => 'nullable|same:password',
 

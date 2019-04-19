@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
 use Illuminate\Support\Collection;
@@ -95,7 +96,23 @@ class UserAdminController extends BaseController
 
     public function store(UserAdminStorePost $request)
     {
-        $this->service->store($request->rulesInput());
+
+        $input = $request->rulesInput();
+
+        if (!InputHelper::null($input, 'activation'))
+        {
+            $input->forget('activation');
+            if($input->activation == 'false')
+            {
+                $input->put('activation', 0);
+            }
+            else
+            {
+                $input->put('activation', 1);
+            }
+        }
+
+        $this->service->store($input);
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
