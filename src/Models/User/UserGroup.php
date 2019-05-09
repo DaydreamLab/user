@@ -1,7 +1,6 @@
 <?php
 namespace DaydreamLab\User\Models\User;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Models\Asset\Asset;
@@ -34,7 +33,6 @@ class UserGroup extends BaseModel
         'title',
         'description',
         'redirect',
-        'canDelete',
         'ordering',
         'created_by',
         'updated_by'
