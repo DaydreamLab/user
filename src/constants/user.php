@@ -398,47 +398,17 @@ return [
 
 
     // Get Page
-    'USER_GET_PAGE_SUCCESS' => [
+    'USER_GET_SELF_PAGE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User get page success'
+        'message'   => 'User get self page success'
     ],
-    'USER_ADMIN_GET_PAGE_SUCCESS' => [
+    'USER_ADMIN_GET_SELF_PAGE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User admin get page success'
+        'message'   => 'User admin get self page success'
     ],
-    'USER_FRONT_GET_PAGE_SUCCESS' => [
+    'USER_FRONT_GET_SELF_PAGE_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User front get page success'
-    ],
-
-
-    // Get APis
-    'USER_GET_ACCESS_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User get access success'
-    ],
-    'USER_ADMIN_GET_ACCESS_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User admin get access success'
-    ],
-    'USER_FRONT_GET_ACCESS_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User front get access success'
-    ],
-
-
-    // Get Action
-    'USER_GET_ACTION_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User get action success'
-    ],
-    'USER_ADMIN_GET_ACTION_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User admin get action success'
-    ],
-    'USER_FRONT_GET_ACTION_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'User front get action success'
+        'message'   => 'User front get self page success'
     ],
 
 

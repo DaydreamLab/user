@@ -158,13 +158,8 @@
                 "created_by": 1
               },
               {
-                "method": "grant_group",
+                "method": "assignGroup",
                 "url": "/admin/asset/groups/map/store",
-                "created_by": 1
-              },
-              {
-                "method": "grant_role",
-                "url": "/admin/asset/{asset_id}/map/store",
                 "created_by": 1
               }
             ]
@@ -185,28 +180,14 @@
           },
           {
             "title": "COM_DEV_ASSET_ASSIGN_GROUP_TITLE",
-            "path": "/grant/group",
-            "component": "asset/grant/group",
+            "path": "/assign/group",
+            "component": "asset/assign/group",
             "type": "function",
             "redirect": "",
             "icon": "",
             "state": 1,
             "showNav": 0,
             "ordering": 3,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "COM_DEV_ASSET_ASSIGN_API_TITLE",
-            "path": "/grant/api",
-            "component": "asset/grant/api",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 4,
             "created_by": 1,
             "children": [],
             "apis": []
@@ -309,13 +290,8 @@
                 "created_by": 1
               },
               {
-                "method": "grant_group",
+                "method": "assignGroup",
                 "url": "",
-                "created_by": 1
-              },
-              {
-                "method": "grant_role",
-                "url": "/admin/user/role/map/store",
                 "created_by": 1
               }
             ]
@@ -368,13 +344,8 @@
                 "created_by": 1
               },
               {
-                "method": "grant_asset",
+                "method": "assignAccess",
                 "url": "/admin/group/asset/map/store",
-                "created_by": 1
-              },
-              {
-                "method": "grant_api",
-                "url": "/admin/group/apis/map/store",
                 "created_by": 1
               }
             ]
@@ -394,23 +365,23 @@
             "apis": []
           },
           {
-            "title": "COM_USERS_GROUPS_ASSIGN_ASSET_TITLE",
-            "path": "/group/grant/asset",
-            "component": "user/group/grant/asset",
-            "type": "function",
+            "title": "COM_USERS_VIEWLEVEL_MANAGER_TITLE",
+            "path": "/viewlevel",
+            "component": "user/viewlevel/list",
+            "type": "menu",
             "redirect": "",
-            "icon": "",
+            "icon": "eye",
             "state": 1,
-            "showNav": 0,
+            "showNav": 1,
             "ordering": 7,
             "created_by": 1,
             "children": [],
             "apis": []
           },
           {
-            "title": "COM_USERS_GROUPS_ASSIGN_API_TITLE",
-            "path": "/group/grant/api",
-            "component": "user/group/grant/api",
+            "title": "COM_USERS_VIEWLEVEL_EDIT_TITLE",
+            "path": "/viewlevel/edit",
+            "component": "user/viewlevel/edit",
             "type": "function",
             "redirect": "",
             "icon": "",

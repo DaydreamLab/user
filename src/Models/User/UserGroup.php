@@ -62,9 +62,6 @@ class UserGroup extends BaseModel
      * @var array
      */
     protected $appends = [
-        'assets',
-        'apis',
-        //'veiwlevels'
         'tree_title',
     ];
 
@@ -78,22 +75,6 @@ class UserGroup extends BaseModel
     public function asset()
     {
         return $this->belongsToMany(Asset::class, 'users_groups_assets_maps', 'group_id', 'asset_id');
-    }
-
-
-    public function getApisAttribute()
-    {
-        return $this->api()->get();
-    }
-
-
-    public function getAssetsAttribute()
-    {
-        $assets = $this->asset()->get();
-
-        return $assets->map(function ($item){
-            return $item->id;
-        });
     }
 
 

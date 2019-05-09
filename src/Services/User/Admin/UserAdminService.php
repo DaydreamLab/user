@@ -76,84 +76,46 @@ class UserAdminService extends UserService
     }
 
 
-    public function getAction()
+    public function getSelfPage()
     {
-        $user = Auth::guard('api')->user();
+        $user   = Auth::guard('api')->user();
         $groups = $user->groups;
 
-        $response = [];
+        $group_apis     = collect();
+        $asset_assets   = \Kalnoy\Nestedset\Collection::make();
         foreach ($groups as $group)
         {
-            $group_apis      = $group->apis;
+            $apis           = $group->api()->get();
+            $group_apis     = $group_apis->merge($apis);
+            $assets         = $group->asset()->get();
+            $asset_assets   = $asset_assets->merge($assets);
+        }
+        $asset_assets = $asset_assets->toTree();
 
-            $assets = [];
-            foreach ($group_apis as $group_api) {
-                $temp_api           = $group_api->only('id', 'method');
-                $temp_api['name']   = $temp_api['method'];
+        $apis = [];
+        foreach ($group_apis as $group_api)
+        {
+            $temp_api           = $group_api->only('id', 'method');
+            $temp_api['name']   = $temp_api['method'];
 
-                $temp_asset             = $group_api->asset->only('id', 'title');
-                $temp_asset['disabled'] = true;
-                $temp_asset['child']    = [];
-                if(!in_array($temp_asset, $assets)) {
-                    $assets[]   = $temp_asset;
-                    $response[] = $temp_asset;
-                }
-
-                foreach ($response as $key => $item) {
-                    if ($item['id'] == $temp_asset['id'] && !in_array($temp_api, $item['child'])) {
-                        $response[$key]['child'][] = $temp_api;
-                    }
-                }
+            $temp_api_asset_id  = $group_api->asset->id;
+            if (!array_key_exists($temp_api_asset_id, $apis))
+            {
+                $apis[$temp_api_asset_id] = [];
             }
+            $apis[$temp_api_asset_id][] = $temp_api;
         }
 
+        $response['apis']      = $apis;
+        $response['assets']    = $asset_assets;
 
-        $this->status = Str::upper(Str::snake($this->type.'GetActionSuccess'));;
+        $this->status = Str::upper(Str::snake($this->type.'GetSelfPageSuccess'));;
         $this->response = $response;
 
         return $response;
+
     }
 
-
-
-    public function getAccess()
-    {
-        $user = Auth::guard('api')->user();
-        $apis = new Collection();
-        foreach ($user->groups as $group) {
-            $apis = $apis->merge($group->apis);
-        }
-
-        $response = [];
-        foreach ($apis as $api) {
-            if (!array_key_exists($api->asset_id, $response)) {
-                $response[$api->asset_id] = [];
-            }
-            $response[$api->asset_id][] = $api->method;
-        }
-
-        $this->status = Str::upper(Str::snake($this->type.'GetAccessSuccess'));;
-        $this->response = $response;
-
-        return $apis;
-    }
-
-
-    public function getPage($id = null)
-    {
-        $id == null ? $user = Auth::guard('api')->user() : $user = $this->find($id);
-
-        $assets = new \Kalnoy\Nestedset\Collection();
-        foreach ($user->groups as $group) {
-            $assets = $assets->merge($group->assets);
-        }
-
-        $tree = $assets->toTree();
-        $this->status = Str::upper(Str::snake($this->type.'GetPageSuccess'));;
-        $this->response = $tree;
-
-        return $tree;
-    }
 
     public function search(Collection $input)
     {

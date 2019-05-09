@@ -20,14 +20,6 @@ class UserGroupAdminController extends BaseController
     }
 
 
-    public function getAction($group_id)
-    {
-        $this->service->getAction($group_id);
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
     public function getItem($id)
     {
         $this->service->getItem($id);

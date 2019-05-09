@@ -40,6 +40,22 @@ class UserGroupAdminService extends UserGroupService
         $this->repo = $repo;
     }
 
+    public function getItem($id)
+    {
+        $group = parent::getItem($id);
+
+        $group->assets = $group->asset()->get()->map(function ($item){
+            return $item->id;
+        });
+
+        $group->apis = $group->api()->get()->map(function ($item){
+            return $item->id;
+        });
+
+
+        return $group;
+    }
+
 
     public function addNested(Collection $input)
     {
@@ -56,49 +72,35 @@ class UserGroupAdminService extends UserGroupService
     }
 
 
-    public function getAction($group_id)
+    public function getPage($group_id)
     {
-        $group           = $this->find($group_id);
-        $group_apis      = $group->apis;
+        $group          = $this->find($group_id);
 
-        $response = $assets = [];
-        foreach ($group_apis as $group_api) {
+        $group_apis     = $group->api()->get();
+        $assets         = $group->asset()->get()->toTree();
+
+        $apis = [];
+        foreach ($group_apis as $group_api)
+        {
             $temp_api           = $group_api->only('id', 'method');
             $temp_api['name']   = $temp_api['method'];
 
-            $temp_asset['id']       = $group_api->asset->id;
-            $temp_asset['name']     = $group_api->asset->title;
-            $temp_asset['disabled'] = true;
-            $temp_asset['child']    = [];
-            if(!in_array($temp_asset, $assets)) {
-                $assets[]   = $temp_asset;
-                $response[] = $temp_asset;
+            $temp_api_asset_id  = $group_api->asset->id;
+            if (!array_key_exists($temp_api_asset_id, $apis))
+            {
+                $apis[$temp_api_asset_id] = [];
             }
-
-            foreach ($response as $key => $item) {
-                if ($item['id'] == $temp_asset['id'] && !in_array($temp_api, $item['child'])) {
-                    $response[$key]['child'][] = $temp_api;
-                }
-            }
+            $apis[$temp_api_asset_id][] = $temp_api;
         }
 
+        $response['apis']       = $apis;
+        $response['assets']    = $assets;
 
         $this->status = Str::upper(Str::snake($this->type.'GetActionSuccess'));;
         $this->response = $response;
 
         return $response;
     }
-
-
-    public function getPage($group_id)
-    {
-        $pages = $this->repo->getPage($group_id);
-        $this->status = Str::upper(Str::snake($this->type.'GetPageSuccess'));;
-        $this->response = $pages;
-
-        return $pages;
-    }
-
 
 
     public function store(Collection $input)

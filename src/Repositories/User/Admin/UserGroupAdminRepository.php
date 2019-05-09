@@ -12,10 +12,4 @@ class UserGroupAdminRepository extends UserGroupRepository
     {
         parent::__construct($model);
     }
-
-
-    public function getPage($group_id)
-    {
-        return $this->find($group_id)->assets->toTree();
-    }
 }

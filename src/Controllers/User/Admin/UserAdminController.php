@@ -23,25 +23,9 @@ class UserAdminController extends BaseController
     }
 
 
-    public function getAction()
-    {
-        $this->service->getAction();
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
     public function block(UserAdminBlockPost $request)
     {
         $this->service->block($request->rulesInput());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function getAccess()
-    {
-        $this->service->getAccess();
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
@@ -65,18 +49,11 @@ class UserAdminController extends BaseController
 
     public function getSelfPage()
     {
-        $this->service->getPage();
+        $this->service->getSelfPage();
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
 
-
-    public function getUserPage($id)
-    {
-        $this->service->getPage($id);
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
 
     public function remove(UserAdminRemovePost $request)
     {

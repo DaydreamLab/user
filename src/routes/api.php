@@ -70,12 +70,9 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
             Route::post('block', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@block');
             Route::post('search', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@search');
             Route::get('page', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getSelfPage');
-            Route::get('access', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getAccess');
-            Route::get('action', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getAction');
             Route::post('remove', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@remove');
             Route::post('store', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@store');
             Route::get('{id}', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getItem');
-            Route::get('{id}/page', 'DaydreamLab\User\Controllers\User\Admin\UserAdminController@getUserPage');
 
 
             Route::group(['prefix' => 'group'], function (){
@@ -86,7 +83,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
                 Route::get('treeList', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@treeList');
                 Route::get('{id}', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getItem');
                 Route::get('{id}/page', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getPage');
-                Route::get('{id}/action', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getAction');
+
 
                 Route::group(['prefix' => 'map'], function (){
                     Route::post('store','DaydreamLab\User\Controllers\User\UserGroupMapController@store');
