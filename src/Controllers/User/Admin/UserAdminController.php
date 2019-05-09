@@ -39,9 +39,9 @@ class UserAdminController extends BaseController
     }
 
 
-    public function getApis()
+    public function getAccess()
     {
-        $this->service->getApis();
+        $this->service->getAccess();
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

@@ -28,22 +28,6 @@ class UserGroupAdminController extends BaseController
     }
 
 
-    public function getApis($group_id)
-    {
-        $this->service->getApis($group_id);
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function getApiIds($group_id)
-    {
-        $this->service->getApiIds($group_id);
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
     public function getItem($id)
     {
         $this->service->getItem($id);

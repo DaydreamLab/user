@@ -1,6 +1,7 @@
 <?php
 namespace DaydreamLab\User\Models\User;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Models\Asset\Asset;
@@ -88,7 +89,11 @@ class UserGroup extends BaseModel
 
     public function getAssetsAttribute()
     {
-        return $this->asset()->get();
+        $assets = $this->asset()->get();
+
+        return $assets->map(function ($item){
+            return $item->id;
+        });
     }
 
 

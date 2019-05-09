@@ -413,17 +413,17 @@ return [
 
 
     // Get APis
-    'USER_GET_APIS_SUCCESS' => [
+    'USER_GET_ACCESS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User get apis success'
+        'message'   => 'User get access success'
     ],
-    'USER_ADMIN_GET_APIS_SUCCESS' => [
+    'USER_ADMIN_GET_ACCESS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User admin get apis success'
+        'message'   => 'User admin get access success'
     ],
-    'USER_FRONT_GET_APIS_SUCCESS' => [
+    'USER_FRONT_GET_ACCESS_SUCCESS' => [
         'code'      => 200,
-        'message'   => 'User front get apis success'
+        'message'   => 'User front get access success'
     ],
 
 

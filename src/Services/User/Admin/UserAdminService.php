@@ -116,7 +116,7 @@ class UserAdminService extends UserService
 
 
 
-    public function getApis()
+    public function getAccess()
     {
         $user = Auth::guard('api')->user();
         $apis = new Collection();
@@ -132,7 +132,7 @@ class UserAdminService extends UserService
             $response[$api->asset_id][] = $api->method;
         }
 
-        $this->status = Str::upper(Str::snake($this->type.'GetApisSuccess'));;
+        $this->status = Str::upper(Str::snake($this->type.'GetAccessSuccess'));;
         $this->response = $response;
 
         return $apis;

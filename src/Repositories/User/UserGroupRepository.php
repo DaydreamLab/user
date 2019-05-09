@@ -16,11 +16,4 @@ class UserGroupRepository extends BaseRepository
         parent::__construct($model);
         $this->model = $model;
     }
-
-
-    public function getTree()
-    {
-        $roles = $this->search(new Collection());
-        return $roles->toTree();
-    }
 }

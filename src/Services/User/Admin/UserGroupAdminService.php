@@ -90,39 +90,6 @@ class UserGroupAdminService extends UserGroupService
     }
 
 
-    public function getApis($group_id)
-    {
-        $apis = $this->find($group_id)->apis;
-
-        $response = [];
-        foreach ($apis as $api) {
-            if (!array_key_exists($api->asset_id, $response)) {
-                $response[$api->asset_id] = [];
-            }
-            $response[$api->asset_id][] = $api->method;
-        }
-
-        $this->status = Str::upper(Str::snake($this->type.'GetApisSuccess'));;
-        $this->response = $response;
-
-        return $apis;
-    }
-
-
-    public function getApiIds($group_id)
-    {
-        $apis = $this->find($group_id)->apis;
-        $ids = [];
-        foreach ($apis as $api) {
-            $ids[] = $api->id;
-        }
-        $this->status = Str::upper(Str::snake($this->type.'GetApiIdsSuccess'));;
-        $this->response = $ids;
-
-        return $apis;
-    }
-
-
     public function getPage($group_id)
     {
         $pages = $this->repo->getPage($group_id);
@@ -132,15 +99,6 @@ class UserGroupAdminService extends UserGroupService
         return $pages;
     }
 
-
-    public function search(Collection $input)
-    {
-//        $items = $this->repo->paginate($this->treeList(), 10);
-//
-//        $this->response = $items;
-
-        return parent::search($input);
-    }
 
 
     public function store(Collection $input)
