@@ -9,8 +9,11 @@ class AssetGroupService extends BaseService
 {
     protected $type = 'AssetGroup';
 
+    protected $assetGroupMapService;
+
     public function __construct(AssetGroupRepository $repo)
     {
         parent::__construct($repo);
     }
+
 }

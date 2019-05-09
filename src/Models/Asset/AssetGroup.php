@@ -2,9 +2,13 @@
 namespace DaydreamLab\User\Models\Asset;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
+use DaydreamLab\JJAJ\Traits\RecordChanger;
 
 class AssetGroup extends BaseModel
 {
+    use RecordChanger {
+        RecordChanger::boot as traitBoot;
+    }
     /**
      * The table associated with the model.
      *

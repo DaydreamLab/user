@@ -31,8 +31,9 @@ class AssetGroupStorePost extends AdminRequest
                 'required',
                 'integer',
                 Rule::in([0,1,-2])
-            ]
-
+            ],
+            'asset_ids'     => 'required|array',
+            'asset_ids.*'   => 'nullable|integer',
         ];
     }
 }
