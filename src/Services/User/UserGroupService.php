@@ -57,7 +57,7 @@ class UserGroupService extends BaseService
                 ]
             ],
             'paginate'  => false
-        ]));
+        ]))->toTree();
 
         $this->status =  Str::upper(Str::snake($this->type . 'GetTreeSuccess'));
         $this->response = $tree;
