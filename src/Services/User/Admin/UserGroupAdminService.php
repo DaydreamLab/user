@@ -66,7 +66,8 @@ class UserGroupAdminService extends UserGroupService
             $temp_api           = $group_api->only('id', 'method');
             $temp_api['name']   = $temp_api['method'];
 
-            $temp_asset             = $group_api->asset->only('id', 'title');
+            $temp_asset['id']       = $group_api->asset->id;
+            $temp_asset['name']     = $group_api->asset->title;
             $temp_asset['disabled'] = true;
             $temp_asset['child']    = [];
             if(!in_array($temp_asset, $assets)) {
@@ -80,6 +81,7 @@ class UserGroupAdminService extends UserGroupService
                 }
             }
         }
+
 
         $this->status = Str::upper(Str::snake($this->type.'GetActionSuccess'));;
         $this->response = $response;
