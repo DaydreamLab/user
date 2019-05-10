@@ -32,11 +32,11 @@ class UserAdminStorePost extends UserStorePost
                 Rule::in(0,1)
             ],
             'reset_password'        => [
-                'required',
+                'nullable',
                 Rule::in(0,1)
             ],
             'activation'            => [
-                'required',
+                'nullable',
                 Rule::in([0,1])
             ],
             'password'              => 'nullable|string|min:8|max:16',
