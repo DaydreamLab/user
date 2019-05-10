@@ -172,7 +172,7 @@ class User extends Authenticatable
     {
         $compared_user = self::find($user_id);
 
-        return Helper::hasPermission($compared_user->viewlevels, $this->viewlevels);
+        return count(array_intersect($compared_user->viewlevels, $this->viewlevels)) === count($compared_user->viewlevels) ;
     }
 
 
