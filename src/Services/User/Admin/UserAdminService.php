@@ -95,15 +95,12 @@ class UserAdminService extends UserService
         $apis = [];
         foreach ($group_apis as $group_api)
         {
-            $temp_api           = $group_api->only('id', 'method');
-            $temp_api['name']   = $temp_api['method'];
-
             $temp_api_asset_id  = $group_api->asset->id;
             if (!array_key_exists($temp_api_asset_id, $apis))
             {
                 $apis[$temp_api_asset_id] = [];
             }
-            $apis[$temp_api_asset_id][] = $temp_api;
+            $apis[$temp_api_asset_id][] = $group_api->method;
         }
 
         $response['apis']      = $apis;
