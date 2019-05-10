@@ -83,11 +83,4 @@ class UserGroupAdminController extends BaseController
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
 
-
-    public function treeList()
-    {
-        $this->service->treeList();
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
 }

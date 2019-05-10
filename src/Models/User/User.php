@@ -99,8 +99,6 @@ class User extends Authenticatable
                 $item->updated_by = $user->id;
             }
         });
-
-
     }
 
 
@@ -108,10 +106,11 @@ class User extends Authenticatable
     {
         $access_ids = [];
 
+        $user_viewlevels = $this->viewlevels;
         $all = Viewlevel::all();
         foreach ($all as $viewlevel)
         {
-            if (Helper::hasPermission($viewlevel->rules, $this->viewlevels))
+            if (count(array_intersect($viewlevel->rules, $user_viewlevels)) === count($viewlevel->rules))
             {
                 $access_ids[] = $viewlevel->id;
             }

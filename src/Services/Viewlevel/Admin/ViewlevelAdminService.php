@@ -16,35 +16,4 @@ class ViewlevelAdminService extends ViewlevelService
     {
         parent::__construct($repo);
     }
-
-
-    public function getList()
-    {
-        $items = $this->repo->all();
-
-        $data = [];
-        foreach ($items as $item)
-        {
-            $temp = [];
-            $temp['id'] = $item->id;
-            $temp['title'] = $item->title;
-
-            if ($temp['title'] == 'Super User')
-            {
-                if ($this->user->isSuperUser())
-                {
-                    $data[] = $temp;
-                }
-            }
-            else
-            {
-                $data[] = $temp;
-            }
-        }
-
-        $this->status   =  Str::upper(Str::snake($this->type .'GetListSuccess'));
-        $this->response = $data;
-
-        return $data;
-    }
 }

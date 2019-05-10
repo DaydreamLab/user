@@ -80,8 +80,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
                 Route::post('remove', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@remove');
                 Route::post('store', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@store');
                 Route::get('tree', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@tree');
-                Route::get('treeList', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@treeList');
-                Route::get('{id}', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getItem');
+                Route::get('{id}', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getItem')->where('id', '[0-9]+');
                 Route::get('{id}/page', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getPage');
 
 
@@ -101,7 +100,6 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
 
 
         Route::group(['prefix' => 'viewlevel'], function (){
-            Route::get('list', 'DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController@getList');
             Route::post('remove', 'DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController@remove');
             Route::post('state', 'DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController@state');
             Route::post('store','DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController@store');

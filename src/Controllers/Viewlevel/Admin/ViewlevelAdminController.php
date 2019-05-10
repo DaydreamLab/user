@@ -35,14 +35,6 @@ class ViewlevelAdminController extends BaseController
     }
 
 
-    public function getList()
-    {
-        $this->service->getList();
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
     public function ordering(ViewlevelAdminOrderingPost $request)
     {
         $this->service->ordering($request->rulesInput());
