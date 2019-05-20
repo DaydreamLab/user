@@ -204,20 +204,6 @@
             "ordering": 5,
             "created_by": 1,
             "children": [],
-            "apis": []
-          },
-          {
-            "title": "COM_DEV_ASSET_GROUP_EDIT_TITLE",
-            "path": "/group/edit",
-            "component": "asset/group/edit",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "ordering": 6,
-            "created_by": 1,
-            "children": [],
             "apis": [
               {
                 "method": "add",
@@ -240,6 +226,20 @@
                 "created_by": 1
               }
             ]
+          },
+          {
+            "title": "COM_DEV_ASSET_GROUP_EDIT_TITLE",
+            "path": "/group/edit",
+            "component": "asset/group/edit",
+            "type": "function",
+            "redirect": "",
+            "icon": "",
+            "state": 1,
+            "showNav": 0,
+            "ordering": 6,
+            "created_by": 1,
+            "children": [],
+            "apis": []
           }
         ],
         "apis": []
