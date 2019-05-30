@@ -48,6 +48,11 @@ class AssetApi extends BaseModel
     ];
 
 
+    protected $casts = [
+        'params' => 'array'
+    ];
+
+
     public function asset()
     {
         return $this->belongsTo(Asset::class, 'asset_id', 'id');

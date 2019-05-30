@@ -43,6 +43,8 @@ class UserAdminService extends UserService
 
     public function block(Collection $input)
     {
+        $this->canAction('block');
+
         $result = false;
         foreach ($input->ids as $key => $id) {
             $user           = $this->find($id);
@@ -164,7 +166,7 @@ class UserAdminService extends UserService
     }
 
 
-    public function store(Collection $input)
+    public function store(Collection $input, $diff = false)
     {
         if (InputHelper::null($input, 'id')) {
             $user = $this->checkEmail($input->email);

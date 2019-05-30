@@ -7,8 +7,7 @@
     "nickname": "Admin",
     "activation": 1,
     "activate_token": "superuser",
-    "groups":[6],
-    "roles":[2]
+    "groups":[6]
   },
   {
     "email": "administrator@daydream-lab.com",
@@ -18,8 +17,7 @@
     "nickname": "Admin",
     "activation": 1,
     "activate_token": "administrator",
-    "groups":[5],
-    "roles":[2]
+    "groups":[5]
   },
   {
     "email": "registered@daydream-lab.com",
@@ -29,8 +27,7 @@
     "nickname": "Registered",
     "activation": 1,
     "activate_token": "Registered",
-    "groups":[4],
-    "roles":[2]
+    "groups":[4]
   }
 
 ]

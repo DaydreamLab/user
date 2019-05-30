@@ -27,9 +27,7 @@ class UsersTableSeeder extends Seeder
         foreach ($data as $item)
         {
             $groups     = $item['groups'];
-            $roles      = $item['roles'];
             unset($item['groups']);
-            unset($item['roles']);
 
             $item['password'] = bcrypt($item['password']);
             $user = User::create($item);

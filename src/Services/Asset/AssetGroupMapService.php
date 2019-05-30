@@ -18,7 +18,7 @@ class AssetGroupMapService extends BaseService
     }
 
 
-    public function store(Collection $input)
+    public function store(Collection $input, $diff = false)
     {
         return parent::storeKeysMap($input);
     }

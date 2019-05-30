@@ -8,7 +8,6 @@
     "icon": "",
     "state": 1,
     "showNav": 0,
-    "ordering": 1,
     "children": [
       {
         "title": "",
@@ -19,7 +18,6 @@
         "icon": "home",
         "state": 1,
         "showNav": 1,
-        "ordering": 1,
         "created_by": 1,
         "children": [
           {
@@ -31,7 +29,6 @@
             "icon": "",
             "state": 1,
             "showNav": 1,
-            "ordering": 1,
             "created_by": 1,
             "children": [],
             "apis": []
@@ -48,7 +45,6 @@
         "icon": "",
         "state": 1,
         "showNav": 1,
-        "ordering": 5,
         "created_by": 1,
         "children": [],
         "apis": []
@@ -62,7 +58,6 @@
         "icon": "th-list",
         "state": 1,
         "showNav": 1,
-        "ordering": 6,
         "created_by": 1,
         "children": [
           {
@@ -75,10 +70,14 @@
             "icon": "",
             "state": 1,
             "showNav": 1,
-            "ordering": 1,
             "created_by": 1,
             "children": [],
             "apis": [
+              {
+                "method": "get",
+                "url": "/admin/asset/api/{id}",
+                "created_by": 1
+              },
               {
                 "method": "add",
                 "url": "/admin/asset/api/store",
@@ -93,6 +92,11 @@
                 "method": "delete",
                 "url": "/admin/asset/api/remove",
                 "created_by": 1
+              },
+              {
+                "method": "search",
+                "url": "/admin/asset/api/search",
+                "created_by": 1
               }
             ]
           },
@@ -105,7 +109,6 @@
             "icon": "",
             "state": 1,
             "showNav": 0,
-            "ordering": 2,
             "created_by": 1,
             "children": [],
             "apis": []
@@ -122,7 +125,6 @@
         "icon": "th-list",
         "state": 1,
         "showNav": 1,
-        "ordering": 7,
         "created_by": 1,
         "children": [
           {
@@ -135,10 +137,14 @@
             "icon": "",
             "state": 1,
             "showNav": 1,
-            "ordering": 1,
             "created_by": 1,
             "children": [],
             "apis": [
+              {
+                "method": "get",
+                "url": "/admin/asset/{id}",
+                "created_by": 1
+              },
               {
                 "method": "add",
                 "url": "/admin/asset/store",
@@ -152,6 +158,11 @@
               {
                 "method": "delete",
                 "url": "/admin/asset/remove",
+                "created_by": 1
+              },
+              {
+                "method": "search",
+                "url": "/admin/asset/search",
                 "created_by": 1
               },
               {
@@ -175,7 +186,6 @@
             "icon": "",
             "state": 1,
             "showNav": 0,
-            "ordering": 2,
             "created_by": 1,
             "children": [],
             "apis": []
@@ -189,7 +199,6 @@
             "icon": "",
             "state": 1,
             "showNav": 0,
-            "ordering": 3,
             "created_by": 1,
             "children": [],
             "apis": []
@@ -204,10 +213,14 @@
             "icon": "",
             "state": 1,
             "showNav": 1,
-            "ordering": 5,
             "created_by": 1,
             "children": [],
             "apis": [
+              {
+                "method": "get",
+                "url": "/admin/asset/group/{id}",
+                "created_by": 1
+              },
               {
                 "method": "add",
                 "url": "/admin/asset/group/store",
@@ -221,6 +234,11 @@
               {
                 "method": "delete",
                 "url": "/admin/asset/group/remove",
+                "created_by": 1
+              },
+              {
+                "method": "search",
+                "url": "/admin/asset/group/search",
                 "created_by": 1
               },
               {
@@ -239,7 +257,6 @@
             "icon": "",
             "state": 1,
             "showNav": 0,
-            "ordering": 6,
             "created_by": 1,
             "children": [],
             "apis": []
@@ -256,7 +273,6 @@
         "icon": "",
         "state": 1,
         "showNav": 1,
-        "ordering": 4,
         "created_by": 1,
         "children": [
           {
@@ -269,10 +285,14 @@
             "icon": "user",
             "state": 1,
             "showNav": 1,
-            "ordering": 1,
             "created_by": 1,
             "children": [],
             "apis": [
+              {
+                "method": "get",
+                "url": "/admin/user/{id}",
+                "created_by": 1
+              },
               {
                 "method": "add",
                 "url": "/admin/user/store",
@@ -289,13 +309,18 @@
                 "created_by": 1
               },
               {
+                "method": "search",
+                "url": "/admin/user/search",
+                "created_by": 1
+              },
+              {
                 "method": "block",
                 "url": "/admin/user/block",
                 "created_by": 1
               },
               {
                 "method": "assignGroup",
-                "url": "",
+                "url": "/admin/user/assignGroup",
                 "created_by": 1
               }
             ]
@@ -309,7 +334,6 @@
             "icon": "",
             "state": 1,
             "showNav": 0,
-            "ordering": 2,
             "created_by": 1,
             "children": [],
             "apis": []
@@ -324,33 +348,42 @@
             "icon": "users",
             "state": 1,
             "showNav": 1,
-            "ordering": 5,
             "created_by": 1,
             "children": [],
             "apis": [
               {
+                "method": "get",
+                "url": "/admin/user/group/{id}",
+                "created_by": 1
+              },
+              {
                 "method": "add",
-                "url": "/user/group/store",
+                "url": "/admin/user/group/store",
                 "created_by": 1
               },
               {
                 "method": "edit",
-                "url": "/user/group/store",
+                "url": "/admin/user/group/store",
                 "created_by": 1
               },
               {
                 "method": "delete",
-                "url": "/user/group/remove",
+                "url": "/admin/user/group/remove",
+                "created_by": 1
+              },
+              {
+                "method": "search",
+                "url": "/admin/user/group/search",
                 "created_by": 1
               },
               {
                 "method": "updateState",
-                "url": "/user/group/state",
+                "url": "/admin/user/group/state",
                 "created_by": 1
               },
               {
                 "method": "assignAccess",
-                "url": "/admin/group/asset/map/store",
+                "url": "/admin/user/group/assignAccess",
                 "created_by": 1
               }
             ]
@@ -364,7 +397,6 @@
             "icon": "",
             "state": 1,
             "showNav": 0,
-            "ordering": 6,
             "created_by": 1,
             "children": [],
             "apis": []
@@ -373,16 +405,41 @@
             "title": "COM_USERS_VIEWLEVEL_MANAGER_TITLE",
             "path": "/viewlevel",
             "component": "user/viewlevel/list",
-            "model": "Viewlevel",
+            "model": "ViewlevelAdmin",
             "type": "menu",
             "redirect": "",
             "icon": "eye",
             "state": 1,
             "showNav": 1,
-            "ordering": 7,
             "created_by": 1,
             "children": [],
-            "apis": []
+            "apis": [
+              {
+                "method": "get",
+                "url": "/admin/viewlevel/{id}",
+                "created_by": 1
+              },
+              {
+                "method": "add",
+                "url": "/admin/viewlevel/store",
+                "created_by": 1
+              },
+              {
+                "method": "edit",
+                "url": "/admin/viewlevel/store",
+                "created_by": 1
+              },
+              {
+                "method": "delete",
+                "url": "/admin/viewlevel/remove",
+                "created_by": 1
+              },
+              {
+                "method": "search",
+                "url": "/admin/viewlevel/search",
+                "created_by": 1
+              }
+            ]
           },
           {
             "title": "COM_USERS_VIEWLEVEL_EDIT_TITLE",
@@ -393,7 +450,6 @@
             "icon": "",
             "state": 1,
             "showNav": 0,
-            "ordering": 8,
             "created_by": 1,
             "children": [],
             "apis": []
@@ -408,10 +464,15 @@
             "icon": "clipboard-user",
             "state": 1,
             "showNav": 1,
-            "ordering": 9,
             "created_by": 1,
             "children": [],
-            "apis": []
+            "apis": [
+              {
+                "method": "search",
+                "url": "/admin/log/search",
+                "created_by": 1
+              }
+            ]
           }
         ],
         "apis": []

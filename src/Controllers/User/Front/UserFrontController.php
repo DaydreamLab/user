@@ -69,6 +69,7 @@ class UserFrontController extends BaseController
     public function login(UserLoginPost $request)
     {
         $this->service->login($request->rulesInput());
+
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
 

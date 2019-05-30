@@ -1,10 +1,12 @@
 <?php
 namespace DaydreamLab\User\Models\User;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Asset\AssetApi;
+use Illuminate\Support\Collection;
 use Kalnoy\Nestedset\NodeTrait;
 
 class UserGroup extends BaseModel
@@ -70,7 +72,22 @@ class UserGroup extends BaseModel
     }
 
 
-    public function asset()
+    public function canAction($model, $methods)
+    {
+        $asset = Asset::where('model', $model)->where('type', 'menu')->first();
+
+        // 這個 user group 在這個 asset 可以使用的 apis
+        $apis =  $this->belongsToMany( AssetApi::class, 'users_groups_apis_maps', 'group_id', 'api_id')
+                        ->where('asset_id', $asset->id)
+                        ->get();
+
+        $apis_methods   = $apis->pluck('method');
+
+        return $apis_methods->intersect(collect($methods))->count() === count($methods);
+    }
+
+
+    public function asset($model = null)
     {
         return $this->belongsToMany(Asset::class, 'users_groups_assets_maps', 'group_id', 'asset_id');
     }

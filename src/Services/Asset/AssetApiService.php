@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Services\Asset;
 
 use DaydreamLab\User\Repositories\Asset\AssetApiRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
+use Illuminate\Support\Collection;
 
 class AssetApiService extends BaseService
 {
@@ -13,4 +14,5 @@ class AssetApiService extends BaseService
     {
         parent::__construct($repo);
     }
+
 }

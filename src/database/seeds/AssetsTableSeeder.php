@@ -58,6 +58,12 @@ class AssetsTableSeeder extends Seeder
             unset($item['children']);
             unset($item['apis']);
 
+            if ($parent)
+            {
+                $parent = Asset::find($parent->id);
+                $item['ordering'] = $parent->children->count()+1;
+            }
+
             $asset = Asset::create($item);
             if ($parent)
             {

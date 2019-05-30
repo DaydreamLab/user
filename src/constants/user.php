@@ -3,7 +3,12 @@
 return [
     'USER_INSUFFICIENT_PERMISSION_ADMIN' => [
         'code'      => 403,
-        'message'   => 'Insufficient permission admin'
+        'message'   => 'User is not a administrator'
+    ],
+
+    'USER_INSUFFICIENT_PERMISSION' => [
+        'code'      => 403,
+        'message'   => 'User insufficient permission about this action'
     ],
 
     'USER_TOKEN_EXPIRED' => [
