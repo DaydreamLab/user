@@ -103,6 +103,4 @@ class UserGroup extends BaseModel
 
         return $depth == 0  ? $this->title : $str . ' '. $this->title;
     }
-
-
 }
