@@ -7,6 +7,7 @@ use DaydreamLab\User\Middlewares\Admin;
 
 use DaydreamLab\User\Middlewares\Expired;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 
 class UserServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,8 @@ class UserServiceProvider extends ServiceProvider
         $this->publishes([__DIR__. '/Configs' => config_path()], 'user-configs');
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         include __DIR__. '/routes/api.php';
+
+
     }
 
     /**
@@ -39,5 +42,12 @@ class UserServiceProvider extends ServiceProvider
         $this->app['router']->aliasMiddleware('admin', Admin::class);
         $this->app['router']->aliasMiddleware('expired', Expired::class);
         $this->commands($this->commands);
+        $this->registerEloquentFactoriesFrom(__DIR__.'/database/factories');
+    }
+
+
+    protected function registerEloquentFactoriesFrom($path)
+    {
+        $this->app->make(EloquentFactory::class)->load($path);
     }
 }

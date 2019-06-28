@@ -2,8 +2,7 @@
 
 namespace DaydreamLab\User\Models\User;
 
-use DaydreamLab\Cms\Models\Item\Item;
-use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
@@ -13,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable, CanResetPassword;
+    use HasApiTokens, Notifiable, CanResetPassword, HasCustomRelation;
 
     protected $order_by = 'id';
 

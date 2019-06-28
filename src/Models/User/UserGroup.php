@@ -76,6 +76,8 @@ class UserGroup extends BaseModel
     {
         $asset = Asset::where('model', $model)->where('type', 'menu')->first();
 
+        if(!$asset) return false;
+
         // 這個 user group 在這個 asset 可以使用的 apis
         $apis =  $this->belongsToMany( AssetApi::class, 'users_groups_apis_maps', 'group_id', 'api_id')
                         ->where('asset_id', $asset->id)
