@@ -12,5 +12,5 @@ class UserAdmin extends User
      */
     protected $table = 'users';
 
-
+    static $custom_relations = [];
 }

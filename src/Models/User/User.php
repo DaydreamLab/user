@@ -20,6 +20,7 @@ class User extends Authenticatable
 
     protected $order = 'asc';
 
+
     /**
      * The attributes that are mass assignable.
      *

@@ -18,6 +18,8 @@ class UserFront extends User
         'id',
     ];
 
+    static $custom_relations = [];
+
 
     protected static function boot()
     {
