@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\User;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\User\Rules\DaydreamAccount;
 
 class UserStorePost extends AdminRequest
 {
@@ -25,7 +26,7 @@ class UserStorePost extends AdminRequest
     {
         return [
             'id'                    => 'nullable|integer',
-            'email'                 => 'required|email',
+            'email'                 => 'required|unique:users,email',
             'first_name'            => 'required|string',
             'last_name'             => 'required|string',
             'nickname'              => 'nullable|string',

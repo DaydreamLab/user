@@ -14,8 +14,8 @@ class CreateAssetsApisTable extends Migration
     public function up()
     {
         Schema::create('assets_apis', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('asset_id');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('asset_id');
             $table->string('method');
             $table->string('url');
             $table->unsignedInteger('created_by')->nullable();

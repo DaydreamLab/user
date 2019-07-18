@@ -14,9 +14,9 @@ class CreateUsersGroupsMapsTable extends Migration
     public function up()
     {
         Schema::create('users_groups_maps', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('group_id');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('group_id');
             $table->timestamps();
         });
     }

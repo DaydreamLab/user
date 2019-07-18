@@ -14,13 +14,13 @@ class CreateViewlevelsTable extends Migration
     public function up()
     {
         Schema::create('viewlevels', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('rules')->nullable();
             $table->unsignedInteger('ordering')->default(1);
-            $table->unsignedInteger('created_by');
-            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

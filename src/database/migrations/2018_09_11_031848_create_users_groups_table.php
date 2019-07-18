@@ -14,15 +14,15 @@ class CreateUsersGroupsTable extends Migration
     public function up()
     {
         Schema::create('users_groups', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('title');
             $table->nestedSet();
             $table->string('redirect')->nullable();
             $table->unsignedInteger('access')->nullable()->default(1);
             $table->text('description')->nullable();
             $table->unsignedInteger('ordering')->default(1);
-            $table->unsignedInteger('created_by');
-            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

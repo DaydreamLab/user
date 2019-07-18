@@ -14,7 +14,7 @@ class CreateAssetsGroupsTable extends Migration
     public function up()
     {
         Schema::create('assets_groups', function (Blueprint $table) {
-            $table->increments('id');
+            $table->unsignedBigInteger('id');
             $table->string('title');
             //$table->unsignedInteger('category_id')->nullable();
             $table->tinyInteger('state')->default(1);

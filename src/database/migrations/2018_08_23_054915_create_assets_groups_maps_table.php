@@ -14,9 +14,9 @@ class CreateAssetsGroupsMapsTable extends Migration
     public function up()
     {
         Schema::create('assets_groups_maps', function (Blueprint $table) {
-            $table->increments('id');
-            $table->Integer('asset_id');
-            $table->Integer('group_id');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('asset_id');
+            $table->unsignedBigInteger('group_id');
             $table->timestamps();
         });
     }

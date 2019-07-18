@@ -14,7 +14,7 @@ class CreateAssetsTable extends Migration
     public function up()
     {
         Schema::create('assets', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->nestedSet();
             $table->unsignedInteger('ordering')->nullable()->default(1);
             $table->string('title')->nullable();

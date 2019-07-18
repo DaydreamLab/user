@@ -14,10 +14,10 @@ class CreateSocialsUsersTable extends Migration
     public function up()
     {
         Schema::create('socials_users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('provider_id');
             $table->string('provider');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('token');
             $table->timestamps();
         });

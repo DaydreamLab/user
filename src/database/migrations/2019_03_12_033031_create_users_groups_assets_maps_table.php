@@ -14,9 +14,9 @@ class CreateUsersGroupsAssetsMapsTable extends Migration
     public function up()
     {
         Schema::create('users_groups_assets_maps', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('group_id')->nullable();
-            $table->unsignedInteger('asset_id')->nullable();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('group_id')->nullable();
+            $table->unsignedBigInteger('asset_id')->nullable();
             $table->timestamps();
         });
     }
