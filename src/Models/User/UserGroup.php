@@ -91,7 +91,8 @@ class UserGroup extends BaseModel
 
     public function asset($model = null)
     {
-        return $this->belongsToMany(Asset::class, 'users_groups_assets_maps', 'group_id', 'asset_id');
+        return $this->belongsToMany(Asset::class, 'users_groups_assets_maps', 'group_id', 'asset_id')
+            ->withTimestamps();
     }
 
 

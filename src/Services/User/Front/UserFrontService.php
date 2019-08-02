@@ -200,6 +200,7 @@ class UserFrontService extends UserService
         $input->put('activate_token', str_random(48));
 
         $user      = $this->add($input);
+        $user->usergroup()->attach(config('daydreamlab-user.register.group'));
         if ($user) {
             $user->notify(new RegisteredNotification($user));
             $this->status = 'USER_REGISTER_SUCCESS';
