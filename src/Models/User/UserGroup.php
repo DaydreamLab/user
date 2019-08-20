@@ -74,6 +74,7 @@ class UserGroup extends BaseModel
 
     public function canAction($model, $methods)
     {
+
         $asset = Asset::where('model', $model)->where('type', 'menu')->first();
 
         if(!$asset) return false;
