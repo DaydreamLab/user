@@ -25,7 +25,7 @@ class UserFrontRegisterPost extends AdminRequest
     public function rules()
     {
         return [
-            'email'                 => 'required|email',
+            'email'                 => 'required|email|unique:users,email',
             'password'              => 'required|string|min:8|max:16',
             'password_confirmation' => 'required|same:password',
             'first_name'            => 'required|string',

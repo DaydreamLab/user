@@ -169,10 +169,6 @@ class UserAdminService extends UserService
     public function store(Collection $input, $diff = false)
     {
         if (InputHelper::null($input, 'id')) {
-            $user = $this->checkEmail($input->email);
-            if ($user) {
-                return false;
-            }
 
             if (InputHelper::null($input, 'password'))
             {
@@ -180,7 +176,7 @@ class UserAdminService extends UserService
             }
             else
             {
-                $input->put('password', bcrypt($input->password));
+                $input->put('password', bcrypt($input->get('password')));
                 $input->put('activate_token', Str::random(48));
             }
         }
@@ -199,13 +195,13 @@ class UserAdminService extends UserService
         if (gettype($result) == 'boolean') {    //更新使用者
             $group_map = [
                 'user_id'   => $input->id,
-                'group_ids'  => $input->group_ids
+                'group_ids'  => $input->get('group_ids')
             ];
         }
         else {//新增使用者
             $group_map = [
                 'user_id'   => $result->id,
-                'group_ids'  => $input->group_ids
+                'group_ids'  => $input->get('group_ids')
             ];
         }
 

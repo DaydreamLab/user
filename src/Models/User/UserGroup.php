@@ -33,6 +33,8 @@ class UserGroup extends BaseModel
      */
     protected $fillable = [
         'title',
+        'parent_id',
+        'access',
         'description',
         'redirect',
         'ordering',
