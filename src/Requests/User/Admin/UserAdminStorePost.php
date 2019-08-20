@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Requests\User\Admin;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Requests\User\UserStorePost;
 use Illuminate\Validation\Rule;
 
@@ -43,6 +44,13 @@ class UserAdminStorePost extends UserStorePost
             'password_confirmation' => 'nullable|same:password',
 
         ];
-        return array_merge($rules, parent::rules());
+        $result = array_merge($rules, parent::rules());
+
+        return $result;
+    }
+
+    public function rulesInput()
+    {
+        return parent::rulesInput();
     }
 }

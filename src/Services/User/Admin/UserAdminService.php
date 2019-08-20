@@ -193,19 +193,13 @@ class UserAdminService extends UserService
 
         $result = parent::store($input);
         if (gettype($result) == 'boolean') {    //更新使用者
-            $group_map = [
-                'user_id'   => $input->id,
-                'group_ids'  => $input->get('group_ids')
-            ];
+            $user = $this->find($input->get('id'));
+            $user->usergroup()->detach();
+            $user->usergroup()->attach($input->get('group_ids'));
         }
         else {//新增使用者
-            $group_map = [
-                'user_id'   => $result->id,
-                'group_ids'  => $input->get('group_ids')
-            ];
+            $result->usergroup()->attach($input->get('group_ids'));
         }
-
-        $this->userGroupMapAdminService->storeKeysMap(Helper::collect($group_map));
 
         return $result;
     }
