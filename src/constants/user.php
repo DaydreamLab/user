@@ -40,6 +40,11 @@ return [
         'message'   => 'Register fail'
     ],
 
+    'USER_REGISTRATION_IS_BLOCKED' => [
+        'code'      => 403,
+        'message'   => 'User registration is block'
+    ],
+
 
 
     // Login
@@ -60,7 +65,7 @@ return [
 
     'USER_UNACTIVATED' => [
         'code'      => 403,
-        'message'   => 'User has not been activated.We have sent you an activation email. Please check your email to activate account'
+        'message'   => 'User has not been activated. Please check your email to activate account'
     ],
 
     'USER_UNAUTHORIZED' => [

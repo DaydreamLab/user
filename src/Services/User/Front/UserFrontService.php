@@ -79,7 +79,7 @@ class UserFrontService extends UserService
             $this->userGroupMapService->storeKeysMap(
                 Helper::collect([
                     'user_id'   => $user->id,
-                    'group_ids' => [config('daydreamlab-user.register.group')]
+                    'group_ids' => [config('daydreamlab-user.iregister.group')]
                 ])
             );
         }
@@ -189,24 +189,31 @@ class UserFrontService extends UserService
      */
     public function register(Collection $input)
     {
-        $exist = $this->checkEmail($input->email);
-        if ($exist) {
-            return ;
-        }
+        if (config('daydreamlab-user.register.enable'))
+        {
+            $exist = $this->checkEmail($input->email);
+            if ($exist) {
+                return ;
+            }
 
-        $password  = $input->password;
-        $input->forget('password');
-        $input->put('password', bcrypt($password));
-        $input->put('activate_token', str_random(48));
+            $password  = $input->password;
+            $input->forget('password');
+            $input->put('password', bcrypt($password));
+            $input->put('activate_token', str_random(48));
 
-        $user      = $this->add($input);
-        $user->usergroup()->attach(config('daydreamlab-user.register.group'));
-        if ($user) {
-            $user->notify(new RegisteredNotification($user));
-            $this->status = 'USER_REGISTER_SUCCESS';
+            $user      = $this->add($input);
+            $user->usergroup()->attach(config('daydreamlab-user.register.group'));
+            if ($user) {
+                $user->notify(new RegisteredNotification($user));
+                $this->status = 'USER_REGISTER_SUCCESS';
+            }
+            else {
+                $this->status = 'USER_REGISTER_FAIL';
+            }
         }
-        else {
-            $this->status = 'USER_REGISTER_FAIL';
+        else
+        {
+            $this->status = 'USER_CAN_NOT_REGISTER';
         }
     }
 
