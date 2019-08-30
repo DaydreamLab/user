@@ -8,6 +8,7 @@ use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
+use DaydreamLab\User\Requests\User\UserCheckEmailPost;
 use DaydreamLab\User\Requests\User\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\UserLoginPost;
 use DaydreamLab\User\Services\User\Front\UserFrontService;
@@ -30,6 +31,14 @@ class UserFrontController extends BaseController
     public function activate($token)
     {
         $this->service->activate($token);
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+    public function checkEmail(UserCheckEmailPost $request)
+    {
+        $this->service->status = 'USER_EMAIL_IS_NOT_REGISTERED';
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }

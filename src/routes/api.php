@@ -4,6 +4,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
 
     Route::group(['prefix' => 'user'], function (){
         Route::post('register', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@register');
+        Route::post('checkEmail', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@checkEmail');
         Route::get('activate/{token}', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@activate');
         Route::post('password/reset', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@changePassword')
                 ->middleware(['auth:api']);
