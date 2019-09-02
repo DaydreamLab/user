@@ -19,14 +19,21 @@ class Expired
     public function handle($request, Closure $next)
     {
         $user = Auth::guard('api')->user();
-        $token = $user->token();
-        if ($token->expires_at < now()) {
-            $token->delete();
-            return ResponseHelper::genResponse('USER_TOKEN_EXPIRED');
-        }
+        if ($user)
+        {
+            $token = $user->token();
+            if ($token->expires_at < now()) {
+                $token->delete();
+                return ResponseHelper::genResponse('USER_TOKEN_EXPIRED');
+            }
 
-        if ($user->block) {
-            return ResponseHelper::genResponse('USER_IS_BLOCKED');
+            if ($user->block) {
+                return ResponseHelper::genResponse('USER_IS_BLOCKED');
+            }
+        }
+        else
+        {
+            return ResponseHelper::genResponse('USER_UNAUTHORIZED');
         }
 
         return $next($request);

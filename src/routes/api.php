@@ -11,8 +11,9 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
         Route::get('login/facebook', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@fbLogin');
         Route::get('login/facebook/callback', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@fbCallback');
         Route::get('logout', 'DaydreamLab\User\Controllers\User\UserController@logout');
+        Route::get('login', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@getLogin')
+            ->middleware(['expired']);
         Route::post('login', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@login');
-
     });
 
     // 忘記密碼

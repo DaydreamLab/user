@@ -11,12 +11,15 @@ use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\User\Requests\User\UserCheckEmailPost;
 use DaydreamLab\User\Requests\User\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\UserLoginPost;
+use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 use DaydreamLab\User\Services\User\Front\UserFrontService;
 use DaydreamLab\User\Requests\User\Front\UserFrontRemovePost;
 use DaydreamLab\User\Requests\User\Front\UserFrontStorePost;
 use DaydreamLab\User\Requests\User\Front\UserFrontStatePost;
 use DaydreamLab\User\Requests\User\Front\UserFrontSearchPost;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class UserFrontController extends BaseController
@@ -72,6 +75,25 @@ class UserFrontController extends BaseController
         $this->service->fblogin();
 
         return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
+
+    public function getLogin(Request $request)
+    {
+        $user = Auth::guard('api')->authenticate();
+        if ($user)
+        {
+            $status = 'USER_GET_ITEM_SUCCESS';
+            $response = $user;
+            $response->token = $request->bearerToken();
+        }
+        else
+        {
+            $status = 'USER_TOKEN_EXPIRED';
+            $response = null;
+        }
+        return ResponseHelper::response($status,  new UserFrontGetLoginResource($response));
     }
 
 

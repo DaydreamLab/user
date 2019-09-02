@@ -12,7 +12,7 @@ return [
     ],
 
     'USER_TOKEN_EXPIRED' => [
-        'code'      => 403,
+        'code'      => 401,
         'message'   => 'Token expired. Please login again'
     ],
 
