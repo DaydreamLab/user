@@ -4,10 +4,11 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
 
     Route::group(['prefix' => 'user'], function (){
         Route::post('register', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@register');
-        Route::post('checkEmail', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@checkEmail');
+        Route::post('checkEmail', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@checkEmail')
+            ->middleware(['Cors']);
         Route::get('activate/{token}', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@activate');
         Route::post('password/reset', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@changePassword')
-                ->middleware(['auth:api']);
+            ->middleware(['auth:api']);
         Route::get('login/facebook', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@fbLogin');
         Route::get('login/facebook/callback', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@fbCallback');
         Route::get('logout', 'DaydreamLab\User\Controllers\User\UserController@logout');

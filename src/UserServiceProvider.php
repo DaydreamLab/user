@@ -2,9 +2,8 @@
 
 namespace DaydreamLab\User;
 
-use DaydreamLab\User\Listeners\UserEventSubscriber;
+use DaydreamLab\JJAJ\Middlewares\Cors;
 use DaydreamLab\User\Middlewares\Admin;
-
 use DaydreamLab\User\Middlewares\Expired;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory as EloquentFactory;
@@ -41,8 +40,10 @@ class UserServiceProvider extends ServiceProvider
         $this->app->register(UserEventServiceProvider::class);
         $this->app['router']->aliasMiddleware('admin', Admin::class);
         $this->app['router']->aliasMiddleware('expired', Expired::class);
+        $this->app['router']->aliasMiddleware('CORS', Cors::class);
         $this->commands($this->commands);
         $this->registerEloquentFactoriesFrom(__DIR__.'/database/factories');
+
     }
 
 
