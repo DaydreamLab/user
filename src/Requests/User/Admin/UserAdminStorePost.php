@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\User\Admin;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\User\Requests\User\UserStorePost;
 use Illuminate\Validation\Rule;
 

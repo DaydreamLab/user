@@ -123,6 +123,8 @@ class UserService extends BaseService
         }
 
         event(new Login($this->model_name, $login,  $this->status, $user));
+
+        return $user;
     }
 
 
@@ -140,7 +142,7 @@ class UserService extends BaseService
     {
         $result =  parent::modify($input, $diff);
 
-        event(new Modify($this->find($input->id), $this->model_name, $result, $input, $this->user));
+        event(new Modify($this->find($input->get('id')), $this->model_name, $result, $input, $this->user));
 
         return $result;
     }

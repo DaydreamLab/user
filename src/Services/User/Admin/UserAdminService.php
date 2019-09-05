@@ -176,6 +176,12 @@ class UserAdminService extends UserService
             }
             else
             {
+                if ($this->checkEmail($input->get('email'))){
+                    throw new HttpResponseException(
+                        ResponseHelper::genResponse(
+                            $this->status)
+                    );
+                }
                 $input->put('password', bcrypt($input->get('password')));
                 $input->put('activate_token', Str::random(48));
             }
@@ -184,7 +190,7 @@ class UserAdminService extends UserService
         {
             if (!InputHelper::null($input, 'password'))
             {
-                $input->put('password', bcrypt($input->password));
+                $input->put('password', bcrypt($input->get('password')));
             }
         }
 

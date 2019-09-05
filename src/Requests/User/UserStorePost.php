@@ -26,7 +26,7 @@ class UserStorePost extends AdminRequest
     {
         return [
             'id'                    => 'nullable|integer',
-            'email'                 => 'required|unique:users,email',
+            'email'                 => 'required|email',
             'first_name'            => 'required|string',
             'last_name'             => 'required|string',
             'nickname'              => 'nullable|string',
