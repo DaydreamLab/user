@@ -21,9 +21,10 @@ class UserHelper
         $data['last_name']   = $user->last_name;
         if ($user->isAdmin())
         {
+            $sort_groups         = $user->groups->sortBy('id');
             $data['id']          = $user->id;
-            $data['redirect']    = $user->groups->first()->redirect;
-            $data['groups']      = $user->groups;
+            $data['redirect']    = $sort_groups->first()->redirect;
+            $data['groups']      = $sort_groups;
         }
 
         return (object)$data;

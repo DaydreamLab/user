@@ -117,6 +117,7 @@ class UserService extends BaseService
             } else { // 帳號尚未啟用
                 //$user->notify(new RegisteredNotification($user));
                 $this->status = 'USER_UNACTIVATED';
+                return false;
             }
         } else {
             $this->status = 'USER_EMAIL_OR_PASSWORD_INCORRECT';

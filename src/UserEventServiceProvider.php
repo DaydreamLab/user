@@ -2,9 +2,8 @@
 
 namespace DaydreamLab\User;
 
-use App\Providers\EventServiceProvider;
 use DaydreamLab\User\Listeners\UserEventSubscriber;
-
+use Illuminate\Foundation\Support\Providers\EventServiceProvider;
 
 class UserEventServiceProvider extends EventServiceProvider
 {
@@ -12,7 +11,6 @@ class UserEventServiceProvider extends EventServiceProvider
     protected $subscribe = [
         UserEventSubscriber::class
     ];
-
 
     public function boot()
     {
