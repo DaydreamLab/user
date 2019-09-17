@@ -192,6 +192,10 @@ class UserAdminService extends UserService
             {
                 $input->put('password', bcrypt($input->get('password')));
             }
+            else
+            {
+                $input->forget('password');
+            }
         }
 
         $input->forget('password_confirmation');
