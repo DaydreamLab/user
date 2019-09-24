@@ -21,6 +21,7 @@ class AssetsTableSeeder extends Seeder
     {
         $data = json_decode(file_get_contents(__DIR__.'/jsons/asset.json'), true);
 
+
         $this->migrate($data, null);
 
         $service    = new AssetService(new AssetRepository(new Asset()));
@@ -72,8 +73,8 @@ class AssetsTableSeeder extends Seeder
 
             foreach ($apis as $api)
             {
-                $api['asset_id'] = $asset->id;
-                $asset_api = AssetApi::create($api);
+                $api['model'] = $asset->model;
+                $api = AssetApi::create($api);
             }
 
             if (count($children))

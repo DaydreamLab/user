@@ -64,7 +64,7 @@ class Asset extends BaseModel
      * @var array
      */
     protected $appends = [
-        'apis',
+        //'apis',
         'groups',
         'tree_title',
         'tree_list_title',

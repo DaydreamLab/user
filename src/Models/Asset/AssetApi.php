@@ -20,7 +20,8 @@ class AssetApi extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'asset_id',
+        //'asset_id',
+        'model',
         'method',
         'url',
         'created_by',

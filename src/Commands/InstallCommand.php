@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Commands;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
@@ -35,9 +36,9 @@ class InstallCommand extends Command
 
     protected $seeders = [
         'AssetsTableSeeder',
-        'UsersGroupsTableSeeder',
-        'UsersTableSeeder',
-        'ViewlevelsTableSeeder',
+        //'UsersGroupsTableSeeder',
+        //'UsersTableSeeder',
+        //'ViewlevelsTableSeeder',
     ];
 
     /**
@@ -57,7 +58,7 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        //$this->call('jjaj:refresh');
+        $this->call('jjaj:refresh');
 
         foreach ($this->seeders as $seeder) {
             $this->call('db:seed', [
