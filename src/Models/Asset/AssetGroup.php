@@ -50,4 +50,9 @@ class AssetGroup extends BaseModel
     ];
 
 
+
+    public function assets()
+    {
+        return $this->hasMany(Asset::class, 'group_id', 'id');
+    }
 }

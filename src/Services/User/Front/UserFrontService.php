@@ -68,15 +68,8 @@ class UserFrontService extends UserService
     public function create($data)
     {
         $user = parent::create($data);
-
-        if ($user)
-        {
-            $this->userGroupMapService->storeKeysMap(
-                Helper::collect([
-                    'user_id'   => $user->id,
-                    'group_ids' => [config('daydreamlab-user.iregister.group')]
-                ])
-            );
+        if ($user) {
+            $user->groups()->attach(config('daydreamlab-user.register.groups'));
         }
 
         return $user;

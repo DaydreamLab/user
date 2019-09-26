@@ -3,8 +3,8 @@
 namespace DaydreamLab\User\Services\Asset\Admin;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Models\Asset\Admin\AssetGroupAdmin;
 use DaydreamLab\User\Repositories\Asset\Admin\AssetGroupAdminRepository;
-use DaydreamLab\User\Services\Asset\AssetGroupMapService;
 use DaydreamLab\User\Services\Asset\AssetGroupService;
 use Illuminate\Support\Collection;
 
@@ -12,15 +12,35 @@ class AssetGroupAdminService extends AssetGroupService
 {
     protected $type = 'AssetGroupAdmin';
 
-    protected $assetGroupMapService;
 
-    public function __construct(AssetGroupAdminRepository $repo,
-                                AssetGroupMapService $assetGroupMapService)
+    public function __construct(AssetGroupAdminRepository $repo)
     {
         parent::__construct($repo);
         $this->repo = $repo;
-        $this->assetGroupMapService = $assetGroupMapService;
     }
+
+//    /**
+//     * @param $item AssetGroupAdmin
+//     * @param $input Collection
+//     * @return bool|void
+//     */
+//    public function addMapping($item, $input)
+//    {
+//        $item->assets()->attach($input->get('asset_ids'));
+//    }
+//
+//
+//    public function modifyMapping($item, $input)
+//    {
+//        $item->assets()->detach();
+//        $item->assets()->attach($input->get('asset_ids'));
+//    }
+//
+//
+//    public function removeMapping($item)
+//    {
+//        $item->assets()->detach();
+//    }
 
 
     public function store(Collection $input, $diff = false)
@@ -31,11 +51,6 @@ class AssetGroupAdminService extends AssetGroupService
         {
             $item = $this->find($input->get('id'));
         }
-
-        $result = $this->assetGroupMapService->storeKeysMap(Helper::collect([
-            'group_id'      => $item->id,
-            'asset_ids'     => $input->asset_ids
-        ]));
 
         return $item;
     }

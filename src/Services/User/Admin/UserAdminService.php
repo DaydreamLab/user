@@ -20,8 +20,6 @@ class UserAdminService extends UserService
 {
     protected $type = 'UserAdmin';
 
-    protected $userGroupMapAdminService;
-
     protected $search_keys = [
         'first_name',
         'last_name',
@@ -33,11 +31,9 @@ class UserAdminService extends UserService
         //'roles'
     ];
 
-    public function __construct(UserAdminRepository $repo,
-                                UserGroupMapAdminService $userGroupMapAdminService)
+    public function __construct(UserAdminRepository $repo)
     {
         parent::__construct($repo);
-        $this->userGroupMapAdminService = $userGroupMapAdminService;
     }
 
 

@@ -47,10 +47,6 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
                 Route::post('state', 'DaydreamLab\User\Controllers\Asset\Admin\AssetApiAdminController@state');
                 Route::post('store','DaydreamLab\User\Controllers\Asset\Admin\AssetApiAdminController@store');
                 Route::post('search','DaydreamLab\User\Controllers\Asset\Admin\AssetApiAdminController@search');
-
-                Route::group(['prefix' => 'map'], function (){
-                    Route::post('store','DaydreamLab\User\Controllers\Asset\Admin\AssetApiMapAdminController@store');
-                });
             });
 
 
@@ -60,11 +56,6 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
                 Route::post('state', 'DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController@state');
                 Route::post('store','DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController@store');
                 Route::post('search','DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController@search');
-
-
-                Route::group(['prefix' => 'map'], function (){
-                    Route::post('store','DaydreamLab\User\Controllers\Asset\Admin\AssetGroupMapAdminController@store');
-                });
             });
         });
 
@@ -86,19 +77,6 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
                 Route::get('tree', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@tree');
                 Route::get('{id}', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getItem')->where('id', '[0-9]+');
                 Route::get('{id}/page', 'DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController@getPage');
-
-
-                Route::group(['prefix' => 'map'], function (){
-                    Route::post('store','DaydreamLab\User\Controllers\User\UserGroupMapController@store');
-                });
-
-                Route::group(['prefix' => 'asset/map'], function (){
-                    Route::post('store','DaydreamLab\User\Controllers\User\UserGroupAssetMapController@store');
-                });
-
-                Route::group(['prefix' => 'api/map'], function (){
-                    Route::post('store','DaydreamLab\User\Controllers\User\UserGroupApiMapController@store');
-                });
             });
         });
 

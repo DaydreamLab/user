@@ -9,8 +9,6 @@ class AssetApiAdminService extends AssetApiService
 {
     protected $type = 'AssetApiAdmin';
 
-    protected $assetApiMapAdminService;
-
     public function __construct(AssetApiAdminRepository $repo)
     {
         parent::__construct($repo);
