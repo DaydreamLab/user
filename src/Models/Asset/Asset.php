@@ -81,11 +81,11 @@ class Asset extends BaseModel
 
     public function apis()
     {
-        return $this->hasMany(AssetApi::class, 'asset_id', 'id');
+        return $this->belongsToMany(AssetApi::class, 'assets_apis_maps', 'asset_id', 'api_id');
     }
 
 
-    public function group()
+    public function groups()
     {
         return $this->belongsToMany(AssetGroup::class, 'assets_groups_maps', 'asset_id', 'group_id');
     }
@@ -93,13 +93,13 @@ class Asset extends BaseModel
 
     public function getApisAttribute()
     {
-        return $this->api()->get();
+        return $this->apis()->get();
     }
 
 
     public function getGroupsAttribute()
     {
-        return $this->group()->get();
+        return $this->groups()->get();
     }
 
 

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use PHPUnit\TextUI\Help;
 
 class UserAdminService extends UserService
 {
@@ -93,12 +94,17 @@ class UserAdminService extends UserService
         $apis = [];
         foreach ($group_apis as $group_api)
         {
-            $temp_api_asset_id  = $group_api->asset->id;
-            if (!array_key_exists($temp_api_asset_id, $apis))
+
+            $temp_api_assets =  $group_api->assets()->where('model', $group_api->model)->get();
+            foreach ($temp_api_assets as $temp_api_asset)
             {
-                $apis[$temp_api_asset_id] = [];
+                $temp_api_asset_id  = $temp_api_asset->id;
+                if (!array_key_exists($temp_api_asset_id, $apis))
+                {
+                    $apis[$temp_api_asset_id] = [];
+                }
+                $apis[$temp_api_asset_id][] = $group_api->method;
             }
-            $apis[$temp_api_asset_id][] = $group_api->method;
         }
 
         $response['apis']      = $apis;

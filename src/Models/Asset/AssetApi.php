@@ -54,21 +54,21 @@ class AssetApi extends BaseModel
     ];
 
 
-    public function asset()
+    public function assets()
     {
-        return $this->belongsTo(Asset::class, 'asset_id', 'id');
+        return $this->belongsToMany(Asset::class, 'assets_apis_maps', 'api_id', 'asset_id');
     }
 
 
     public function getAssetAttribute()
     {
-        return $this->asset()->first();
+        return $this->assets()->first();
     }
 
 
     public function getAssetTitleAttribute()
     {
-        $asset = $this->asset()->first();
+        $asset = $this->assets()->first();
         return $asset ? $asset->title : null;
     }
 
