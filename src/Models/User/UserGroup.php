@@ -74,20 +74,11 @@ class UserGroup extends BaseModel
     }
 
 
-    public function canAction($model, $methods)
+    public function canAction($model, $method)
     {
-        $asset = Asset::where('model', $model)->where('type', 'menu')->first();
+        $api = $this->apis()->where('model', $model)->where('method', $method)->first();
 
-        if(!$asset) return false;
-
-        // 這個 user group 在這個 asset 可以使用的 apis
-        $apis =  $this->belongsToMany( AssetApi::class, 'users_groups_apis_maps', 'group_id', 'api_id')
-                        ->where('asset_id', $asset->id)
-                        ->get();
-
-        $apis_methods   = $apis->pluck('method');
-
-        return $apis_methods->intersect(collect($methods))->count() === count($methods);
+        return $api ? true : false;
     }
 
 
