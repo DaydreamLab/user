@@ -3,10 +3,6 @@
 namespace DaydreamLab\User\Database\Seeds;
 
 use DaydreamLab\User\Models\User\UserGroup;
-use DaydreamLab\User\Services\User\Admin\UserGroupAdminService;
-use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
-use DaydreamLab\User\Repositories\Viewlevel\Admin\ViewlevelAdminRepository;
-use DaydreamLab\User\Models\Viewlevel\Admin\ViewlevelAdmin;
 use Illuminate\Database\Seeder;
 
 class UsersGroupsTableSeeder extends Seeder
@@ -48,6 +44,5 @@ class UsersGroupsTableSeeder extends Seeder
                 self::migrate($children, $group);
             }
         }
-
     }
 }

@@ -34,11 +34,11 @@ class UserGroupAdminService extends UserGroupService
     {
         $group = parent::getItem($id, $diff);
 
-        $group->assets = $group->asset()->get()->map(function ($item){
+        $group->assets = $group->assets()->get()->map(function ($item){
             return $item->id;
         });
 
-        $group->apis = $group->api()->get()->map(function ($item){
+        $group->apis = $group->apis()->get()->map(function ($item){
             return $item->id;
         });
 
@@ -66,8 +66,8 @@ class UserGroupAdminService extends UserGroupService
     {
         $group          = $this->find($group_id);
 
-        $group_apis     = $group->api()->get();
-        $assets         = $group->asset()->get()->toTree();
+        $group_apis     = $group->apis()->get();
+        $assets         = $group->assets()->get()->toTree();
 
         $apis = [];
         foreach ($group_apis as $group_api)

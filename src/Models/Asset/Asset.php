@@ -79,7 +79,7 @@ class Asset extends BaseModel
     }
 
 
-    public function api()
+    public function apis()
     {
         return $this->hasMany(AssetApi::class, 'asset_id', 'id');
     }

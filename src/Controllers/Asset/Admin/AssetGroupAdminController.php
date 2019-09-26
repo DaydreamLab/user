@@ -17,6 +17,7 @@ class AssetGroupAdminController extends BaseController
     public function __construct(AssetGroupAdminService $service)
     {
         parent::__construct($service);
+        $this->service = $service;
     }
 
     public function getItem($id)

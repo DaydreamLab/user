@@ -16,6 +16,7 @@ class AssetApiAdminController extends BaseController
     public function __construct(AssetApiAdminService $service)
     {
         parent::__construct($service);
+        $this->service = $service;
     }
 
     public function getItem($id)

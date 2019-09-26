@@ -39,12 +39,12 @@ class UserAdminService extends UserService
 
     public function block(Collection $input)
     {
-        $this->canAction('block');
+        //$this->canAction('block');
 
         $result = false;
         foreach ($input->ids as $key => $id) {
             $user           = $this->find($id);
-            $user->block    = $input->block;
+            $user->block    = $input->get('block');
             $result         = $user->save();
             if (!$result) {
                 break;
@@ -58,7 +58,7 @@ class UserAdminService extends UserService
             $action = 'Unblock';
         }
 
-        event(new Block($this->model_name, $result, $input, $this->user));
+        event(new Block($this->getModelName(), $result, $input, $this->user));
 
         if($result) {
             $this->status =  Str::upper(Str::snake($this->type. $action . 'Success'));
@@ -83,9 +83,9 @@ class UserAdminService extends UserService
         $asset_assets   = \Kalnoy\Nestedset\Collection::make();
         foreach ($groups as $group)
         {
-            $apis           = $group->api()->get();
+            $apis           = $group->apis()->get();
             $group_apis     = $group_apis->merge($apis);
-            $assets         = $group->asset()->get();
+            $assets         = $group->assets()->get();
             $asset_assets   = $asset_assets->merge($assets);
         }
         $asset_assets = $asset_assets->toTree();
