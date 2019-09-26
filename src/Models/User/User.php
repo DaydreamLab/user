@@ -129,7 +129,7 @@ class User extends Authenticatable
 
     public function getGroupsAttribute()
     {
-        return $this->usergroup()->get();
+        return $this->groups()->get();
     }
 
     public function getLimit()
@@ -231,7 +231,7 @@ class User extends Authenticatable
     }
 
 
-    public function usergroup()
+    public function groups()
     {
         return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id');
     }

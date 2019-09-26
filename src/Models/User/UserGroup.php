@@ -68,7 +68,7 @@ class UserGroup extends BaseModel
     ];
 
 
-    public function api()
+    public function apis()
     {
         return $this->belongsToMany(AssetApi::class, 'users_groups_apis_maps', 'group_id', 'api_id');
     }
@@ -91,7 +91,7 @@ class UserGroup extends BaseModel
     }
 
 
-    public function asset($model = null)
+    public function assets($model = null)
     {
         return $this->belongsToMany(Asset::class, 'users_groups_assets_maps', 'group_id', 'asset_id')
             ->withTimestamps();

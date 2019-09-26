@@ -36,9 +36,9 @@ class InstallCommand extends Command
 
     protected $seeders = [
         'AssetsTableSeeder',
-        //'UsersGroupsTableSeeder',
-        //'UsersTableSeeder',
-        //'ViewlevelsTableSeeder',
+        'UsersGroupsTableSeeder',
+        'UsersTableSeeder',
+        'ViewlevelsTableSeeder',
     ];
 
     /**

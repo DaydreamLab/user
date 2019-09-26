@@ -20,8 +20,6 @@ class UserService extends BaseService
 {
     protected $type = 'User';
 
-    protected $model_name = 'User';
-
     protected $helper;
 
 
@@ -37,7 +35,7 @@ class UserService extends BaseService
 
         $item = parent::add($input);
 
-        event(new Add($item, $this->model_name, $input, $this->user));
+        event(new Add($item, $this->getModelName(), $input, $this->user));
 
         return $item;
     }
@@ -123,7 +121,7 @@ class UserService extends BaseService
             $this->status = 'USER_EMAIL_OR_PASSWORD_INCORRECT';
         }
 
-        event(new Login($this->model_name, $login,  $this->status, $user));
+        event(new Login($this->getModelName(), $login,  $this->status, $user));
 
         return $user;
     }
@@ -143,7 +141,7 @@ class UserService extends BaseService
     {
         $result =  parent::modify($input, $diff);
 
-        event(new Modify($this->find($input->get('id')), $this->model_name, $result, $input, $this->user));
+        event(new Modify($this->find($input->get('id')), $this->getModelName(), $result, $input, $this->user));
 
         return $result;
     }
@@ -153,7 +151,7 @@ class UserService extends BaseService
     {
         $result =  parent::remove($input, $diff);
 
-        event(new Remove($this->model_name, $result, $input, $this->user));
+        event(new Remove($this->getModelName(), $result, $input, $this->user));
 
         return $result;
     }

@@ -2,10 +2,7 @@
 
 namespace DaydreamLab\User\Database\Seeds;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\User\User;
-use DaydreamLab\User\Models\User\UserGroupMap;
-use DaydreamLab\User\Models\User\UserRoleMap;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -28,25 +25,9 @@ class UsersTableSeeder extends Seeder
         {
             $groups     = $item['groups'];
             unset($item['groups']);
-
             $item['password'] = bcrypt($item['password']);
             $user = User::create($item);
-            foreach ($groups as $group)
-            {
-                $temp_group['user_id']  = $user->id;
-                $temp_group['group_id'] = $group;
-                //$temp_group['created_by'] = 1;
-                UserGroupMap::create($temp_group);
-            }
-
-//            foreach ($roles as $role)
-//            {
-//                $temp_role['user_id']  = $user->id;
-//                $temp_role['role_id'] = $role;
-//                //$temp_role['created_by'] = 1;
-//                UserRoleMap::create($temp_role);
-//            }
+            $user->groups()->attach($groups);
         }
-
     }
 }

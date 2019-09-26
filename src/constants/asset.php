@@ -514,35 +514,6 @@ return [
     ],
 
 
-    // ----- Asset Group Map -----
-    // Create
-    'ASSET_GROUP_MAP_CREATE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map create success'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_CREATE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map admin create success'
-    ],
-    'ASSET_GROUP_MAP_FRONT_CREATE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset group map front create success'
-    ],
-    'ASSET_GROUP_MAP_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map create fail'
-    ],
-    'ASSET_GROUP_MAP_ADMIN_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map admin create fail'
-    ],
-    'ASSET_GROUP_MAP_FRONT_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group map front create fail'
-    ],
-
-
-
     // ----- Asset Api -----
     // Create
     'ASSET_API_CREATE_SUCCESS' => [
@@ -764,34 +735,5 @@ return [
         'code'      => 500,
         'message'   => 'Asset api front get item fail'
     ],
-
-
-    // ----- Asset Api Map-----
-    // Create
-    'ASSET_API_MAP_CREATE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset api map create success'
-    ],
-    'ASSET_API_MAP_ADMIN_CREATE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset api map admin create success'
-    ],
-    'ASSET_API_MAP_FRONT_CREATE_SUCCESS' => [
-        'code'      => 200,
-        'message'   => 'Asset api map front create success'
-    ],
-    'ASSET_API_MAP_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset api map create fail'
-    ],
-    'ASSET_API_MAP_ADMIN_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset api map admin create fail'
-    ],
-    'ASSET_API_MAP_FRONT_CREATE_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset api map front create fail'
-    ],
-
 
 ];

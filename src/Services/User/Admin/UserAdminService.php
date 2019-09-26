@@ -138,7 +138,7 @@ class UserAdminService extends UserService
         $items = new Collection();
         foreach ($search_result as $user)
         {
-            foreach ($user->usergroup as $group)
+            foreach ($user->groups as $group)
             {
                 if ($input_groups == '')
                 {
@@ -204,11 +204,11 @@ class UserAdminService extends UserService
         $result = parent::store($input);
         if (gettype($result) == 'boolean') {    //更新使用者
             $user = $this->find($input->get('id'));
-            $user->usergroup()->detach();
-            $user->usergroup()->attach($input->get('group_ids'));
+            $user->groups()->detach();
+            $user->groups()->attach($input->get('group_ids'));
         }
         else {//新增使用者
-            $result->usergroup()->attach($input->get('group_ids'));
+            $result->groups()->attach($input->get('group_ids'));
         }
 
         return $result;
