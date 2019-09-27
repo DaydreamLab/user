@@ -111,4 +111,11 @@ class UserGroup extends BaseModel
 
         return $depth == 0  ? $this->title : $str . ' '. $this->title;
     }
+
+
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'users_groups_maps', 'group_id', 'user_id');
+    }
 }

@@ -9,6 +9,8 @@ class AssetApiAdminService extends AssetApiService
 {
     protected $type = 'AssetApiAdmin';
 
+    protected $search_keys = ['method'];
+
     public function __construct(AssetApiAdminRepository $repo)
     {
         parent::__construct($repo);

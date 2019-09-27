@@ -21,12 +21,7 @@ class AssetApiSearchPost extends ListRequest
     public function rules()
     {
         $rules = [
-             'method' => 'nullable|string',
-//            'state'     => [
-//                'nullable',
-//                'integer',
-//                Rule::in([0,1,-2])
-//            ]
+             'search' => 'nullable|string',
         ];
 
         return array_merge(parent::rules(), $rules);
