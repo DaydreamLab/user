@@ -168,7 +168,7 @@ class UserAdminService extends UserService
     }
 
 
-    public function store(Collection $input, $diff = false)
+    public function store(Collection $input)
     {
         if (InputHelper::null($input, 'id')) {
 

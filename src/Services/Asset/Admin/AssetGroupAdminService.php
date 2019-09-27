@@ -43,9 +43,9 @@ class AssetGroupAdminService extends AssetGroupService
 //    }
 
 
-    public function store(Collection $input, $diff = false)
+    public function store(Collection $input)
     {
-        $item = parent::store($input, $diff);
+        $item = parent::store($input);
 
         if (!gettype($item) == 'object')
         {

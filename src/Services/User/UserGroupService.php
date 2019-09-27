@@ -33,9 +33,9 @@ class UserGroupService extends BaseService
     }
 
 
-    public function store(Collection $input, $diff = false)
+    public function store(Collection $input)
     {
-        return $this->storeNested($input, $diff);
+        return $this->storeNested($input);
     }
 
 

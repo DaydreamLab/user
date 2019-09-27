@@ -74,11 +74,23 @@ class UserGroup extends BaseModel
     }
 
 
-    public function canAction($model, $method)
+    public function canAction($model_name, $method, $model)
     {
-        $api = $this->apis()->where('model', $model)->where('method', $method)->first();
-
-        return $api ? true : false;
+        $apis = $this->apis()->where('model', $model_name)->where('method', $method)->get();
+        if ($apis->count() == 1) {
+            return true;
+        } elseif ($apis->count() > 1) {
+            foreach ($apis as $api) {
+                if (strpos($apis->method, 'Own')) {
+                    return $model->created_by == $this->user->id ?: false;
+                } else {
+                    return $model->created_by != $this->user->id ?: false;
+                }
+            }
+        }
+        else {
+            return false;
+        }
     }
 
 

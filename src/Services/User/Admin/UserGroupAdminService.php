@@ -30,9 +30,9 @@ class UserGroupAdminService extends UserGroupService
         $this->repo = $repo;
     }
 
-    public function getItem($id, $diff = false)
+    public function getItem($id)
     {
-        $group = parent::getItem($id, $diff);
+        $group = parent::getItem($id);
 
         $group->assets = $group->assets()->get()->map(function ($item){
             return $item->id;
@@ -93,7 +93,7 @@ class UserGroupAdminService extends UserGroupService
     }
 
 
-    public function store(Collection $input, $diff = false)
+    public function store(Collection $input)
     {
         $api_ids    = $input->api_ids;
         $asset_ids  = $input->asset_ids;

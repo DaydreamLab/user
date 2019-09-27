@@ -47,15 +47,15 @@ class AssetService extends BaseService
     }
 
 
-    public function remove(Collection $input ,$diff = false)
+    public function remove(Collection $input)
     {
-        $result = $this->traitRemoveNested($input, $diff);
+        $result = $this->traitRemoveNested($input);
 
         return $result;
     }
 
 
-    public function store(Collection $input, $diff = false)
+    public function store(Collection $input)
     {
         // 計算full path
         if (!InputHelper::null($input, 'parent_id')) {

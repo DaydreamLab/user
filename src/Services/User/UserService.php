@@ -137,9 +137,9 @@ class UserService extends BaseService
     }
 
 
-    public function modify(Collection $input, $diff = false)
+    public function modify(Collection $input)
     {
-        $result =  parent::modify($input, $diff);
+        $result =  parent::modify($input);
 
         event(new Modify($this->find($input->get('id')), $this->getModelName(), $result, $input, $this->user));
 
@@ -147,9 +147,9 @@ class UserService extends BaseService
     }
 
 
-    public function remove(Collection $input, $diff = false)
+    public function remove(Collection $input)
     {
-        $result =  parent::remove($input, $diff);
+        $result =  parent::remove($input);
 
         event(new Remove($this->getModelName(), $result, $input, $this->user));
 
