@@ -58,7 +58,7 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $this->call('jjaj:refresh');
+        //$this->call('jjaj:refresh');
 
         foreach ($this->seeders as $seeder) {
             $this->call('db:seed', [
