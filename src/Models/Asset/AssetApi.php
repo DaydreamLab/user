@@ -21,7 +21,7 @@ class AssetApi extends BaseModel
      */
     protected $fillable = [
         //'asset_id',
-        'model',
+        'service',
         'method',
         'url',
         'created_by',

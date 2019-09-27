@@ -64,7 +64,7 @@
             "title": "COM_DEV_API_MANAGER_TITLE",
             "path": "",
             "component": "api/list",
-            "model": "AssetApiAdmin",
+            "service": "AssetApiAdminService",
             "type": "menu",
             "redirect": "",
             "icon": "",
@@ -74,31 +74,26 @@
             "children": [],
             "apis": [
               {
-                "model": "AssetApiAdmin",
                 "method": "get",
                 "url": "/admin/asset/api/{id}",
                 "created_by": 1
               },
               {
-                "model": "AssetApiAdmin",
                 "method": "add",
                 "url": "/admin/asset/api/store",
                 "created_by": 1
               },
               {
-                "model": "AssetApiAdmin",
                 "method": "edit",
                 "url": "/admin/asset/api/store",
                 "created_by": 1
               },
               {
-                "model": "AssetApiAdmin",
                 "method": "delete",
                 "url": "/admin/asset/api/remove",
                 "created_by": 1
               },
               {
-                "model": "AssetApiAdmin",
                 "method": "search",
                 "url": "/admin/asset/api/search",
                 "created_by": 1
@@ -136,7 +131,7 @@
             "title": "COM_DEV_ASSET_MANAGER_TITLE",
             "path": "",
             "component": "asset/list",
-            "model": "AssetAdmin",
+            "service": "AssetAdminService",
             "type": "menu",
             "redirect": "",
             "icon": "",
@@ -146,43 +141,36 @@
             "children": [],
             "apis": [
               {
-                "model": "AssetAdmin",
                 "method": "get",
                 "url": "/admin/asset/{id}",
                 "created_by": 1
               },
               {
-                "model": "AssetAdmin",
                 "method": "add",
                 "url": "/admin/asset/store",
                 "created_by": 1
               },
               {
-                "model": "AssetAdmin",
                 "method": "edit",
                 "url": "/admin/asset/store",
                 "created_by": 1
               },
               {
-                "model": "AssetAdmin",
                 "method": "delete",
                 "url": "/admin/asset/remove",
                 "created_by": 1
               },
               {
-                "model": "AssetAdmin",
                 "method": "search",
                 "url": "/admin/asset/search",
                 "created_by": 1
               },
               {
-                "model": "AssetAdmin",
                 "method": "updateState",
                 "url": "/admin/asset/state",
                 "created_by": 1
               },
               {
-                "model": "AssetAdmin",
                 "method": "assignGroup",
                 "url": "/admin/asset/groups/map/store",
                 "created_by": 1
@@ -219,7 +207,7 @@
             "title": "COM_DEV_ASSET_GROUP_MANAGER_TITLE",
             "path": "/group",
             "component": "asset/group/list",
-            "model": "AssetGroupAdmin",
+            "service": "AssetGroupAdminService",
             "type": "menu",
             "redirect": "",
             "icon": "",
@@ -229,37 +217,31 @@
             "children": [],
             "apis": [
               {
-                "model": "AssetGroupAdmin",
                 "method": "get",
                 "url": "/admin/asset/group/{id}",
                 "created_by": 1
               },
               {
-                "model": "AssetGroupAdmin",
                 "method": "add",
                 "url": "/admin/asset/group/store",
                 "created_by": 1
               },
               {
-                "model": "AssetGroupAdmin",
                 "method": "edit",
                 "url": "/admin/asset/group/store",
                 "created_by": 1
               },
               {
-                "model": "AssetGroupAdmin",
                 "method": "delete",
                 "url": "/admin/asset/group/remove",
                 "created_by": 1
               },
               {
-                "model": "AssetGroupAdmin",
                 "method": "search",
                 "url": "/admin/asset/group/search",
                 "created_by": 1
               },
               {
-                "model": "AssetGroupAdmin",
                 "method": "updateState",
                 "url": "/admin/asset/group/state",
                 "created_by": 1
@@ -297,7 +279,7 @@
             "title": "COM_USERS_USER_MANAGER_TITLE",
             "path": "",
             "component": "user/list",
-            "model": "UserAdmin",
+            "service": "UserAdminService",
             "type": "menu",
             "redirect": "",
             "icon": "user",
@@ -307,43 +289,36 @@
             "children": [],
             "apis": [
               {
-                "model": "UserAdmin",
                 "method": "get",
                 "url": "/admin/user/{id}",
                 "created_by": 1
               },
               {
-                "model": "UserAdmin",
                 "method": "add",
                 "url": "/admin/user/store",
                 "created_by": 1
               },
               {
-                "model": "UserAdmin",
                 "method": "edit",
                 "url": "/admin/user/store",
                 "created_by": 1
               },
               {
-                "model": "UserAdmin",
                 "method": "delete",
                 "url": "/admin/user/remove",
                 "created_by": 1
               },
               {
-                "model": "UserAdmin",
                 "method": "search",
                 "url": "/admin/user/search",
                 "created_by": 1
               },
               {
-                "model": "UserAdmin",
                 "method": "block",
                 "url": "/admin/user/block",
                 "created_by": 1
               },
               {
-                "model": "UserAdmin",
                 "method": "assignGroup",
                 "url": "/admin/user/assignGroup",
                 "created_by": 1
@@ -367,7 +342,7 @@
             "title": "COM_USERS_GROUPS_MANAGER_TITLE",
             "path": "/group",
             "component": "user/group/list",
-            "model": "UserGroupAdmin",
+            "service": "UserGroupAdminService",
             "type": "menu",
             "redirect": "",
             "icon": "users",
@@ -377,43 +352,36 @@
             "children": [],
             "apis": [
               {
-                "model": "UserGroupAdmin",
                 "method": "get",
                 "url": "/admin/user/group/{id}",
                 "created_by": 1
               },
               {
-                "model": "UserGroupAdmin",
                 "method": "add",
                 "url": "/admin/user/group/store",
                 "created_by": 1
               },
               {
-                "model": "UserGroupAdmin",
                 "method": "edit",
                 "url": "/admin/user/group/store",
                 "created_by": 1
               },
               {
-                "model": "UserGroupAdmin",
                 "method": "delete",
                 "url": "/admin/user/group/remove",
                 "created_by": 1
               },
               {
-                "model": "UserGroupAdmin",
                 "method": "search",
                 "url": "/admin/user/group/search",
                 "created_by": 1
               },
               {
-                "model": "UserGroupAdmin",
                 "method": "updateState",
                 "url": "/admin/user/group/state",
                 "created_by": 1
               },
               {
-                "model": "UserGroupAdmin",
                 "method": "assignAccess",
                 "url": "/admin/user/group/assignAccess",
                 "created_by": 1
@@ -437,7 +405,7 @@
             "title": "COM_USERS_VIEWLEVEL_MANAGER_TITLE",
             "path": "/viewlevel",
             "component": "user/viewlevel/list",
-            "model": "ViewlevelAdmin",
+            "service": "ViewlevelAdminService",
             "type": "menu",
             "redirect": "",
             "icon": "eye",
@@ -447,31 +415,26 @@
             "children": [],
             "apis": [
               {
-                "model": "ViewlevelAdmin",
                 "method": "get",
                 "url": "/admin/viewlevel/{id}",
                 "created_by": 1
               },
               {
-                "model": "ViewlevelAdmin",
                 "method": "add",
                 "url": "/admin/viewlevel/store",
                 "created_by": 1
               },
               {
-                "model": "ViewlevelAdmin",
                 "method": "edit",
                 "url": "/admin/viewlevel/store",
                 "created_by": 1
               },
               {
-                "model": "ViewlevelAdmin",
                 "method": "delete",
                 "url": "/admin/viewlevel/remove",
                 "created_by": 1
               },
               {
-                "model": "ViewlevelAdmin",
                 "method": "search",
                 "url": "/admin/viewlevel/search",
                 "created_by": 1
@@ -495,7 +458,7 @@
             "title": "COM_USERS_LOG",
             "path": "/log",
             "component": "user/log",
-            "model": "Log",
+            "service": "LogService",
             "type": "menu",
             "redirect": "",
             "icon": "clipboard-user",
@@ -505,7 +468,6 @@
             "children": [],
             "apis": [
               {
-                "model": "Log",
                 "method": "search",
                 "url": "/admin/log/search",
                 "created_by": 1

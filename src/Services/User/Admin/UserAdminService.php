@@ -59,7 +59,7 @@ class UserAdminService extends UserService
             $action = 'Unblock';
         }
 
-        event(new Block($this->getModelName(), $result, $input, $this->user));
+        event(new Block($this->getServiceName(), $result, $input, $this->user));
 
         if($result) {
             $this->status =  Str::upper(Str::snake($this->type. $action . 'Success'));
@@ -94,8 +94,7 @@ class UserAdminService extends UserService
         $apis = [];
         foreach ($group_apis as $group_api)
         {
-
-            $temp_api_assets =  $group_api->assets()->where('model', $group_api->model)->get();
+            $temp_api_assets =  $group_api->assets()->get();
             foreach ($temp_api_assets as $temp_api_asset)
             {
                 $temp_api_asset_id  = $temp_api_asset->id;

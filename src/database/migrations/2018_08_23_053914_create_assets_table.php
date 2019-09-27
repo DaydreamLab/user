@@ -21,7 +21,7 @@ class CreateAssetsTable extends Migration
             $table->string('path')->nullable();
             $table->string('full_path')->nullable();
             $table->string('component')->nullable();
-            $table->string('model')->nullable();
+            //$table->string('model')->nullable();
             $table->string('type');
             $table->tinyInteger('state');
             $table->string('redirect')->nullable();

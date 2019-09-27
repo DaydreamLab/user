@@ -33,7 +33,7 @@ class Asset extends BaseModel
         'path',
         'full_path',
         'component',
-        'model',
+        //'model',
         'type',
         'state',
         'redirect',
