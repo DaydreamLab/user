@@ -234,17 +234,17 @@ return [
         'code'      => 200,
         'message'   => 'Asset front get item success'
     ],
-    'ASSET_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset get item fail'
+    'ASSET_GET_ITEM_NOT_EXIST' => [
+        'code'      => 403,
+        'message'   => 'Asset get item not exist'
     ],
-    'ASSET_ADMIN_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset get item search fail'
+    'ASSET_ADMIN_ITEM_NOT_EXIST' => [
+        'code'      => 403,
+        'message'   => 'Asset get item not exist'
     ],
-    'ASSET_FRONT_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset front get item fail'
+    'ASSET_FRONT_ITEM_NOT_EXIST' => [
+        'code'      => 403,
+        'message'   => 'Asset front get item not exist'
     ],
 
     // Get Group
@@ -500,17 +500,17 @@ return [
         'code'      => 200,
         'message'   => 'Asset group front get item success'
     ],
-    'ASSET_GROUP_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group get item fail'
+    'ASSET_GROUP_ITEM_NOT_EXIST' => [
+        'code'      => 403,
+        'message'   => 'Asset group get item not exist'
     ],
-    'ASSET_GROUP_ADMIN_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group get item search fail'
+    'ASSET_GROUP_ADMIN_ITEM_NOT_EXIST' => [
+        'code'      => 403,
+        'message'   => 'Asset group get item not exist'
     ],
-    'ASSET_GROUP_FRONT_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset group front get item fail'
+    'ASSET_GROUP_FRONT_ITEM_NOT_EXIST' => [
+        'code'      => 403,
+        'message'   => 'Asset group front get not exist'
     ],
 
 
@@ -723,17 +723,17 @@ return [
         'code'      => 200,
         'message'   => 'Asset api front get item success'
     ],
-    'ASSET_API_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset api get item fail'
+    'ASSET_API_GET_ITEM_NOT_EXIST' => [
+        'code'      => 403,
+        'message'   => 'Asset api get item not exist'
     ],
-    'ASSET_API_ADMIN_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset api get item search fail'
+    'ASSET_API_ADMIN_ITEM_NOT_EXIST' => [
+        'code'      => 403,
+        'message'   => 'Asset api get item not exist'
     ],
-    'ASSET_API_FRONT_GET_ITEM_FAIL' => [
-        'code'      => 500,
-        'message'   => 'Asset api front get item fail'
+    'ASSET_API_FRONT_ITEM_NOT_EXIST' => [
+        'code'      => 403,
+        'message'   => 'Asset api front get item not exist'
     ],
 
 ];

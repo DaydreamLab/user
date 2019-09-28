@@ -40,7 +40,7 @@ class UserAdminService extends UserService
 
     public function block(Collection $input)
     {
-        //$this->canAction('block');
+        $this->canAction('block');
 
         $result = false;
         foreach ($input->ids as $key => $id) {
@@ -67,9 +67,6 @@ class UserAdminService extends UserService
         else {
             $this->status =  Str::upper(Str::snake($this->type. $action . 'Fail'));
         }
-
-        $this->response = null;
-
 
         return $result;
     }
@@ -113,7 +110,6 @@ class UserAdminService extends UserService
         $this->response = $response;
 
         return $response;
-
     }
 
 

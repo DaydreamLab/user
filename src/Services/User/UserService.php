@@ -31,8 +31,6 @@ class UserService extends BaseService
 
     public function add(Collection $input)
     {
-        $this->canAction('add');
-
         $item = parent::add($input);
 
         event(new Add($item, $this->getServiceName(), $input, $this->user));

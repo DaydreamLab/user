@@ -103,7 +103,9 @@ class UserGroupAdminService extends UserGroupService
         $result =  parent::store($input);
         $group_id = gettype($result) == 'boolean' ? $input->id : $result->id;
 
-        // todo: 需要塞入access
+        $group = $this->checkItem($group_id);
+        $group->apis()->attach($api_ids);
+        $group->assets()->attach($asset_ids);
 
         return $result;
     }
