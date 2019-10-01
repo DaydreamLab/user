@@ -10,4 +10,11 @@ return [
         'groups' => [4]
     ],
 
+
+    'forget' => [
+        'mail' => [
+            'template'  => 'default'
+        ]
+    ]
+
 ];

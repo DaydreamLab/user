@@ -44,12 +44,20 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+         $template = config('daydreamlab.user.forget.email.template');
+
         $url = '/user/password/reset/' . $this->token->token;
-        return (new MailMessage)
-            ->greeting('Dear ' . $this->user->first_name . ' ' . $this->user->last_name)
-            ->line('You are receiving this email because we received a password reset request for your account.')
-            ->action('Reset Password ', url($url))
-            ->line('If you did not request a password reset, no further action is required.');
+
+        return $template === 'default'
+            ? (new MailMessage)
+                ->greeting('Dear ' . $this->user->first_name . ' ' . $this->user->last_name)
+                ->line('You are receiving this email because we received a password reset request for your account.')
+                ->action('Reset Password ', url($url))
+                ->line('If you did not request a password reset, no further action is required.')
+            : (new MailMessage)
+                ->subject( '【Dingsomthing忘記密碼】')
+                ->view($template, ['url' => $url]);
+
     }
 
     /**

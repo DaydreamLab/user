@@ -40,8 +40,6 @@ class UserAdminService extends UserService
 
     public function block(Collection $input)
     {
-        $this->canAction('block');
-
         $result = false;
         foreach ($input->ids as $key => $id) {
             $user           = $this->find($id);

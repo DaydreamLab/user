@@ -228,11 +228,11 @@ class UserFrontService extends UserService
     {
         $user = $this->findBy('email', '=', $input->email)->first();
         if ($user) {
-            $token = $this->passwordResetService->create([
+            $token = $this->passwordResetService->add(collect([
                 'email'         => $input->email,
                 'token'         => Str::random(128),
                 'expired_at'    => Carbon::now()->addHours(3)
-            ]);
+            ]));
 
             Notification::route('mail', $user->email)->notify(new ResetPasswordNotification($user, $token));
             $this->status = 'USER_RESET_PASSWORD_EMAIL_SEND';
