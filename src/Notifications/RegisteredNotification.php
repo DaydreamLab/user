@@ -43,7 +43,7 @@ class RegisteredNotification extends Notification implements ShouldQueue
     {
         $path = '/user/activate/' . $this->user->activate_token;
 
-        $template = config('daydreamlab-user.register.mail.template');
+        $template = config('daydreamlab.user.register.mail.template');
 
         return $template == 'default'?
                 (new MailMessage)

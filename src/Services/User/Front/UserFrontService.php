@@ -69,7 +69,7 @@ class UserFrontService extends UserService
     {
         $user = parent::create($data);
         if ($user) {
-            $user->groups()->attach(config('daydreamlab-user.register.groups'));
+            $user->groups()->attach(config('daydreamlab.user.register.groups'));
         }
 
         return $user;
@@ -180,7 +180,7 @@ class UserFrontService extends UserService
      */
     public function register(Collection $input)
     {
-        if (config('daydreamlab-user.register.enable'))
+        if (config('daydreamlab.user.register.enable'))
         {
             $exist = $this->checkEmail($input->email);
             if ($exist) {
@@ -193,7 +193,7 @@ class UserFrontService extends UserService
             $input->put('activate_token', str_random(48));
 
             $user      = $this->add($input);
-            $user->groups()->attach(config('daydreamlab-user.register.groups'));
+            $user->groups()->attach(config('daydreamlab.user.register.groups'));
             if ($user) {
                 $user->notify(new RegisteredNotification($user));
                 $this->status = 'USER_REGISTER_SUCCESS';

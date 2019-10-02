@@ -107,7 +107,7 @@ class UserFrontController extends BaseController
 
     public function register(UserFrontRegisterPost $request)
     {
-        if (config('daydreamlab-user.register.enable'))
+        if (config('daydreamlab.user.register.enable'))
         {
             $this->service->register($request->rulesInput());
         }
