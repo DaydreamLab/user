@@ -24,9 +24,9 @@ class UserFrontResetPasswordPost extends AdminRequest
     public function rules()
     {
         return [
-            'token'                 => 'required|string|size:128',
-            'password'              => 'required|string|min:8|max:16',
-            'password_confirmation' => 'required|same:password',
+            'token' => 'required|string|size:128',
+            'password' => 'required|string|min:8|max:16',
+            'passwordConfirm' => 'required|same:password',
         ];
     }
 }

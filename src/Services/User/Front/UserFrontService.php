@@ -158,6 +158,9 @@ class UserFrontService extends UserService
                 $this->status = 'USER_RESET_PASSWORD_TOKEN_EXPIRED';
                 return false;
             }
+            elseif ($reset_token->expired_at) {
+                $this->status = 'USER_RESET_PASSWORD_TOKEN_IS_USED';
+            }
             else {
                 $this->status = 'USER_RESET_PASSWORD_TOKEN_VALID';
                 return $reset_token;
@@ -241,6 +244,4 @@ class UserFrontService extends UserService
             $this->status = 'USER_NOT_FOUND';
         }
     }
-
-
 }

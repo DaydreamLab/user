@@ -116,6 +116,10 @@ return [
         'code'      => 200,
         'message'   => 'User reset password token valid.'
     ],
+    'USER_RESET_PASSWORD_TOKEN_IS_USED' => [
+        'code'      => 403,
+        'message'   => 'User reset password token is used.'
+    ],
     'USER_RESET_PASSWORD_TOKEN_INVALID' => [
         'code'      => 400,
         'message'   => 'User reset password token invalid.'

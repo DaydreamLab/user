@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Notifications;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -44,9 +45,9 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-         $template = config('daydreamlab.user.forget.email.template');
+        $template = config('daydreamlab.user.forget.mail.template');
 
-        $url = '/user/password/reset/' . $this->token->token;
+        $url = 'user/password/reset/' . $this->token->token;
 
         return $template === 'default'
             ? (new MailMessage)
@@ -56,7 +57,7 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
                 ->line('If you did not request a password reset, no further action is required.')
             : (new MailMessage)
                 ->subject( '【Dingsomthing忘記密碼】')
-                ->view($template, ['url' => $url]);
+                ->view($template, ['user' => $this->user, 'url' => $url]);
 
     }
 
