@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
 use DaydreamLab\User\Services\Asset\Admin\AssetApiAdminService;
@@ -21,15 +22,8 @@ class AssetApiAdminController extends BaseController
 
     public function getItem($id)
     {
+        $this->service->canAction('getApi');
         $this->service->getItem($id);
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function getItems()
-    {
-        $this->service->search(new Collection());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
@@ -37,6 +31,7 @@ class AssetApiAdminController extends BaseController
 
     public function remove(AssetApiAdminRemovePost $request)
     {
+        $this->service->canAction('deleteApi');
         $this->service->remove($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
@@ -45,6 +40,7 @@ class AssetApiAdminController extends BaseController
 
     public function state(AssetApiAdminStatePost $request)
     {
+        $this->service->canAction('updateApiState');
         $this->service->state($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
@@ -53,6 +49,8 @@ class AssetApiAdminController extends BaseController
 
     public function store(AssetApiAdminStorePost $request)
     {
+        InputHelper::null($request->rulesInput(), 'id') ? $this->service->canAction('addApi')
+            : $this->service->canAction('editApi');
         $this->service->store($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
@@ -61,6 +59,7 @@ class AssetApiAdminController extends BaseController
 
     public function search(AssetApiAdminSearchPost $request)
     {
+        $this->service->canAction('searchApi');
         $this->service->search($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);

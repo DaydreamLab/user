@@ -37,8 +37,8 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
             Route::post('ordering','DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@ordering');
             Route::get('treeList', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@treeList');
             Route::get('{id}', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@getItem');
-            Route::get('{id}/groups', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@getGroups');
-            Route::get('{id}/apis', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@getApis');
+            //Route::get('{id}/groups', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@getGroups');
+            //Route::get('{id}/apis', 'DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController@getApis');
 
 
             Route::group(['prefix' => 'api'], function (){

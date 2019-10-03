@@ -25,6 +25,7 @@ class UserAdminController extends BaseController
 
     public function block(UserAdminBlockPost $request)
     {
+        $this->service->canAction('blockUser');
         $this->service->block($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
@@ -33,15 +34,8 @@ class UserAdminController extends BaseController
 
     public function getItem($id)
     {
+        $this->service->canAction('getUser');
         $this->service->getItem($id);
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function getItems()
-    {
-        $this->service->search(new Collection());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
@@ -49,6 +43,7 @@ class UserAdminController extends BaseController
 
     public function getSelfPage()
     {
+        $this->service->canAction('getSelfPage');
         $this->service->getSelfPage();
 
         return ResponseHelper::response($this->service->status, $this->service->response);
@@ -57,15 +52,8 @@ class UserAdminController extends BaseController
 
     public function remove(UserAdminRemovePost $request)
     {
+        $this->service->canAction('deleteUser');
         $this->service->remove($request->rulesInput());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function state(UserAdminStatePost $request)
-    {
-        $this->service->state($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
@@ -73,7 +61,6 @@ class UserAdminController extends BaseController
 
     public function store(UserAdminStorePost $request)
     {
-
         $input = $request->rulesInput();
 
         if (!InputHelper::null($input, 'activation'))
@@ -87,6 +74,11 @@ class UserAdminController extends BaseController
             {
                 $input->put('activation', 1);
             }
+            $this->service->canAction('editUser');
+        }
+        else
+        {
+            $this->service->canAction('addUser');
         }
 
         $this->service->store($input);
@@ -97,6 +89,7 @@ class UserAdminController extends BaseController
 
     public function search(UserAdminSearchPost $request)
     {
+        $this->service->canAction('searchUser');
         $this->service->search($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);

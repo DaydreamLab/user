@@ -17,6 +17,7 @@ class CreateUsersGroupsApisMapsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('group_id')->nullable();
             $table->unsignedInteger('api_id')->nullable();
+            $table->text('rules')->nullable();
             $table->timestamps();
         });
     }

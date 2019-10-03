@@ -74,27 +74,27 @@
             "children": [],
             "apis": [
               {
-                "method": "get",
+                "method": "getApi",
                 "url": "/admin/asset/api/{id}",
                 "created_by": 1
               },
               {
-                "method": "add",
+                "method": "addApi",
                 "url": "/admin/asset/api/store",
                 "created_by": 1
               },
               {
-                "method": "edit",
+                "method": "editApi",
                 "url": "/admin/asset/api/store",
                 "created_by": 1
               },
               {
-                "method": "delete",
+                "method": "deleteApi",
                 "url": "/admin/asset/api/remove",
                 "created_by": 1
               },
               {
-                "method": "search",
+                "method": "searchApi",
                 "url": "/admin/asset/api/search",
                 "created_by": 1
               }
@@ -141,32 +141,32 @@
             "children": [],
             "apis": [
               {
-                "method": "get",
+                "method": "getAsset",
                 "url": "/admin/asset/{id}",
                 "created_by": 1
               },
               {
-                "method": "add",
+                "method": "addAsset",
                 "url": "/admin/asset/store",
                 "created_by": 1
               },
               {
-                "method": "edit",
+                "method": "editAsset",
                 "url": "/admin/asset/store",
                 "created_by": 1
               },
               {
-                "method": "delete",
+                "method": "deleteAsset",
                 "url": "/admin/asset/remove",
                 "created_by": 1
               },
               {
-                "method": "search",
+                "method": "searchAsset",
                 "url": "/admin/asset/search",
                 "created_by": 1
               },
               {
-                "method": "updateState",
+                "method": "updateAssetState",
                 "url": "/admin/asset/state",
                 "created_by": 1
               },
@@ -217,32 +217,32 @@
             "children": [],
             "apis": [
               {
-                "method": "get",
+                "method": "getAssetGroup",
                 "url": "/admin/asset/group/{id}",
                 "created_by": 1
               },
               {
-                "method": "add",
+                "method": "addAssetGroup",
                 "url": "/admin/asset/group/store",
                 "created_by": 1
               },
               {
-                "method": "edit",
+                "method": "editAssetGroup",
                 "url": "/admin/asset/group/store",
                 "created_by": 1
               },
               {
-                "method": "delete",
+                "method": "deleteAssetGroup",
                 "url": "/admin/asset/group/remove",
                 "created_by": 1
               },
               {
-                "method": "search",
+                "method": "searchAssetGroup",
                 "url": "/admin/asset/group/search",
                 "created_by": 1
               },
               {
-                "method": "updateState",
+                "method": "updateAssetGroupState",
                 "url": "/admin/asset/group/state",
                 "created_by": 1
               }
@@ -289,37 +289,37 @@
             "children": [],
             "apis": [
               {
-                "method": "get",
+                "method": "getUser",
                 "url": "/admin/user/{id}",
                 "created_by": 1
               },
               {
-                "method": "add",
+                "method": "addUser",
                 "url": "/admin/user/store",
                 "created_by": 1
               },
               {
-                "method": "edit",
+                "method": "editUser",
                 "url": "/admin/user/store",
                 "created_by": 1
               },
               {
-                "method": "delete",
+                "method": "deleteUser",
                 "url": "/admin/user/remove",
                 "created_by": 1
               },
               {
-                "method": "search",
+                "method": "searchUser",
                 "url": "/admin/user/search",
                 "created_by": 1
               },
               {
-                "method": "block",
+                "method": "blockUser",
                 "url": "/admin/user/block",
                 "created_by": 1
               },
               {
-                "method": "assignGroup",
+                "method": "assignUserGroup",
                 "url": "/admin/user/assignGroup",
                 "created_by": 1
               }
@@ -352,37 +352,37 @@
             "children": [],
             "apis": [
               {
-                "method": "get",
+                "method": "getUserGroup",
                 "url": "/admin/user/group/{id}",
                 "created_by": 1
               },
               {
-                "method": "add",
+                "method": "addUserGroup",
                 "url": "/admin/user/group/store",
                 "created_by": 1
               },
               {
-                "method": "edit",
+                "method": "editUserGroup",
                 "url": "/admin/user/group/store",
                 "created_by": 1
               },
               {
-                "method": "delete",
+                "method": "deleteUserGroup",
                 "url": "/admin/user/group/remove",
                 "created_by": 1
               },
               {
-                "method": "search",
+                "method": "searchUserGroup",
                 "url": "/admin/user/group/search",
                 "created_by": 1
               },
               {
-                "method": "updateState",
+                "method": "updateUserGroupState",
                 "url": "/admin/user/group/state",
                 "created_by": 1
               },
               {
-                "method": "assignAccess",
+                "method": "getUserGroupTree",
                 "url": "/admin/user/group/assignAccess",
                 "created_by": 1
               }
@@ -415,27 +415,27 @@
             "children": [],
             "apis": [
               {
-                "method": "get",
+                "method": "getViewlevel",
                 "url": "/admin/viewlevel/{id}",
                 "created_by": 1
               },
               {
-                "method": "add",
+                "method": "addViewlevel",
                 "url": "/admin/viewlevel/store",
                 "created_by": 1
               },
               {
-                "method": "edit",
+                "method": "editViewlevel",
                 "url": "/admin/viewlevel/store",
                 "created_by": 1
               },
               {
-                "method": "delete",
+                "method": "deleteViewlevel",
                 "url": "/admin/viewlevel/remove",
                 "created_by": 1
               },
               {
-                "method": "search",
+                "method": "searchViewlevel",
                 "url": "/admin/viewlevel/search",
                 "created_by": 1
               }
@@ -468,7 +468,7 @@
             "children": [],
             "apis": [
               {
-                "method": "search",
+                "method": "searchLog",
                 "url": "/admin/log/search",
                 "created_by": 1
               }

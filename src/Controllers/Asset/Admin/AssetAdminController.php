@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
 use DaydreamLab\User\Services\Asset\Admin\AssetAdminService;
@@ -22,24 +23,9 @@ class AssetAdminController extends BaseController
     }
 
 
-    public function getApis($id)
-    {
-        $this->service->getApis($id);
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function getGroups($id)
-    {
-        $this->service->getGroups($id);
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
     public function getItem($id)
     {
+        $this->service->canAction('getAsset');
         $this->service->getItem($id);
 
         return ResponseHelper:: response($this->service->status, $this->service->response);
@@ -56,6 +42,7 @@ class AssetAdminController extends BaseController
 
     public function treeList()
     {
+        $this->service->canAction('searchAsset');
         $this->service->treeList();
 
         return ResponseHelper::response($this->service->status, $this->service->response);
@@ -64,6 +51,7 @@ class AssetAdminController extends BaseController
 
     public function ordering(AssetAdminOrderingPost $request)
     {
+        $this->service->canAction('editAsset');
         $this->service->orderingNested($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
@@ -72,6 +60,7 @@ class AssetAdminController extends BaseController
 
     public function remove(AssetAdminRemovePost $request)
     {
+        $this->service->canAction('deleteAsset');
         $this->service->remove($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
@@ -80,6 +69,7 @@ class AssetAdminController extends BaseController
 
     public function state(AssetAdminStatePost $request)
     {
+        $this->service->canAction('updateAssetState');
         $this->service->state($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
@@ -88,6 +78,8 @@ class AssetAdminController extends BaseController
 
     public function store(AssetAdminStorePost $request)
     {
+        InputHelper::null($request->rulesInput(), 'id') ? $this->service->canAction('addAsset')
+            : $this->service->canAction('editAsset');
         $this->service->store($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);
@@ -96,6 +88,7 @@ class AssetAdminController extends BaseController
 
     public function search(AssetAdminSearchPost $request)
     {
+        $this->service->canAction('searchAsset');
         $this->service->search($request->rulesInput());
 
         return ResponseHelper::response($this->service->status, $this->service->response);

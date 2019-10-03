@@ -19,29 +19,6 @@ class AssetGroupAdminService extends AssetGroupService
         $this->repo = $repo;
     }
 
-//    /**
-//     * @param $item AssetGroupAdmin
-//     * @param $input Collection
-//     * @return bool|void
-//     */
-//    public function addMapping($item, $input)
-//    {
-//        $item->assets()->attach($input->get('asset_ids'));
-//    }
-//
-//
-//    public function modifyMapping($item, $input)
-//    {
-//        $item->assets()->detach();
-//        $item->assets()->attach($input->get('asset_ids'));
-//    }
-//
-//
-//    public function removeMapping($item)
-//    {
-//        $item->assets()->detach();
-//    }
-
 
     public function store(Collection $input)
     {
