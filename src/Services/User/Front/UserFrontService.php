@@ -158,7 +158,7 @@ class UserFrontService extends UserService
                 $this->status = 'USER_RESET_PASSWORD_TOKEN_EXPIRED';
                 return false;
             }
-            elseif ($reset_token->expired_at) {
+            elseif ($reset_token->reset_at) {
                 $this->status = 'USER_RESET_PASSWORD_TOKEN_IS_USED';
             }
             else {
@@ -215,9 +215,9 @@ class UserFrontService extends UserService
         if ($token) {
             $user = $this->findBy('email', '=', $token->email)->first();
             $user->password = bcrypt($input->password);
+            $user->last_reset_at = now();
             if($user->save()){
-                $token->reset_at = now();
-                $token->save();
+                $token->delete();
                 $this->status = 'USER_RESET_PASSWORD_SUCCESS';
             }
             else{
