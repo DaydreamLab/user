@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Controllers\User\Front;
 
+use Carbon\Carbon;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
@@ -84,6 +85,12 @@ class UserFrontController extends BaseController
         $user = Auth::guard('api')->authenticate();
         if ($user)
         {
+            $token = $user->token();
+            if (Carbon::parse($token->expires_at)->diffInDays(now()) < 3)
+            {
+                $token->expires_at  = now()->addSeconds(config('daydreamlab.user.token_expires_in'));
+                $token->save();
+            }
             $status = 'USER_GET_ITEM_SUCCESS';
             $response = $user;
             $response->token = $request->bearerToken();

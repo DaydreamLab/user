@@ -20,58 +20,10 @@ class UserController extends BaseController
     }
 
 
-
     public function logout()
     {
         $this->service->logout();
         return ResponseHelper::response($this->service->status, $this->service->response);
     }
-/*
-    public function getItem($id)
-    {
-        $this->service->getItem($id);
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function getItems()
-    {
-        $this->service->search(new Collection());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function remove(UserRemovePost $request)
-    {
-        $this->service->remove($request->rulesInput());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function state(UserStatePost $request)
-    {
-        $this->service->state($request->rulesInput());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function store(UserStorePost $request)
-    {
-        $this->service->store($request->rulesInput());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function search(UserSearchPost $request)
-    {
-        $this->service->search($request->rulesInput());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-*/
 }

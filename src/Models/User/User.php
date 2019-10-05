@@ -56,6 +56,7 @@ class User extends Authenticatable
         'block',
         'reset_password',
         'last_reset_at',
+        'last_login_at',
         'created_by',
         'updated_by'
     ];

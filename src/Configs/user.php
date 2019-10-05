@@ -13,9 +13,9 @@ return [
 
     'forget' => [
         'mail' => [
-            'template'  => 'default'
+            'template'  => 'emails.Merchant.MerchantForgetPassword'
         ]
-    ]
+    ],
 
-
+    'token_expires_in' => 604800
 ];

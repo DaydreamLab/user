@@ -106,6 +106,7 @@ class UserService extends BaseService
                     $this->status = 'USER_IS_BLOCKED';
                 }
                 else {
+                    $this->repo->update(['last_login_at' => now()], $user);
                     $this->status = 'USER_LOGIN_SUCCESS';
                     $this->response = $this->helper->getUserLoginData($user);
                     $login = true;

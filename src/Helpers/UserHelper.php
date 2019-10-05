@@ -14,8 +14,7 @@ class UserHelper
     {
         $tokenResult = $user->createToken(env('APP_NAME'));
         $token       = $tokenResult->token;
-        $token->expires_at = now()->addDays(7);
-        $token->save();
+        $token->expires_at = now()->addSeconds(config('daydreamlab.user.token_expires_in'));
         $data['token']       = $tokenResult->accessToken;
         $data['first_name']  = $user->first_name;
         $data['last_name']   = $user->last_name;
