@@ -59,12 +59,12 @@ class AssetService extends BaseService
     {
         // 計算full path
         if (!InputHelper::null($input, 'parent_id')) {
-            $parent_id  = $input->parent_id;
+            $parent_id  = $input->get('parent_id');
             $parent     = $this->find($parent_id);
-            $full_path  = $parent->full_path . $input->path;
+            $full_path  = $parent->full_path . $input->get('path');
         }
         else {
-            $full_path  = $input->path;
+            $full_path  = $input->get('path');
         }
 
         $input->put('full_path', $full_path);
