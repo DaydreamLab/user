@@ -80,8 +80,9 @@ class UserGroup extends BaseModel
         if ($apis->count() == 1) {
             return true;
         } elseif ($apis->count() > 1) {
+            // 以現在架構並不存在可以編輯自己或別人的這種可能，這邊有問題！
             foreach ($apis as $api) {
-                if (strpos($apis->method, 'Own')) {
+                if (strpos($api->method, 'Own')) {
                     return $model->created_by == $this->user->id ?: false;
                 } else {
                     return $model->created_by != $this->user->id ?: false;
