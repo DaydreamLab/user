@@ -18,7 +18,7 @@ class Expired
      */
     public function handle($request, Closure $next)
     {
-        $user = Auth::guard('api')->user();
+        $user = isset($request['user']) ? $request['user'] : $request['user'] = Auth::guard('api')->user();
         if ($user)
         {
             $token = $user->token();
