@@ -17,5 +17,6 @@ return [
         ]
     ],
 
-    'token_expires_in' => 604800
+    'token_expires_in'  => 604800,
+    'multiple_login'    => 1,
 ];

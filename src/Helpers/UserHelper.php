@@ -2,16 +2,22 @@
 
 namespace DaydreamLab\User\Helpers;
 
-
 use DaydreamLab\JJAJ\Helpers\Helper;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Two\User;
 
 class UserHelper
 {
-
     public function getUserLoginData($user)
     {
+        if(!config('daydreamlab.user.multiple_login'))
+        {
+            $user->tokens()->get()->each(function ($token) {
+                $token->delete();
+            });
+        }
+
         $tokenResult = $user->createToken(env('APP_NAME'));
         $token       = $tokenResult->token;
         $token->expires_at = now()->addSeconds(config('daydreamlab.user.token_expires_in'));
