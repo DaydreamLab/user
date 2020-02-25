@@ -2,8 +2,6 @@
 
 namespace DaydreamLab\User\Helpers;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Two\User;
 
