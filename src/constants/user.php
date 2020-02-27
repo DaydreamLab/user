@@ -52,6 +52,10 @@ return [
         'code'      => 200,
         'message'   => 'Login success'
     ],
+    'USER_MULTIPLE_LOGIN_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Login multiple login success'
+    ],
 
     'USER_LOGIN_FAIL' => [
         'code'      => 500,
@@ -80,6 +84,10 @@ return [
     'USER_IS_BLOCKED' => [
         'code'      => 403,
         'message'   => 'User is blocked'
+    ],
+    'USER_TOKEN_REVOKED' => [
+        'code'      => 403,
+        'message'   => 'User token revoked'
     ],
 
 

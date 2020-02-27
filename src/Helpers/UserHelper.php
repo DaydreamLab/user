@@ -9,13 +9,6 @@ class UserHelper
 {
     public function getUserLoginData($user)
     {
-        if(!config('daydreamlab.user.multiple_login'))
-        {
-            $user->tokens()->get()->each(function ($token) {
-                $token->delete();
-            });
-        }
-
         $tokenResult = $user->createToken(env('APP_NAME'));
         $token       = $tokenResult->token;
         $token->expires_at = now()->addSeconds(config('daydreamlab.user.token_expires_in'));

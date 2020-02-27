@@ -18,8 +18,9 @@ class Expired
      */
     public function handle($request, Closure $next)
     {
-        $user = isset($request['user']) ? $request['user'] : $request['user'] = Auth::guard('api')->user();
-
+        $user = isset($request['user'])
+            ? $request['user']
+            : $request['user'] = Auth::guard('api')->user();
         if ($user)
         {
             $token = $user->token();
@@ -30,6 +31,12 @@ class Expired
 
             if ($user->block) {
                 return ResponseHelper::genResponse('USER_IS_BLOCKED');
+            }
+
+            if($token->multipleLogin)
+            {
+                $token->delete();
+                return ResponseHelper::genResponse('USER_TOKEN_REVOKED');
             }
         }
         else

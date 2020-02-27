@@ -107,7 +107,16 @@ class UserService extends BaseService
                 }
                 else {
                     $this->repo->update(['last_login_at' => now()], $user);
-                    $this->status = 'USER_LOGIN_SUCCESS';
+                    if(!config('daydreamlab.user.multiple_login'))
+                    {
+                        $tokens = $user->tokens()->get();
+                        $tokens->each(function ($token) {
+                            $token->multipleLogin = 1;
+                            $token->save();
+                        });
+                    }
+
+                    $this->status = $tokens->count() ? 'USER_MULTIPLE_LOGIN_SUCCESS':'USER_LOGIN_SUCCESS';
                     $this->response = $this->helper->getUserLoginData($user);
                     $login = true;
                 }

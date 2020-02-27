@@ -17,7 +17,7 @@ class SuperUser
      */
     public function handle($request, Closure $next)
     {
-        $user = Auth::guard('api')->user();
+        $user = isset($request['user']) ? $request['user'] : $request['user'] = Auth::guard('api')->user();
         if (!$user || !$user->isSuperUser()) {
             return ResponseHelper::genResponse('USER_INSUFFICIENT_PERMISSION_ADMIN');
         }
