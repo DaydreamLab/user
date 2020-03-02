@@ -107,9 +107,9 @@ class UserService extends BaseService
                 }
                 else {
                     $this->repo->update(['last_login_at' => now()], $user);
+                    $tokens = $user->tokens()->get();
                     if(!config('daydreamlab.user.multiple_login'))
                     {
-                        $tokens = $user->tokens()->get();
                         $tokens->each(function ($token) {
                             $token->multipleLogin = 1;
                             $token->save();
