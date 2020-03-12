@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddMultipleLoginToOauthAccessTokensTable extends Migration
+class AddColumnsToOauthAccessTokensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,7 @@ class AddMultipleLoginToOauthAccessTokensTable extends Migration
     {
         Schema::table('oauth_access_tokens', function (Blueprint $table) {
             $table->unsignedTinyInteger('multipleLogin')->after('scopes')->default(0);
+            $table->unsignedTinyInteger('subscriptionExpired')->after('multipleLogin')->default(0);
         });
     }
 
