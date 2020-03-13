@@ -4,7 +4,7 @@ namespace DaydreamLab\User\Resources\User\Front\Models;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserFrontGetLoginResource extends JsonResource
+class UserFrontLoginResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,7 +20,6 @@ class UserFrontGetLoginResource extends JsonResource
             'lastName'      => $this->last_name,
             'redirect'      => '/',
             'token'         => $this->token,
-            //'groups'        => $this->groups,
         ];
     }
 }

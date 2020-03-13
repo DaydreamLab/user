@@ -13,6 +13,7 @@ use DaydreamLab\User\Requests\User\UserCheckEmailPost;
 use DaydreamLab\User\Requests\User\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\UserLoginPost;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
+use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
 use DaydreamLab\User\Services\User\Front\UserFrontService;
 use DaydreamLab\User\Requests\User\Front\UserFrontRemovePost;
 use DaydreamLab\User\Requests\User\Front\UserFrontStorePost;
@@ -106,9 +107,16 @@ class UserFrontController extends BaseController
 
     public function login(UserLoginPost $request)
     {
-        $this->service->login($request->rulesInput());
+        if(config('daydreamlab.user.login.enable'))
+        {
+            $this->service->login($request->rulesInput());
+        }
+        else
+        {
+            $this->service->status = 'USER_LOGIN_IS_BLOCKED';
+        }
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return ResponseHelper::response($this->service->status, $this->service->response ? new UserFrontLoginResource($this->service->response) : null);
     }
 
 

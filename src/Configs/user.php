@@ -9,7 +9,9 @@ return [
         ],
         'groups' => [4]
     ],
-
+    'login' => [
+        'enable'    => 1
+    ],
 
     'forget' => [
         'mail' => [

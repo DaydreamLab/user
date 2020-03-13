@@ -44,7 +44,10 @@ return [
         'code'      => 403,
         'message'   => 'User registration is block'
     ],
-
+    'USER_LOGIN_IS_BLOCKED' => [
+        'code'      => 403,
+        'message'   => 'User login is block'
+    ],
 
 
     // Login
