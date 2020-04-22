@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Controllers\User\Admin;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use DaydreamLab\User\Services\User\Admin\UserGroupAdminService;
 use DaydreamLab\User\Requests\User\Admin\UserGroupAdminRemovePost;
@@ -75,8 +76,9 @@ class UserGroupAdminController extends BaseController
     }
 
 
-    public function tree()
+    public function tree(Request $request)
     {
+        $this->service->setUser($request['user']);
         $this->service->canAction('getUserGroupTree');
         $this->service->tree();
 
