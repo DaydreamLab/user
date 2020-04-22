@@ -89,6 +89,7 @@ class UserAdminController extends BaseController
 
     public function search(UserAdminSearchPost $request)
     {
+        $this->service->setUser($request['user']);
         $this->service->canAction('searchUser');
         $this->service->search($request->rulesInput());
 
