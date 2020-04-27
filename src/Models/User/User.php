@@ -60,7 +60,6 @@ class User extends Authenticatable
         'become_zerone_member',
         'zerone_subscriptions',
         'zerone_breaking_news',
-        'score_id',
         'activation',
         'activate_token',
         'block',
