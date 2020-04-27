@@ -25,6 +25,7 @@ class AddColumnsToUsersTable extends Migration
             $table->boolean('become_zerone_member')->after('position')->nullable();
             $table->boolean('zerone_subscriptions')->after('become_zerone_member')->nullable();
             $table->boolean('zerone_breaking_news')->after('zerone_subscriptions')->nullable();
+            $table->unsignedTinyInteger('score_id')->after('zerone_breaking_news')->nullable();
         });
     }
 
