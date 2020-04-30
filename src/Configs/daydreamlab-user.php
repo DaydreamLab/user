@@ -7,7 +7,8 @@ return [
         'mail'  => [
             'template'  => 'default'
         ],
-        'group' => 4
+        'group' => 4,
+        'sendemail' => 1
     ],
 
 ];
