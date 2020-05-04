@@ -196,9 +196,10 @@ class UserFrontService extends UserService
                 return ;
             }
 
-            $password  = $input->password;
-            $input->forget('password');
-            $input->put('password', bcrypt($password));
+            //$password  = $input->password;
+            //$input->forget('password');
+            $input->put('last_name', '');
+            $input->put('password', bcrypt('qwer@#$%asdf'));
             $input->put('activate_token', str_random(48));
 
             $user      = $this->add($input);

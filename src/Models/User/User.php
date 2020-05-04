@@ -55,7 +55,7 @@ class User extends Authenticatable
         'company_tel_extension',
         'mobile_phone',
         'department',
-        'position',
+        'job_title',
         'become_zerone_member',
         'zerone_subscriptions',
         'zerone_breaking_news',

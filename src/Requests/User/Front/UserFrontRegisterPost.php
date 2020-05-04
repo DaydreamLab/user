@@ -26,8 +26,8 @@ class UserFrontRegisterPost extends AdminRequest
     {
         return [
             'email'                 => 'required|email|unique:users,email',
-            'password'              => 'required|string|min:8|max:16',
-            'password_confirmation' => 'required|same:password',
+            'password'              => 'nullable|string|min:8|max:16',
+            'password_confirmation' => 'nullable|same:password',
             'first_name'            => 'required|string',
             'last_name'             => 'nullable|string',
             'gender'                => 'nullble|string',
