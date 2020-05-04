@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User\Front;
 
+use App\Services\Score\ScoreService;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
@@ -196,18 +197,20 @@ class UserFrontService extends UserService
                 return ;
             }
 
-            //$password  = $input->password;
+            $password = Str::random(8);
             //$input->forget('password');
             $input->put('last_name', '');
-            $input->put('password', bcrypt('qwer@#$%asdf'));
+            $input->put('password', bcrypt($password));
             $input->put('activate_token', str_random(48));
 
             $user      = $this->add($input);
             $user->usergroup()->attach(config('daydreamlab-user.register.group'));
             if ($user) {
-                if (config('daydreamlab-user.register.sendemail')) {
-                    $user->notify(new RegisteredNotification($user));
-                }
+                $scoreService = app(ScoreService::class);
+                $score = $scoreService->create(['user_id' => $user->id]);
+                $user->score_id = $score->id;
+                $user->save();
+                $user->notify(new RegisteredNotification($user, $password));
                 $this->status = 'USER_REGISTER_SUCCESS';
             }
             else {

@@ -19,6 +19,7 @@ class UserHelper
         $data['token']       = $tokenResult->accessToken;
         $data['first_name']  = $user->first_name;
         $data['last_name']   = $user->last_name;
+        $data['score_id'] = $user->score_id;
         if ($user->isAdmin())
         {
             $sort_groups         = $user->groups->sortBy('id');

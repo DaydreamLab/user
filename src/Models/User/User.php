@@ -60,6 +60,7 @@ class User extends Authenticatable
         'zerone_subscriptions',
         'zerone_breaking_news',
         'score_id',
+        'is_black_list',
         'activation',
         'activate_token',
         //'redirect',

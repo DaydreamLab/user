@@ -12,14 +12,16 @@ class RegisteredNotification extends Notification implements ShouldQueue
     use Queueable;
 
     protected $user;
+    protected $password;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $password)
     {
         $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -46,12 +48,10 @@ class RegisteredNotification extends Notification implements ShouldQueue
         $template = config('daydreamlab-user.register.mail.template');
 
         return $template == 'default'?
-                (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Activate your account',  url($path))
-                    ->line('Thank you for using our application!')
-            :   (new MailMessage)
-                    ->view($template, ['url'=> url($path)]);
+            (new MailMessage)
+                ->line('The introduction to the notification.')
+                ->line('Thank you for using our application!')
+            :   (new MailMessage)->view($template, ['user' => $this->user, 'password' => $this->password]);
     }
 
     /**
