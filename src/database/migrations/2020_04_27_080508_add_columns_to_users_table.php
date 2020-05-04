@@ -22,7 +22,7 @@ class AddColumnsToUsersTable extends Migration
             $table->string('mobile_phone')->after('company_tel_extension')->nullable();
             $table->string('department')->after('mobile_phone')->nullable();
             $table->string('job_title')->after('department')->nullable();
-            $table->boolean('become_zerone_member')->after('position')->nullable();
+            $table->boolean('become_zerone_member')->after('job_title')->nullable();
             $table->boolean('zerone_subscriptions')->after('become_zerone_member')->nullable();
             $table->boolean('zerone_breaking_news')->after('zerone_subscriptions')->nullable();
             $table->unsignedTinyInteger('score_id')->after('zerone_breaking_news')->nullable();
