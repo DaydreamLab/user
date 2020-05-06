@@ -136,6 +136,14 @@ class UserFrontController extends BaseController
     }
 
 
+    public function resendPasswordEmail(UserFrontForgetPasswordPost $request)
+    {
+        $this->service->resendPasswordEmail($request->rulesInput());
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
     public function store(UserFrontStorePost $request)
     {
         $this->service->store($request->rulesInput());

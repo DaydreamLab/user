@@ -19,6 +19,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
 
     // 忘記密碼
     Route::group(['prefix' => 'password'], function (){
+        Route::post('resend', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@resendPasswordEmail');
         Route::post('email','DaydreamLab\User\Controllers\User\Front\UserFrontController@sendResetLinkEmail');
         Route::get('reset/{token}','DaydreamLab\User\Controllers\User\Front\UserFrontController@forgotPasswordTokenValidate');
         Route::post('reset','DaydreamLab\User\Controllers\User\Front\UserFrontController@resetPassword');

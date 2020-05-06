@@ -6,6 +6,7 @@ use App\Services\Score\ScoreService;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
+use DaydreamLab\User\Notifications\ResendPasswordNotification;
 use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\User\Services\Social\SocialUserService;
 use Carbon\Carbon;
@@ -260,5 +261,19 @@ class UserFrontService extends UserService
         }
     }
 
+
+    public function resendPasswordEmail(Collection $input)
+    {
+        $user = $this->findBy('email', '=', $input->email)->first();
+        if ($user) {
+            $password = Str::random(8);
+            $user->password = bcrypt($password);
+            $user->save();
+            $user->notify(new ResendPasswordNotification($user, $password));
+        }
+        else {
+            $this->status = 'USER_NOT_FOUND';
+        }
+    }
 
 }
