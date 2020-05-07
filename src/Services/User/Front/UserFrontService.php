@@ -270,6 +270,7 @@ class UserFrontService extends UserService
             $user->password = bcrypt($password);
             $user->save();
             $user->notify(new ResendPasswordNotification($user, $password));
+            $this->status = 'USER_RESEND_PASSWORD_SUCCESS';
         }
         else {
             $this->status = 'USER_NOT_FOUND';

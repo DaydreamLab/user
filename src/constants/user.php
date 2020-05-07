@@ -97,7 +97,10 @@ return [
         'message'   => 'User old password incorrect'
     ],
 
-
+    'USER_RESEND_PASSWORD_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'User resend password success.'
+    ],
 
     // Reset Password
     'USER_RESET_PASSWORD_SUCCESS' => [
