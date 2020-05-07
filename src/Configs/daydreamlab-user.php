@@ -11,7 +11,8 @@ return [
     ],
     'resendpwd' => [
         'mail' => [
-            'template' => 'default'
+            'resend_template' => 'emails.users.resendpwd',
+            'new_template' => 'emails.users.newpwd'
         ]
     ],
     'activate' => [

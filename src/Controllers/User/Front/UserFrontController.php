@@ -144,6 +144,14 @@ class UserFrontController extends BaseController
     }
 
 
+    public function newPasswordEmail($token)
+    {
+        $this->service->newPasswordEmail($token);
+
+        return ResponseHelper::response($this->service->status, $this->service->response);
+    }
+
+
     public function store(UserFrontStorePost $request)
     {
         $this->service->store($request->rulesInput());

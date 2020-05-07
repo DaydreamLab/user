@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Services\User\Front;
 
 use App\Services\Score\ScoreService;
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Notifications\NewPasswordNotification;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
 use DaydreamLab\User\Notifications\ResendPasswordNotification;
@@ -202,7 +203,7 @@ class UserFrontService extends UserService
             //$input->forget('password');
             $input->put('last_name', '');
             $input->put('password', bcrypt($password));
-            $input->put('activate_token', str_random(48));
+            $input->put('activate_token', $password);
 
             $user      = $this->add($input);
             $user->usergroup()->attach(config('daydreamlab-user.register.group'));
@@ -266,10 +267,12 @@ class UserFrontService extends UserService
     {
         $user = $this->findBy('email', '=', $input->email)->first();
         if ($user) {
-            $password = Str::random(8);
-            $user->password = bcrypt($password);
-            $user->save();
-            $user->notify(new ResendPasswordNotification($user, $password));
+            $token = $this->passwordResetService->create([
+                'email'         => $input->email,
+                'token'         => Str::random(128),
+                'expired_at'    => Carbon::now()->addHours(3)
+            ]);
+            $user->notify(new ResendPasswordNotification($user, $token));
             $this->status = 'USER_RESEND_PASSWORD_SUCCESS';
         }
         else {
@@ -277,4 +280,24 @@ class UserFrontService extends UserService
         }
     }
 
+
+    public function newPasswordEmail($token)
+    {
+        $token = $this->forgotPasswordTokenValidate($token);
+        if ($token) {
+            $user = $this->findBy('email', '=', $token->email)->first();
+            $password = Str::random(8);
+            $user->password = bcrypt($password);
+            $user->activate_token = $password;
+            if($user->save()){
+                $token->reset_at = now();
+                $token->save();
+                $user->notify(new NewPasswordNotification($user, $password));
+                $this->status = 'USER_RESET_PASSWORD_SUCCESS';
+            }
+            else{
+                $this->status = 'USER_RESET_PASSWORD_FAIL';
+            }
+        }
+    }
 }
