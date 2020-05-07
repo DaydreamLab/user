@@ -47,7 +47,7 @@ class UserFrontRegisterPost extends AdminRequest
             'company_tel_extension' => 'nullable|string',
             'mobile_phone'          => 'required|string',
             'department'            => 'required|string',
-            'job_title'              => 'required|string',
+            'job_title'             => 'required|string',
             'become_zerone_member'  => 'nullable|boolean',
             'zerone_subscriptions'  => 'nullable|boolean',
             'zerone_breaking_news'  => 'nullable|boolean'

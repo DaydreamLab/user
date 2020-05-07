@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Models\User;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
+use DaydreamLab\User\Notifications\ActivationNotification;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -110,6 +111,13 @@ class User extends Authenticatable
             if ($user) {
                 $item->updated_by = $user->id;
             }
+        });
+
+        static::updated(function($item) {
+             if (isset($item->changes['activation']) && $item->changes['activation'] == 1)
+             {
+                 $item->notify(new ActivationNotification($item));
+             }
         });
     }
 

@@ -75,7 +75,7 @@ class UserAdminController extends BaseController
     {
 
         $input = $request->rulesInput();
-
+/*
         if (!InputHelper::null($input, 'activation'))
         {
             $input->forget('activation');
@@ -88,7 +88,7 @@ class UserAdminController extends BaseController
                 $input->put('activation', 1);
             }
         }
-
+*/
         $this->service->store($input);
 
         return ResponseHelper::response($this->service->status, $this->service->response);

@@ -7,8 +7,17 @@ return [
         'mail'  => [
             'template'  => 'default'
         ],
-        'group' => 4,
-        'sendemail' => 1
+        'group' => 4
     ],
+    'resendpwd' => [
+        'mail' => [
+            'template' => 'default'
+        ]
+    ],
+    'activate' => [
+        'mail' => [
+            'template' => 'default'
+        ]
+    ]
 
 ];
