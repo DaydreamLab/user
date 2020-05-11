@@ -131,7 +131,7 @@ class UserAdminService extends UserService
                 ]
             ]);
         }
-
+        $input->put('paginate', false);
         $search_result = parent::search($input);
 
         //
