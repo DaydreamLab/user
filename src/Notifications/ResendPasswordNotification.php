@@ -45,11 +45,11 @@ class ResendPasswordNotification extends Notification implements ShouldQueue
     {
         $template = config('daydreamlab-user.resendpwd.mail.resend_template');
 
-        $url = url('/api/password/new/'.$this->token->token);
+       // $url = url('/api/password/new/'.$this->token->token);
         return $template == 'default' ? (new MailMessage)
             ->line('You are receiving this email because we received a password reset request for your account.')
             ->line('If you did not request a password reset, no further action is required.')
-            : (new MailMessage)->view($template, ['user' => $this->user, 'url' => $url]);
+            : (new MailMessage)->view($template, ['user' => $this->user]);
     }
 
     /**

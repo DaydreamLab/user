@@ -267,12 +267,12 @@ class UserFrontService extends UserService
     {
         $user = $this->findBy('email', '=', $input->email)->first();
         if ($user) {
-            $token = $this->passwordResetService->create([
-                'email'         => $input->email,
-                'token'         => Str::random(128),
-                'expired_at'    => Carbon::now()->addHours(3)
-            ]);
-            $user->notify(new ResendPasswordNotification($user, $token));
+//            $token = $this->passwordResetService->create([
+//                'email'         => $input->email,
+//                'token'         => Str::random(128),
+//                'expired_at'    => Carbon::now()->addHours(3)
+//            ]);
+            $user->notify(new ResendPasswordNotification($user, null));
             $this->status = 'USER_RESEND_PASSWORD_SUCCESS';
         }
         else {
