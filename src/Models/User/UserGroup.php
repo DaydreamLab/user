@@ -3,6 +3,7 @@ namespace DaydreamLab\User\Models\User;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Models\BaseModel;
+use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Asset\AssetApi;
@@ -11,7 +12,7 @@ use Kalnoy\Nestedset\NodeTrait;
 
 class UserGroup extends BaseModel
 {
-    use NodeTrait,
+    use NodeTrait, HasCustomRelation,
         RecordChanger {
         RecordChanger::boot as traitBoot;
     }

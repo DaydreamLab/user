@@ -214,4 +214,45 @@ class UserAdminService extends UserService
         return $result;
     }
 
+
+    public function modify(Collection $input, $diff = false)
+    {
+        $item = $this->checkItem($input->get('id'), $diff);
+
+        $blacklist = json_decode(file_get_contents(__DIR__ . '/../../../../blacklist.json'), true);
+        foreach ($blacklist as $blackman) {
+            if($item->first_name == $blackman['name'] ||
+                $item->mobile_phone == $blackman['phone'] ||
+                $item->company_name == $blackman['company'] ||
+                $item->email == $blackman['email']
+                ) {
+                throw new HttpResponseException(
+                    ResponseHelper::genResponse(
+                        Str::upper(Str::snake($this->type.'UserInBlacklist'))
+                    )
+                );
+            }
+        }
+
+        $this->checkAction($item, 'edit', $diff);
+
+        $update = $this->update($input->toArray(), $item);
+
+        if ($update) {
+
+            $this->modifyMapping($item, $input);
+            $this->status = Str::upper(Str::snake($this->type.'UpdateSuccess'));
+            $this->response = null;
+        }
+        else {
+            throw new HttpResponseException(
+                ResponseHelper::genResponse(
+                    Str::upper(Str::snake($this->type.'UpdateFail'))
+                )
+            );
+        }
+
+        return $update;
+    }
+
 }

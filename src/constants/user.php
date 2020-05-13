@@ -26,6 +26,10 @@ return [
         'code'      => 200,
         'message'   => 'Email is not registered'
     ],
+    'USER_ADMIN_USER_IN_BLACKLIST' => [
+        'code'      => 403,
+        'message'   => 'User in black list'
+    ],
 
 
 
