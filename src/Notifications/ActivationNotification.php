@@ -48,7 +48,7 @@ class ActivationNotification extends Notification implements ShouldQueue
             (new MailMessage)
                 ->line('The introduction to the notification.')
                 ->line('Thank you for using our application!')
-            :   (new MailMessage)->view($template, ['user' => $this->user]);
+            :   (new MailMessage)->subject('遊戲啟動金鑰')->view($template, ['user' => $this->user]);
     }
 
     /**

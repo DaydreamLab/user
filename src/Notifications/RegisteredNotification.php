@@ -51,7 +51,7 @@ class RegisteredNotification extends Notification implements ShouldQueue
             (new MailMessage)
                 ->line('The introduction to the notification.')
                 ->line('Thank you for using our application!')
-            :   (new MailMessage)->view($template, ['user' => $this->user, 'password' => $this->password]);
+            :   (new MailMessage)->subject('註冊成功')->view($template, ['user' => $this->user, 'password' => $this->password]);
     }
 
     /**
