@@ -221,10 +221,10 @@ class UserAdminService extends UserService
 
         $blacklist = json_decode(file_get_contents(__DIR__ . '/../../../../blacklist.json'), true);
         foreach ($blacklist as $blackman) {
-            if($item->first_name == $blackman['name'] ||
-                $item->mobile_phone == $blackman['phone'] ||
-                $item->company_name == $blackman['company'] ||
-                $item->email == $blackman['email']
+            if(($item->first_name == $blackman['name'] && $blackman['name'] != '')  ||
+                ($item->mobile_phone == $blackman['phone']  && $blackman['phone'] != '') ||
+                ($item->company_name == $blackman['company'] && $blackman['company'] != '') ||
+                ($item->email == $blackman['email'] &&  $blackman['email'] != '')
                 ) {
                 throw new HttpResponseException(
                     ResponseHelper::genResponse(
