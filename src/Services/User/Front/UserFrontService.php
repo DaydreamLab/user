@@ -211,6 +211,10 @@ class UserFrontService extends UserService
                 $scoreService = app(ScoreService::class);
                 $score = $scoreService->create([
                     'user_id' => $user->id,
+                    'game_score' => [],
+                    'login_score' => [],
+                    'video_score' => [],
+                    'questionnaire_score' => [],
                     'download_score' => []
                 ]);
                 $user->score_id = $score->id;
