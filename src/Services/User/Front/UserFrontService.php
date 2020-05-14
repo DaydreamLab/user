@@ -209,7 +209,10 @@ class UserFrontService extends UserService
             $user->usergroup()->attach(config('daydreamlab-user.register.group'));
             if ($user) {
                 $scoreService = app(ScoreService::class);
-                $score = $scoreService->create(['user_id' => $user->id]);
+                $score = $scoreService->create([
+                    'user_id' => $user->id,
+                    'download_score' => []
+                ]);
                 $user->score_id = $score->id;
                 $user->save();
                 $user->notify(new RegisteredNotification($user, $password));
