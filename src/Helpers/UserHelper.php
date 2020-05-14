@@ -14,7 +14,7 @@ class UserHelper
     {
         $tokenResult = $user->createToken(env('APP_NAME'));
         $token       = $tokenResult->token;
-        $token->expires_at = now()->addDays(7);
+        $token->expires_at = now("Asia/Taipei")->endOfDay()->tz(config("app.timezone"));
         $token->save();
         $data['token']       = $tokenResult->accessToken;
         $data['first_name']  = $user->first_name;
