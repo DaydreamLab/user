@@ -32,7 +32,7 @@ class UserGroupAdminService extends UserGroupService
 
     public function getItem($id)
     {
-        $group = parent::getItem($id);
+        $group = parent::getItem(collect(['id' => $id]));
 
         $group->assets = $group->assets()->get()->map(function ($item){
             return $item->id;
@@ -103,7 +103,7 @@ class UserGroupAdminService extends UserGroupService
         $result =  parent::store($input);
         $group_id = gettype($result) == 'boolean' ? $input->id : $result->id;
 
-        $group = $this->checkItem($group_id);
+        $group = $this->checkItem(collect(['id' => $group_id]));
         $group->apis()->attach($api_ids);
         $group->assets()->attach($asset_ids);
 

@@ -38,7 +38,6 @@ class UsersGroupsTableSeeder extends Seeder
 
             $group->apis()->attach($apis);
             $group->assets()->attach($assets);
-
             if (count($children))
             {
                 self::migrate($children, $group);

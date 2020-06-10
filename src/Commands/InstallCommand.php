@@ -61,6 +61,7 @@ class InstallCommand extends Command
         $this->call('jjaj:refresh');
 
         foreach ($this->seeders as $seeder) {
+            $this->info('Start seeding '. $seeder);
             $this->call('db:seed', [
                 '--class' => $this->seeder_namespace . $seeder
             ]);
