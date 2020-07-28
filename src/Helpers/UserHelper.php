@@ -9,7 +9,7 @@ class UserHelper
 {
     public function getUserLoginData($user)
     {
-        $tokenResult = $user->createToken(env('APP_NAME'));
+        $tokenResult = $user->createToken(config('app.name'));
         $token       = $tokenResult->token;
         $token->expires_at = now()->addSeconds(config('daydreamlab.user.token_expires_in'));
         $token->save();
