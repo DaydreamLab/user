@@ -238,12 +238,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id');
     }
-
-
-    public function scheduleItem()
-    {
-        return $this->belongsToMany(ScheduleItem::class, 'schedules_items_users_maps', 'user_id', 'item_id', 'id', 'id');
-    }
-
-
+    
 }
