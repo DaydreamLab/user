@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Database\Seeds;
+namespace DaydreamLab\User\Database\Seeders;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\Viewlevel\Admin\ViewlevelAdmin;

@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Database\Seeds;
+namespace DaydreamLab\User\Database\Seeders;
 
 use DaydreamLab\User\Models\User\User;
 use Illuminate\Database\Seeder;

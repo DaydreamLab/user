@@ -8,11 +8,10 @@
         }
     ],
     "autoload": {
-        "classmap": [
-            "src/database/seeds"
-        ],
         "psr-4": {
-            "DaydreamLab\\User\\": "src/"
+            "DaydreamLab\\User\\": "src/",
+            "DaydreamLab\\User\\Database\\Factories\\": "src/database/factories/",
+            "DaydreamLab\\User\\Database\\Seeds\\": "src/database/seeders/"
         }
     },
     "minimum-stability": "dev",
