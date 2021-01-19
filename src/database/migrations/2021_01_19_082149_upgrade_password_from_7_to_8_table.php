@@ -14,7 +14,9 @@ class UpgradePasswordFrom7To8Table extends Migration
     public function up()
     {
         Schema::table('oauth_clients', function (Blueprint $table) {
-            $table->string('secret', 100)->nullable()->change();
+            if (Schema::hasColumn('oauth_clients', 'secret')) {
+                $table->string('secret', 100)->nullable()->change();
+            }
         });
     }
 
