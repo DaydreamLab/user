@@ -20,7 +20,7 @@
         "daydreamlab/jjaj": "dev-base/develop",
         "kalnoy/nestedset": "^v5.0",
         "laravel/socialite": "^v4.0",
-        "laravel/passport": "^8.0"
+        "laravel/passport": "^9.0"
     },
     "repositories" : [
         {
