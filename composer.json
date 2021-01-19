@@ -17,7 +17,7 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "daydreamlab/jjaj": "base/develop",
+        "daydreamlab/jjaj": "dev-base-develop",
         "kalnoy/nestedset": "^v5.0",
         "laravel/socialite": "^v4.0",
         "laravel/passport": "^7.0.0"
@@ -26,6 +26,11 @@
         {
             "type": "vcs",
             "url":  "https://github.com/DaydreamLab/user",
+            "no-api": true
+        },
+        {
+            "type": "vcs",
+            "url":  "https://github.com/DaydreamLab/JJAJ",
             "no-api": true
         }
     ],
