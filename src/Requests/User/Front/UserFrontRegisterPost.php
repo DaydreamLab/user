@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Requests\User;
+namespace DaydreamLab\User\Requests\User\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use Illuminate\Validation\Rule;

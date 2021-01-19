@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Services\Upload;
+namespace DaydreamLab\User\Services;
 
 use Illuminate\Support\Facades\Storage;
 
