@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="../../autoload.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="feature">
+<!--            <directory suffix="OrderFrontTest.php">./tests/Feature</directory>-->
+        </testsuite>
+        <testsuite name="unit">
+            <directory suffix=".php">./tests/Unit/Services</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <env name="SEEDING" value="1"/>
+        <env name="DB_PORT" value="33060"/>
+    </php>
+</phpunit>

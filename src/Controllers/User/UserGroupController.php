@@ -13,6 +13,12 @@ use DaydreamLab\User\Requests\User\UserGroupSearchPost;
 
 class UserGroupController extends BaseController
 {
+    protected $package = 'User';
+
+    protected $modelName = 'UserGroup';
+
+    protected $modelType = 'Base';
+
     public function __construct(UserGroupService $service)
     {
         parent::__construct($service);

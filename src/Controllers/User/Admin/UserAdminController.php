@@ -3,19 +3,21 @@
 namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
-use Illuminate\Support\Collection;
 use DaydreamLab\User\Services\User\Admin\UserAdminService;
 use DaydreamLab\User\Requests\User\Admin\UserAdminRemovePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminStorePost;
-use DaydreamLab\User\Requests\User\Admin\UserAdminStatePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminSearchPost;
 
 class UserAdminController extends BaseController
 {
+    protected $package = 'User';
+
+    protected $modelName = 'User';
+
+    protected $modelType = 'Admin';
+
     public function __construct(UserAdminService $service)
     {
         parent::__construct($service);

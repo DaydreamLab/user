@@ -3,7 +3,6 @@
 namespace DaydreamLab\User\Controllers\User\Front;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Collection;
 use DaydreamLab\User\Services\User\Front\UserGroupFrontService;
 use DaydreamLab\User\Requests\User\Front\UserGroupFrontRemovePost;
@@ -11,9 +10,14 @@ use DaydreamLab\User\Requests\User\Front\UserGroupFrontStorePost;
 use DaydreamLab\User\Requests\User\Front\UserGroupFrontStatePost;
 use DaydreamLab\User\Requests\User\Front\UserGroupFrontSearchPost;
 
-
 class UserGroupFrontController extends BaseController
 {
+    protected $package = 'User';
+
+    protected $modelName = 'UserGroup';
+
+    protected $modelType = 'Front';
+
     public function __construct(UserGroupFrontService $service)
     {
         parent::__construct($service);

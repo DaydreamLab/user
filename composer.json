@@ -11,7 +11,8 @@
         "psr-4": {
             "DaydreamLab\\User\\": "src",
             "DaydreamLab\\User\\Database\\Seeders\\": "database/seeders",
-            "DaydreamLab\\User\\Database\\Factories\\": "database/factories"
+            "DaydreamLab\\User\\Database\\Factories\\": "database/factories",
+            "DaydreamLab\\User\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "dev",
@@ -25,12 +26,10 @@
         {
             "type": "vcs",
             "url":  "https://github.com/DaydreamLab/user.git",
-            "no-api": true
         },
         {
             "type": "vcs",
             "url":  "https://github.com/DaydreamLab/JJAJ.git",
-            "no-api": true
         }
     ],
     "extra": {

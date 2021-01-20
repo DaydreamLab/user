@@ -14,6 +14,13 @@ use DaydreamLab\User\Requests\User\Admin\UserGroupAdminSearchPost;
 
 class UserGroupAdminController extends BaseController
 {
+    protected $package = 'User';
+
+    protected $modelName = 'UserGroup';
+
+    protected $modelType = 'Admin';
+
+
     public function __construct(UserGroupAdminService $service)
     {
         parent::__construct($service);

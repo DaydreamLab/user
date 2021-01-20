@@ -22,16 +22,14 @@ class UserService extends BaseService
 
     protected $modelType = 'Base';
 
-    //protected $type = 'User';
-
     protected $helper;
-
 
     public function __construct(UserRepository $repo)
     {
         parent::__construct($repo);
         $this->helper = new UserHelper();
     }
+
 
     public function add(Collection $input)
     {
@@ -47,13 +45,12 @@ class UserService extends BaseService
     {
         if ($input->has('id')) {
             $user = $this->find($input->id);
-        }
-        else {
+        } else {
             $user = Auth::guard('api')->user();
         }
 
         if (!Hash::check($input->old_password, $user->password)) {
-            $this->status = 'USER_OLD_PASSWORD_INCORRECT';
+            $this->status = 'OldPasswordIncorrect';
             $this->response = null;
             return false;
         }
@@ -64,11 +61,11 @@ class UserService extends BaseService
                     $user->token()->delete();
                 }
 
-                $this->status = 'USER_CHANGE_PASSWORD_SUCCESS';
+                $this->status = 'ChangePasswordSuccess';
                 return true;
             }
             else {
-                $this->status = 'USER_CHANGE_PASSWORD_FAIL';
+                $this->status = 'ChangePasswordFail';
                 return false;
             }
         }
@@ -85,10 +82,9 @@ class UserService extends BaseService
     {
         $user = $this->findBy('email', '=', $email)->first();
         if ($user) {
-            $this->status = 'USER_EMAIL_IS_REGISTERED';
-        }
-        else {
-            $this->status = 'USER_EMAIL_IS_NOT_REGISTERED';
+            $this->status = 'EmailIsRegistered';
+        } else {
+            $this->status = 'EmailIsNotRegistered';
         }
 
         return $user;
