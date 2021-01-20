@@ -24,12 +24,12 @@
     "repositories" : [
         {
             "type": "vcs",
-            "url":  "https://github.com/DaydreamLab/user",
+            "url":  "https://github.com/DaydreamLab/user.git",
             "no-api": true
         },
         {
             "type": "vcs",
-            "url":  "https://github.com/DaydreamLab/JJAJ",
+            "url":  "https://github.com/DaydreamLab/JJAJ.git",
             "no-api": true
         }
     ],
