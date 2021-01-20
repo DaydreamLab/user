@@ -26,7 +26,7 @@ class AssetGroupAdminController extends BaseController
         $this->service->canAction('getAssetGroup');
         $this->service->getItem($id);
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -35,7 +35,7 @@ class AssetGroupAdminController extends BaseController
         $this->service->canAction('deleteAssetGroup');
         $this->service->remove($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -44,7 +44,7 @@ class AssetGroupAdminController extends BaseController
         $this->service->canAction('updateAssetGroupState');
         $this->service->state($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -54,7 +54,7 @@ class AssetGroupAdminController extends BaseController
             : $this->service->canAction('editAssetGroup');
         $this->service->store($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -63,6 +63,6 @@ class AssetGroupAdminController extends BaseController
         $this->service->canAction('searchAssetGroup');
         $this->service->search($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 }

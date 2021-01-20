@@ -14,7 +14,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $data = json_decode(file_get_contents(__DIR__.'/jsons/user.json'), true);
+        $data = json_decode(file_get_contents(__DIR__ . '/jsons/user.json'), true);
 
         $this->migrate($data, null);
     }

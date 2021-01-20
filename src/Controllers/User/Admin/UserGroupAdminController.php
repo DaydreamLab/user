@@ -26,7 +26,7 @@ class UserGroupAdminController extends BaseController
         $this->service->canAction('getUserGroup');
         $this->service->getItem($id);
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -34,7 +34,7 @@ class UserGroupAdminController extends BaseController
     {
         $this->service->getPage($group_id);
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -43,7 +43,7 @@ class UserGroupAdminController extends BaseController
         $this->service->canAction('deleteUserGroup');
         $this->service->remove($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -52,7 +52,7 @@ class UserGroupAdminController extends BaseController
         $this->service->canAction('updateUserGroupState');
         $this->service->state($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -62,7 +62,7 @@ class UserGroupAdminController extends BaseController
             : $this->service->canAction('editUserGroup');
         $this->service->store($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -71,7 +71,7 @@ class UserGroupAdminController extends BaseController
         $this->service->canAction('searchUserGroup');
         $this->service->search($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -80,7 +80,7 @@ class UserGroupAdminController extends BaseController
         $this->service->canAction('getUserGroupTree');
         $this->service->tree();
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 }

@@ -5,10 +5,8 @@ namespace DaydreamLab\User\Services\User;
 use DaydreamLab\User\Events\Add;
 use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Events\Remove;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Events\Login;
 use DaydreamLab\User\Helpers\UserHelper;
-use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Support\Collection;
@@ -18,7 +16,13 @@ use Illuminate\Support\Str;
 
 class UserService extends BaseService
 {
-    protected $type = 'User';
+    protected $package = 'User';
+
+    protected $modelName = 'User';
+
+    protected $modelType = 'Base';
+
+    //protected $type = 'User';
 
     protected $helper;
 
@@ -103,7 +107,7 @@ class UserService extends BaseService
         if ($auth) {
             if ($user->activation) { // 帳號已啟用
                 if ($user->block) {
-                    $this->status = 'USER_IS_BLOCKED';
+                    $this->status = 'IsBlock';
                 }
                 else {
                     $this->repo->update(['last_login_at' => now()], $user);
@@ -116,16 +120,18 @@ class UserService extends BaseService
                         });
                     }
 
-                    $this->status = $tokens->count() ? 'USER_MULTIPLE_LOGIN_SUCCESS':'USER_LOGIN_SUCCESS';
+                    $this->status = $tokens->count()
+                        ? 'MultipleLoginSuccess'
+                        : 'LoginSuccess';
                     $this->response = $this->helper->getUserLoginData($user);
                     $login = true;
                 }
             } else { // 帳號尚未啟用
                 //$user->notify(new RegisteredNotification($user));
-                $this->status = 'USER_UNACTIVATED';
+                $this->status = 'Unactivated';
             }
         } else {
-            $this->status = 'USER_EMAIL_OR_PASSWORD_INCORRECT';
+            $this->status = 'EmailOrPasswordIncorrect';
         }
 
         event(new Login($this->getServiceName(), $login,  $this->status, $user));
@@ -140,7 +146,7 @@ class UserService extends BaseService
         if ($user && $user->token()) {
             $user->token()->delete();
         }
-        $this->status = 'USER_LOGOUT_SUCCESS';
+        $this->status = 'LogoutSuccess';
     }
 
 
@@ -162,5 +168,4 @@ class UserService extends BaseService
 
         return $result;
     }
-
 }

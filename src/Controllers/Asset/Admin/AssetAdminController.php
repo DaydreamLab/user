@@ -36,7 +36,7 @@ class AssetAdminController extends BaseController
     {
         $this->service->search(new Collection());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -45,7 +45,7 @@ class AssetAdminController extends BaseController
         $this->service->canAction('searchAsset');
         $this->service->treeList();
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -54,7 +54,7 @@ class AssetAdminController extends BaseController
         $this->service->canAction('editAsset');
         $this->service->orderingNested($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -63,7 +63,7 @@ class AssetAdminController extends BaseController
         $this->service->canAction('deleteAsset');
         $this->service->remove($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -72,7 +72,7 @@ class AssetAdminController extends BaseController
         $this->service->canAction('updateAssetState');
         $this->service->state($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -82,7 +82,7 @@ class AssetAdminController extends BaseController
             : $this->service->canAction('editAsset');
         $this->service->store($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -91,6 +91,6 @@ class AssetAdminController extends BaseController
         $this->service->canAction('searchAsset');
         $this->service->search($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 }

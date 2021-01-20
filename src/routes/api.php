@@ -1,4 +1,4 @@
- <?php
+<?php
 
  /************************************  前台 API  ************************************/
  Route::post('api/user/register', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@register');
@@ -12,6 +12,8 @@
  Route::get('api/user/logout', 'DaydreamLab\User\Controllers\User\UserController@logout');
  Route::get('api/user/login', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@getLogin')
      ->middleware(['expired']);
+
+
  Route::post('api/user/login', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@login')->name('login');
 
  Route::post('api/user/password/email','DaydreamLab\User\Controllers\User\Front\UserFrontController@sendResetLinkEmail');

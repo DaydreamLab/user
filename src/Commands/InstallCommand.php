@@ -23,7 +23,7 @@ class InstallCommand extends Command
     protected $description = 'Install DaydreamLab user component';
 
 
-    protected $seeder_namespace = 'DaydreamLab\\User\\Database\\Seeds\\';
+    protected $seeder_namespace = 'DaydreamLab\\User\\Database\\Seeders\\';
 
     protected $constants = [
         'user',
@@ -59,12 +59,12 @@ class InstallCommand extends Command
     public function handle()
     {
         $this->call('jjaj:refresh');
-//        foreach ($this->seeders as $seeder) {
-//            $this->info('Start seeding '. $seeder);
-//            $this->call('db:seed', [
-//                '--class' => $this->seeder_namespace . $seeder
-//            ]);
-//        }
+        foreach ($this->seeders as $seeder) {
+            $this->info('Start seeding '. $seeder);
+            $this->call('db:seed', [
+                '--class' => $this->seeder_namespace . $seeder
+            ]);
+        }
         
         $this->deleteConstants();
 

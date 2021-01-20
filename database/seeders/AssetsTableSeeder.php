@@ -2,10 +2,8 @@
 
 namespace DaydreamLab\User\Database\Seeders;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Asset\AssetApi;
-use DaydreamLab\User\Repositories\Asset\AssetRepository;
 use DaydreamLab\User\Services\Asset\AssetService;
 use Illuminate\Database\Seeder;
 
@@ -19,12 +17,12 @@ class AssetsTableSeeder extends Seeder
      */
     public function run()
     {
-        $data = json_decode(file_get_contents(__DIR__.'/jsons/asset.json'), true);
+        $data = json_decode(file_get_contents(__DIR__ . '/jsons/asset.json'), true);
 
 
         $this->migrate($data, null);
 
-        $service    = new AssetService(new AssetRepository(new Asset()));
+        $service    = app(AssetService::class);
 
         $combine_path = function ($parent_id, $full_path) use (&$combine_path, $service) {
             if($parent_id == 1) {
@@ -88,6 +86,5 @@ class AssetsTableSeeder extends Seeder
                 self::migrate($children, $asset);
             }
         }
-
     }
 }

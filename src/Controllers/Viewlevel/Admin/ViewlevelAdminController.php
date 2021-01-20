@@ -25,7 +25,7 @@ class ViewlevelAdminController extends BaseController
         $this->service->canAction('getViewlevel');
         $this->service->getItem($id);
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -34,7 +34,7 @@ class ViewlevelAdminController extends BaseController
         $this->service->canAction('editViewlevel');
         $this->service->ordering($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -44,7 +44,7 @@ class ViewlevelAdminController extends BaseController
         $this->service->canAction('deleteViewlevel');
         $this->service->remove($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -53,7 +53,7 @@ class ViewlevelAdminController extends BaseController
         $this->service->canAction('updateViewlevelState');
         $this->service->state($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -63,7 +63,7 @@ class ViewlevelAdminController extends BaseController
             : $this->service->canAction('editViewlevel');
         $this->service->store($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -72,6 +72,6 @@ class ViewlevelAdminController extends BaseController
         $this->service->canAction('searchViewlevel');
         $this->service->search($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 }

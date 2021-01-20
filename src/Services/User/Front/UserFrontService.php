@@ -9,7 +9,7 @@ use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\User\Services\Social\SocialUserService;
 use Carbon\Carbon;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
-use DaydreamLab\User\Services\Upload\UploadService;
+use DaydreamLab\User\Services\UploadService;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;

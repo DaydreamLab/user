@@ -28,7 +28,7 @@ class UserAdminController extends BaseController
         $this->service->canAction('blockUser');
         $this->service->block($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -37,7 +37,7 @@ class UserAdminController extends BaseController
         $this->service->canAction('getUser');
         $this->service->getItem($id);
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -46,7 +46,7 @@ class UserAdminController extends BaseController
         $this->service->canAction('getSelfPage');
         $this->service->getSelfPage();
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -55,7 +55,7 @@ class UserAdminController extends BaseController
         $this->service->canAction('deleteUser');
         $this->service->remove($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -83,7 +83,7 @@ class UserAdminController extends BaseController
 
         $this->service->store($input);
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -92,6 +92,6 @@ class UserAdminController extends BaseController
         $this->service->canAction('searchUser');
         $this->service->search($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 }

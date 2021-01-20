@@ -25,7 +25,7 @@ class AssetApiAdminController extends BaseController
         $this->service->canAction('getApi');
         $this->service->getItem($id);
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -34,7 +34,7 @@ class AssetApiAdminController extends BaseController
         $this->service->canAction('deleteApi');
         $this->service->remove($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -43,7 +43,7 @@ class AssetApiAdminController extends BaseController
         $this->service->canAction('updateApiState');
         $this->service->state($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -53,7 +53,7 @@ class AssetApiAdminController extends BaseController
             : $this->service->canAction('editApi');
         $this->service->store($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -62,6 +62,6 @@ class AssetApiAdminController extends BaseController
         $this->service->canAction('searchApi');
         $this->service->search($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 }

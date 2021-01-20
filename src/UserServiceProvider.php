@@ -26,9 +26,8 @@ class UserServiceProvider extends ServiceProvider
         $this->publishes([__DIR__. '/constants' => config_path('constants')], 'user-configs');
         $this->publishes([__DIR__. '/Configs' => config_path('daydreamlab')], 'user-configs');
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'user');
         include __DIR__. '/routes/api.php';
-
-
     }
 
     /**
@@ -44,7 +43,7 @@ class UserServiceProvider extends ServiceProvider
         $this->app['router']->aliasMiddleware('expired', Expired::class);
         $this->app['router']->aliasMiddleware('CORS', Cors::class);
         $this->commands($this->commands);
-        $this->registerEloquentFactoriesFrom(__DIR__.'/database/factories');
+        //$this->registerEloquentFactoriesFrom(__DIR__.'/database/factories');
 
     }
 

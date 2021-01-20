@@ -5,8 +5,10 @@ namespace DaydreamLab\User\Models\User;
 use DaydreamLab\Dddream\Models\Schedule\ScheduleItem;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
+use DaydreamLab\User\Database\Factories\UserFactory;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -14,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable, CanResetPassword, HasCustomRelation;
+    use HasApiTokens, Notifiable, CanResetPassword, HasCustomRelation, HasFactory;
 
     protected $order_by = 'id';
 
@@ -238,5 +240,4 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id');
     }
-    
 }

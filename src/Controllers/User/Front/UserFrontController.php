@@ -3,22 +3,18 @@
 namespace DaydreamLab\User\Controllers\User\Front;
 
 use Carbon\Carbon;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\User\Requests\User\UserCheckEmailPost;
-use DaydreamLab\User\Requests\User\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\UserLoginPost;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
 use DaydreamLab\User\Services\User\Front\UserFrontService;
-use DaydreamLab\User\Requests\User\Front\UserFrontRemovePost;
 use DaydreamLab\User\Requests\User\Front\UserFrontStorePost;
-use DaydreamLab\User\Requests\User\Front\UserFrontStatePost;
-use DaydreamLab\User\Requests\User\Front\UserFrontSearchPost;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +22,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserFrontController extends BaseController
 {
+    protected $package = 'User';
+
+    protected $modelName = 'User';
+
+    protected $modelType = 'Front';
+
     public function __construct(UserFrontService $service)
     {
         parent::__construct($service);
@@ -37,7 +39,7 @@ class UserFrontController extends BaseController
     {
         $this->service->activate($token);
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -45,7 +47,7 @@ class UserFrontController extends BaseController
     {
         $this->service->status = 'USER_EMAIL_IS_NOT_REGISTERED';
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -53,7 +55,7 @@ class UserFrontController extends BaseController
     {
         $this->service->changePassword($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -67,7 +69,7 @@ class UserFrontController extends BaseController
     {
         $this->service->forgotPasswordTokenValidate($token);
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -76,7 +78,7 @@ class UserFrontController extends BaseController
     {
         $this->service->fblogin();
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -84,8 +86,7 @@ class UserFrontController extends BaseController
     public function getLogin(Request $request)
     {
         $user = Auth::guard('api')->authenticate();
-        if ($user)
-        {
+        if ($user) {
             $token = $user->token();
             if (Carbon::parse($token->expires_at)->diffInDays(now()) < 3)
             {
@@ -95,28 +96,24 @@ class UserFrontController extends BaseController
             $status = 'USER_GET_ITEM_SUCCESS';
             $response = $user;
             $response->token = $request->bearerToken();
-        }
-        else
-        {
+        } else {
             $status = 'USER_TOKEN_EXPIRED';
             $response = null;
         }
-        return ResponseHelper::response($status,  new UserFrontGetLoginResource($response));
+        return $this->response($status,  new UserFrontGetLoginResource($response));
     }
 
 
     public function login(UserLoginPost $request)
     {
-        if(config('daydreamlab.user.login.enable'))
-        {
+        if(config('daydreamlab.user.login.enable')) {
             $this->service->login($request->rulesInput());
-        }
-        else
-        {
-            $this->service->status = 'USER_LOGIN_IS_BLOCKED';
+        } else {
+            $this->service->status = 'LoginIsBlocked';
+            $this->service->response = null;
         }
 
-        return ResponseHelper::response($this->service->status, $this->service->response ? new UserFrontLoginResource($this->service->response) : null);
+        return $this->response($this->service->status, $this->service->response ? new UserFrontLoginResource($this->service->response) : null);
     }
 
 
@@ -125,13 +122,11 @@ class UserFrontController extends BaseController
         if (config('daydreamlab.user.register.enable'))
         {
             $this->service->register($request->rulesInput());
-        }
-        else
-        {
+        } else {
             $this->service->status = 'USER_REGISTRATION_IS_BLOCKED';
         }
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -139,7 +134,7 @@ class UserFrontController extends BaseController
     {
         $this->service->resetPassword($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -147,7 +142,7 @@ class UserFrontController extends BaseController
     {
         $this->service->sendResetLinkEmail($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -155,57 +150,6 @@ class UserFrontController extends BaseController
     {
         $this->service->store($request->rulesInput());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
-
-
-
-    /*
-    public function getItem($id)
-    {
-        $this->service->getItem($id);
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function getItems()
-    {
-        $this->service->search(new Collection());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function remove(UserFrontRemovePost $request)
-    {
-        $this->service->remove($request->rulesInput());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function state(UserFrontStatePost $request)
-    {
-        $this->service->state($request->rulesInput());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function store(UserFrontStorePost $request)
-    {
-        $this->service->store($request->rulesInput());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-
-
-    public function search(UserFrontSearchPost $request)
-    {
-        $this->service->search($request->rulesInput());
-
-        return ResponseHelper::response($this->service->status, $this->service->response);
-    }
-    */
 }
