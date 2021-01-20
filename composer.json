@@ -11,7 +11,7 @@
         "psr-4": {
             "DaydreamLab\\User\\": "src",
             "DaydreamLab\\User\\Database\\Seeders\\": "database/seeders",
-            "DaydreamLab\\User\\Database\\Factories\\": "database/factories",
+            "DaydreamLab\\User\\Database\\Factories\\": "database/factories"
         }
     },
     "minimum-stability": "dev",
