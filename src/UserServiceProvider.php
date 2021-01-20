@@ -7,7 +7,7 @@ use DaydreamLab\User\Middlewares\Admin;
 use DaydreamLab\User\Middlewares\Expired;
 use DaydreamLab\User\Middlewares\SuperUser;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Factory as EloquentFactory;
+use Illuminate\Database\Eloquent\Factories\Factory as EloquentFactory;
 
 class UserServiceProvider extends ServiceProvider
 {
@@ -51,6 +51,6 @@ class UserServiceProvider extends ServiceProvider
 
     protected function registerEloquentFactoriesFrom($path)
     {
-        $this->app->make(EloquentFactory::class)->load($path);
+        //$this->app->make(EloquentFactory::class)->load($path);
     }
 }

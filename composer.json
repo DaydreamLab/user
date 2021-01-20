@@ -9,9 +9,9 @@
     ],
     "autoload": {
         "psr-4": {
-            "DaydreamLab\\User\\": "src/",
-            "DaydreamLab\\User\\Database\\Factories\\": "src/database/factories/",
-            "DaydreamLab\\User\\Database\\Seeds\\": "src/database/seeders/"
+            "DaydreamLab\\User\\": "src",
+            "DaydreamLab\\User\\Database\\Seeders\\": "database/seeders",
+            "DaydreamLab\\User\\Database\\Factories\\": "database/factories",
         }
     },
     "minimum-stability": "dev",
