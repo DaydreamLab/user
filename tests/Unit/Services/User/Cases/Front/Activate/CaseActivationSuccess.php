@@ -1,35 +1,30 @@
 <?php
 
-namespace DaydreamLab\User\tests\Unit\Services\User\Cases\Base\Login;
+namespace DaydreamLab\User\tests\Unit\Services\User\Cases\Front\Activate;
 
 use DaydreamLab\User\Models\User\User;
-use DaydreamLab\User\Tests\Unit\Services\User\Cases\Base\UserTestBase;
+use DaydreamLab\User\Tests\Unit\Services\User\Cases\Front\UserFrontTestBase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CaseUnactivated extends UserTestBase
+class CaseActivationSuccess extends UserFrontTestBase
 {
     use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
-
     }
 
 
     public function testCase()
     {
         $user = User::all()->first();
+        $token = $user->activate_token;
         $user->activation = 0;
         $user->save();
 
-        $input = collect([
-            'email' => 'admin@daydream-lab.com',
-            'password' => 'daydream5182'
-        ]);
-
-        $this->service->login($input);
-        $this->assertEquals('Unactivated',$this->service->status);
+        $this->service->activate($token);
+        $this->assertEquals('ActivationSuccess',$this->service->status);
     }
 
 

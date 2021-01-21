@@ -13,7 +13,7 @@
         <testsuite name="feature">
         </testsuite>
         <testsuite name="unit">
-            <directory suffix=".php">./tests/Unit/Services/*/Cases/*/ChangePassword</directory>
+            <directory suffix=".php">./tests/Unit/Services/*/Cases/*/Forgot*</directory>
         </testsuite>
     </testsuites>
     <coverage cacheDirectory="/tests"

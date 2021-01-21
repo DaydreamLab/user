@@ -9,7 +9,6 @@ use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\User\Services\Social\SocialUserService;
 use Carbon\Carbon;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
-use DaydreamLab\User\Services\UploadService;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
@@ -23,20 +22,16 @@ class UserFrontService extends UserService
 
     protected $socialUserService;
 
-    protected $uploadService;
-
     protected $passwordResetService;
 
-    public function __construct(UserFrontRepository     $repo,
-                                SocialUserService       $socialUserService,
-                                UploadService           $uploadService,
-                                PasswordResetService    $passwordResetService
+    public function __construct(
+        UserFrontRepository     $repo,
+        SocialUserService       $socialUserService,
+        PasswordResetService    $passwordResetService
     )
-
     {
         parent::__construct($repo);
         $this->socialUserService    = $socialUserService;
-        $this->uploadService        = $uploadService;
         $this->passwordResetService = $passwordResetService;
     }
 
@@ -51,16 +46,14 @@ class UserFrontService extends UserService
         $user = $this->findBy('activate_token', '=', $token)->first();
         if ($user) {
             if ($user->activation) {
-                $this->status = 'USER_HAS_BEEN_ACTIVATED';
-            }
-            else {
+                $this->status = 'HasBeenActivated';
+            } else {
                 $user->activation = 1;
                 $user->save();
-                $this->status = 'USER_ACTIVATION_SUCCESS';
+                $this->status = 'ActivationSuccess';
             }
-        }
-        else {
-            $this->status = 'USER_ACTIVATION_TOKEN_INVALID';
+        } else {
+            $this->status = 'ActivationTokenInvalid';
         }
     }
 
@@ -91,7 +84,7 @@ class UserFrontService extends UserService
         if ($social_user) {     // 登入
             $user = $this->find($social_user->user_id);
             if ($user) {
-                $data = $this->helper->getUserLoginData($user, false);
+                $data = $this->helper->getUserLoginData($user);
                 // 更新 token
                 $social_user->token = $fb_user->token;
                 $social_user->save();
@@ -128,12 +121,10 @@ class UserFrontService extends UserService
 
         $user_data  = $this->helper->mergeDataFbUserCreate($fb_user);
         $user       = $this->create($user_data);
-        if (!$user)
-        {
+        if (!$user) {
             $this->status = 'USER_CREATE_FAIL';
             return false;
         }
-
 
         $social_data = $this->helper->mergeDataFbSocialUserCreate($fb_user, $user->id);
         $social      = $this->socialUserService->create($social_data);
@@ -144,7 +135,7 @@ class UserFrontService extends UserService
         }
 
         $this->status = 'SOCIAL_USER_LOGIN_SUCCESS';
-        $this->response = $this->helper->getUserLoginData($user, false) ;
+        $this->response = $this->helper->getUserLoginData($user) ;
 
         return $user;
     }
@@ -155,19 +146,16 @@ class UserFrontService extends UserService
         $reset_token = $this->passwordResetService->findBy('token', '=', $token)->first();
         if ($reset_token) {
             if (Carbon::now() > new Carbon($reset_token->expired_at)) {
-                $this->status = 'USER_RESET_PASSWORD_TOKEN_EXPIRED';
+                $this->status = 'ResetPasswordTokenExpired';
                 return false;
-            }
-            elseif ($reset_token->reset_at) {
-                $this->status = 'USER_RESET_PASSWORD_TOKEN_IS_USED';
-            }
-            else {
-                $this->status = 'USER_RESET_PASSWORD_TOKEN_VALID';
+            } elseif ($reset_token->reset_at) {
+                $this->status = 'ResetPasswordTokenIsUsed';
+            } else {
+                $this->status = 'ResetPasswordTokenValid';
                 return $reset_token;
             }
-        }
-        else {
-            $this->status = 'USER_RESET_PASSWORD_TOKEN_INVALID';
+        } else {
+            $this->status = 'ResetPasswordTokenInvalid';
             return false;
         }
     }
@@ -180,31 +168,27 @@ class UserFrontService extends UserService
      */
     public function register(Collection $input)
     {
-        if (config('daydreamlab.user.register.enable'))
-        {
-            $exist = $this->checkEmail($input->email);
+        if (config('daydreamlab.user.register.enable')) {
+            $exist = $this->checkEmail($input->get('email'));
             if ($exist) {
                 return ;
             }
 
-            $password  = $input->password;
+            $password  = $input->get('password');
             $input->forget('password');
             $input->put('password', bcrypt($password));
-            $input->put('activate_token', str_random(48));
+            $input->put('activate_token', Str::random(48));
 
             $user      = $this->add($input);
             $user->groups()->attach(config('daydreamlab.user.register.groups'));
             if ($user) {
                 $user->notify(new RegisteredNotification($user));
-                $this->status = 'USER_REGISTER_SUCCESS';
+                $this->status = 'RegisterSuccess';
+            } else {
+                $this->status = 'RegisterFail';
             }
-            else {
-                $this->status = 'USER_REGISTER_FAIL';
-            }
-        }
-        else
-        {
-            $this->status = 'USER_CAN_NOT_REGISTER';
+        } else {
+            $this->status = 'RegistrationIsBlocked';
         }
     }
 
@@ -238,10 +222,9 @@ class UserFrontService extends UserService
             ]));
 
             Notification::route('mail', $user->email)->notify(new ResetPasswordNotification($user, $token));
-            $this->status = 'USER_RESET_PASSWORD_EMAIL_SEND';
-        }
-        else {
-            $this->status = 'USER_NOT_FOUND';
+            $this->status = 'ResetPasswordEmailSend';
+        } else {
+            $this->status = 'ItemNotExist';
         }
     }
 }

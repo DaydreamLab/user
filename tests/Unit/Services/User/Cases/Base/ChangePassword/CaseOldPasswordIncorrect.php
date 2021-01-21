@@ -2,9 +2,8 @@
 
 namespace DaydreamLab\User\tests\Unit\Services\User\Cases\Base\ChangePassword;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\User\User;
-use DaydreamLab\User\Tests\Unit\Services\User\UserTestBase;
+use DaydreamLab\User\Tests\Unit\Services\User\Cases\Base\UserTestBase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 

@@ -1,11 +1,10 @@
 <?php
 
-namespace DaydreamLab\User\Tests\Unit\Services\User;
+namespace DaydreamLab\User\Tests\Unit\Services\User\Cases\Base;
 
 use DaydreamLab\JJAJ\Tests\BaseTest;
 use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\User\Services\User\UserService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Mockery;
 

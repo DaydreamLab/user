@@ -2,9 +2,12 @@
 namespace DaydreamLab\User\Models\Password;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
+use DaydreamLab\User\Database\Factories\PasswordResetFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PasswordReset extends BaseModel
 {
+    use HasFactory;
     /**
      * The table associated with the model.
      *
@@ -44,5 +47,8 @@ class PasswordReset extends BaseModel
     ];
 
 
-
+    public static function newFactory()
+    {
+        return PasswordResetFactory::new();
+    }
 }

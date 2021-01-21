@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Database\Factories;
 
 use DaydreamLab\User\Models\User\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
 {

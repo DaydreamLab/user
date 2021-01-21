@@ -6,7 +6,7 @@
     "last_name": "Super Admin",
     "nickname": "Admin",
     "activation": 1,
-    "activate_token": "superuser",
+    "activate_token": "admin",
     "groups":[6]
   },
   {
@@ -26,8 +26,7 @@
     "last_name": "Registered",
     "nickname": "Registered",
     "activation": 1,
-    "activate_token": "Registered",
+    "activate_token": "registered",
     "groups":[4]
   }
-
 ]
