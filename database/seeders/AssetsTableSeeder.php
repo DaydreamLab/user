@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Database\Seeders;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Asset\AssetApi;
 use DaydreamLab\User\Services\Asset\AssetService;
@@ -19,18 +20,18 @@ class AssetsTableSeeder extends Seeder
     {
         $data = json_decode(file_get_contents(__DIR__ . '/jsons/asset.json'), true);
 
-
         $this->migrate($data, null);
 
         $service    = app(AssetService::class);
 
         $combine_path = function ($parent_id, $full_path) use (&$combine_path, $service) {
-            if($parent_id == 1) {
+            if (!$parent_id || $parent_id == 1) {
                 return $full_path;
-            }
-            else {
+            } else {
                 $parent = $service->find($parent_id);
-                $full_path = $parent->path . $full_path;
+                $full_path = $parent
+                    ? $parent->path . $full_path
+                    : $full_path;
                 return $combine_path($parent->parent_id, $full_path);
             }
         };
@@ -39,13 +40,10 @@ class AssetsTableSeeder extends Seeder
         $assets->forget('pagination');
 
         foreach ($assets as $asset) {
-
             $full_path = $asset->path;
-
             $asset->full_path = $combine_path($asset->parent_id, $full_path);
             $asset->save();
         }
-
     }
 
     public function migrate($data, $parent)
@@ -59,30 +57,25 @@ class AssetsTableSeeder extends Seeder
             unset($item['apis']);
             unset($item['service']);
 
-            if ($parent)
-            {
+            if ($parent) {
                 $parent = Asset::find($parent->id);
                 $item['ordering'] = $parent->children->count()+1;
             }
 
             $asset = Asset::create($item);
-            if ($parent)
-            {
+            if ($parent) {
                 $parent->appendNode($asset);
             }
 
             $api_ids = [];
-            foreach ($apis as $api)
-            {
+            foreach ($apis as $api) {
                 $api['service'] = $service;
                 $api = AssetApi::create($api);
                 $api_ids[] = $api->id;
             }
             $asset->apis()->attach($api_ids);
 
-
-            if (count($children))
-            {
+            if (count($children)) {
                 self::migrate($children, $asset);
             }
         }

@@ -11,17 +11,18 @@
          stopOnFailure="false">
     <testsuites>
         <testsuite name="feature">
-<!--            <directory suffix="OrderFrontTest.php">./tests/Feature</directory>-->
         </testsuite>
         <testsuite name="unit">
-            <directory suffix=".php">./tests/Unit/Services</directory>
+            <directory suffix=".php">./tests/Unit/Services/*/Cases/*/ChangePassword</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist>
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
+    <coverage cacheDirectory="/tests"
+              includeUncoveredFiles="true"
+              processUncoveredFiles="true"
+              pathCoverage="false"
+              ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="true">
+    </coverage>
     <php>
         <env name="SEEDING" value="1"/>
         <env name="DB_PORT" value="33060"/>

@@ -43,19 +43,16 @@ class UserService extends BaseService
 
     public function changePassword(Collection $input)
     {
-        if ($input->has('id')) {
-            $user = $this->find($input->id);
-        } else {
-            $user = Auth::guard('api')->user();
-        }
+        $user = $input->get('id')
+            ? $this->find($input->get('id'))
+            : Auth::guard('api')->user();
 
-        if (!Hash::check($input->old_password, $user->password)) {
+        if (!Hash::check($input->get('old_password'), $user->password)) {
             $this->status = 'OldPasswordIncorrect';
             $this->response = null;
             return false;
-        }
-        else {
-            $user->password = bcrypt($input->password);
+        } else {
+            $user->password = bcrypt($input->get('password'));
             if ($user->save()) {
                 if ($user->token()) {
                     $user->token()->delete();
@@ -63,8 +60,7 @@ class UserService extends BaseService
 
                 $this->status = 'ChangePasswordSuccess';
                 return true;
-            }
-            else {
+            } else {
                 $this->status = 'ChangePasswordFail';
                 return false;
             }
@@ -94,8 +90,8 @@ class UserService extends BaseService
     public function login(Collection $input)
     {
         $auth = Auth::attempt([
-            'email'     => Str::lower($input->email),
-            'password'  => $input->password
+            'email'     => Str::lower($input->get('email')),
+            'password'  => $input->get('password')
         ]);
 
         $user = Auth::user() ?: null;
@@ -103,13 +99,11 @@ class UserService extends BaseService
         if ($auth) {
             if ($user->activation) { // 帳號已啟用
                 if ($user->block) {
-                    $this->status = 'IsBlock';
-                }
-                else {
+                    $this->status = 'IsBlocked';
+                } else {
                     $this->repo->update(['last_login_at' => now()], $user);
                     $tokens = $user->tokens()->get();
-                    if(!config('daydreamlab.user.multiple_login'))
-                    {
+                    if(!config('daydreamlab.user.multiple_login')) {
                         $tokens->each(function ($token) {
                             $token->multipleLogin = 1;
                             $token->save();

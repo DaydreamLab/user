@@ -45,7 +45,7 @@ class UserFrontController extends BaseController
 
     public function checkEmail(UserCheckEmailPost $request)
     {
-        $this->service->status = 'USER_EMAIL_IS_NOT_REGISTERED';
+        $this->service->checkEmail($request->rulesInput());
 
         return $this->response($this->service->status, $this->service->response);
     }

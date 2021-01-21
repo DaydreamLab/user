@@ -22,9 +22,6 @@ class InstallCommand extends Command
      */
     protected $description = 'Install DaydreamLab user component';
 
-
-    protected $seeder_namespace = 'DaydreamLab\\User\\Database\\Seeders\\';
-
     protected $constants = [
         'user',
         'asset',
@@ -32,13 +29,6 @@ class InstallCommand extends Command
         'input',
         'social',
         'viewlevel'
-    ];
-
-    protected $seeders = [
-        'AssetsTableSeeder',
-        'UsersGroupsTableSeeder',
-        'UsersTableSeeder',
-        'ViewlevelsTableSeeder',
     ];
 
     /**
@@ -59,12 +49,8 @@ class InstallCommand extends Command
     public function handle()
     {
         $this->call('jjaj:refresh');
-        foreach ($this->seeders as $seeder) {
-            $this->info('Start seeding '. $seeder);
-            $this->call('db:seed', [
-                '--class' => $this->seeder_namespace . $seeder
-            ]);
-        }
+
+        $this->call('user:seed');
         
         $this->deleteConstants();
 
