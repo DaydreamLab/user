@@ -38,7 +38,7 @@ class ViewlevelFrontController extends BaseController
 
     public function remove(ViewlevelFrontRemovePost $request)
     {
-        $this->service->remove($request->rulesInput());
+        $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -46,7 +46,7 @@ class ViewlevelFrontController extends BaseController
 
     public function state(ViewlevelFrontStatePost $request)
     {
-        $this->service->state($request->rulesInput());
+        $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -54,7 +54,7 @@ class ViewlevelFrontController extends BaseController
 
     public function store(ViewlevelFrontStorePost $request)
     {
-        $this->service->store($request->rulesInput());
+        $this->service->store($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -62,7 +62,7 @@ class ViewlevelFrontController extends BaseController
 
     public function search(ViewlevelFrontSearchPost $request)
     {
-        $this->service->search($request->rulesInput());
+        $this->service->search($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }

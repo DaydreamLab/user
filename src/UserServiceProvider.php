@@ -24,7 +24,7 @@ class UserServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([__DIR__ . '/constants' => config_path('constants')], 'user-configs');
+        $this->publishes([__DIR__ . '/constants' => config_path('constants/user')], 'user-configs');
         $this->publishes([__DIR__ . '/Configs' => config_path('daydreamlab')], 'user-configs');
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'user');

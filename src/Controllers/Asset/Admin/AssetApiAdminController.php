@@ -32,7 +32,7 @@ class AssetApiAdminController extends BaseController
     public function remove(AssetApiAdminRemovePost $request)
     {
         $this->service->canAction('deleteApi');
-        $this->service->remove($request->rulesInput());
+        $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -41,7 +41,7 @@ class AssetApiAdminController extends BaseController
     public function state(AssetApiAdminStatePost $request)
     {
         $this->service->canAction('updateApiState');
-        $this->service->state($request->rulesInput());
+        $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -49,9 +49,9 @@ class AssetApiAdminController extends BaseController
 
     public function store(AssetApiAdminStorePost $request)
     {
-        InputHelper::null($request->rulesInput(), 'id') ? $this->service->canAction('addApi')
+        InputHelper::null($request->validated(), 'id') ? $this->service->canAction('addApi')
             : $this->service->canAction('editApi');
-        $this->service->store($request->rulesInput());
+        $this->service->store($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -60,7 +60,7 @@ class AssetApiAdminController extends BaseController
     public function search(AssetApiAdminSearchPost $request)
     {
         $this->service->canAction('searchApi');
-        $this->service->search($request->rulesInput());
+        $this->service->search($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }

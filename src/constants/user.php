@@ -12,7 +12,7 @@ return [
     'CHANGE_PASSWORD_FAIL'              => 500,
 
     'EMAIL_IS_REGISTERED'               => 403,
-    'EMAIL_IS_NOT_REGISTERED'           => 403,
+    'EMAIL_IS_NOT_REGISTERED'           => 200,
     'EMAIL_OR_PASSWORD_INCORRECT'       => 403,
 
     'GET_SELF_PAGE_SUCCESS'             => 200,

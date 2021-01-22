@@ -33,7 +33,7 @@ class AssetGroupAdminController extends BaseController
     public function remove(AssetGroupAdminRemovePost $request)
     {
         $this->service->canAction('deleteAssetGroup');
-        $this->service->remove($request->rulesInput());
+        $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -42,7 +42,7 @@ class AssetGroupAdminController extends BaseController
     public function state(AssetGroupAdminStatePost $request)
     {
         $this->service->canAction('updateAssetGroupState');
-        $this->service->state($request->rulesInput());
+        $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -50,9 +50,9 @@ class AssetGroupAdminController extends BaseController
 
     public function store(AssetGroupAdminStorePost $request)
     {
-        InputHelper::null($request->rulesInput(), 'id') ? $this->service->canAction('addAssetGroup')
+        InputHelper::null($request->validated(), 'id') ? $this->service->canAction('addAssetGroup')
             : $this->service->canAction('editAssetGroup');
-        $this->service->store($request->rulesInput());
+        $this->service->store($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -61,7 +61,7 @@ class AssetGroupAdminController extends BaseController
     public function search(AssetGroupAdminSearchPost $request)
     {
         $this->service->canAction('searchAssetGroup');
-        $this->service->search($request->rulesInput());
+        $this->service->search($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }

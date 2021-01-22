@@ -4,10 +4,8 @@ namespace DaydreamLab\User\tests\Unit\Services\User\Cases\Front\ForgotPasswordTo
 
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\Password\PasswordReset;
-use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Tests\Unit\Services\User\Cases\Front\UserFrontTestBase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
 
 class CaseResetPasswordTokenValid extends UserFrontTestBase
 {

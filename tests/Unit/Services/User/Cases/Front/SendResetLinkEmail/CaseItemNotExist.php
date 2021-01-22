@@ -1,12 +1,11 @@
 <?php
 
-namespace DaydreamLab\User\tests\Unit\Services\User\Cases\Front\Activate;
+namespace DaydreamLab\User\tests\Unit\Services\User\Cases\Front\SendResetLinkEmail;
 
 use DaydreamLab\User\Tests\Unit\Services\User\Cases\Front\UserFrontTestBase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
 
-class CaseActivationTokenInvalid extends UserFrontTestBase
+class CaseItemNotExist extends UserFrontTestBase
 {
     use RefreshDatabase;
 
@@ -18,10 +17,15 @@ class CaseActivationTokenInvalid extends UserFrontTestBase
 
     public function testCase()
     {
+        $input = collect([
+            'email' => $this->faker->email
+        ]);
+
         $this->repo
             ->shouldReceive('findBy')
             ->andReturn(collect());
-        $this->assertHttpResponseException('activate', Str::random(), 'ActivationTokenInvalid');
+
+        $this->assertHttpResponseException('sendResetLinkEmail', $input, 'ItemNotExist');
     }
 
 

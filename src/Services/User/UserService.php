@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Events\Add;
 use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Events\Remove;
@@ -22,6 +23,8 @@ class UserService extends BaseService
 
     protected $modelType = 'Base';
 
+    protected $user = null;
+
     protected $helper;
 
     public function __construct(UserRepository $repo)
@@ -34,8 +37,9 @@ class UserService extends BaseService
     public function add(Collection $input)
     {
         $item = parent::add($input);
-
-        event(new Add($item, $this->getServiceName(), $input, $this->user));
+        $item
+            ? event(new Add($item, $this->getServiceName(), $input, $this->user))
+            : null;
 
         return $item;
     }
@@ -49,8 +53,7 @@ class UserService extends BaseService
 
         if (!Hash::check($input->get('old_password'), $user->password)) {
             $this->status = 'OldPasswordIncorrect';
-            $this->response = null;
-            return false;
+            $this->throwResponse($this->status);
         } else {
             $user->password = bcrypt($input->get('password'));
             if ($user->save()) {
@@ -62,7 +65,7 @@ class UserService extends BaseService
                 return true;
             } else {
                 $this->status = 'ChangePasswordFail';
-                return false;
+                $this->throwResponse($this->status);
             }
         }
     }
@@ -79,6 +82,7 @@ class UserService extends BaseService
         $user = $this->findBy('email', '=', $email)->first();
         if ($user) {
             $this->status = 'EmailIsRegistered';
+            $this->throwResponse($this->status, null, ['email' => $email]);
         } else {
             $this->status = 'EmailIsNotRegistered';
         }
@@ -100,6 +104,7 @@ class UserService extends BaseService
             if ($user->activation) { // 帳號已啟用
                 if ($user->block) {
                     $this->status = 'IsBlocked';
+                    $this->throwResponse($this->status, null, $input->only('email'));
                 } else {
                     $this->repo->update(['last_login_at' => now()], $user);
                     $tokens = $user->tokens()->get();
@@ -119,9 +124,11 @@ class UserService extends BaseService
             } else { // 帳號尚未啟用
                 //$user->notify(new RegisteredNotification($user));
                 $this->status = 'Unactivated';
+                $this->throwResponse($this->status, null, $input->only('email'));
             }
         } else {
             $this->status = 'EmailOrPasswordIncorrect';
+            $this->throwResponse( $this->status);
         }
 
         event(new Login($this->getServiceName(), $login,  $this->status, $user));

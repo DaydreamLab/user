@@ -52,7 +52,7 @@ class AssetAdminController extends BaseController
     public function ordering(AssetAdminOrderingPost $request)
     {
         $this->service->canAction('editAsset');
-        $this->service->orderingNested($request->rulesInput());
+        $this->service->orderingNested($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -61,7 +61,7 @@ class AssetAdminController extends BaseController
     public function remove(AssetAdminRemovePost $request)
     {
         $this->service->canAction('deleteAsset');
-        $this->service->remove($request->rulesInput());
+        $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -70,7 +70,7 @@ class AssetAdminController extends BaseController
     public function state(AssetAdminStatePost $request)
     {
         $this->service->canAction('updateAssetState');
-        $this->service->state($request->rulesInput());
+        $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -78,9 +78,9 @@ class AssetAdminController extends BaseController
 
     public function store(AssetAdminStorePost $request)
     {
-        InputHelper::null($request->rulesInput(), 'id') ? $this->service->canAction('addAsset')
+        InputHelper::null($request->validated(), 'id') ? $this->service->canAction('addAsset')
             : $this->service->canAction('editAsset');
-        $this->service->store($request->rulesInput());
+        $this->service->store($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -89,7 +89,7 @@ class AssetAdminController extends BaseController
     public function search(AssetAdminSearchPost $request)
     {
         $this->service->canAction('searchAsset');
-        $this->service->search($request->rulesInput());
+        $this->service->search($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }

@@ -21,27 +21,24 @@ class Expired
         $user = isset($request['user'])
             ? $request['user']
             : $request['user'] = Auth::guard('api')->user();
-        if ($user)
-        {
+
+        if ($user) {
             $token = $user->token();
             if ($token->expires_at < now()) {
                 $token->delete();
-                return ResponseHelper::genResponse('USER_TOKEN_EXPIRED');
+                return ResponseHelper::genResponse('TokenExpired', null, '', '');
             }
 
             if ($user->block) {
-                return ResponseHelper::genResponse('USER_IS_BLOCKED');
+                return ResponseHelper::genResponse('IsBlocked', null, '', '');
             }
 
-            if($token->multipleLogin)
-            {
+            if($token->multipleLogin) {
                 $token->delete();
-                return ResponseHelper::genResponse('USER_TOKEN_REVOKED');
+                return ResponseHelper::genResponse('TokenRevoked', null, '', '');
             }
-        }
-        else
-        {
-            return ResponseHelper::genResponse('USER_UNAUTHORIZED');
+        } else {
+            return ResponseHelper::genResponse('Unauthorized', null, '', '');
         }
 
         return $next($request);

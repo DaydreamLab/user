@@ -1,11 +1,10 @@
 <?php
 
-namespace DaydreamLab\User\Requests\User;
+namespace DaydreamLab\User\Requests\User\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
-use DaydreamLab\User\Rules\DaydreamAccount;
 
-class UserCheckEmailPost extends AdminRequest
+class UserFrontCheckEmailPost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,5 +26,11 @@ class UserCheckEmailPost extends AdminRequest
         return [
             'email' => 'required|email|unique:users,email',
         ];
+    }
+
+
+    public function validated()
+    {
+        return parent::validated();
     }
 }

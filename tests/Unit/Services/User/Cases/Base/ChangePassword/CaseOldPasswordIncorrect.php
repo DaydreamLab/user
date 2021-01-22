@@ -28,8 +28,7 @@ class OldPasswordIncorrect extends UserTestBase
         $user = User::all()->first();
 
         $this->actingAs($user, 'api');
-        $this->service->changePassword($input);
-        $this->assertEquals('OldPasswordIncorrect',$this->service->status);
+        $this->assertHttpResponseException('changePassword', $input, 'OldPasswordIncorrect');
     }
 
 

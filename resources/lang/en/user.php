@@ -31,7 +31,6 @@ return [
     'OLD_PASSWORD_INCORRECT'            => '{$ModelName} old password incorrect',
 
     'REGISTER_SUCCESS'                  => '{$ModelName} register success',
-    'REGISTER_FAIL'                     => '{$ModelName} register fail',
     'REGISTRATION_IS_BLOCKED'           => '{$ModelName} registration is blocked',
     'RESET_PASSWORD_SUCCESS'            => '{$ModelName} reset password success',
     'RESET_PASSWORD_FAIL'               => '{$ModelName} reset password fail',

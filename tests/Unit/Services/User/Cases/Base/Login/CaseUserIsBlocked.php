@@ -27,8 +27,7 @@ class CaseUserIsBlocked extends UserTestBase
             'password' => 'daydream5182'
         ]);
 
-        $this->service->login($input);
-        $this->assertEquals('IsBlocked',$this->service->status);
+        $this->assertHttpResponseException('login', $input, 'IsBlocked');
     }
 
 

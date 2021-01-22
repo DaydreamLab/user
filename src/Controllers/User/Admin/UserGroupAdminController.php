@@ -48,7 +48,7 @@ class UserGroupAdminController extends BaseController
     public function remove(UserGroupAdminRemovePost $request)
     {
         $this->service->canAction('deleteUserGroup');
-        $this->service->remove($request->rulesInput());
+        $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -57,7 +57,7 @@ class UserGroupAdminController extends BaseController
     public function state(UserGroupAdminStatePost $request)
     {
         $this->service->canAction('updateUserGroupState');
-        $this->service->state($request->rulesInput());
+        $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -65,9 +65,9 @@ class UserGroupAdminController extends BaseController
 
     public function store(UserGroupAdminStorePost $request)
     {
-        InputHelper::null($request->rulesInput(), 'id') ? $this->service->canAction('addUserGroup')
+        InputHelper::null($request->validated(), 'id') ? $this->service->canAction('addUserGroup')
             : $this->service->canAction('editUserGroup');
-        $this->service->store($request->rulesInput());
+        $this->service->store($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -76,7 +76,7 @@ class UserGroupAdminController extends BaseController
     public function search(UserGroupAdminSearchPost $request)
     {
         $this->service->canAction('searchUserGroup');
-        $this->service->search($request->rulesInput());
+        $this->service->search($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }

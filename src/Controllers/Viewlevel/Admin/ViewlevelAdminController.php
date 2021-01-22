@@ -32,7 +32,7 @@ class ViewlevelAdminController extends BaseController
     public function ordering(ViewlevelAdminOrderingPost $request)
     {
         $this->service->canAction('editViewlevel');
-        $this->service->ordering($request->rulesInput());
+        $this->service->ordering($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -42,7 +42,7 @@ class ViewlevelAdminController extends BaseController
     public function remove(ViewlevelAdminRemovePost $request)
     {
         $this->service->canAction('deleteViewlevel');
-        $this->service->remove($request->rulesInput());
+        $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -51,7 +51,7 @@ class ViewlevelAdminController extends BaseController
     public function state(ViewlevelAdminStatePost $request)
     {
         $this->service->canAction('updateViewlevelState');
-        $this->service->state($request->rulesInput());
+        $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -59,9 +59,9 @@ class ViewlevelAdminController extends BaseController
 
     public function store(ViewlevelAdminStorePost $request)
     {
-        InputHelper::null($request->rulesInput(), 'id') ? $this->service->canAction('addViewlevel')
+        InputHelper::null($request->validated(), 'id') ? $this->service->canAction('addViewlevel')
             : $this->service->canAction('editViewlevel');
-        $this->service->store($request->rulesInput());
+        $this->service->store($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -70,7 +70,7 @@ class ViewlevelAdminController extends BaseController
     public function search(ViewlevelAdminSearchPost $request)
     {
         $this->service->canAction('searchViewlevel');
-        $this->service->search($request->rulesInput());
+        $this->service->search($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }

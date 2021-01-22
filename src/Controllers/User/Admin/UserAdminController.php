@@ -28,7 +28,7 @@ class UserAdminController extends BaseController
     public function block(UserAdminBlockPost $request)
     {
         $this->service->canAction('blockUser');
-        $this->service->block($request->rulesInput());
+        $this->service->block($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -55,7 +55,7 @@ class UserAdminController extends BaseController
     public function remove(UserAdminRemovePost $request)
     {
         $this->service->canAction('deleteUser');
-        $this->service->remove($request->rulesInput());
+        $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -63,7 +63,7 @@ class UserAdminController extends BaseController
 
     public function store(UserAdminStorePost $request)
     {
-        $input = $request->rulesInput();
+        $input = $request->validated();
 
         if (!InputHelper::null($input, 'activation'))
         {
@@ -92,7 +92,7 @@ class UserAdminController extends BaseController
     public function search(UserAdminSearchPost $request)
     {
         $this->service->canAction('searchUser');
-        $this->service->search($request->rulesInput());
+        $this->service->search($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }

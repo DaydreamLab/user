@@ -5,6 +5,7 @@ namespace DaydreamLab\User\tests\Unit\Services\User\Cases\Front\Activate;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Tests\Unit\Services\User\Cases\Front\UserFrontTestBase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 
 class CaseHasBeenActivated extends UserFrontTestBase
 {
@@ -18,11 +19,11 @@ class CaseHasBeenActivated extends UserFrontTestBase
 
     public function testCase()
     {
-        $user = User::all()->first();
-        $token = $user->activate_token;
-
-        $this->service->activate($token);
-        $this->assertEquals('HasBeenActivated',$this->service->status);
+        $user = User::factory()->create(['activation' => 1]);
+        $this->repo
+            ->shouldReceive('findBy')
+            ->andReturn(collect([$user]));
+        $this->assertHttpResponseException('activate', $user->activate_token, 'HasBeenActivated');
     }
 
 

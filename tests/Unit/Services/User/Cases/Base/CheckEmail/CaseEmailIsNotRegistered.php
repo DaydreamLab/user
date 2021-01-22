@@ -5,7 +5,7 @@ namespace DaydreamLab\User\tests\Unit\Services\User\Cases\Base\CheckEmail;
 use DaydreamLab\User\Tests\Unit\Services\User\Cases\Base\UserTestBase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CaseEmailIsRegistered extends UserTestBase
+class CaseEmailIsNotRegistered extends UserTestBase
 {
     use RefreshDatabase;
 
@@ -17,12 +17,10 @@ class CaseEmailIsRegistered extends UserTestBase
 
     public function testCase()
     {
-        $input = collect([
-            'email' => 'admin@daydream-lab.com',
-        ]);
+        $email = $this->faker->email;
 
-        $this->service->checkEmail($input);
-        $this->assertEquals('EmailIsRegistered',$this->service->status);
+        $this->service->checkEmail($email);
+        $this->assertEquals('EmailIsNotRegistered', $this->service->status);
     }
 
 

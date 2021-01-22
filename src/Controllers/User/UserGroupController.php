@@ -43,7 +43,7 @@ class UserGroupController extends BaseController
 
     public function remove(UserGroupRemovePost $request)
     {
-        $this->service->remove($request->rulesInput());
+        $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -51,7 +51,7 @@ class UserGroupController extends BaseController
 
     public function state(UserGroupStatePost $request)
     {
-        $this->service->state($request->rulesInput());
+        $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -59,7 +59,7 @@ class UserGroupController extends BaseController
 
     public function store(UserGroupStorePost $request)
     {
-        $this->service->store($request->rulesInput());
+        $this->service->store($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -67,7 +67,7 @@ class UserGroupController extends BaseController
 
     public function search(UserGroupSearchPost $request)
     {
-        $this->service->search($request->rulesInput());
+        $this->service->search($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }

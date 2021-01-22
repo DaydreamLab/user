@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\User\Services\User\Front;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
 use DaydreamLab\User\Services\Password\PasswordResetService;
@@ -11,7 +10,6 @@ use Carbon\Carbon;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
@@ -47,6 +45,7 @@ class UserFrontService extends UserService
         if ($user) {
             if ($user->activation) {
                 $this->status = 'HasBeenActivated';
+                $this->throwResponse('HasBeenActivated', null, ['token' => $token]);
             } else {
                 $user->activation = 1;
                 $user->save();
@@ -54,18 +53,14 @@ class UserFrontService extends UserService
             }
         } else {
             $this->status = 'ActivationTokenInvalid';
+            $this->throwResponse($this->status, null, ['token' => $token]);
         }
     }
 
 
-    public function create($data)
+    public function addMapping($item, $input)
     {
-        $user = parent::create($data);
-        if ($user) {
-            $user->groups()->attach(config('daydreamlab.user.register.groups'));
-        }
-
-        return $user;
+        $item->groups()->attach(config('daydreamlab.user.register.groups'));
     }
 
 
@@ -147,19 +142,20 @@ class UserFrontService extends UserService
         if ($reset_token) {
             if (Carbon::now() > new Carbon($reset_token->expired_at)) {
                 $this->status = 'ResetPasswordTokenExpired';
-                return false;
+                $this->throwResponse($this->status, null, ['token' => $token]);
             } elseif ($reset_token->reset_at) {
                 $this->status = 'ResetPasswordTokenIsUsed';
+                $this->throwResponse($this->status, null, ['token' => $token]);
             } else {
                 $this->status = 'ResetPasswordTokenValid';
-                return $reset_token;
             }
         } else {
             $this->status = 'ResetPasswordTokenInvalid';
-            return false;
+            $this->throwResponse( $this->status, null, ['token' => $token]);
         }
-    }
 
+        return $reset_token;
+    }
 
 
     /**
@@ -179,52 +175,47 @@ class UserFrontService extends UserService
             $input->put('password', bcrypt($password));
             $input->put('activate_token', Str::random(48));
 
-            $user      = $this->add($input);
-            $user->groups()->attach(config('daydreamlab.user.register.groups'));
-            if ($user) {
-                $user->notify(new RegisteredNotification($user));
-                $this->status = 'RegisterSuccess';
-            } else {
-                $this->status = 'RegisterFail';
-            }
+            $user = $this->add($input);
+            $user->notify(new RegisteredNotification($user));
+            $this->status = 'RegisterSuccess';
         } else {
             $this->status = 'RegistrationIsBlocked';
+            $this->throwResponse($this->status, null, $input);
         }
     }
 
 
     public function resetPassword(Collection $input)
     {
-        $token = $this->forgotPasswordTokenValidate($input->token);
-        if ($token) {
-            $user = $this->findBy('email', '=', $token->email)->first();
-            $user->password = bcrypt($input->password);
-            $user->last_reset_at = now();
-            if($user->save()){
-                $token->delete();
-                $this->status = 'USER_RESET_PASSWORD_SUCCESS';
-            }
-            else{
-                $this->status = 'USER_RESET_PASSWORD_FAIL';
-            }
-        }
+        $token = $this->forgotPasswordTokenValidate($input->get('token'));
+
+        $user = $this->findBy('email', '=', $token->email)->first();
+        $data = [
+            'password' => bcrypt($input->get('password')),
+            'last_reset_at' => now()->toDateTimeString()
+        ];
+
+        $this->update($data, $user);
+        $user->tokens()->delete();
+        $this->status = 'ResetPasswordSuccess';
     }
 
 
     public function sendResetLinkEmail(Collection $input)
     {
-        $user = $this->findBy('email', '=', $input->email)->first();
+        $user = $this->findBy('email', '=', $input->get('email'))->first();
         if ($user) {
             $token = $this->passwordResetService->add(collect([
-                'email'         => $input->email,
+                'email'         => $input->get('email'),
                 'token'         => Str::random(128),
                 'expired_at'    => Carbon::now()->addHours(3)
             ]));
 
-            Notification::route('mail', $user->email)->notify(new ResetPasswordNotification($user, $token));
+            $user->notify(new ResetPasswordNotification($user, $token));
             $this->status = 'ResetPasswordEmailSend';
         } else {
             $this->status = 'ItemNotExist';
+            $this->throwResponse('ItemNotExist', null, $input);
         }
     }
 }

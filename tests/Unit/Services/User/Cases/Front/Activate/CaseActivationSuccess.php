@@ -23,6 +23,8 @@ class CaseActivationSuccess extends UserFrontTestBase
         $user->activation = 0;
         $user->save();
 
+        $this->repo->shouldReceive('findBy')
+            ->andReturn(collect([$user]));
         $this->service->activate($token);
         $this->assertEquals('ActivationSuccess',$this->service->status);
     }

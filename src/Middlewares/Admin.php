@@ -18,9 +18,11 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        $user = isset($request['user']) ? $request['user'] : $request['user'] = Auth::guard('api')->user();
+        $user = isset($request['user'])
+            ? $request['user']
+            : $request['user'] = Auth::guard('api')->user();
         if (!$user || !$user->isAdmin()) {
-            return ResponseHelper::genResponse('USER_INSUFFICIENT_PERMISSION_ADMIN');
+            return ResponseHelper::genResponse('InsufficientPermissionAdministrator', null, '', '');
         }
 
         return $next($request);

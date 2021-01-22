@@ -4,9 +4,12 @@ namespace DaydreamLab\User\Database\Factories;
 
 use DaydreamLab\User\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
+    use WithFaker;
     /**
      * The name of the factory's corresponding model.
      *
@@ -21,17 +24,17 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $gender = $faker->randomElement(['male', 'female']);
+        $gender = $this->faker->randomElement(['male', 'female']);
         return [
-            'email'         => $faker->email,
+            'email'         => $this->faker->email,
             'password'      => bcrypt(1234),
-            'first_name'    => $faker->firstName($gender),
-            'last_name'     => $faker->lastName,
-            'nickname'      => $faker->userName,
+            'first_name'    => $this->faker->firstName($gender),
+            'last_name'     => $this->faker->lastName,
+            'nickname'      => $this->faker->userName,
             'gender'        => $gender,
-            'image'         => $faker->image(),
-            'birthday'      => $faker->date(),
-            //'activate_token'=> 'activate_token'
+            'image'         => $this->faker->image(),
+            'birthday'      => $this->faker->date(),
+            'activate_token'=> Str::random()
         ];
     }
 }

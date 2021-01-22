@@ -1,12 +1,12 @@
 <?php
 
-namespace DaydreamLab\User\tests\Unit\Services\User\Cases\Front\Activate;
+namespace DaydreamLab\User\tests\Unit\Services\User\Cases\Front\Register;
 
 use DaydreamLab\User\Tests\Unit\Services\User\Cases\Front\UserFrontTestBase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Config;
 
-class CaseActivationTokenInvalid extends UserFrontTestBase
+class CaseRegistrationIsBlocked extends UserFrontTestBase
 {
     use RefreshDatabase;
 
@@ -18,10 +18,8 @@ class CaseActivationTokenInvalid extends UserFrontTestBase
 
     public function testCase()
     {
-        $this->repo
-            ->shouldReceive('findBy')
-            ->andReturn(collect());
-        $this->assertHttpResponseException('activate', Str::random(), 'ActivationTokenInvalid');
+        Config::set('daydreamlab.user.register.enable', 0);
+        $this->assertHttpResponseException('register', collect(), 'RegistrationIsBlocked');
     }
 
 

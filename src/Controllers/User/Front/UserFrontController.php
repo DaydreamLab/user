@@ -4,12 +4,11 @@ namespace DaydreamLab\User\Controllers\User\Front;
 
 use Carbon\Carbon;
 use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontCheckEmailPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
-use DaydreamLab\User\Requests\User\UserCheckEmailPost;
 use DaydreamLab\User\Requests\User\UserLoginPost;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
@@ -18,7 +17,6 @@ use DaydreamLab\User\Requests\User\Front\UserFrontStorePost;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\Request;
-
 
 class UserFrontController extends BaseController
 {
@@ -43,9 +41,9 @@ class UserFrontController extends BaseController
     }
 
 
-    public function checkEmail(UserCheckEmailPost $request)
+    public function checkEmail(UserFrontCheckEmailPost $request)
     {
-        $this->service->checkEmail($request->rulesInput());
+        $this->service->checkEmail($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -53,7 +51,7 @@ class UserFrontController extends BaseController
 
     public function changePassword(UserFrontChangePasswordPost $request)
     {
-        $this->service->changePassword($request->rulesInput());
+        $this->service->changePassword($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -107,7 +105,7 @@ class UserFrontController extends BaseController
     public function login(UserLoginPost $request)
     {
         if(config('daydreamlab.user.login.enable')) {
-            $this->service->login($request->rulesInput());
+            $this->service->login($request->validated());
         } else {
             $this->service->status = 'LoginIsBlocked';
             $this->service->response = null;
@@ -121,7 +119,7 @@ class UserFrontController extends BaseController
     {
         if (config('daydreamlab.user.register.enable'))
         {
-            $this->service->register($request->rulesInput());
+            $this->service->register($request->validated());
         } else {
             $this->service->status = 'USER_REGISTRATION_IS_BLOCKED';
         }
@@ -132,7 +130,7 @@ class UserFrontController extends BaseController
 
     public function resetPassword(UserFrontResetPasswordPost $request)
     {
-        $this->service->resetPassword($request->rulesInput());
+        $this->service->resetPassword($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -140,7 +138,7 @@ class UserFrontController extends BaseController
 
     public function sendResetLinkEmail(UserFrontForgetPasswordPost $request)
     {
-        $this->service->sendResetLinkEmail($request->rulesInput());
+        $this->service->sendResetLinkEmail($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -148,7 +146,7 @@ class UserFrontController extends BaseController
 
     public function store(UserFrontStorePost $request)
     {
-        $this->service->store($request->rulesInput());
+        $this->service->store($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }

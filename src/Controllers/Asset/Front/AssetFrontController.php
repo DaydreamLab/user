@@ -39,14 +39,14 @@ class AssetFrontController extends BaseController
 
     public function ordering(AssetFrontOrderingPost $request)
     {
-        $this->service->ordering($request->rulesInput());
+        $this->service->ordering($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
 
     public function remove(AssetFrontRemovePost $request)
     {
-        $this->service->remove($request->rulesInput());
+        $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -54,7 +54,7 @@ class AssetFrontController extends BaseController
 
     public function state(AssetFrontStatePost $request)
     {
-        $this->service->state($request->rulesInput());
+        $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -62,7 +62,7 @@ class AssetFrontController extends BaseController
 
     public function store(AssetFrontStorePost $request)
     {
-        $this->service->store($request->rulesInput());
+        $this->service->store($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -70,7 +70,7 @@ class AssetFrontController extends BaseController
 
     public function search(AssetFrontSearchPost $request)
     {
-        $this->service->search($request->rulesInput());
+        $this->service->search($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }

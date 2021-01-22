@@ -39,7 +39,7 @@ class AssetController extends BaseController
 
     public function ordering(AssetOrderingPost $request)
 {
-    $this->service->orderingNested($request->rulesInput());
+    $this->service->orderingNested($request->validated());
 
     return $this->response($this->service->status, $this->service->response);
 }
@@ -47,7 +47,7 @@ class AssetController extends BaseController
 
     public function remove(AssetRemovePost $request)
     {
-        $this->service->remove($request->rulesInput());
+        $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -55,7 +55,7 @@ class AssetController extends BaseController
 
     public function state(AssetStatePost $request)
     {
-        $this->service->state($request->rulesInput());
+        $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -63,7 +63,7 @@ class AssetController extends BaseController
 
     public function store(AssetStorePost $request)
     {
-        $this->service->storeNested($request->rulesInput());
+        $this->service->storeNested($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -71,7 +71,7 @@ class AssetController extends BaseController
 
     public function search(AssetSearchPost $request)
     {
-        $this->service->search($request->rulesInput());
+        $this->service->search($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }

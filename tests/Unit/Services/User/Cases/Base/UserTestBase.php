@@ -10,6 +10,12 @@ use Mockery;
 
 class UserTestBase extends BaseTest
 {
+    protected $package = 'User';
+
+    protected $modelName = 'User';
+
+    protected $modelType = 'Base';
+
     protected $service;
 
     protected $repo;
