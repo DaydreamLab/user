@@ -13,9 +13,9 @@
         <testsuite name="feature">
         </testsuite>
         <testsuite name="unit">
-            <directory suffix=".php">./tests/Unit/Services/*/Cases/Front/SendResetLinkEmail</directory>
+<!--            <directory suffix=".php">./tests/Unit/Services/*/Cases/Front/*</directory>-->
 <!--            <directory suffix=".php">./tests/Unit/Services/*/Cases/Base/*</directory>-->
-<!--            <directory suffix=".php">./tests/Unit/Services/*/Cases/Admin/*</directory>-->
+            <directory suffix=".php">./tests/Unit/Services/*/Cases/Admin/*</directory>
         </testsuite>
     </testsuites>
     <coverage cacheDirectory="/tests"

@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Requests\User\Admin;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,6 +15,9 @@ class UserAdminBlockPost extends AdminRequest
      */
     public function authorize()
     {
+        $groups = $this->user->assets;
+
+        exit();
         return parent::authorize();
     }
 

@@ -2,6 +2,8 @@
 
 namespace DaydreamLab\User\Services\User\Front;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
 use DaydreamLab\User\Services\Password\PasswordResetService;
@@ -16,7 +18,9 @@ use Laravel\Socialite\Two\User;
 
 class UserFrontService extends UserService
 {
-    protected $type = 'UserFront';
+    use LoggedIn;
+
+    protected $modelType = 'Front';
 
     protected $socialUserService;
 
@@ -64,83 +68,83 @@ class UserFrontService extends UserService
     }
 
 
-    public function fbLogin()
-    {
-        $fb_user = Socialite::driver('facebook')
-            ->fields([
-                'name',
-                'first_name',
-                'last_name',
-                'email',
-                ])
-            ->stateless()->user();
-
-        $social_user = $this->socialUserService->findBy('provider_id', '=', $fb_user->id)->first();
-        if ($social_user) {     // 登入
-            $user = $this->find($social_user->user_id);
-            if ($user) {
-                $data = $this->helper->getUserLoginData($user);
-                // 更新 token
-                $social_user->token = $fb_user->token;
-                $social_user->save();
-                $this->status = 'SOCIAL_USER_LOGIN_SUCCESS';
-                $this->response = $data ;
-            }
-            else {
-                $this->status = 'SOCIAL_USER_REGISTER_NOT_COMPLETE';
-                $this->response = $fb_user->user;
-            }
-        }
-        else {                  //註冊
-            return $this->fbRegister($fb_user);
-        }
-
-        return $social_user;
-    }
+//    public function fbLogin()
+//    {
+//        $fb_user = Socialite::driver('facebook')
+//            ->fields([
+//                'name',
+//                'first_name',
+//                'last_name',
+//                'email',
+//                ])
+//            ->stateless()->user();
+//
+//        $social_user = $this->socialUserService->findBy('provider_id', '=', $fb_user->id)->first();
+//        if ($social_user) {     // 登入
+//            $user = $this->find($social_user->user_id);
+//            if ($user) {
+//                $data = $this->helper->getUserLoginData($user);
+//                // 更新 token
+//                $social_user->token = $fb_user->token;
+//                $social_user->save();
+//                $this->status = 'SOCIAL_USER_LOGIN_SUCCESS';
+//                $this->response = $data ;
+//            }
+//            else {
+//                $this->status = 'SOCIAL_USER_REGISTER_NOT_COMPLETE';
+//                $this->response = $fb_user->user;
+//            }
+//        }
+//        else {                  //註冊
+//            return $this->fbRegister($fb_user);
+//        }
+//
+//        return $social_user;
+//    }
 
 
     /**
      * @param $user User
      */
-    public function fbRegister($fb_user)
-    {
-        if (!$fb_user->offsetExists('email')) {
-            $this->status = 'SOCIAL_USER_REGISTER_EMAIL_REQUIRED';
-            return false;
-        }
-
-        if ($this->checkEmail($fb_user->email))
-        {
-            return false;
-        }
-
-        $user_data  = $this->helper->mergeDataFbUserCreate($fb_user);
-        $user       = $this->create($user_data);
-        if (!$user) {
-            $this->status = 'USER_CREATE_FAIL';
-            return false;
-        }
-
-        $social_data = $this->helper->mergeDataFbSocialUserCreate($fb_user, $user->id);
-        $social      = $this->socialUserService->create($social_data);
-        if (!$social)
-        {
-            $this->status = 'SOCIAL_USER_CREATE_FAIL';
-            return false;
-        }
-
-        $this->status = 'SOCIAL_USER_LOGIN_SUCCESS';
-        $this->response = $this->helper->getUserLoginData($user) ;
-
-        return $user;
-    }
+//    public function fbRegister($fb_user)
+//    {
+//        if (!$fb_user->offsetExists('email')) {
+//            $this->status = 'SOCIAL_USER_REGISTER_EMAIL_REQUIRED';
+//            return false;
+//        }
+//
+//        if ($this->checkEmail($fb_user->email))
+//        {
+//            return false;
+//        }
+//
+//        $user_data  = $this->helper->mergeDataFbUserCreate($fb_user);
+//        $user       = $this->create($user_data);
+//        if (!$user) {
+//            $this->status = 'USER_CREATE_FAIL';
+//            return false;
+//        }
+//
+//        $social_data = $this->helper->mergeDataFbSocialUserCreate($fb_user, $user->id);
+//        $social      = $this->socialUserService->create($social_data);
+//        if (!$social)
+//        {
+//            $this->status = 'SOCIAL_USER_CREATE_FAIL';
+//            return false;
+//        }
+//
+//        $this->status = 'SOCIAL_USER_LOGIN_SUCCESS';
+//        $this->response = $this->helper->getUserLoginData($user) ;
+//
+//        return $user;
+//    }
 
 
     public function forgotPasswordTokenValidate($token)
     {
         $reset_token = $this->passwordResetService->findBy('token', '=', $token)->first();
         if ($reset_token) {
-            if (Carbon::now() > new Carbon($reset_token->expired_at)) {
+            if (Carbon::now() > Carbon::parse($reset_token->expired_at)) {
                 $this->status = 'ResetPasswordTokenExpired';
                 $this->throwResponse($this->status, null, ['token' => $token]);
             } elseif ($reset_token->reset_at) {
@@ -178,10 +182,13 @@ class UserFrontService extends UserService
             $user = $this->add($input);
             $user->notify(new RegisteredNotification($user));
             $this->status = 'RegisterSuccess';
+            $this->response = $user->refresh();
         } else {
             $this->status = 'RegistrationIsBlocked';
             $this->throwResponse($this->status, null, $input);
         }
+
+        return $this->response;
     }
 
 
@@ -194,6 +201,8 @@ class UserFrontService extends UserService
             'password' => bcrypt($input->get('password')),
             'last_reset_at' => now()->toDateTimeString()
         ];
+
+        $this->passwordResetService->update(['reset_at' => now()->toDateTimeString()], $token);
 
         $this->update($data, $user);
         $user->tokens()->delete();

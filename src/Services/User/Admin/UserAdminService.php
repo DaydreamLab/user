@@ -5,21 +5,20 @@ namespace DaydreamLab\User\Services\User\Admin;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
+use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
-use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use PHPUnit\TextUI\Help;
 
 class UserAdminService extends UserService
 {
-    protected $type = 'UserAdmin';
+    use LoggedIn;
+
+    protected $modelType = 'Admin';
 
     protected $search_keys = [
         'first_name',
@@ -41,29 +40,29 @@ class UserAdminService extends UserService
     public function block(Collection $input)
     {
         $result = false;
-        foreach ($input->ids as $key => $id) {
+        foreach ($input->get('ids') as $key => $id) {
             $user           = $this->find($id);
-            $user->block    = $input->get('block');
-            $result         = $user->save();
+            $result         = $this->repo->update([
+                'block' => $input->get('block')
+            ], $user);
             if (!$result) {
                 break;
             }
         }
 
-        if ($input->block == '1') {
+        $block = $input->get('block');
+        if ($block== '1') {
             $action = 'Block';
-        }
-        elseif ($input->block == '0') {
+        } elseif ($block == '0') {
             $action = 'Unblock';
         }
 
         event(new Block($this->getServiceName(), $result, $input, $this->user));
 
         if($result) {
-            $this->status =  Str::upper(Str::snake($this->type. $action . 'Success'));
-        }
-        else {
-            $this->status =  Str::upper(Str::snake($this->type. $action . 'Fail'));
+            $this->status = $action. 'Success';
+        } else {
+            $this->status = $action. 'Fail';
         }
 
         return $result;
@@ -72,7 +71,7 @@ class UserAdminService extends UserService
 
     public function getSelfPage()
     {
-        $user   = Auth::guard('api')->user();
+        $user   = $this->getUser();
         $groups = $user->groups;
 
         $group_apis     = collect();

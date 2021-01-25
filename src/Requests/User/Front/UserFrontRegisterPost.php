@@ -3,7 +3,6 @@
 namespace DaydreamLab\User\Requests\User\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
-use Illuminate\Validation\Rule;
 
 class UserFrontRegisterPost extends AdminRequest
 {

@@ -18,6 +18,7 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
+
         $user = isset($request['user'])
             ? $request['user']
             : $request['user'] = Auth::guard('api')->user();

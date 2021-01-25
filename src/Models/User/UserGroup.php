@@ -75,6 +75,7 @@ class UserGroup extends BaseModel
 
     public function canAction($service, $method, $model)
     {
+
         $apis = $this->apis()->where('service', $service)->where('method', $method)->get();
         if ($apis->count() == 1) {
             return true;
@@ -111,7 +112,6 @@ class UserGroup extends BaseModel
 
         return $depth == 0  ? $this->title : $str . ' '. $this->title;
     }
-
 
 
     public function users()

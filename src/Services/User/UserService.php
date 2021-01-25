@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Services\User;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Add;
 use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Events\Remove;
@@ -120,6 +121,8 @@ class UserService extends BaseService
                         : 'LoginSuccess';
                     $this->response = $this->helper->getUserLoginData($user);
                     $login = true;
+
+                    return  $this->response;
                 }
             } else { // 帳號尚未啟用
                 //$user->notify(new RegisteredNotification($user));

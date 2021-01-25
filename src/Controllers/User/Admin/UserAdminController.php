@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
 use DaydreamLab\User\Services\User\Admin\UserAdminService;
@@ -28,6 +29,7 @@ class UserAdminController extends BaseController
     public function block(UserAdminBlockPost $request)
     {
         $this->service->canAction('blockUser');
+        $this->service->setUser($request->user);
         $this->service->block($request->validated());
 
         return $this->response($this->service->status, $this->service->response);

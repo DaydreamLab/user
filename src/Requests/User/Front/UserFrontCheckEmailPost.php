@@ -24,7 +24,7 @@ class UserFrontCheckEmailPost extends AdminRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email',
         ];
     }
 

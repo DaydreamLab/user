@@ -32,9 +32,9 @@ class Block
         $this->user     = $user;
         $this->result   = $result ? 'success' : 'fail';
         $this->type     = $type;
-        $this->item_ids = $input->ids;
+        $this->item_ids = $input->get('ids');
 
-        $block = $input->block;
+        $block = $input->get('block');
 
         if ($block == 1)
         {

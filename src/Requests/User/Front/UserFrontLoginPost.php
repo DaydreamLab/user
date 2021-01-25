@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\User\Requests\User\Front;
 
-use DaydreamLab\User\Requests\User\UserSearchPost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class UserFrontSearchPost extends UserSearchPost
+class UserFrontLoginPost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,9 @@ class UserFrontSearchPost extends UserSearchPost
      */
     public function rules()
     {
-        $rules = [
-            //
+        return [
+            'email'     => 'required|email',
+            'password'  => 'required|string'
         ];
-        return array_merge($rules, parent::rules());
     }
 }

@@ -6,6 +6,10 @@ use DaydreamLab\JJAJ\Requests\AdminRequest;
 
 class UserFrontForgetPasswordPost extends AdminRequest
 {
+    protected $package = 'User';
+
+    protected $modelName = 'User';
+
     /**
      * Determine if the user is authorized to make this request.
      *

@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Models\User;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\User\Database\Factories\UserFactory;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
@@ -9,6 +10,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Kalnoy\Nestedset\Collection;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 
@@ -126,6 +128,19 @@ class User extends Authenticatable
     }
 
 
+    public function getAssetsAttribute()
+    {
+        $groups =  $this->groups()->with('assets')->get();
+
+        $assets = Collection::make();
+        foreach ($groups as $group) {
+            $assets = $assets->merge($group->assets);
+        }
+
+        return $assets->unique('id')->values();
+    }
+
+
     public function getFullNameAttribute()
     {
         return $this->last_name . ' '. $this->first_name;
@@ -187,15 +202,26 @@ class User extends Authenticatable
         $super_user  = UserGroup::where('title', 'Super User')->first();
         $admin       = UserGroup::where('title', 'Administrator')->first();
 
-        foreach ($this->groups as $group) {
-            if ($group->_lft >= $super_user->_lft && $group->_rgt <= $super_user->_rgt) {
-                return true;
-            }
-            elseif ($group->_lft >= $admin->_lft && $group->_rgt <= $admin->_rgt) {
-                return true;
-            }
-        }
-        return false;
+//        foreach ($this->groups as $group) {
+//            if ($group->_lft >= $super_user->_lft && $group->_rgt <= $super_user->_rgt) {
+//                return true;
+//            }
+//            elseif ($group->_lft >= $admin->_lft && $group->_rgt <= $admin->_rgt) {
+//                return true;
+//            }
+//        }
+
+        //return false;
+
+        return  $this->groups()->where(function ($q) use ($admin, $super_user) {
+            $q->where(function ($q) use ($admin){
+                $q->where('_lft', '>=', $admin->_lft)
+                    ->where('_rgt', '<='. $admin->_rgt);
+            })->orWhere(function ($q) use ($super_user) {
+                $q->where('_lft', '>=', $super_user->_lft)
+                    ->where('_rgt', '<='. $super_user->_rgt);
+            });
+        })->count();
     }
 
 
@@ -208,6 +234,7 @@ class User extends Authenticatable
                 return true;
             }
         }
+
         return false;
     }
 

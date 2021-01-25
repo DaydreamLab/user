@@ -3,15 +3,17 @@
 namespace DaydreamLab\User\Controllers\User\Front;
 
 use Carbon\Carbon;
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontCheckEmailPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontLoginPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\User\Requests\User\UserLoginPost;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
+use DaydreamLab\User\Resources\User\Front\Models\UserFrontResource;
 use DaydreamLab\User\Services\User\Front\UserFrontService;
 use DaydreamLab\User\Requests\User\Front\UserFrontStorePost;
 use Illuminate\Support\Facades\Auth;
@@ -49,18 +51,19 @@ class UserFrontController extends BaseController
     }
 
 
-    public function changePassword(UserFrontChangePasswordPost $request)
+    public function forgetchangePassword(UserFrontChangePasswordPost $request)
     {
+        $this->service->setUser($request->user);
         $this->service->changePassword($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
 
 
-    public function fblogin()
-    {
-        return Socialite::driver('facebook')->stateless()->redirect();
-    }
+//    public function fblogin()
+//    {
+//        return Socialite::driver('facebook')->stateless()->redirect();
+//    }
 
 
     public function forgotPasswordTokenValidate($token)
@@ -71,12 +74,16 @@ class UserFrontController extends BaseController
     }
 
 
+//    public function fbCallback()
+//    {
+//        $this->service->fblogin();
+//
+//        return $this->response($this->service->status, $this->service->response);
+//    }
 
-    public function fbCallback()
+    public function getItem(Request $request, $id)
     {
-        $this->service->fblogin();
-
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status,  new UserFrontResource($request->user));
     }
 
 
@@ -86,23 +93,23 @@ class UserFrontController extends BaseController
         $user = Auth::guard('api')->authenticate();
         if ($user) {
             $token = $user->token();
-            if (Carbon::parse($token->expires_at)->diffInDays(now()) < 3)
-            {
+            if (Carbon::parse($token->expires_at)->diffInDays(now()) < 3) {
                 $token->expires_at  = now()->addSeconds(config('daydreamlab.user.token_expires_in'));
                 $token->save();
             }
-            $status = 'USER_GET_ITEM_SUCCESS';
+            $status = 'GetItemSuccess';
             $response = $user;
             $response->token = $request->bearerToken();
         } else {
-            $status = 'USER_TOKEN_EXPIRED';
+            $status = 'TokenExpired';
             $response = null;
         }
+
         return $this->response($status,  new UserFrontGetLoginResource($response));
     }
 
 
-    public function login(UserLoginPost $request)
+    public function login(UserFrontLoginPost $request)
     {
         if(config('daydreamlab.user.login.enable')) {
             $this->service->login($request->validated());
@@ -111,20 +118,27 @@ class UserFrontController extends BaseController
             $this->service->response = null;
         }
 
-        return $this->response($this->service->status, $this->service->response ? new UserFrontLoginResource($this->service->response) : null);
+        return $this->response($this->service->status,
+            $this->service->response
+            ? new UserFrontLoginResource($this->service->response)
+            : null
+        );
     }
 
 
     public function register(UserFrontRegisterPost $request)
     {
-        if (config('daydreamlab.user.register.enable'))
-        {
+        if (config('daydreamlab.user.register.enable')) {
             $this->service->register($request->validated());
         } else {
-            $this->service->status = 'USER_REGISTRATION_IS_BLOCKED';
+            $this->service->status = 'RegistrationIsBlocked';
         }
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status,
+            $this->service->response
+                ? new UserFrontResource($this->service->response)
+                : null
+        );
     }
 
 
