@@ -81,8 +81,10 @@ class UserFrontController extends BaseController
 //        return $this->response($this->service->status, $this->service->response);
 //    }
 
-    public function getItem(Request $request, $id)
+    public function getItem(Request $request)
     {
+        $this->service->status = 'GetItemSuccess';
+
         return $this->response($this->service->status,  new UserFrontResource($request->user));
     }
 
