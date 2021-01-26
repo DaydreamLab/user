@@ -2,10 +2,13 @@
 
 namespace DaydreamLab\User\Requests\User\Admin;
 
-use DaydreamLab\User\Requests\User\UserGroupRemovePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class UserGroupAdminRemovePost extends UserGroupRemovePost
+class UserGroupAdminRemovePost extends AdminRequest
 {
+    protected $apiMethod = 'deleteUserGroup';
+
+    protected $modelName = 'UserGroup';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +27,8 @@ class UserGroupAdminRemovePost extends UserGroupRemovePost
     public function rules()
     {
         $rules = [
-            //
+            'ids'       => 'required|array',
+            'ids.*'     => 'required|integer'
         ];
         return array_merge($rules, parent::rules());
     }

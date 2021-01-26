@@ -7,7 +7,7 @@ use DaydreamLab\User\Services\User\UserGroupService;
 
 class UserGroupFrontService extends UserGroupService
 {
-    protected $type = 'UserGroupFront';
+    protected $modelType = 'Front';
 
     public function __construct(UserGroupFrontRepository $repo)
     {

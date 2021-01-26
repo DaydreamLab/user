@@ -2,10 +2,13 @@
 
 namespace DaydreamLab\User\Requests\User\Admin;
 
-use DaydreamLab\User\Requests\User\UserGroupSearchPost;
+use DaydreamLab\JJAJ\Requests\ListRequest;
 
-class UserGroupAdminSearchPost extends UserGroupSearchPost
+class UserGroupAdminSearchPost extends ListRequest
 {
+    protected $apiMethod = 'searchUserGroup';
+
+    protected $modelName = 'UserGroup';
     /**
      * Determine if the user is authorized to make this request.
      *

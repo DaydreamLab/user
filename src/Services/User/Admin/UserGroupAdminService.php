@@ -3,7 +3,7 @@
 namespace DaydreamLab\User\Services\User\Admin;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\JJAJ\Traits\NestedServiceTrait;
+use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Repositories\User\Admin\UserGroupAdminRepository;
 use DaydreamLab\User\Services\User\UserGroupService;
 use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
@@ -12,13 +12,13 @@ use Illuminate\Support\Str;
 
 class UserGroupAdminService extends UserGroupService
 {
-    use NestedServiceTrait {
-        addNested as traitAddNested;
-    }
+    use LoggedIn;
 
     protected $viewlevelAdminService;
 
-    protected $type = 'UserGroupAdmin';
+    protected $modelType = 'Admin';
+
+    protected $modelName = 'UserGroup';
 
     protected $search_keys = ['title'];
 
@@ -30,10 +30,34 @@ class UserGroupAdminService extends UserGroupService
         $this->repo = $repo;
     }
 
-    public function getItem($id)
-    {
-        $group = parent::getItem(collect(['id' => $id]));
 
+    public function addNested(Collection $input)
+    {
+        $item = parent::addNested($input);
+
+        $super_user = $this->viewlevelAdminService->findBy('title', '=', 'Super User')->first();
+        if ($super_user) {
+            $rules = $super_user->rules;
+            $rules[] = $item->id;
+            $super_user->rules = $rules;
+            $super_user->save();
+        }
+
+        return $item;
+    }
+
+
+    public function addMapping($item, $input)
+    {
+        $item->assets()->attach($input->get('asset_ids'));
+        $item->apis()->attach($input->get('api_ids'));
+    }
+
+
+    public function getItem($input)
+    {
+        $group = parent::getItem(collect(['id' => $input->get('id')]));
+Helper::show($group);
         $group->assets = $group->assets()->get()->map(function ($item){
             return $item->id;
         });
@@ -42,23 +66,7 @@ class UserGroupAdminService extends UserGroupService
             return $item->id;
         });
 
-
         return $group;
-    }
-
-
-    public function addNested(Collection $input)
-    {
-        $item = $this->traitAddNested($input);
-        $super_user = $this->viewlevelAdminService->findBy('title', '=', 'Super User')->first();
-        if ($super_user)
-        {
-            $rules = $super_user->rules;
-            $rules[] = $item->id;
-            $super_user->rules = $rules;
-            $super_user->save();
-        }
-        return $item;
     }
 
 
@@ -86,28 +94,34 @@ class UserGroupAdminService extends UserGroupService
         $response['apis']       = $apis;
         $response['assets']    = $assets;
 
-        $this->status = Str::upper(Str::snake($this->type.'GetActionSuccess'));;
+        $this->status = 'GetActionSuccess';
         $this->response = $response;
 
         return $response;
     }
 
 
-    public function store(Collection $input)
+    public function modifyMapping($item, $input)
     {
-        $api_ids    = $input->api_ids;
-        $asset_ids  = $input->asset_ids;
-        $input->forget('api_ids');
-        $input->forget('asset_ids');
-
-        $result =  parent::store($input);
-        $group_id = gettype($result) == 'boolean' ? $input->id : $result->id;
-
-        $group = $this->checkItem(collect(['id' => $group_id]));
-        $group->apis()->attach($api_ids);
-        $group->assets()->attach($asset_ids);
-
-        return $result;
+        $item->assets()->sync($input->get('asset_ids'), true);
+        $item->apis()->sync($input->get('api_ids'), true);
     }
 
+
+    public function removeMapping($item)
+    {
+        $item->assets()->detach();
+        $item->apis()->detach();
+
+        foreach ($item->viewlevels as $viewlevel) {
+            $groupIds = [];
+            foreach ($viewlevel->rules as $groupId) {
+                if ($groupId != $item->id) {
+                    $groupIds[] = $groupId;
+                }
+            }
+            $viewlevel->rules = $groupIds;
+            $viewlevel->save();
+        }
+    }
 }

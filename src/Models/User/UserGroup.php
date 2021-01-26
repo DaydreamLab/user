@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Asset\AssetApi;
+use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Kalnoy\Nestedset\NodeTrait;
 
 class UserGroup extends BaseModel
@@ -67,6 +68,11 @@ class UserGroup extends BaseModel
     ];
 
 
+    protected $casts = [
+        'canDelete' => 'integer'
+    ];
+
+
     public function apis()
     {
         return $this->belongsToMany(AssetApi::class, 'users_groups_apis_maps', 'group_id', 'api_id');
@@ -75,7 +81,6 @@ class UserGroup extends BaseModel
 
     public function canAction($service, $method, $model)
     {
-
         $apis = $this->apis()->where('service', $service)->where('method', $method)->get();
         if ($apis->count() == 1) {
             return true;
@@ -99,6 +104,12 @@ class UserGroup extends BaseModel
     {
         return $this->belongsToMany(Asset::class, 'users_groups_assets_maps', 'group_id', 'asset_id')
             ->withTimestamps();
+    }
+
+
+    public function getViewLevelsAttribute()
+    {
+        return Viewlevel::whereJsonContains('rules', $this->id)->get();
     }
 
 

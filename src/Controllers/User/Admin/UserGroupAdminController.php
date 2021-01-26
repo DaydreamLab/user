@@ -3,9 +3,10 @@
 namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\InputHelper;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
-use Illuminate\Support\Collection;
+use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Resources\User\Admin\Collections\UserGroupAdminListResourceCollection;
+use DaydreamLab\User\Resources\User\Admin\Models\UserGroupAdminResource;
+use Illuminate\Http\Request;
 use DaydreamLab\User\Services\User\Admin\UserGroupAdminService;
 use DaydreamLab\User\Requests\User\Admin\UserGroupAdminRemovePost;
 use DaydreamLab\User\Requests\User\Admin\UserGroupAdminStorePost;
@@ -28,18 +29,19 @@ class UserGroupAdminController extends BaseController
     }
 
 
-    public function getItem($id)
+    public function getItem(Request $request)
     {
-        $this->service->canAction('getUserGroup');
-        $this->service->getItem($id);
+        $this->service->setUser($request->user('api'));
+        $this->service->getItem(collect(['id' => $request->route('id')]));
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, new UserGroupAdminResource($this->service->response));
     }
 
 
-    public function getPage($group_id)
+    public function getPage(Request $request)
     {
-        $this->service->getPage($group_id);
+        $this->service->setUser($request->user('api'));
+        $this->service->getPage($request->route('id'));
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -47,8 +49,8 @@ class UserGroupAdminController extends BaseController
 
     public function remove(UserGroupAdminRemovePost $request)
     {
-        $this->service->canAction('deleteUserGroup');
-        $this->service->remove($request->validated());
+        $this->service->setUser($request->user());
+        $this->service->removeNested($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -56,7 +58,7 @@ class UserGroupAdminController extends BaseController
 
     public function state(UserGroupAdminStatePost $request)
     {
-        $this->service->canAction('updateUserGroupState');
+        $this->service->setUser($request->user());
         $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
@@ -65,29 +67,31 @@ class UserGroupAdminController extends BaseController
 
     public function store(UserGroupAdminStorePost $request)
     {
-        InputHelper::null($request->validated(), 'id') ? $this->service->canAction('addUserGroup')
-            : $this->service->canAction('editUserGroup');
-        $this->service->store($request->validated());
+        $this->service->setUser($request->user());
+        $this->service->storeNested($request->validated());
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status,
+            gettype($this->service->response) == 'object'
+                ? new UserGroupAdminResource($this->service->response)
+                : $this->service->response);
     }
 
 
     public function search(UserGroupAdminSearchPost $request)
     {
-        $this->service->canAction('searchUserGroup');
+        $this->service->setUser($request->user());
         $this->service->search($request->validated());
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status,
+            new UserGroupAdminListResourceCollection($this->service->response));
     }
 
 
-    public function tree()
+    public function tree(Request $request)
     {
-        $this->service->canAction('getUserGroupTree');
+        $this->service->setUser($request->user('api'));
         $this->service->tree();
 
         return $this->response($this->service->status, $this->service->response);
     }
-
 }

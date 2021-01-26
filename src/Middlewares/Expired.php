@@ -55,7 +55,7 @@ class Expired
             }
         } else {
             return ResponseHelper::genResponse(
-                'Unauthorized',
+                Str::upper(Str::snake('Unauthorized')),
                 null,
                 '',
                 ''

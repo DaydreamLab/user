@@ -14,6 +14,12 @@ class UserGroupService extends BaseService
 {
     use NestedServiceTrait;
 
+    protected $package = 'User';
+
+    protected $modelName = 'User';
+
+    protected $modelType = 'Base';
+
     protected $type = 'UserGroup';
 
     public function __construct(UserGroupRepository $repo)
@@ -48,6 +54,7 @@ class UserGroupService extends BaseService
         {
             $with_ancestor_viewlevels[] = $viewlevel;
             $group = $this->find($viewlevel);
+
             foreach ($group->ancestors as $ancestor)
             {
                 if ($ancestor->id != 1 && !in_array($ancestor->id, $with_ancestor_viewlevels))
@@ -72,7 +79,7 @@ class UserGroupService extends BaseService
 
         })->toTree();
 
-        $this->status =  Str::upper(Str::snake($this->type . 'GetTreeListSuccess'));
+        $this->status = 'GetTreeListSuccess';
         $this->response = $tree;
 
         return $tree;
