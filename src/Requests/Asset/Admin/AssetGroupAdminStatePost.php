@@ -2,10 +2,14 @@
 
 namespace DaydreamLab\User\Requests\Asset\Admin;
 
-use DaydreamLab\User\Requests\Asset\AssetGroupStatePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
-class AssetGroupAdminStatePost extends AssetGroupStatePost
+class AssetGroupAdminStatePost extends AdminRequest
 {
+    protected $modelName = 'AssetGroup';
+
+    protected $apiMethod = 'updateAssetGroupState';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +28,13 @@ class AssetGroupAdminStatePost extends AssetGroupStatePost
     public function rules()
     {
         $rules = [
-            //
+            'ids'       => 'required|array',
+            'ids.*'     => 'required|integer',
+            'state'     => [
+                'required',
+                'integer',
+                Rule::in([0,1,-2])
+            ]
         ];
         return array_merge($rules, parent::rules());
     }

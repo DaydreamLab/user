@@ -7,7 +7,11 @@ use DaydreamLab\JJAJ\Services\BaseService;
 
 class ViewlevelService extends BaseService
 {
-    protected $type = 'Viewlevel';
+    protected $package = 'User';
+
+    protected $modelName = 'Viewlevel';
+
+    protected $modelType = 'Base';
 
     public function __construct(ViewlevelRepository $repo)
     {

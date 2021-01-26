@@ -2,10 +2,13 @@
 
 namespace DaydreamLab\User\Requests\Asset\Admin;
 
-use DaydreamLab\User\Requests\Asset\AssetApiStorePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class AssetApiAdminStorePost extends AssetApiStorePost
+class AssetApiAdminStorePost extends AdminRequest
 {
+    protected $modelName = 'AssetApi';
+
+    protected $apiMethod = 'storeAsset';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +27,10 @@ class AssetApiAdminStorePost extends AssetApiStorePost
     public function rules()
     {
         $rules = [
-            //
+            'id'            => 'nullable|integer',
+            'service'       => 'required|string',
+            'method'        => 'required|string',
+            'url'           => 'required|string',
         ];
         return array_merge($rules, parent::rules());
     }

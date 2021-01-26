@@ -57,7 +57,7 @@ class UserGroupAdminService extends UserGroupService
     public function getItem($input)
     {
         $group = parent::getItem(collect(['id' => $input->get('id')]));
-Helper::show($group);
+
         $group->assets = $group->assets()->get()->map(function ($item){
             return $item->id;
         });

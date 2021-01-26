@@ -2,15 +2,15 @@
 
 namespace DaydreamLab\User\Services\Asset\Admin;
 
-
+use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Repositories\Asset\Admin\AssetAdminRepository;
 use DaydreamLab\User\Services\Asset\AssetService;
-use Illuminate\Support\Str;
-
 
 class AssetAdminService extends AssetService
 {
-    protected $type = 'AssetAdmin';
+    use LoggedIn;
+
+    protected $modelType = 'Admin';
 
     public function __construct(AssetAdminRepository $repo)
     {
@@ -26,10 +26,9 @@ class AssetAdminService extends AssetService
             return $item->only(['id', 'tree_list_title']);
         });
 
-        $this->status =  Str::upper(Str::snake($this->type . 'GetTreeListSuccess'));
+        $this->status = 'GetTreeListSuccess';
         $this->response = $tree;
 
         return $tree;
     }
-
 }

@@ -2,10 +2,13 @@
 
 namespace DaydreamLab\User\Requests\Viewlevel\Admin;
 
-use DaydreamLab\User\Requests\Viewlevel\ViewlevelOrderingPost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class ViewlevelAdminOrderingPost extends ViewlevelOrderingPost
+class ViewlevelAdminOrderingPost extends AdminRequest
 {
+    protected $modelName = 'Viewlevel';
+
+    protected $apiMethod = 'orderingViewlevel';
     /**
      * Determine if the user is authorized to make this request.
      *

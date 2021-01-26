@@ -2,10 +2,13 @@
 
 namespace DaydreamLab\User\Requests\Asset\Admin;
 
-use DaydreamLab\User\Requests\Asset\AssetGroupSearchPost;
+use DaydreamLab\JJAJ\Requests\ListRequest;
 
-class AssetGroupAdminSearchPost extends AssetGroupSearchPost
+class AssetGroupAdminSearchPost extends ListRequest
 {
+    protected $modelName = 'AssetGroup';
+
+    protected $apiMethod = 'searchAssetGroup';
     /**
      * Determine if the user is authorized to make this request.
      *

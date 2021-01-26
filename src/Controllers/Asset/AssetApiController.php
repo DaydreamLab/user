@@ -14,6 +14,12 @@ use DaydreamLab\User\Requests\Asset\AssetApiSearchPost;
 
 class AssetApiController extends BaseController
 {
+    protected $package = 'User';
+
+    protected $modelName = 'AssetApi';
+
+    protected $modelType = 'Base';
+
     public function __construct(AssetApiService $service)
     {
         parent::__construct($service);

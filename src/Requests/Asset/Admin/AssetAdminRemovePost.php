@@ -2,10 +2,13 @@
 
 namespace DaydreamLab\User\Requests\Asset\Admin;
 
-use DaydreamLab\User\Requests\Asset\AssetRemovePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class AssetAdminRemovePost extends AssetRemovePost
+class AssetAdminRemovePost extends AdminRequest
 {
+    protected $modelName = 'Asset';
+
+    protected $apiMethod = 'deleteAsset';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,8 +27,10 @@ class AssetAdminRemovePost extends AssetRemovePost
     public function rules()
     {
         $rules = [
-            //
+            'ids'       => 'required|array',
+            'ids.*'     => 'required|integer'
         ];
+
         return array_merge($rules, parent::rules());
     }
 }

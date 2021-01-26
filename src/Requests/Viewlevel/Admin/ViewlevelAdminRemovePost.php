@@ -2,10 +2,13 @@
 
 namespace DaydreamLab\User\Requests\Viewlevel\Admin;
 
-use DaydreamLab\User\Requests\Viewlevel\ViewlevelRemovePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class ViewlevelAdminRemovePost extends ViewlevelRemovePost
+class ViewlevelAdminRemovePost extends AdminRequest
 {
+    protected $modelName = 'Viewlevel';
+
+    protected $apiMethod = 'deleteViewlevel';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +27,8 @@ class ViewlevelAdminRemovePost extends ViewlevelRemovePost
     public function rules()
     {
         $rules = [
-            //
+            'ids'       => 'required|array',
+            'ids.*'     => 'required|integer'
         ];
         return array_merge($rules, parent::rules());
     }

@@ -11,7 +11,6 @@ use DaydreamLab\User\Requests\Viewlevel\Front\ViewlevelFrontStorePost;
 use DaydreamLab\User\Requests\Viewlevel\Front\ViewlevelFrontStatePost;
 use DaydreamLab\User\Requests\Viewlevel\Front\ViewlevelFrontSearchPost;
 
-
 class ViewlevelFrontController extends BaseController
 {
     public function __construct(ViewlevelFrontService $service)

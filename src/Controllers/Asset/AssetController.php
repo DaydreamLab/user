@@ -15,6 +15,12 @@ use DaydreamLab\User\Requests\Asset\AssetOrderingPost;
 
 class AssetController extends BaseController
 {
+    protected $package = 'User';
+
+    protected $modelName = 'Asset';
+
+    protected $modelType = 'Base';
+
     public function __construct(AssetService $service)
     {
         parent::__construct($service);

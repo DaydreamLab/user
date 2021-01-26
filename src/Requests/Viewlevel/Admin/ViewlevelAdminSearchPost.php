@@ -2,10 +2,14 @@
 
 namespace DaydreamLab\User\Requests\Viewlevel\Admin;
 
-use DaydreamLab\User\Requests\Viewlevel\ViewlevelSearchPost;
+use DaydreamLab\JJAJ\Requests\ListRequest;
+use Illuminate\Validation\Rule;
 
-class ViewlevelAdminSearchPost extends ViewlevelSearchPost
+class ViewlevelAdminSearchPost extends ListRequest
 {
+    protected $modelName = 'Viewlevel';
+
+    protected $apiMethod = 'searchViewlevel';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +28,12 @@ class ViewlevelAdminSearchPost extends ViewlevelSearchPost
     public function rules()
     {
         $rules = [
-            //
+            'title' => 'nullable|string',
+            'state'     => [
+                'nullable',
+                'integer',
+                Rule::in([0,1,-2])
+            ]
         ];
         return array_merge($rules, parent::rules());
     }

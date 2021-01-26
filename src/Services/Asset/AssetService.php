@@ -12,14 +12,13 @@ use Illuminate\Support\Str;
 
 class AssetService extends BaseService
 {
-    use NestedServiceTrait{
-        NestedServiceTrait::addNested       as traitAddNested;
-        NestedServiceTrait::modifyNested    as traitModifiedNested;
-        NestedServiceTrait::storeNested     as traitStoreNested;
-        NestedServiceTrait::removeNested    as traitRemoveNested;
-    }
+    use NestedServiceTrait;
 
-    protected $type = 'Asset';
+    protected $package = 'User';
+
+    protected $modelName = 'Asset';
+
+    protected $modelType = 'Base';
 
     public function __construct(AssetRepository $repo)
     {
@@ -49,7 +48,7 @@ class AssetService extends BaseService
 
     public function remove(Collection $input)
     {
-        $result = $this->traitRemoveNested($input);
+        $result = $this->removeNested($input);
 
         return $result;
     }

@@ -4,8 +4,6 @@ namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
-use Illuminate\Support\Collection;
 use DaydreamLab\User\Services\Asset\Admin\AssetApiAdminService;
 use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminRemovePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminStorePost;
@@ -14,6 +12,12 @@ use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminSearchPost;
 
 class AssetApiAdminController extends BaseController
 {
+    protected $package = 'User';
+
+    protected $modelName = 'AssetApi';
+
+    protected $modelType = 'Admin';
+
     public function __construct(AssetApiAdminService $service)
     {
         parent::__construct($service);

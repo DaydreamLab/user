@@ -2,10 +2,13 @@
 
 namespace DaydreamLab\User\Requests\Asset\Admin;
 
-use DaydreamLab\User\Requests\Asset\AssetOrderingPost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class AssetAdminOrderingPost extends AssetOrderingPost
+class AssetAdminOrderingPost extends AdminRequest
 {
+    protected $modelName = 'Asset';
+
+    protected $apiMethod = 'orderingAsset';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +27,8 @@ class AssetAdminOrderingPost extends AssetOrderingPost
     public function rules()
     {
         $rules = [
-            //
+            'id'        => 'required|integer',
+            'index_diff'=> 'required|integer',
         ];
         return array_merge($rules, parent::rules());
     }

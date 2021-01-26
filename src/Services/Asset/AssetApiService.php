@@ -8,7 +8,11 @@ use Illuminate\Support\Collection;
 
 class AssetApiService extends BaseService
 {
-    protected $type = 'AssetApi';
+    protected $package = 'User';
+
+    protected $modelName = 'Asset';
+
+    protected $modelType = 'Base';
 
     public function __construct(AssetApiRepository $repo)
     {

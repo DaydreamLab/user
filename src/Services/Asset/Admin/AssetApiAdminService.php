@@ -2,12 +2,15 @@
 
 namespace DaydreamLab\User\Services\Asset\Admin;
 
+use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Repositories\Asset\Admin\AssetApiAdminRepository;
 use DaydreamLab\User\Services\Asset\AssetApiService;
 
 class AssetApiAdminService extends AssetApiService
 {
-    protected $type = 'AssetApiAdmin';
+    use LoggedIn;
+
+    protected $modelType = 'Admin';
 
     protected $search_keys = ['method'];
 

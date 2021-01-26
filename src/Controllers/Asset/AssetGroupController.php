@@ -14,6 +14,12 @@ use DaydreamLab\User\Requests\Asset\AssetGroupSearchPost;
 
 class AssetGroupController extends BaseController
 {
+    protected $package = 'User';
+
+    protected $modelName = 'AssetGroup';
+
+    protected $modelType = 'Base';
+
     public function __construct(AssetGroupService $service)
     {
         parent::__construct($service);

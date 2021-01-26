@@ -2,10 +2,13 @@
 
 namespace DaydreamLab\User\Requests\Viewlevel\Admin;
 
-use DaydreamLab\User\Requests\Viewlevel\ViewlevelStorePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class ViewlevelAdminStorePost extends ViewlevelStorePost
+class ViewlevelAdminStorePost extends AdminRequest
 {
+    protected $modelName = 'Viewlevel';
+
+    protected $apiMethod = 'storeViewlevel';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +27,11 @@ class ViewlevelAdminStorePost extends ViewlevelStorePost
     public function rules()
     {
         $rules = [
-            //
+            'id'            => 'nullable|integer',
+            'title'         => 'required|string',
+            'description'   => 'nullable|string',
+            'rules'         => 'nullable|array',
+            'rules.*'       => 'nullable|integer',
         ];
         return array_merge($rules, parent::rules());
     }

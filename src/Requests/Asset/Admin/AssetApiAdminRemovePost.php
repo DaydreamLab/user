@@ -2,10 +2,13 @@
 
 namespace DaydreamLab\User\Requests\Asset\Admin;
 
-use DaydreamLab\User\Requests\Asset\AssetApiRemovePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class AssetApiAdminRemovePost extends AssetApiRemovePost
+class AssetApiAdminRemovePost extends AdminRequest
 {
+    protected $modelName = 'AssetApi';
+
+    protected $apiMethod = 'deleteAssetApi';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +27,8 @@ class AssetApiAdminRemovePost extends AssetApiRemovePost
     public function rules()
     {
         $rules = [
-            //
+            'ids'       => 'required|array',
+            'ids.*'     => 'required|integer'
         ];
         return array_merge($rules, parent::rules());
     }

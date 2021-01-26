@@ -14,6 +14,8 @@ use DaydreamLab\User\Requests\Asset\Front\AssetGroupFrontSearchPost;
 
 class AssetGroupFrontController extends BaseController
 {
+    protected $modelType = 'Front';
+
     public function __construct(AssetGroupFrontService $service)
     {
         parent::__construct($service);

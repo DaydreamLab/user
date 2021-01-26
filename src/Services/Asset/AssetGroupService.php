@@ -7,7 +7,11 @@ use DaydreamLab\JJAJ\Services\BaseService;
 
 class AssetGroupService extends BaseService
 {
-    protected $type = 'AssetGroup';
+    protected $package = 'User';
+
+    protected $modelName = 'Asset';
+
+    protected $modelType = 'Base';
 
     public function __construct(AssetGroupRepository $repo)
     {
