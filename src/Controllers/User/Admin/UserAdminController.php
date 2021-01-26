@@ -10,6 +10,7 @@ use DaydreamLab\User\Services\User\Admin\UserAdminService;
 use DaydreamLab\User\Requests\User\Admin\UserAdminRemovePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminStorePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminSearchPost;
+use Illuminate\Http\Request;
 
 class UserAdminController extends BaseController
 {
@@ -28,26 +29,25 @@ class UserAdminController extends BaseController
 
     public function block(UserAdminBlockPost $request)
     {
-        $this->service->canAction('blockUser');
-        $this->service->setUser($request->user);
+        $this->service->setUser($request->user());
         $this->service->block($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
     }
 
 
-    public function getItem($id)
+    public function getItem(Request $request)
     {
-        $this->service->canAction('getUser');
-        $this->service->getItem($id);
+        $this->service->setUser($request->user('api'));
+        $this->service->getItem(collect(['id' => $request->get('id')]));
 
         return $this->response($this->service->status, $this->service->response);
     }
 
 
-    public function getSelfPage()
+    public function getSelfPage(Request $request)
     {
-        $this->service->canAction('getSelfPage');
+        $this->service->setUser($request->user('api'));
         $this->service->getSelfPage();
 
         return $this->response($this->service->status, $this->service->response);
@@ -56,7 +56,7 @@ class UserAdminController extends BaseController
 
     public function remove(UserAdminRemovePost $request)
     {
-        $this->service->canAction('deleteUser');
+        $this->service->setUser($request->user());
         $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
@@ -67,24 +67,16 @@ class UserAdminController extends BaseController
     {
         $input = $request->validated();
 
-        if (!InputHelper::null($input, 'activation'))
-        {
+        if (!InputHelper::null($input, 'activation')) {
             $input->forget('activation');
-            if($input->activation == 'false')
-            {
+            if($input->activation == 'false') {
                 $input->put('activation', 0);
-            }
-            else
-            {
+            } else {
                 $input->put('activation', 1);
             }
-            $this->service->canAction('editUser');
-        }
-        else
-        {
-            $this->service->canAction('addUser');
         }
 
+        $this->service->setUser($request->user());
         $this->service->store($input);
 
         return $this->response($this->service->status, $this->service->response);
@@ -93,7 +85,7 @@ class UserAdminController extends BaseController
 
     public function search(UserAdminSearchPost $request)
     {
-        $this->service->canAction('searchUser');
+        $this->service->setUser($request->user());
         $this->service->search($request->validated());
 
         return $this->response($this->service->status, $this->service->response);

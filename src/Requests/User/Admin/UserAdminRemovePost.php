@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\User\Requests\User\Admin;
 
-use DaydreamLab\User\Requests\User\UserRemovePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class UserAdminRemovePost extends UserRemovePost
+class UserAdminRemovePost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class UserAdminRemovePost extends UserRemovePost
     public function rules()
     {
         $rules = [
-            //
+            'ids'       => 'required|array',
+            'ids.*'     => 'required|integer'
         ];
         return array_merge($rules, parent::rules());
     }

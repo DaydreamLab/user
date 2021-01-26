@@ -128,6 +128,18 @@ class User extends Authenticatable
     }
 
 
+    public function getApisAttribute()
+    {
+        $groups = $this->groups()->with('apis')->get();
+        $apis = collect();
+        foreach ($groups as $group) {
+            $apis = $apis->merge($group->apis);
+        }
+
+        return $apis->unique('id')->values();
+    }
+
+
     public function getAssetsAttribute()
     {
         $groups =  $this->groups()->with('assets')->get();
@@ -202,25 +214,16 @@ class User extends Authenticatable
         $super_user  = UserGroup::where('title', 'Super User')->first();
         $admin       = UserGroup::where('title', 'Administrator')->first();
 
-//        foreach ($this->groups as $group) {
-//            if ($group->_lft >= $super_user->_lft && $group->_rgt <= $super_user->_rgt) {
-//                return true;
-//            }
-//            elseif ($group->_lft >= $admin->_lft && $group->_rgt <= $admin->_rgt) {
-//                return true;
-//            }
-//        }
-
-        //return false;
-
-        return  $this->groups()->where(function ($q) use ($admin, $super_user) {
-            $q->where(function ($q) use ($admin){
-                $q->where('_lft', '>=', $admin->_lft)
-                    ->where('_rgt', '<='. $admin->_rgt);
-            })->orWhere(function ($q) use ($super_user) {
-                $q->where('_lft', '>=', $super_user->_lft)
-                    ->where('_rgt', '<='. $super_user->_rgt);
-            });
+        return $this
+            ->groups()
+            ->where(function ($q) use ($admin, $super_user) {
+                $q->where(function ($q) use ($admin){
+                    $q->where('_lft', '>=', $admin->_lft)
+                        ->where('_rgt', '<=', $admin->_rgt);
+                })->orWhere(function ($q) use ($super_user) {
+                    $q->where('_lft', '>=', $super_user->_lft)
+                        ->where('_rgt', '<=', $super_user->_rgt);
+                });
         })->count();
     }
 

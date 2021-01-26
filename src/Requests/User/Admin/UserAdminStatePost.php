@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\User\Requests\User\Admin;
 
-use DaydreamLab\User\Requests\User\UserStatePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class UserAdminStatePost extends UserStatePost
+class UserAdminStatePost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.

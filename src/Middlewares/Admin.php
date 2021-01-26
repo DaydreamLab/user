@@ -3,9 +3,8 @@
 namespace  DaydreamLab\User\Middlewares;
 
 use Closure;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class Admin
 {
@@ -18,12 +17,17 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-
         $user = isset($request['user'])
             ? $request['user']
-            : $request['user'] = Auth::guard('api')->user();
+            : $request->user('api');
+
         if (!$user || !$user->isAdmin()) {
-            return ResponseHelper::genResponse('InsufficientPermissionAdministrator', null, '', '');
+            return ResponseHelper::genResponse(
+                Str::upper(Str::snake('InsufficientPermissionAdministrator')),
+                null,
+                '',
+                ''
+            );
         }
 
         return $next($request);

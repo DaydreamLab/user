@@ -20,7 +20,7 @@ class Expired
     {
         $user = isset($request['user'])
             ? $request['user']
-            : $request['user'] = Auth::guard('api')->user();
+            : $request->user('api');
 
         if ($user) {
             $token = $user->token();

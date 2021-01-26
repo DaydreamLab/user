@@ -23,8 +23,27 @@ class UserFrontStorePost extends UserStorePost
      */
     public function rules()
     {
-        $rules = [
+        return [
+            'id'                    => 'nullable|integer',
+            'email'                 => 'required|email',
+            'first_name'            => 'required|string',
+            'last_name'             => 'required|string',
+            'nickname'              => 'nullable|string',
+            'gender'                => 'nullable|string',
+            'image'                 => 'nullable|string',
+            'birthday'              => 'nullable|date',
+            'phone_code'            => 'nullable|string',
+            'phone'                 => 'nullable|string',
+            'school'                => 'nullable|string',
+            'job'                   => 'nullable|string',
+            'country'               => 'nullable|string',
+            'state'                 => 'nullable|string',
+            'city'                  => 'nullable|string',
+            'district'              => 'nullable|string',
+            'address'               => 'nullable|string',
+            'zipcode'               => 'nullable|string',
+            'timezone'              => 'nullable|string',
+            'locale'                => 'nullable|string',
         ];
-        return array_merge($rules, parent::rules());
     }
 }

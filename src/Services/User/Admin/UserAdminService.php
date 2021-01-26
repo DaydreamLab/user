@@ -4,14 +4,11 @@ namespace DaydreamLab\User\Services\User\Admin;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class UserAdminService extends UserService
@@ -37,6 +34,14 @@ class UserAdminService extends UserService
     }
 
 
+    public function addMapping($item, $input)
+    {
+        if (count($input->get('group_ids'))) {
+            $item->groups()->attach($input->get('groups_ids'));
+        }
+    }
+
+
     public function block(Collection $input)
     {
         $result = false;
@@ -51,7 +56,7 @@ class UserAdminService extends UserService
         }
 
         $block = $input->get('block');
-        if ($block== '1') {
+        if ($block == '1') {
             $action = 'Block';
         } elseif ($block == '0') {
             $action = 'Unblock';
@@ -115,8 +120,7 @@ class UserAdminService extends UserService
         $input_groups = $input->get('groups');
         $input->forget('groups');
 
-        if (!$this->user->isSuperUser())
-        {
+        if (!$this->user->isSuperUser()) {
             $input->put('where', [
                 [
                     'key'       => 'email',
@@ -128,24 +132,16 @@ class UserAdminService extends UserService
 
         $search_result = parent::search($input);
 
-        //
         $items = new Collection();
-        foreach ($search_result as $user)
-        {
-            foreach ($user->groups as $group)
-            {
-                if ($input_groups == '')
-                {
-                    if (in_array($group->id, $this->user->viewlevels))
-                    {
+        foreach ($search_result as $user) {
+            foreach ($user->groups as $group) {
+                if ($input_groups == '') {
+                    if (in_array($group->id, $this->user->viewlevels)) {
                         $items->push($user);
                         break;
                     }
-                }
-                else
-                {
-                    if($input_groups == $group->id)
-                    {
+                } else {
+                    if($input_groups == $group->id) {
                         $items->push($user);
                         break;
                     }
@@ -163,49 +159,31 @@ class UserAdminService extends UserService
     public function store(Collection $input)
     {
         if (InputHelper::null($input, 'id')) {
-
-            if (InputHelper::null($input, 'password'))
-            {
-                throw new HttpResponseException(ResponseHelper::genResponse('INPUT_INVALID', (object)['password' => ['password can\'t be null']]));
-            }
-            else
-            {
+            if (InputHelper::null($input, 'password')) {
+                $this->throwResponse('InvalidInput', ['password' => 'password can\'t be null']);
+            } else {
                 if ($this->checkEmail($input->get('email'))){
-                    throw new HttpResponseException(
-                        ResponseHelper::genResponse(
-                            $this->status)
-                    );
+                    $this->throwResponse('EmailIsRegistered');
                 }
                 $input->put('password', bcrypt($input->get('password')));
                 $input->put('activate_token', Str::random(48));
             }
-        }
-        else
-        {
-            if (!InputHelper::null($input, 'password'))
-            {
+        } else {
+            if (!InputHelper::null($input, 'password')) {
                 $input->put('password', bcrypt($input->get('password')));
-            }
-            else
-            {
+            } else {
                 $input->forget('password');
             }
         }
 
-        $input->forget('password_confirmation');
-
-
         $result = parent::store($input);
-        if (gettype($result) == 'boolean') {    //更新使用者
-            $user = $this->find($input->get('id'));
-            $user->groups()->detach();
-            $user->groups()->attach($input->get('group_ids'));
-        }
-        else {//新增使用者
-            $result->groups()->attach($input->get('group_ids'));
-        }
 
         return $result;
     }
 
+
+    public function modifyMapping($item, $input)
+    {
+        $item->groups()->sync($input->get('group_ids'), true);
+    }
 }
