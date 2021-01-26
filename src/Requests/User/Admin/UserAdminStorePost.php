@@ -2,11 +2,17 @@
 
 namespace DaydreamLab\User\Requests\User\Admin;
 
+use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\User\Models\User\UserGroup;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class UserAdminStorePost extends AdminRequest
 {
+    protected $modelName = 'User';
+
     protected $apiMethod = 'storeUser';
 
     /**
@@ -63,7 +69,6 @@ class UserAdminStorePost extends AdminRequest
             ],
             'password'              => 'nullable|string|min:8|max:16',
             'password_confirmation' => 'nullable|same:password',
-
         ];
     }
 
@@ -72,6 +77,20 @@ class UserAdminStorePost extends AdminRequest
     {
         $validated = parent::validated();
         $validated->forget('password_confirmation');
+
+        $groupIds = UserGroup::all()->map(function ($group) {
+            return $group->id;
+        })->all();
+
+        $validGroupIds =  array_intersect($validated->get('group_ids'), $groupIds);
+        if (!count($validGroupIds)) {
+            throw new HttpResponseException(ResponseHelper::genResponse(
+               Str::upper(Str::snake('InvalidInput')),
+               ['group_ids' => $validated->get('group_ids')],
+               null,
+               null
+            ));
+        }
 
         return $validated;
     }

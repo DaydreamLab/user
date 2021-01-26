@@ -115,6 +115,12 @@ class UserAdminService extends UserService
     }
 
 
+    public function modifyMapping($item, $input)
+    {
+        $item->groups()->sync($input->get('group_ids'), true);
+    }
+
+
     public function search(Collection $input)
     {
         $input_groups = $input->get('groups');
@@ -182,8 +188,8 @@ class UserAdminService extends UserService
     }
 
 
-    public function modifyMapping($item, $input)
+    public function removeMapping($item)
     {
-        $item->groups()->sync($input->get('group_ids'), true);
+        $item->groups()->detach();
     }
 }

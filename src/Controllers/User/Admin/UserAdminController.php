@@ -6,6 +6,8 @@ use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
+use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminListResourceCollection;
+use DaydreamLab\User\Resources\User\Admin\Models\UserAdminResource;
 use DaydreamLab\User\Services\User\Admin\UserAdminService;
 use DaydreamLab\User\Requests\User\Admin\UserAdminRemovePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminStorePost;
@@ -39,9 +41,9 @@ class UserAdminController extends BaseController
     public function getItem(Request $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->getItem(collect(['id' => $request->get('id')]));
+        $this->service->getItem(collect(['id' => $request->route('id')]));
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, new UserAdminResource($this->service->response));
     }
 
 
@@ -88,6 +90,6 @@ class UserAdminController extends BaseController
         $this->service->setUser($request->user());
         $this->service->search($request->validated());
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, new UserAdminListResourceCollection($this->service->response));
     }
 }

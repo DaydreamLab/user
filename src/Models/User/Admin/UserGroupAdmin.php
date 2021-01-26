@@ -12,5 +12,5 @@ class UserGroupAdmin extends UserGroup
      */
     protected $table = 'users_groups';
 
-    static $custom_relations = [];
+    //static $custom_relations = [];
 }

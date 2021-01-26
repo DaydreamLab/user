@@ -8,6 +8,9 @@ use Illuminate\Validation\Rule;
 
 class UserAdminBlockPost extends AdminRequest
 {
+    protected $modelName = 'User';
+
+    protected $apiMethod = 'blockUser';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -15,9 +18,6 @@ class UserAdminBlockPost extends AdminRequest
      */
     public function authorize()
     {
-        $groups = $this->user->assets;
-
-        exit();
         return parent::authorize();
     }
 
