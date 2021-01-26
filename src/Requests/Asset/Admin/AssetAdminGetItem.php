@@ -5,11 +5,11 @@ namespace DaydreamLab\User\Requests\Asset\Admin;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use Illuminate\Validation\Rule;
 
-class AssetApiAdminStatePost extends AdminRequest
+class AssetAdminGetItem extends AdminRequest
 {
-    protected $modelName = 'Api';
+    protected $modelName = 'Asset';
 
-    protected $apiMethod = 'updateApiState';
+    protected $apiMethod = 'getItem';
     /**
      * Determine if the user is authorized to make this request.
      *

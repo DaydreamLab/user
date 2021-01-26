@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
+use DaydreamLab\User\Requests\User\Admin\UserAdminGetItem;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminListResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Models\UserAdminResource;
 use DaydreamLab\User\Services\User\Admin\UserAdminService;
@@ -38,7 +39,7 @@ class UserAdminController extends BaseController
     }
 
 
-    public function getItem(Request $request)
+    public function getItem(UserAdminGetItem $request)
     {
         $this->service->setUser($request->user('api'));
         $this->service->getItem(collect(['id' => $request->route('id')]));

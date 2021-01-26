@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Controllers\Viewlevel\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminGetItem;
 use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminOrderingPost;
 use DaydreamLab\User\Resources\Viewlevel\Admin\Collections\ViewlevelAdminListResourceCollection;
 use DaydreamLab\User\Resources\Viewlevel\Admin\Models\ViewlevelAdminResource;
@@ -27,7 +28,7 @@ class ViewlevelAdminController extends BaseController
         parent::__construct($service);
     }
 
-    public function getItem(Request $request)
+    public function getItem(ViewlevelAdminGetItem $request)
     {
         $this->service->setUser($request->user('api'));
         $this->service->getItem(collect(['id' => $request->route('id')]));

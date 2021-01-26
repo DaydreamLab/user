@@ -6,9 +6,9 @@ use DaydreamLab\JJAJ\Requests\ListRequest;
 
 class AssetApiAdminSearchPost extends ListRequest
 {
-    protected $modelName = 'AssetApi';
+    protected $modelName = 'Api';
 
-    protected $apiMethod = 'searchAssetApi';
+    protected $apiMethod = 'searchApi';
     /**
      * Determine if the user is authorized to make this request.
      *

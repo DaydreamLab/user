@@ -1,15 +1,14 @@
 <?php
 
-namespace DaydreamLab\User\Requests\Asset\Admin;
+namespace DaydreamLab\User\Requests\User\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
-use Illuminate\Validation\Rule;
 
-class AssetApiAdminStatePost extends AdminRequest
+class UserGroupAdminGetItem extends AdminRequest
 {
-    protected $modelName = 'Api';
+    protected $apiMethod = 'getItem';
 
-    protected $apiMethod = 'updateApiState';
+    protected $modelName = 'UserGroup';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,12 +28,7 @@ class AssetApiAdminStatePost extends AdminRequest
     {
         $rules = [
             'ids'       => 'required|array',
-            'ids.*'     => 'required|integer',
-            'state'     => [
-                'required',
-                'integer',
-                Rule::in([0,1,-2])
-            ]
+            'ids.*'     => 'required|integer'
         ];
         return array_merge($rules, parent::rules());
     }

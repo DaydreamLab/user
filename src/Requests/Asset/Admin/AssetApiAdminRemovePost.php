@@ -6,9 +6,9 @@ use DaydreamLab\JJAJ\Requests\AdminRequest;
 
 class AssetApiAdminRemovePost extends AdminRequest
 {
-    protected $modelName = 'AssetApi';
+    protected $modelName = 'Api';
 
-    protected $apiMethod = 'deleteAssetApi';
+    protected $apiMethod = 'deleteApi';
     /**
      * Determine if the user is authorized to make this request.
      *

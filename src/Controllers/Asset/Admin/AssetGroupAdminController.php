@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
+use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminGetItem;
 use DaydreamLab\User\Services\Asset\Admin\AssetGroupAdminService;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminRemovePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminStorePost;
@@ -25,7 +26,7 @@ class AssetGroupAdminController extends BaseController
         $this->service = $service;
     }
 
-    public function getItem(Request $request)
+    public function getItem(AssetGroupAdminGetItem $request)
     {
         $this->service->getItem(collect(['id' => $request->route('id')]));
 

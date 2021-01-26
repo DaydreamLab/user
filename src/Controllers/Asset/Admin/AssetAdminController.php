@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Requests\Asset\Admin\AssetAdminGetItem;
 use DaydreamLab\User\Resources\Asset\Admin\Collections\AssetAdminListResourceCollection;
 use DaydreamLab\User\Resources\Asset\Admin\Models\AssetAdminResource;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class AssetAdminController extends BaseController
     }
 
 
-    public function getItem(Request $request)
+    public function getItem(AssetAdminGetItem $request)
     {
         $this->service->setUser($request->user('api'));
         $this->service->getItem(collect(['id' => $request->route('id')]));
@@ -76,7 +77,11 @@ class AssetAdminController extends BaseController
         $this->service->setUser($request->user());
         $this->service->storeNested($request->validated());
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status,
+            gettype($this->service->response)
+            ? new AssetAdminResource($this->service->response)
+            : null
+        );
     }
 
 

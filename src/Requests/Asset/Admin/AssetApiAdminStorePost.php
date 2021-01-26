@@ -6,9 +6,9 @@ use DaydreamLab\JJAJ\Requests\AdminRequest;
 
 class AssetApiAdminStorePost extends AdminRequest
 {
-    protected $modelName = 'AssetApi';
+    protected $modelName = 'Api';
 
-    protected $apiMethod = 'storeAsset';
+    protected $apiMethod = 'storeApi';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -28,7 +28,7 @@ class AssetApiAdminStorePost extends AdminRequest
     {
         $rules = [
             'id'            => 'nullable|integer',
-            'service'       => 'required|string',
+            'service'       => 'nullable|string',
             'method'        => 'required|string',
             'url'           => 'required|string',
         ];

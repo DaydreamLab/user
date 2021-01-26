@@ -3,7 +3,9 @@
 namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\InputHelper;
+use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminGetItem;
+use DaydreamLab\User\Resources\Asset\Admin\Collections\AssetApiAdminListResourceCollection;
+use DaydreamLab\User\Resources\Asset\Admin\Models\AssetApiAdminResource;
 use DaydreamLab\User\Services\Asset\Admin\AssetApiAdminService;
 use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminRemovePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminStorePost;
@@ -12,10 +14,6 @@ use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminSearchPost;
 
 class AssetApiAdminController extends BaseController
 {
-    protected $package = 'User';
-
-    protected $modelName = 'AssetApi';
-
     protected $modelType = 'Admin';
 
     public function __construct(AssetApiAdminService $service)
@@ -24,18 +22,18 @@ class AssetApiAdminController extends BaseController
         $this->service = $service;
     }
 
-    public function getItem($id)
+    public function getItem(AssetApiAdminGetItem $request)
     {
-        $this->service->canAction('getApi');
-        $this->service->getItem($id);
+        $this->service->setUser($request->user('api'));
+        $this->service->getItem(collect(['id' => $request->route('id')]));
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, new AssetApiAdminResource($this->service->response));
     }
 
 
     public function remove(AssetApiAdminRemovePost $request)
     {
-        $this->service->canAction('deleteApi');
+        $this->service->setUser($request->user('api'));
         $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
@@ -44,7 +42,7 @@ class AssetApiAdminController extends BaseController
 
     public function state(AssetApiAdminStatePost $request)
     {
-        $this->service->canAction('updateApiState');
+        $this->service->setUser($request->user('api'));
         $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
@@ -53,19 +51,22 @@ class AssetApiAdminController extends BaseController
 
     public function store(AssetApiAdminStorePost $request)
     {
-        InputHelper::null($request->validated(), 'id') ? $this->service->canAction('addApi')
-            : $this->service->canAction('editApi');
+        $this->service->setUser($request->user('api'));
         $this->service->store($request->validated());
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status,
+            gettype($this->service->response)
+                ? new AssetApiAdminResource($this->service->response)
+                : null
+        );
     }
 
 
     public function search(AssetApiAdminSearchPost $request)
     {
-        $this->service->canAction('searchApi');
+        $this->service->setUser($request->user('api'));
         $this->service->search($request->validated());
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, new AssetApiAdminListResourceCollection($this->service->response));
     }
 }
