@@ -5,6 +5,7 @@ use DaydreamLab\User\Models\User\User;
 
 class UserAdmin extends User
 {
+
     /**
      * The table associated with the model.
      *
@@ -12,5 +13,5 @@ class UserAdmin extends User
      */
     protected $table = 'users';
 
-    //static $custom_relations = [];
+    private static $custom_relations = [];
 }
