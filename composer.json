@@ -15,6 +15,7 @@
             "DaydreamLab\\User\\Tests\\": "tests/"
         }
     },
+
     "minimum-stability": "dev",
     "require": {
         "../../jjaj": "dev-base/develop",
@@ -32,6 +33,9 @@
             "url":  "https://github.com/DaydreamLab/JJAJ.git"
         }
     ],
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
     "extra": {
         "laravel": {
             "providers": [
