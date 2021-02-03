@@ -21,6 +21,9 @@ class UserAdminListResource extends JsonResource
             'lastName'              => $this->last_name,
             'block'                 => $this->block,
             'activation'            => $this->activation,
+            'groups'                => $this->groups->map(function ($group) {
+                return $group->title;
+            }),
         ];
     }
 }
