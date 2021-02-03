@@ -108,7 +108,7 @@ class UserAdminService extends UserService
         $response['apis']      = $apis;
         $response['assets']    = $asset_assets;
 
-        $this->status = Str::upper(Str::snake($this->type.'GetSelfPageSuccess'));;
+        $this->status = 'GetSelfPageSuccess';
         $this->response = $response;
 
         return $response;
