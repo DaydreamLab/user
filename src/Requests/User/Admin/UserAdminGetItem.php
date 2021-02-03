@@ -29,12 +29,7 @@ class UserAdminGetItem extends AdminRequest
     public function rules()
     {
         $rules = [
-            'ids'       => 'required|array',
-            'ids.*'     => 'nullable|integer',
-            'block'     => [
-                'required',
-                Rule::in(0,1)
-            ],
+
         ];
         return array_merge($rules, parent::rules());
     }
