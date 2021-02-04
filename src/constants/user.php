@@ -15,6 +15,11 @@ return [
     'EMAIL_IS_NOT_REGISTERED'           => 200,
     'EMAIL_OR_PASSWORD_INCORRECT'       => 403,
 
+    'FB_EMAIL_IS_REQUIRED'              => 403,
+    'FB_LOGIN_SUCCESS'                  => 200,
+    'FB_REGISTER_SUCCESS'               => 200,
+    'FB_REGISTER_UNFINISHED'            => 403,
+
     'GET_SELF_PAGE_SUCCESS'             => 200,
 
     'HAS_BEEN_ACTIVATED'                => 403,

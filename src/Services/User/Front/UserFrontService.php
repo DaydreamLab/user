@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\User\Services\User\Front;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
@@ -68,76 +67,63 @@ class UserFrontService extends UserService
     }
 
 
-//    public function fbLogin()
-//    {
-//        $fb_user = Socialite::driver('facebook')
-//            ->fields([
-//                'name',
-//                'first_name',
-//                'last_name',
-//                'email',
-//                ])
-//            ->stateless()->user();
-//
-//        $social_user = $this->socialUserService->findBy('provider_id', '=', $fb_user->id)->first();
-//        if ($social_user) {     // 登入
-//            $user = $this->find($social_user->user_id);
-//            if ($user) {
-//                $data = $this->helper->getUserLoginData($user);
-//                // 更新 token
-//                $social_user->token = $fb_user->token;
-//                $social_user->save();
-//                $this->status = 'SOCIAL_USER_LOGIN_SUCCESS';
-//                $this->response = $data ;
-//            }
-//            else {
-//                $this->status = 'SOCIAL_USER_REGISTER_NOT_COMPLETE';
-//                $this->response = $fb_user->user;
-//            }
-//        }
-//        else {                  //註冊
-//            return $this->fbRegister($fb_user);
-//        }
-//
-//        return $social_user;
-//    }
+    public function fbLogin()
+    {
+        $fb_user = Socialite::driver('facebook')
+            ->fields(['name', 'first_name', 'last_name', 'email', 'gender'])
+            ->stateless()
+            ->user();
+
+        $social_user = $this->socialUserService->findByChain(
+            ['provider', 'provider_id'],
+            ['=', '='],
+            ['facebook',$fb_user->id]
+        )->first();
+        if ($social_user) {     // 登入
+            $user = $this->find($social_user->user_id);
+            if ($user) {
+                // 更新 token
+                $social_user->token = $fb_user->token;
+                $social_user->save();
+                $this->status = 'FbLoginSuccess';
+                $this->response = $this->helper->getUserLoginData($user) ;
+            } else {
+                $this->status = 'FbRegisterUnfinished';
+                $this->response = null;
+            }
+        } else {
+            return $this->fbRegister($fb_user);
+        }
+
+        return $social_user;
+    }
 
 
     /**
      * @param $user User
      */
-//    public function fbRegister($fb_user)
-//    {
-//        if (!$fb_user->offsetExists('email')) {
-//            $this->status = 'SOCIAL_USER_REGISTER_EMAIL_REQUIRED';
-//            return false;
-//        }
-//
-//        if ($this->checkEmail($fb_user->email))
-//        {
-//            return false;
-//        }
-//
-//        $user_data  = $this->helper->mergeDataFbUserCreate($fb_user);
-//        $user       = $this->create($user_data);
-//        if (!$user) {
-//            $this->status = 'USER_CREATE_FAIL';
-//            return false;
-//        }
-//
-//        $social_data = $this->helper->mergeDataFbSocialUserCreate($fb_user, $user->id);
-//        $social      = $this->socialUserService->create($social_data);
-//        if (!$social)
-//        {
-//            $this->status = 'SOCIAL_USER_CREATE_FAIL';
-//            return false;
-//        }
-//
-//        $this->status = 'SOCIAL_USER_LOGIN_SUCCESS';
-//        $this->response = $this->helper->getUserLoginData($user) ;
-//
-//        return $user;
-//    }
+    public function fbRegister($fb_user)
+    {
+        if (!$fb_user->email) {
+            $this->status = 'FbEmailRequired';
+            return false;
+        }
+
+        if ($this->checkEmail($fb_user->email)) {
+            return false;
+        }
+
+        $user_data  = $this->helper->mergeDataFbUserCreate($fb_user);
+        $user       = $this->add($user_data);
+
+        $social_data = $this->helper->mergeDataFbSocialUserCreate($fb_user, $user->id);
+        $socialUser  = $this->socialUserService->store($social_data);
+
+        $this->status = 'FbRegisterSuccess';
+        $this->response = $this->helper->getUserLoginData($user) ;
+
+        return $user;
+    }
 
 
     public function forgotPasswordTokenValidate($token)

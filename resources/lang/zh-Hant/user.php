@@ -14,6 +14,11 @@ return [
     'EMAIL_IS_NOT_REGISTERED'           => 'Email 尚未被註冊',
     'EMAIL_OR_PASSWORD_INCORRECT'       => '帳號或密碼錯誤',
 
+    'FB_EMAIL_IS_REQUIRED'              => '缺少 email 資訊',
+    'FB_LOGIN_SUCCESS'                  => 'Facebook 登入成功',
+    'FB_REGISTER_SUCCESS'               => 'Facebook 註冊會員成功',
+    'FB_REGISTER_UNFINISHED'            => 'Facebook 註冊尚未完成',
+
     'GET_SELF_PAGE_SUCCESS'             => '使用者取得權限資訊成功',
 
     'HAS_BEEN_ACTIVATED'                => '使用者帳號已被啟用過',

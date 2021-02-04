@@ -2,12 +2,10 @@
 
 namespace DaydreamLab\User\Services\User;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Add;
 use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Events\Remove;
-use DaydreamLab\User\Events\Login;
+use DaydreamLab\User\Events\Login;;
 use DaydreamLab\User\Helpers\UserHelper;
 use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\JJAJ\Services\BaseService;

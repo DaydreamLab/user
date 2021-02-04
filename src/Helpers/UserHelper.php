@@ -17,8 +17,7 @@ class UserHelper
         $data['first_name']  = $user->first_name;
         $data['last_name']   = $user->last_name;
         $data['tokenResult'] = $tokenResult;
-        if ($user->isAdmin())
-        {
+        if ($user->isAdmin()) {
             $sort_groups         = $user->groups->sortBy('id');
             $data['id']          = $user->id;
             $data['redirect']    = $sort_groups->first()->redirect;
@@ -43,9 +42,8 @@ class UserHelper
         $data['password']       = bcrypt(Str::random(16));
         $data['activate_token'] = Str::random(128);
         $data['activation']     = 1;
-        $data['redirect']       = '/';
 
-        return $data;
+        return collect($data);
     }
 
 
@@ -60,6 +58,6 @@ class UserHelper
         $data['user_id']      = $user_id;
         $data['token']        = $fb_user->token;
 
-        return $data;
+        return collect($data);
     }
 }

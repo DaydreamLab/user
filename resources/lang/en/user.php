@@ -15,6 +15,11 @@ return [
     'EMAIL_IS_NOT_REGISTERED'           => '{$ModelName} email is not registered',
     'EMAIL_OR_PASSWORD_INCORRECT'       => '{$ModelName} email or password incorrect',
 
+    'FB_EMAIL_IS_REQUIRED'              => 'lack email info',
+    'FB_LOGIN_SUCCESS'                  => 'Facebook login success',
+    'FB_REGISTER_SUCCESS'               => 'Facebook register success',
+    'FB_REGISTER_UNFINISHED'            => 'Facebook register unfinished',
+
     'GET_SELF_PAGE_SUCCESS'             => '{$ModelName} get self page success',
 
     'HAS_BEEN_ACTIVATED'                => '{$ModelName} has been activated',

@@ -3,8 +3,6 @@
 namespace DaydreamLab\User\Database\Seeders;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\User\Models\Viewlevel\Admin\ViewlevelAdmin;
-use DaydreamLab\User\Repositories\Viewlevel\Admin\ViewlevelAdminRepository;
 use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use Illuminate\Database\Seeder;
 
@@ -17,31 +15,31 @@ class ViewlevelsTableSeeder extends Seeder
      */
     public function run()
     {
-        $service = new ViewlevelAdminService(new ViewlevelAdminRepository(new ViewlevelAdmin()));
+        $service = app(ViewlevelAdminService::class);
 
-        $service->store(Helper::collect([
+        $service->store(collect([
             'title'     => 'Public',
             'rules'     => [2],
         ]));
 
-        $service->store(Helper::collect([
+        $service->store(collect([
             'title'     => 'Guest',
             'rules'     => [3],
         ]));
 
-        $service->store(Helper::collect([
+        $service->store(collect([
             'title'     => 'Registered',
             'ordering'  => 3,
             'rules'     => [2,4],
         ]));
 
 
-        $service->store(Helper::collect([
+        $service->store(collect([
             'title'     => 'Administrator',
             'rules'     => [2,3,4,5],
         ]));
 
-        $service->store(Helper::collect([
+        $service->store(collect([
             'title'     => 'Super User',
             'ordering'  => 4,
             'rules'     => [2,3,4,5,6],
