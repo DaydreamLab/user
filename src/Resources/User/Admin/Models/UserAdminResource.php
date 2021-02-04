@@ -30,9 +30,7 @@ class UserAdminResource extends JsonResource
             'zipcode'               => $this->zipcode,
             'activation'            => $this->activation,
             'block'                 => $this->block,
-            'groups'                => $this->groups->map(function ($group) {
-                return $group->title;
-            }),
+            'groups'                => $this->groups->toArray(),
             'access_ids'            => $this->access_ids
         ];
     }

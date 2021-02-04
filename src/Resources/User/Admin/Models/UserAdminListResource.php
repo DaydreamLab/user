@@ -17,10 +17,11 @@ class UserAdminListResource extends JsonResource
         return [
             'id'                    => $this->id,
             'email'                 => $this->email,
-            'firstName'             => $this->first_name,
-            'lastName'              => $this->last_name,
+            'first_name'            => $this->first_name,
+            'last_name'             => $this->last_name,
             'block'                 => $this->block,
             'activation'            => $this->activation,
+            'groups'                => $this->groups->toArray(),
         ];
     }
 }
