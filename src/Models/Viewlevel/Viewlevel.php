@@ -29,7 +29,6 @@ class Viewlevel extends BaseModel
         'title',
         'description',
         'rules',
-        'ordering',
         'created_by',
         'updated_by'
     ];

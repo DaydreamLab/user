@@ -42,11 +42,9 @@ Route::get('/api/user/login', [UserFrontController::class, 'getLogin'])
 Route::get('/api/user', [UserFrontController::class, 'getItem'])
     ->middleware(['expired']);
 
-//Route::get('/api/user/login/facebook', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@fbLogin');
-//Route::get('/api/user/login/facebook/callback', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@fbCallback');
-
-
-
+Route::get('/api/user/login/facebook', [UserFrontController::class, 'fbLogin']);
+Route::get('/api/user/login/facebook/callback', [UserFrontController::class, 'fbCallback']);
+//
 
 /************************************  後台 API  ************************************/
 

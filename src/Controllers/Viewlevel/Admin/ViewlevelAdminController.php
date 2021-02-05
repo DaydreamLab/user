@@ -26,6 +26,7 @@ class ViewlevelAdminController extends BaseController
     public function __construct(ViewlevelAdminService $service)
     {
         parent::__construct($service);
+        $this->service = $service;
     }
 
     public function getItem(ViewlevelAdminGetItem $request)
@@ -33,7 +34,9 @@ class ViewlevelAdminController extends BaseController
         $this->service->setUser($request->user('api'));
         $this->service->getItem(collect(['id' => $request->route('id')]));
 
-        return $this->response($this->service->status, new ViewlevelAdminResource($this->service->response));
+        return $this->response($this->service->status,
+            new ViewlevelAdminResource($this->service->response)
+        );
     }
 
 

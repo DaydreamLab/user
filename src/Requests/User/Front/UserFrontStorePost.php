@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\User\Requests\User\Front;
 
-use DaydreamLab\User\Requests\User\UserStorePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class UserFrontStorePost extends UserStorePost
+class UserFrontStorePost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.

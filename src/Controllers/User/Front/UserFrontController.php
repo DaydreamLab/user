@@ -16,9 +16,9 @@ use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontResource;
 use DaydreamLab\User\Services\User\Front\UserFrontService;
 use DaydreamLab\User\Requests\User\Front\UserFrontStorePost;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use Symfony\Component\HttpFoundation\Request;
 
 class UserFrontController extends BaseController
 {
@@ -60,10 +60,22 @@ class UserFrontController extends BaseController
     }
 
 
-//    public function fblogin()
-//    {
-//        return Socialite::driver('facebook')->stateless()->redirect();
-//    }
+    public function fbLogin()
+    {
+        return Socialite::driver('facebook')->stateless()->redirect();
+    }
+
+
+    public function fbCallback()
+    {
+        $this->service->fbLogin();
+
+        return $this->response($this->service->status,
+            gettype($this->service->response) == 'object'
+            ? new UserFrontLoginResource($this->service->response)
+            : $this->service->response
+        );
+    }
 
 
     public function forgotPasswordTokenValidate($token)
@@ -73,13 +85,6 @@ class UserFrontController extends BaseController
         return $this->response($this->service->status, $this->service->response);
     }
 
-
-//    public function fbCallback()
-//    {
-//        $this->service->fblogin();
-//
-//        return $this->response($this->service->status, $this->service->response);
-//    }
 
     public function getItem(Request $request)
     {
