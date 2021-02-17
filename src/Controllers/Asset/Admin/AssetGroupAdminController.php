@@ -10,7 +10,8 @@ use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminRemovePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminStorePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminStatePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminSearchPost;
-use Illuminate\Http\Request;
+use DaydreamLab\User\Resources\Asset\Admin\Collections\AssetGroupAdminListResourceCollection;
+use DaydreamLab\User\Resources\Asset\Admin\Models\AssetGroupAdminResource;
 
 class AssetGroupAdminController extends BaseController
 {
@@ -28,14 +29,16 @@ class AssetGroupAdminController extends BaseController
 
     public function getItem(AssetGroupAdminGetItem $request)
     {
+        $this->service->setUser($request->user('api'));
         $this->service->getItem(collect(['id' => $request->route('id')]));
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, new AssetGroupAdminResource($this->service->response));
     }
 
 
     public function remove(AssetGroupAdminRemovePost $request)
     {
+        $this->service->setUser($request->user('api'));
         $this->service->remove($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
@@ -44,6 +47,7 @@ class AssetGroupAdminController extends BaseController
 
     public function state(AssetGroupAdminStatePost $request)
     {
+        $this->service->setUser($request->user('api'));
         $this->service->state($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
@@ -52,16 +56,22 @@ class AssetGroupAdminController extends BaseController
 
     public function store(AssetGroupAdminStorePost $request)
     {
+        $this->service->setUser($request->user('api'));
         $this->service->store($request->validated());
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status,
+            gettype($this->service->response)
+                ? new AssetGroupAdminResource($this->service->response)
+                : null
+        );
     }
 
 
     public function search(AssetGroupAdminSearchPost $request)
     {
+        $this->service->setUser($request->user('api'));
         $this->service->search($request->validated());
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, new AssetGroupAdminListResourceCollection($this->service->response));
     }
 }
