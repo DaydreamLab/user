@@ -18,6 +18,7 @@ class AssetAdminResource extends JsonResource
             'id'                => $this->id,
             'parent_id'         => $this->parent_id,
             'title'             => $this->title,
+            'type'              => $this->type,
             'path'              => $this->path,
             'fullPath'          => $this->fullPath,
             'component'         => $this->component,
@@ -26,7 +27,7 @@ class AssetAdminResource extends JsonResource
             'icon'              => $this->icon,
             'showNav'           => $this->showNav,
             'tree_title'        => $this->tree_title,
-            'tree_list_title'   =>  $this->tree_list_title,
+            'tree_list_title'   => $this->tree_list_title,
         ];
     }
 }

@@ -78,7 +78,7 @@ class AssetAdminController extends BaseController
         $this->service->storeNested($request->validated());
 
         return $this->response($this->service->status,
-            gettype($this->service->response)
+            gettype($this->service->response) == 'object'
             ? new AssetAdminResource($this->service->response)
             : null
         );
