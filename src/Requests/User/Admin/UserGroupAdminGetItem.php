@@ -27,8 +27,7 @@ class UserGroupAdminGetItem extends AdminRequest
     public function rules()
     {
         $rules = [
-            'ids'       => 'required|array',
-            'ids.*'     => 'required|integer'
+
         ];
         return array_merge($rules, parent::rules());
     }

@@ -21,12 +21,8 @@ class UserGroupAdminResource extends JsonResource
             'tree_title'    => $this->tree_title,
             'description'   => $this->tree_title,
             'canDelete'     => $this->canDelete,
-            'apis'          => $this->apis->map(function ($api) {
-                return $api->id;
-            }),
-            'assets'        => $this->assets->map(function ($asset) {
-                return $asset->id;
-            }),
+            'apis'          => $this->apis,
+            'assets'        => $this->assets,
             'ordering'      => $this->ordering,
             'redirect'      => $this->redirect,
         ];
