@@ -20,6 +20,7 @@ class UserAdminService extends UserService
     protected $search_keys = [
         'first_name',
         'last_name',
+        'user_name',
         'email',
     ];
 

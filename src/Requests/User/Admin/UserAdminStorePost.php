@@ -35,8 +35,9 @@ class UserAdminStorePost extends AdminRequest
         return [
             'id'                    => 'nullable|integer',
             'email'                 => 'required|email',
-            'first_name'            => 'required|string',
-            'last_name'             => 'required|string',
+            'first_name'            => 'nullable|string',
+            'last_name'             => 'nullable|string',
+            'user_name'             => 'required|string',
             'nickname'              => 'nullable|string',
             'gender'                => 'nullable|string',
             'image'                 => 'nullable|string',

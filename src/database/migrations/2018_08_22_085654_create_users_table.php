@@ -17,11 +17,11 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('user_name');
             $table->string('nickname')->nullable();
             $table->string('gender')->nullable();
-            $table->string('image')->nullable();
             $table->date('birthday')->nullable();
             $table->string('phone_code')->nullable();
             $table->string('phone')->nullable();
@@ -33,9 +33,10 @@ class CreateUsersTable extends Migration
             $table->string('district')->nullable();
             $table->string('address')->nullable();
             $table->string('zipcode')->nullable();
+            $table->text('how')->nullable();
+            $table->string('image')->nullable();
             $table->boolean('activation')->default(0);
             $table->string('activate_token');
-            //$table->string('redirect')->nullable();
             $table->unsignedTinyInteger('block')->nullable()->default(0);
             $table->unsignedTinyInteger('reset_password')->default(0);
             $table->timestamp('last_reset_at')->nullable();

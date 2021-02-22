@@ -16,6 +16,7 @@ class UserHelper
         $data['token']       = $tokenResult->accessToken;
         $data['first_name']  = $user->first_name;
         $data['last_name']   = $user->last_name;
+        $data['user_name'] = $user->user_name;
         $data['tokenResult'] = $tokenResult;
         if ($user->isAdmin()) {
             $sort_groups         = $user->groups->sortBy('id');
@@ -36,6 +37,7 @@ class UserHelper
         $data = [];
         $data['first_name']     = $fb_user->user['first_name'];
         $data['last_name']      = $fb_user->user['last_name'];
+        $data['user_name']      = $fb_user->user['last_name'].$fb_user->user['first_name'];
         $data['email']          = $fb_user->email;
         $data['nickname']       = $fb_user->nickname;
         $data['avatar']         = $fb_user->avatar;

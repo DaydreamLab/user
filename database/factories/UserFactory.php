@@ -30,6 +30,7 @@ class UserFactory extends Factory
             'password'      => bcrypt(1234),
             'first_name'    => $this->faker->firstName($gender),
             'last_name'     => $this->faker->lastName,
+            'user_name'     => $this->faker->userName,
             'nickname'      => $this->faker->userName,
             'gender'        => $gender,
             'image'         => $this->faker->image(),

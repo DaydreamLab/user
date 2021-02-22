@@ -37,10 +37,10 @@ class User extends Authenticatable
         'password',
         'first_name',
         'last_name',
+        'user_name',
         'nickname',
         'redirect',
         'gender',
-        'image',
         'phone_code',
         'phone',
         'birthday',
@@ -54,6 +54,8 @@ class User extends Authenticatable
         'district',
         'address',
         'zipcode',
+        'how',
+        'image',
         'created_by',
         'updated_by',
         'activation',
@@ -76,6 +78,10 @@ class User extends Authenticatable
         'password',
         'password_confirmation',
         'remember_token',
+    ];
+
+    protected $casts = [
+        'how' => 'array'
     ];
 
     protected $appends = [

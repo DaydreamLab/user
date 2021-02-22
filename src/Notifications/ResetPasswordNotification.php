@@ -28,7 +28,7 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
 
     /**
      * Get the notification's delivery channels.
-     *
+     *'user_name'             => 'required|string',
      * @param  mixed  $notifiable
      * @return array
      */
@@ -51,7 +51,7 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
 
         return $template === 'default'
             ? (new MailMessage)
-                ->greeting('Dear ' . $this->user->first_name . ' ' . $this->user->last_name)
+                ->greeting('Dear ' . $this->user->user_name)
                 ->line('You are receiving this email because we received a password reset request for your account.')
                 ->action('Reset Password ', url($url))
                 ->line('If you did not request a password reset, no further action is required.')
