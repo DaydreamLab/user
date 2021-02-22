@@ -28,7 +28,8 @@ class UserFrontResource extends JsonResource
             'city'                  => $this->city,
             'district'              => $this->district,
             'address'               => $this->address,
-            'zipcode'               => $this->zipcode
+            'zipcode'               => $this->zipcode,
+            'how'                   => $this->how,
         ];
     }
 }

@@ -23,17 +23,25 @@ class CreateUsersTable extends Migration
             $table->string('nickname')->nullable();
             $table->string('gender')->nullable();
             $table->date('birthday')->nullable();
+            $table->string('job')->nullable();
             $table->string('phone_code')->nullable();
             $table->string('phone')->nullable();
-            $table->string('school')->nullable();
-            $table->string('job')->nullable();
             $table->string('country')->nullable();
             $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->string('district')->nullable();
             $table->string('address')->nullable();
             $table->string('zipcode')->nullable();
+
+            $table->string('identity')->nullable();
+            $table->string('unit')->nullable();
+            $table->string('unit_department')->nullable();
+            $table->string('job_title')->nullable();
+            $table->string('school')->nullable();
+            $table->string('school_department')->nullable();
+            $table->string('grade')->nullable();
             $table->text('how')->nullable();
+
             $table->string('image')->nullable();
             $table->boolean('activation')->default(0);
             $table->string('activate_token');
