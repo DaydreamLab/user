@@ -29,16 +29,16 @@ class UserFrontRegisterPost extends AdminRequest
             'password_confirmation' => 'required|same:password',
             'first_name'            => 'required|string',
             'last_name'             => 'required|string',
-            'gender'                => 'nullble|string',
-            'image'                 => 'nullble|string',
-            'phone'                 => 'nullble|string',
-            'birthday'              => 'nullble|date',
-            'country'               => 'nullble|string',
-            'state'                 => 'nullble|string',
-            'city'                  => 'nullble|string',
-            'district'              => 'nullble|string',
-            'address'               => 'nullble|string',
-            'zipcode'               => 'nullble|string'
+            'gender'                => 'nullable|string',
+            'image'                 => 'nullable|string',
+            'phone'                 => 'nullable|string',
+            'birthday'              => 'nullable|date',
+            'country'               => 'nullable|string',
+            'state'                 => 'nullable|string',
+            'city'                  => 'nullable|string',
+            'district'              => 'nullable|string',
+            'address'               => 'nullable|string',
+            'zipcode'               => 'nullable|string'
         ];
     }
 }

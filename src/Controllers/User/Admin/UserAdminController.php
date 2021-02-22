@@ -71,8 +71,9 @@ class UserAdminController extends BaseController
         $input = $request->validated();
 
         if (!InputHelper::null($input, 'activation')) {
+            $activation = $input->get('activation');
             $input->forget('activation');
-            if($input->activation == 'false') {
+            if($activation == 'false') {
                 $input->put('activation', 0);
             } else {
                 $input->put('activation', 1);
