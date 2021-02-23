@@ -10,6 +10,7 @@ use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class UserAdminService extends UserService
 {
@@ -126,6 +127,19 @@ class UserAdminService extends UserService
         $input_groups = $input->get('groups');
         $input->forget('groups');
 
+        if ($input_groups != '') {
+            $maps = DB::table('users_groups_maps')->where('group_id', '=', $input_groups)->get();
+            $maps = $maps->map(function ($m) {
+                return $m->user_id;
+            })->toArray();
+
+            $input->put('special_queries', [[
+                'type' => 'whereIn',
+                'key' => 'id',
+                'value' => $maps
+            ]]);
+        }
+
         if (!$this->user->isSuperUser()) {
             $input->put('where', [
                 [
@@ -137,7 +151,7 @@ class UserAdminService extends UserService
         }
 
         $search_result = parent::search($input);
-
+/*
         $items = new Collection();
         foreach ($search_result as $user) {
             foreach ($user->groups as $group) {
@@ -157,8 +171,8 @@ class UserAdminService extends UserService
 
         $items  = $this->repo->paginate($items, $input->get('limit'));
         $this->response = $items;
-
-        return $items;
+*/
+        return $search_result;
     }
 
 
