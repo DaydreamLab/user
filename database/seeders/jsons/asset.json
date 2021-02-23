@@ -75,27 +75,27 @@
             "apis": [
               {
                 "method": "getApi",
-                "url": "/admin/asset/api/{id}",
+                "url": "/admin/api/{id}",
                 "created_by": 1
               },
               {
                 "method": "addApi",
-                "url": "/admin/asset/api/store",
+                "url": "/admin/api/store",
                 "created_by": 1
               },
               {
                 "method": "editApi",
-                "url": "/admin/asset/api/store",
+                "url": "/admin/api/store",
                 "created_by": 1
               },
               {
                 "method": "deleteApi",
-                "url": "/admin/asset/api/remove",
+                "url": "/admin/api/remove",
                 "created_by": 1
               },
               {
                 "method": "searchApi",
-                "url": "/admin/asset/api/search",
+                "url": "/admin/api/search",
                 "created_by": 1
               }
             ]

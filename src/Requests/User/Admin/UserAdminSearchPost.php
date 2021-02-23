@@ -44,4 +44,25 @@ class UserAdminSearchPost extends ListRequest
         ];
         return array_merge($rules, parent::rules());
     }
+
+
+    public function validated()
+    {
+        $validated = parent::validated();
+
+        if ($groupId = $validated->get('groups')) {
+            $validated->put('whereHas', [
+                [
+                    'relation' => 'groups',
+                    'callback'  => function ($q) use ($groupId) {
+                        $q->where('users_groups.id', $groupId);
+                    }
+                ]
+            ]);
+        }
+
+        $validated->forget('groups');
+
+        return $validated;
+    }
 }

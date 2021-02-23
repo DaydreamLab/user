@@ -206,6 +206,14 @@ class User extends Authenticatable
     }
 
 
+
+    public function groups()
+    {
+        return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id')
+            ->withTimestamps();
+    }
+
+
     public function hasAttribute($attribute)
     {
         return in_array($attribute, $this->fillable);
@@ -277,14 +285,15 @@ class User extends Authenticatable
     }
 
 
-    public function groups()
-    {
-        return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id');
-    }
-
-
     public static function newFactory()
     {
         return UserFactory::new();
+    }
+
+
+    public function tags()
+    {
+        return $this->belongsToMany(UserTag::class, 'users_tags_maps', 'user_id', 'tag_id')
+            ->withTimestamps();
     }
 }
