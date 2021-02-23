@@ -75,7 +75,8 @@ class UserGroup extends BaseModel
 
     public function apis()
     {
-        return $this->belongsToMany(AssetApi::class, 'users_groups_apis_maps', 'group_id', 'api_id');
+        return $this->belongsToMany(AssetApi::class, 'users_groups_apis_maps', 'group_id', 'api_id')
+            ->withTimestamps();;
     }
 
 
@@ -127,6 +128,7 @@ class UserGroup extends BaseModel
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'users_groups_maps', 'group_id', 'user_id');
+        return $this->belongsToMany(User::class, 'users_groups_maps', 'group_id', 'user_id')
+            ->withTimestamps();
     }
 }

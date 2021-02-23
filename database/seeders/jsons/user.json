@@ -7,6 +7,8 @@
     "nickname": "Admin",
     "activation": 1,
     "activate_token": "admin",
+    "timezone": "Asia/Taipei",
+    "locale": "zh-Hant",
     "groups":[6]
   },
   {
@@ -17,6 +19,8 @@
     "nickname": "Admin",
     "activation": 1,
     "activate_token": "administrator",
+    "timezone": "Asia/Taipei",
+    "locale": "zh-Hant",
     "groups":[5]
   },
   {
@@ -27,6 +31,8 @@
     "nickname": "Registered",
     "activation": 1,
     "activate_token": "registered",
+    "timezone": "Asia/Taipei",
+    "locale": "zh-Hant",
     "groups":[4]
   }
 ]

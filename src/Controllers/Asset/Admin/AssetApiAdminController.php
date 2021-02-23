@@ -14,6 +14,10 @@ use DaydreamLab\User\Requests\Asset\Admin\AssetApiAdminSearchPost;
 
 class AssetApiAdminController extends BaseController
 {
+    protected $package = 'User';
+
+    protected $modelName = 'Api';
+
     protected $modelType = 'Admin';
 
     public function __construct(AssetApiAdminService $service)

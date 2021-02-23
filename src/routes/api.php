@@ -7,6 +7,7 @@ use DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController;
 use DaydreamLab\User\Controllers\Asset\Admin\AssetApiAdminController;
 use DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController;
 use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
+use DaydreamLab\User\Controllers\User\Admin\UserTagAdminController;
 
  /************************************  前台 API  ************************************/
 
@@ -101,6 +102,18 @@ Route::post('api/admin/user/store', [UserAdminController::class, 'store'])
  ->middleware(['expired', 'admin']);
 Route::get('api/admin/user/{id}', [UserAdminController::class, 'getItem'])
  ->middleware(['expired', 'admin']);
+
+
+Route::post('api/admin/user/tag/search', [UserTagAdminController::class, 'search'])
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/user/tag/remove', [UserTagAdminController::class, 'remove'])
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/user/tag/store', [UserTagAdminController::class, 'store'])
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/user/tag/apply', [UserTagAdminController::class, 'apply'])
+    ->middleware(['expired', 'admin']);
+Route::get('api/admin/user/tag/{id}}', [UserTagAdminController::class, 'getItem'])
+    ->middleware(['expired', 'admin']);
 
 
 Route::post('api/admin/user/group/search', [UserGroupAdminController::class, 'search'])

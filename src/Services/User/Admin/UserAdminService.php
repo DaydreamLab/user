@@ -126,7 +126,7 @@ class UserAdminService extends UserService
         $input_groups = $input->get('groups');
         $input->forget('groups');
 
-        if (!$this->user->isSuperUser()) {
+        if (!$this->getUser()->isSuperUser()) {
             $input->put('where', [
                 [
                     'key'       => 'email',
