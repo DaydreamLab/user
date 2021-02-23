@@ -124,22 +124,6 @@ class UserAdminService extends UserService
 
     public function search(Collection $input)
     {
-//        $input_groups = $input->get('groups');
-//        $input->forget('groups');
-
-//        if ($input_groups != '') {
-//            $maps = DB::table('users_groups_maps')->where('group_id', '=', $input_groups)->get();
-//            $maps = $maps->map(function ($m) {
-//                return $m->user_id;
-//            })->toArray();
-//
-//            $input->put('special_queries', [[
-//                'type' => 'whereIn',
-//                'key' => 'id',
-//                'value' => $maps
-//            ]]);
-//        }
-
         if (!$this->user->isSuperUser()) {
             $input->put('where', [
                 [
@@ -151,27 +135,7 @@ class UserAdminService extends UserService
         }
 
         $search_result = parent::search($input);
-/*
-        $items = new Collection();
-        foreach ($search_result as $user) {
-            foreach ($user->groups as $group) {
-                if ($input_groups == '') {
-                    if (in_array($group->id, $this->user->viewlevels)) {
-                        $items->push($user);
-                        break;
-                    }
-                } else {
-                    if($input_groups == $group->id) {
-                        $items->push($user);
-                        break;
-                    }
-                }
-            }
-        }
 
-        $items  = $this->repo->paginate($items, $input->get('limit'));
-        $this->response = $items;
-*/
         return $search_result;
     }
 
