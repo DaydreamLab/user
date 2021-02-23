@@ -55,7 +55,7 @@ class UserAdminSearchPost extends ListRequest
                 [
                     'relation' => 'groups',
                     'callback'  => function ($q) use ($groupId) {
-                        $q->where('id', $groupId);
+                        $q->where('users_groups.id', $groupId);
                     }
                 ]
             ]);
