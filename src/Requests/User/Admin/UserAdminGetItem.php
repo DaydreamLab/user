@@ -10,7 +10,7 @@ class UserAdminGetItem extends AdminRequest
 {
     protected $modelName = 'User';
 
-    protected $apiMethod = 'getItem';
+    protected $apiMethod = 'getUser';
     /**
      * Determine if the user is authorized to make this request.
      *
