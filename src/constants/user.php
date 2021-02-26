@@ -45,6 +45,8 @@ return [
     'RESET_PASSWORD_TOKEN_IS_USED'      => 403,
     'RESET_PASSWORD_TOKEN_EXPIRED'      => 403,
 
+    'NEED_RESET_PASSWORD'               => 200,
+
     'TOKEN_EXPIRED'                     => 401,
     'TOKEN_REVOKED'                     => 403,
 

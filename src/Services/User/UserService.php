@@ -101,6 +101,13 @@ class UserService extends BaseService
         $login = false;
         if ($auth) {
             if ($user->activation) { // 帳號已啟用
+
+                if ($user->activate_token === 'imported_user' && $user->last_reset_at == null) {
+                    $this->status = 'NeedResetPassword';
+                    $this->response = null;
+                    return;
+                }
+
                 if ($user->block) {
                     $this->status = 'IsBlocked';
                     $this->throwResponse($this->status, null, $input->only('email'));
