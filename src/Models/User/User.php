@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\User\Models\User;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\User\Database\Factories\UserFactory;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
@@ -193,7 +192,6 @@ class User extends Authenticatable
 
         return $access_groups;
     }
-
 
 
     public function groups()
