@@ -438,6 +438,11 @@
                 "method": "searchViewlevel",
                 "url": "/admin/viewlevel/search",
                 "created_by": 1
+              },
+              {
+                "method": "orderingViewlevel",
+                "url": "/admin/viewlevel/ordering",
+                "created_by": 1
               }
             ]
           },

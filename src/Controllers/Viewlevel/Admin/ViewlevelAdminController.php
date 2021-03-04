@@ -3,7 +3,6 @@
 namespace DaydreamLab\User\Controllers\Viewlevel\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminGetItem;
 use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminOrderingPost;
 use DaydreamLab\User\Resources\Viewlevel\Admin\Collections\ViewlevelAdminListResourceCollection;
@@ -11,9 +10,7 @@ use DaydreamLab\User\Resources\Viewlevel\Admin\Models\ViewlevelAdminResource;
 use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminRemovePost;
 use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminStorePost;
-use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminStatePost;
 use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminSearchPost;
-use Illuminate\Http\Request;
 
 class ViewlevelAdminController extends BaseController
 {
@@ -28,6 +25,7 @@ class ViewlevelAdminController extends BaseController
         parent::__construct($service);
         $this->service = $service;
     }
+
 
     public function getItem(ViewlevelAdminGetItem $request)
     {
@@ -58,21 +56,16 @@ class ViewlevelAdminController extends BaseController
     }
 
 
-    public function state(ViewlevelAdminStatePost $request)
-    {
-        $this->service->setUser($request->user());
-        $this->service->state($request->validated());
-
-        return $this->response($this->service->status, $this->service->response);
-    }
-
-
     public function store(ViewlevelAdminStorePost $request)
     {
         $this->service->setUser($request->user());
         $this->service->store($request->validated());
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status,
+            gettype($this->service->response) == 'object'
+            ? new ViewlevelAdminResource($this->service->response)
+            : $this->service->response
+        );
     }
 
 

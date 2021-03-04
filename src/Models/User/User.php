@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Models\User;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\User\Database\Factories\UserFactory;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
@@ -109,21 +110,35 @@ class User extends Authenticatable
     }
 
 
+    /**
+     * @return array
+     * 先藉由此使用者屬於哪些會群組，而這些會員再找出隸屬於哪些閱讀權限，
+     */
     public function getAccessIdsAttribute()
     {
-        $access_ids = [];
+        $accessIds = collect();
+        $this->groups->each(function ($group) use (&$accessIds) {
+            $viewlevels = $group->viewlevels;
+            $viewlevels->each(function ($viewlevel) use (&$accessIds) {
+                $accessIds = $accessIds->merge($viewlevel->id);
+            });
+        });
 
-        $user_viewlevels = $this->viewlevels;
-        $all = Viewlevel::all();
-        foreach ($all as $viewlevel)
-        {
-            if (count(array_intersect($viewlevel->rules, $user_viewlevels)) === count($viewlevel->rules))
-            {
-                $access_ids[] = $viewlevel->id;
-            }
-        }
+        return $accessIds->all();
+    }
 
-        return $access_ids;
+
+    public function getAccessGroupIdsAttribute()
+    {
+        $accessGroupIds = collect();
+        $this->groups->each(function ($group) use (&$accessGroupIds) {
+            $viewlevels = $group->viewlevels;
+            $viewlevels->each(function ($viewlevel) use (&$accessGroupIds) {
+                $accessGroupIds = $accessGroupIds->merge($viewlevel->groups->pluck('id'));
+            });
+        });
+
+        return $accessGroupIds->all();
     }
 
 
@@ -181,17 +196,18 @@ class User extends Authenticatable
     }
 
 
-    public function getViewlevelsAttribute()
-    {
-        $access_groups = [];
-        foreach ($this->groups as $group)
-        {
-            $viewlevel = Viewlevel::where('title', '=', $group->description)->first();
-            $access_groups = array_merge($access_groups, $viewlevel->rules);
-        }
-
-        return $access_groups;
-    }
+//    public function getViewlevelsAttribute()
+//    {
+//        $access_groups = [];
+//
+//        foreach ($this->groups as $group)
+//        {
+//            $viewlevel = Viewlevel::where('title', '=', $group->description)->first();
+//            $access_groups = array_merge($access_groups, $viewlevel->rules);
+//        }
+//
+//        return $access_groups;
+//    }
 
 
     public function groups()

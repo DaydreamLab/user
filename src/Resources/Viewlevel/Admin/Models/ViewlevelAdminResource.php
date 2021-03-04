@@ -2,11 +2,12 @@
 
 namespace DaydreamLab\User\Resources\Viewlevel\Admin\Models;
 
-use DaydreamLab\User\Models\User\UserGroup;
+use DaydreamLab\JJAJ\Traits\FormatDateTime;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ViewlevelAdminResource extends JsonResource
 {
+    use FormatDateTime;
     /**
      * Transform the resource into an array.
      *
@@ -15,16 +16,18 @@ class ViewlevelAdminResource extends JsonResource
      */
     public function toArray($request)
     {
-        $userGroups = UserGroup::whereIn('id', $this->rules ?: [])->get();
+        $user = $request->user('api');
         return [
             'id'            => $this->id,
             'title'         => $this->title,
             'description'   => $this->description,
-            'rules'         => $userGroups->count()
-                ? $userGroups->map(function ($group) {
+            'canDelete'     => $this->canDelete,
+            'ordering'      => $this->ordering,
+            'groups'        => $this->groups->map(function ($group) {
                     return $group->only(['id', 'title']);
-                })->all()
-                : []
+                })->all(),
+            'createdAt'     => $this->getDateTimeString($this->created_at, $user->timezone),
+            'updatedAt'     => $this->getDateTimeString($this->updated_at, $user->timezone),
         ];
     }
 }

@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Public",
+    "canDelete": 0,
+    "groups": ["Public"]
+  },
+  {
+    "title": "Guest",
+    "canDelete": 0,
+    "groups": ["Guest"]
+  },
+  {
+    "title": "Registered",
+    "canDelete": 0,
+    "groups": ["Public","Registered"]
+  },
+  {
+    "title": "Administrator",
+    "canDelete": 0,
+    "groups": ["Public", "Guest", "Registered", "Administrator"]
+  },
+  {
+    "title": "Super User",
+    "canDelete": 0,
+    "groups": ["Public", "Guest", "Registered", "Administrator", "Super User"]
+  }
+]

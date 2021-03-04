@@ -2,11 +2,9 @@
 
 namespace DaydreamLab\User\Services\User;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\NestedServiceTrait;
 use DaydreamLab\User\Repositories\User\UserGroupRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
-use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -49,34 +47,13 @@ class UserGroupService extends BaseService
     // 並且成樹狀列表
     public function tree()
     {
-        $with_ancestor_viewlevels = [];
-        foreach ($this->user->viewlevels as $viewlevel)
-        {
-            $with_ancestor_viewlevels[] = $viewlevel;
-            $group = $this->find($viewlevel);
+        $allGroups = $this->all()->where('title', '!=', 'Root');
+        $canAccessGroupIds = $this->getUser()->accessGroupIds;
 
-            foreach ($group->ancestors as $ancestor)
-            {
-                if ($ancestor->id != 1 && !in_array($ancestor->id, $with_ancestor_viewlevels))
-                {
-                    $with_ancestor_viewlevels[] = $ancestor->id;
-                }
-            }
-        }
-
-        $tree = $this->findBySpecial('whereIn', 'id', $with_ancestor_viewlevels);
-
-        $viewlevels = $this->user->viewlevels;
-        $tree = $tree->each(function ($item, $key) use ($viewlevels) {
-            if (in_array($item->id, $viewlevels))
-            {
-                $item->disabled = 0;
-            }
-            else
-            {
-                $item->disabled = 1;
-            }
-
+        $tree = $allGroups->each(function ($item, $key) use ($canAccessGroupIds) {
+            $item->disabled = in_array($item->id, $canAccessGroupIds)
+                ? 0
+                : 1;
         })->toTree();
 
         $this->status = 'GetTreeListSuccess';

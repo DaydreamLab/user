@@ -3,6 +3,7 @@ namespace DaydreamLab\User\Models\Viewlevel;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
+use DaydreamLab\User\Models\User\UserGroup;
 
 class Viewlevel extends BaseModel
 {
@@ -16,7 +17,7 @@ class Viewlevel extends BaseModel
      */
     protected $table = 'viewlevels';
 
-    protected $order_by = 'id';
+    protected $order_by = 'ordering';
 
     protected $order = 'asc';
 
@@ -27,8 +28,9 @@ class Viewlevel extends BaseModel
      */
     protected $fillable = [
         'title',
+        'canDelete',
         'description',
-        'rules',
+        'ordering',
         'created_by',
         'updated_by'
     ];
@@ -53,12 +55,18 @@ class Viewlevel extends BaseModel
 
 
     protected $casts = [
-        'rules' => 'array'
     ];
 
 
     public static function boot()
     {
         self::traitBoot();
+    }
+
+
+    public function groups()
+    {
+        return $this->belongsToMany(UserGroup::class, 'viewlevels_users_groups_maps', 'viewlevel_id', 'group_id')
+            ->withTimestamps();
     }
 }

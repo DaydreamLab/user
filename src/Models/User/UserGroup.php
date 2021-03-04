@@ -1,4 +1,5 @@
 <?php
+
 namespace DaydreamLab\User\Models\User;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
@@ -76,28 +77,7 @@ class UserGroup extends BaseModel
     public function apis()
     {
         return $this->belongsToMany(AssetApi::class, 'users_groups_apis_maps', 'group_id', 'api_id')
-            ->withTimestamps();;
-    }
-
-
-    public function canAction($service, $method, $model)
-    {
-        $apis = $this->apis()->where('service', $service)->where('method', $method)->get();
-        if ($apis->count() == 1) {
-            return true;
-        } elseif ($apis->count() > 1) {
-            // 以現在架構並不存在可以編輯自己或別人的這種可能，這邊有問題！
-            foreach ($apis as $api) {
-                if (strpos($api->method, 'Own')) {
-                    return $model->created_by == $this->user->id ?: false;
-                } else {
-                    return $model->created_by != $this->user->id ?: false;
-                }
-            }
-        }
-        else {
-            return false;
-        }
+            ->withTimestamps();
     }
 
 
@@ -105,12 +85,6 @@ class UserGroup extends BaseModel
     {
         return $this->belongsToMany(Asset::class, 'users_groups_assets_maps', 'group_id', 'asset_id')
             ->withTimestamps();
-    }
-
-
-    public function getViewLevelsAttribute()
-    {
-        return Viewlevel::whereJsonContains('rules', $this->id)->get();
     }
 
 
@@ -130,5 +104,11 @@ class UserGroup extends BaseModel
     {
         return $this->belongsToMany(User::class, 'users_groups_maps', 'group_id', 'user_id')
             ->withTimestamps();
+    }
+
+
+    public function viewlevels()
+    {
+        return $this->belongsToMany(Viewlevel::class, 'viewlevels_users_groups_maps', 'group_id', 'viewlevel_id');
     }
 }

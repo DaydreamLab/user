@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Database\Seeders;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use Illuminate\Database\Seeder;
 
@@ -17,32 +18,12 @@ class ViewlevelsTableSeeder extends Seeder
     {
         $service = app(ViewlevelAdminService::class);
 
-        $service->store(collect([
-            'title'     => 'Public',
-            'rules'     => [2],
-        ]));
+        $jsons = Helper::getJson(__DIR__.'/jsons/viewlevel.json');
 
-        $service->store(collect([
-            'title'     => 'Guest',
-            'rules'     => [3],
-        ]));
-
-        $service->store(collect([
-            'title'     => 'Registered',
-            'ordering'  => 3,
-            'rules'     => [2,4],
-        ]));
-
-
-        $service->store(collect([
-            'title'     => 'Administrator',
-            'rules'     => [2,3,4,5],
-        ]));
-
-        $service->store(collect([
-            'title'     => 'Super User',
-            'ordering'  => 4,
-            'rules'     => [2,3,4,5,6],
-        ]));
+        $groups = UserGroup::all();
+        foreach ($jsons as $json) {
+            $json['groupIds'] = $groups->whereIn('title', $json['groups'])->pluck('id')->all();
+            $service->store(collect($json));
+        }
     }
 }

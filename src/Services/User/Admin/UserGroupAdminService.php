@@ -2,13 +2,11 @@
 
 namespace DaydreamLab\User\Services\User\Admin;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Repositories\User\Admin\UserGroupAdminRepository;
 use DaydreamLab\User\Services\User\UserGroupService;
 use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 class UserGroupAdminService extends UserGroupService
 {
@@ -35,13 +33,14 @@ class UserGroupAdminService extends UserGroupService
     {
         $item = parent::addNested($input);
 
-        $super_user = $this->viewlevelAdminService->findBy('title', '=', 'Super User')->first();
-        if ($super_user) {
-            $rules = $super_user->rules;
-            $rules[] = $item->id;
-            $super_user->rules = $rules;
-            $super_user->save();
+        $parent = $input->get('parent');
+        if ($parent->ancestors->pluck('title')->contains('Administrator')) {
+            $adminViewlevel = $this->viewlevelAdminService->findBy('title', '=', 'Administrator')->first();
+            $adminViewlevel->groups()->attach($item->id);
         }
+
+        $superUserViewlevel = $this->viewlevelAdminService->findBy('title', '=', 'Super User')->first();
+        $superUserViewlevel->groups()->attach($item->id);
 
         return $item;
     }
@@ -112,16 +111,9 @@ class UserGroupAdminService extends UserGroupService
     {
         $item->assets()->detach();
         $item->apis()->detach();
-
-        foreach ($item->viewlevels as $viewlevel) {
-            $groupIds = [];
-            foreach ($viewlevel->rules as $groupId) {
-                if ($groupId != $item->id) {
-                    $groupIds[] = $groupId;
-                }
-            }
-            $viewlevel->rules = $groupIds;
-            $viewlevel->save();
-        }
+        $item->descendants()->each(function ($descendant) {
+           $descendant->viewlevels()->detach();
+        });
+        $item->viewlevels()->detach();
     }
 }
