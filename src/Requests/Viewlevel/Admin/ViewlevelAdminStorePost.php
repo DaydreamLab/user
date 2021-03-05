@@ -30,8 +30,8 @@ class ViewlevelAdminStorePost extends AdminRequest
             'id'            => 'nullable|integer',
             'title'         => 'required|string',
             'description'   => 'nullable|string',
-            'rules'         => 'nullable|array',
-            'rules.*'       => 'nullable|integer',
+            'groupIds'      => 'nullable|array',
+            'groupIds.*'    => 'nullable|integer',
         ];
         return array_merge($rules, parent::rules());
     }

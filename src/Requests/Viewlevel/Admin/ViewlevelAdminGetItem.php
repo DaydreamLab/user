@@ -8,7 +8,7 @@ class ViewlevelAdminGetItem extends AdminRequest
 {
     protected $modelName = 'Viewlevel';
 
-    protected $apiMethod = 'getItem';
+    protected $apiMethod = 'getViewlevel';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -27,11 +27,6 @@ class ViewlevelAdminGetItem extends AdminRequest
     public function rules()
     {
         $rules = [
-            'id'            => 'nullable|integer',
-            'title'         => 'required|string',
-            'description'   => 'nullable|string',
-            'rules'         => 'nullable|array',
-            'rules.*'       => 'nullable|integer',
         ];
         return array_merge($rules, parent::rules());
     }

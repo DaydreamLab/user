@@ -39,7 +39,7 @@ class UserAdminService extends UserService
     public function addMapping($item, $input)
     {
         if (count($input->get('group_ids'))) {
-            $item->groups()->attach($input->get('groups_ids'));
+            $item->groups()->attach($input->get('group_ids'));
         }
     }
 
@@ -159,6 +159,15 @@ class UserAdminService extends UserService
             } else {
                 $input->forget('password');
             }
+        }
+
+        // 確保使用者所指派的群組，具有該權限
+        $inputGroupIds = collect($input->get('group_ids'));
+        $userAccessGroupIds = $this->getUser()->accessGroupIds;
+        if ($inputGroupIds->intersect($userAccessGroupIds)->count() != $inputGroupIds->count()) {
+            $this->throwResponse('InsufficientPermissionAssignGroup', [
+                'groupIds' => $inputGroupIds->diff($userAccessGroupIds)
+            ]);
         }
 
         $result = parent::store($input);

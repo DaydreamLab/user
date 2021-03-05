@@ -7,7 +7,7 @@ use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use Illuminate\Database\Seeder;
 
-class ViewlevelsTableSeeder extends Seeder
+class UserGroupDefaultAccessGroupsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,14 +16,13 @@ class ViewlevelsTableSeeder extends Seeder
      */
     public function run()
     {
-        $service = app(ViewlevelAdminService::class);
-
-        $jsons = Helper::getJson(__DIR__.'/jsons/viewlevel.json');
+        $jsons = Helper::getJson(__DIR__.'/jsons/usergroup-default-access-groups.json');
 
         $groups = UserGroup::all();
         foreach ($jsons as $json) {
-            $json['groupIds'] = $groups->whereIn('title', $json['groups'])->pluck('id')->all();
-            $service->store(collect($json));
+            $targetUserGroup = $groups->where('title', $json['title'])->first();
+            $targetAccessGroups = $groups->whereIn('title', $json['groups']);
+            $targetUserGroup->defaultAccessGroups()->attach($targetAccessGroups->pluck('id')->all());
         }
     }
 }

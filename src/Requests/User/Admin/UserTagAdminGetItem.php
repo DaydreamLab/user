@@ -6,7 +6,7 @@ use DaydreamLab\JJAJ\Requests\AdminRequest;
 
 class UserTagAdminGetItem extends AdminRequest
 {
-    protected $apiMethod = 'getItem';
+    protected $apiMethod = 'getUserTag';
 
     protected $modelName = 'UserTag';
     /**

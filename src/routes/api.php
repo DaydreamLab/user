@@ -133,14 +133,12 @@ Route::get('api/admin/user/group/{id}/page', [UserGroupAdminController::class, '
 
 Route::post('api/admin/viewlevel/remove', [ViewlevelAdminController::class, 'remove'])
  ->middleware(['expired', 'admin']);
-Route::post('api/admin/viewlevel/state', [ViewlevelAdminController::class, 'state'])
- ->middleware(['expired', 'admin']);
 Route::post('api/admin/viewlevel/store', [ViewlevelAdminController::class, 'store'])
  ->middleware(['expired', 'admin']);
-Route::post('api/admin/viewlevel/search', [AssetGroupAdminController::class, 'search'])
+Route::post('api/admin/viewlevel/search', [ViewlevelAdminController::class, 'search'])
  ->middleware(['expired', 'admin']);
-Route::post('api/admin/viewlevel/ordering', [AssetGroupAdminController::class, 'ordering'])
+Route::post('api/admin/viewlevel/ordering', [ViewlevelAdminController::class, 'ordering'])
  ->middleware(['expired', 'admin']);
-Route::get('api/admin/viewlevel/{id}', [AssetGroupAdminController::class, 'getItem'])
+Route::get('api/admin/viewlevel/{id}', [ViewlevelAdminController::class, 'getItem'])
  ->middleware(['expired', 'admin']);
 

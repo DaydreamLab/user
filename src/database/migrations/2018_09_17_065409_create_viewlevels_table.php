@@ -17,7 +17,7 @@ class CreateViewlevelsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->text('rules')->nullable();
+            $table->unsignedTinyInteger('canDelete')->default(1);
             $table->unsignedInteger('ordering')->default(1);
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();

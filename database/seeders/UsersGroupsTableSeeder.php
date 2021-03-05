@@ -21,8 +21,7 @@ class UsersGroupsTableSeeder extends Seeder
 
     public function migrate($data, $parent)
     {
-        foreach ($data as $item)
-        {
+        foreach ($data as $item) {
             $assets     = $item['assets'];
             $apis       = $item['apis'];
             $children   = $item['children'];
@@ -31,15 +30,13 @@ class UsersGroupsTableSeeder extends Seeder
             unset($item['assets']);
 
             $group = UserGroup::create($item);
-            if ($parent)
-            {
+            if ($parent) {
                 $parent->appendNode($group);
             }
 
             $group->apis()->attach($apis);
             $group->assets()->attach($assets);
-            if (count($children))
-            {
+            if (count($children)) {
                 self::migrate($children, $group);
             }
         }

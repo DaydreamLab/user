@@ -24,6 +24,7 @@ return [
     'HAS_BEEN_ACTIVATED'                => '使用者帳號已被啟用過',
 
     'IS_BLOCKED'                        => '使用者已被封鎖',
+    'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> '使用者不具有指派特定群組的權限',
 
     'LOGIN_SUCCESS'                     => '使用者登入成功',
     'LOGIN_FAIL'                        => '使用者登入失敗',

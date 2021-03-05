@@ -67,8 +67,8 @@ class UserGroupAdminController extends BaseController
 
     public function store(UserGroupAdminStorePost $request)
     {
-        $this->service->setUser($request->user());
-        $this->service->storeNested($request->validated());
+        $this->service->setUser($request->user('api'));
+        $this->service->store($request->validated());
 
         return $this->response($this->service->status,
             gettype($this->service->response) == 'object'

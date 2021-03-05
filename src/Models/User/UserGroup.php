@@ -1,4 +1,5 @@
 <?php
+
 namespace DaydreamLab\User\Models\User;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
@@ -7,11 +8,12 @@ use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Asset\AssetApi;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
+use DaydreamLab\User\Traits\Model\WithAccess;
 use Kalnoy\Nestedset\NodeTrait;
 
 class UserGroup extends BaseModel
 {
-    use NodeTrait, HasCustomRelation,
+    use NodeTrait, HasCustomRelation, WithAccess,
         RecordChanger {
         RecordChanger::boot as traitBoot;
     }
@@ -52,7 +54,6 @@ class UserGroup extends BaseModel
         '_lft',
         '_rgt',
         //'pivot',
-        'ancestors',
         'created_at',
         'updated_at'
     ];
@@ -76,28 +77,7 @@ class UserGroup extends BaseModel
     public function apis()
     {
         return $this->belongsToMany(AssetApi::class, 'users_groups_apis_maps', 'group_id', 'api_id')
-            ->withTimestamps();;
-    }
-
-
-    public function canAction($service, $method, $model)
-    {
-        $apis = $this->apis()->where('service', $service)->where('method', $method)->get();
-        if ($apis->count() == 1) {
-            return true;
-        } elseif ($apis->count() > 1) {
-            // 以現在架構並不存在可以編輯自己或別人的這種可能，這邊有問題！
-            foreach ($apis as $api) {
-                if (strpos($api->method, 'Own')) {
-                    return $model->created_by == $this->user->id ?: false;
-                } else {
-                    return $model->created_by != $this->user->id ?: false;
-                }
-            }
-        }
-        else {
-            return false;
-        }
+            ->withTimestamps();
     }
 
 
@@ -108,9 +88,9 @@ class UserGroup extends BaseModel
     }
 
 
-    public function getViewLevelsAttribute()
+    public function defaultAccessGroups()
     {
-        return Viewlevel::whereJsonContains('rules', $this->id)->get();
+        return $this->belongsToMany(UserGroup::class, 'users_groups_default_access_maps', 'group_id', 'access_group_id');
     }
 
 

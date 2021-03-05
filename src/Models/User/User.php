@@ -93,8 +93,6 @@ class User extends Authenticatable
         'full_name',
         //'roles',
         'groups',
-        'viewlevels',
-        'access_ids',
     ];
 
 
@@ -121,21 +119,35 @@ class User extends Authenticatable
     }
 
 
+    /**
+     * @return array
+     * 先藉由此使用者屬於哪些會群組，而這些會員再找出隸屬於哪些閱讀權限，
+     */
     public function getAccessIdsAttribute()
     {
-        $access_ids = [];
+        $allViewlevels = Viewlevel::all();
 
-        $user_viewlevels = $this->viewlevels;
-        $all = Viewlevel::all();
-        foreach ($all as $viewlevel)
-        {
-            if (count(array_intersect($viewlevel->rules, $user_viewlevels)) === count($viewlevel->rules))
-            {
-                $access_ids[] = $viewlevel->id;
+        $accessIds = [];
+        foreach ($allViewlevels as $viewlevel) {
+            $viewlevelGroupIds = $viewlevel->groups->pluck('id');
+            if ($viewlevelGroupIds->intersect($this->accessGroupIds)->count() == $viewlevelGroupIds->count()) {
+                $accessIds[] = $viewlevel->id;
             }
         }
 
-        return $access_ids;
+        return $accessIds;
+    }
+
+
+    public function getAccessGroupIdsAttribute()
+    {
+        $accessGroupIds = collect();
+        $this->groups->each(function ($group) use (&$accessGroupIds) {
+            $accessGroupIds = $accessGroupIds->merge($group->defaultAccessGroups->pluck('id'));
+            $accessGroupIds = $accessGroupIds->merge([$group->id]);
+        });
+
+        return $accessGroupIds->all();
     }
 
 
@@ -193,18 +205,18 @@ class User extends Authenticatable
     }
 
 
-    public function getViewlevelsAttribute()
-    {
-        $access_groups = [];
-        foreach ($this->groups as $group)
-        {
-            $viewlevel = Viewlevel::where('title', '=', $group->description)->first();
-            $access_groups = array_merge($access_groups, $viewlevel->rules);
-        }
-
-        return $access_groups;
-    }
-
+//    public function getViewlevelsAttribute()
+//    {
+//        $access_groups = [];
+//
+//        foreach ($this->groups as $group)
+//        {
+//            $viewlevel = Viewlevel::where('title', '=', $group->description)->first();
+//            $access_groups = array_merge($access_groups, $viewlevel->rules);
+//        }
+//
+//        return $access_groups;
+//    }
 
 
     public function groups()

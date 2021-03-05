@@ -6,7 +6,7 @@ use DaydreamLab\JJAJ\Requests\AdminRequest;
 
 class UserGroupAdminGetItem extends AdminRequest
 {
-    protected $apiMethod = 'getItem';
+    protected $apiMethod = 'getUserGroup';
 
     protected $modelName = 'UserGroup';
     /**
