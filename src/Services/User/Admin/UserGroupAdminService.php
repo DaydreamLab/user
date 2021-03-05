@@ -34,8 +34,8 @@ class UserGroupAdminService extends UserGroupService
     {
         $item = parent::addNested($input);
 
-        $parent = $input->get('parent');
-        if ($parent->ancestors->pluck('title')->contains('Administrator')) {
+        $parent = $item->parent;
+        if ($parent && $parent->ancestors->pluck('title')->contains('Administrator')) {
             $adminViewlevel = $this->viewlevelAdminService->findBy('title', '=', 'Administrator')->first();
             $adminViewlevel->groups()->attach($item->id);
         }
