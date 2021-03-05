@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Registered",
+    "groups": ["Public"]
+  },
+  {
+    "title": "Administrator",
+    "groups": ["Public", "Guest", "Registered"]
+  },
+  {
+    "title": "Super User",
+    "groups": ["Public", "Guest", "Registered", "Administrator"]
+  }
+]
