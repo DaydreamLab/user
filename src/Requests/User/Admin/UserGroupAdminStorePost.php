@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Requests\User\Admin;
 
+use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 
 class UserGroupAdminStorePost extends AdminRequest
@@ -38,6 +39,6 @@ class UserGroupAdminStorePost extends AdminRequest
             'asset_ids'     => 'required|array',
             'asset_ids.*'   => 'nullable|integer',
         ];
-        return array_merge($rules, parent::rules());
+        return array_merge(parent::rules(), $rules);
     }
 }

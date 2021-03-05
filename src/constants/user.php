@@ -25,6 +25,7 @@ return [
     'HAS_BEEN_ACTIVATED'                => 403,
 
     'IS_BLOCKED'                        => 403,
+    'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> 403,
 
     'LOGIN_SUCCESS'                     => 200,
     'LOGIN_FAIL'                        => 500,

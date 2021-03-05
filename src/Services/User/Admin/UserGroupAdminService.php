@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User\Admin;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Repositories\User\Admin\UserGroupAdminRepository;
 use DaydreamLab\User\Services\User\UserGroupService;

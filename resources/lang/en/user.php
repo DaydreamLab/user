@@ -25,6 +25,7 @@ return [
     'HAS_BEEN_ACTIVATED'                => '{$ModelName} has been activated',
 
     'IS_BLOCKED'                        => '{$ModelName} is blocked',
+    'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> '{$ModelName} insufficient permission assign group',
 
     'LOGIN_SUCCESS'                     => '{$ModelName} login success',
     'LOGIN_FAIL'                        => '{$ModelName} login fail',

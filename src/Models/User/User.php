@@ -82,8 +82,6 @@ class User extends Authenticatable
         'full_name',
         //'roles',
         'groups',
-        'viewlevels',
-        'access_ids',
     ];
 
 
@@ -116,15 +114,17 @@ class User extends Authenticatable
      */
     public function getAccessIdsAttribute()
     {
-        $accessIds = collect();
-        $this->groups->each(function ($group) use (&$accessIds) {
-            $viewlevels = $group->viewlevels;
-            $viewlevels->each(function ($viewlevel) use (&$accessIds) {
-                $accessIds = $accessIds->merge($viewlevel->id);
-            });
-        });
+        $allViewlevels = Viewlevel::all();
 
-        return $accessIds->all();
+        $accessIds = [];
+        foreach ($allViewlevels as $viewlevel) {
+            $viewlevelGroupIds = $viewlevel->groups->pluck('id');
+            if ($viewlevelGroupIds->intersect($this->accessGroupIds)->count() == $viewlevelGroupIds->count()) {
+                $accessIds[] = $viewlevel->id;
+            }
+        }
+
+        return $accessIds;
     }
 
 
@@ -132,10 +132,8 @@ class User extends Authenticatable
     {
         $accessGroupIds = collect();
         $this->groups->each(function ($group) use (&$accessGroupIds) {
-            $viewlevels = $group->viewlevels;
-            $viewlevels->each(function ($viewlevel) use (&$accessGroupIds) {
-                $accessGroupIds = $accessGroupIds->merge($viewlevel->groups->pluck('id'));
-            });
+            $accessGroupIds = $accessGroupIds->merge($group->defaultAccessGroups->pluck('id'));
+            $accessGroupIds = $accessGroupIds->merge([$group->id]);
         });
 
         return $accessGroupIds->all();

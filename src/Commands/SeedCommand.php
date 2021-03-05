@@ -29,6 +29,7 @@ class SeedCommand extends Command
         'UsersGroupsTableSeeder',
         'UsersTableSeeder',
         'ViewlevelsTableSeeder',
+        'UserGroupDefaultAccessGroupsSeeder'
     ];
 
     /**
@@ -49,10 +50,11 @@ class SeedCommand extends Command
     public function handle()
     {
         foreach ($this->seeders as $seeder) {
-            $this->info('Start seeding '. $seeder);
+            $this->info('Start seeding :'. $seeder);
             $this->call('db:seed', [
                 '--class' => $this->seeder_namespace . $seeder
             ]);
+            $this->info('Complete seeding: ' .$seeder);
         }
     }
 }
