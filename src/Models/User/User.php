@@ -114,12 +114,19 @@ class User extends Authenticatable
      */
     public function getAccessIdsAttribute()
     {
-        $allViewlevels = Viewlevel::all();
+        $allViewlevels = Viewlevel::with('groups')
+            ->with('groups.defaultAccessGroups')
+            ->get();
 
         $accessIds = [];
         foreach ($allViewlevels as $viewlevel) {
             $viewlevelGroupIds = $viewlevel->groups->pluck('id');
-            if ($viewlevelGroupIds->intersect($this->accessGroupIds)->count() == $viewlevelGroupIds->count()) {
+            $accessGroupIds = collect();
+            $viewlevel->groups->each(function ($group) use (&$accessGroupIds) {
+                $accessGroupIds = $accessGroupIds->merge($group->defaultAccessGroups->pluck('id'));
+                $accessGroupIds = $accessGroupIds->merge([$group->id]);
+            });
+            if ($viewlevelGroupIds->intersect($accessGroupIds)->count() == $viewlevelGroupIds->count()) {
                 $accessIds[] = $viewlevel->id;
             }
         }

@@ -162,7 +162,9 @@ class UserAdminService extends UserService
 
         // 確保使用者所指派的群組，具有該權限
         $inputGroupIds = collect($input->get('group_ids'));
+
         $userAccessGroupIds = $this->getUser()->accessGroupIds;
+
         if ($inputGroupIds->intersect($userAccessGroupIds)->count() != $inputGroupIds->count()) {
             $this->throwResponse('InsufficientPermissionAssignGroup', [
                 'groupIds' => $inputGroupIds->diff($userAccessGroupIds)
