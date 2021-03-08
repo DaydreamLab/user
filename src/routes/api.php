@@ -42,15 +42,16 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
 
 
             Route::group(['prefix' => 'api'], function (){
+
                 Route::get('{id}', 'DaydreamLab\User\Controllers\Asset\Admin\AssetApiAdminController@getItem');
                 Route::post('remove', 'DaydreamLab\User\Controllers\Asset\Admin\AssetApiAdminController@remove');
                 Route::post('state', 'DaydreamLab\User\Controllers\Asset\Admin\AssetApiAdminController@state');
                 Route::post('store','DaydreamLab\User\Controllers\Asset\Admin\AssetApiAdminController@store');
                 Route::post('search','DaydreamLab\User\Controllers\Asset\Admin\AssetApiAdminController@search');
 
-                Route::group(['prefix' => 'map'], function (){
-                    Route::post('store','DaydreamLab\User\Controllers\Asset\Admin\AssetApiMapAdminController@store');
-                });
+//                Route::group(['prefix' => 'map'], function (){
+//                    Route::post('store','DaydreamLab\User\Controllers\Asset\Admin\AssetApiMapAdminController@store');
+//                });
             });
 
 
