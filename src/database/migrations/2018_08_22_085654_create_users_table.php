@@ -41,6 +41,7 @@ class CreateUsersTable extends Migration
             $table->string('school_department')->nullable();
             $table->string('grade')->nullable();
             $table->text('how')->nullable();
+            $table->boolean('subscription')->default(0);
 
             $table->string('image')->nullable();
             $table->boolean('activation')->default(0);

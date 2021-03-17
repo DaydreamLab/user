@@ -59,6 +59,7 @@ class User extends Authenticatable
         'school_department',
         'grade',
         'how',
+        'subscription',
 
         'image',
         'activation',
@@ -91,7 +92,6 @@ class User extends Authenticatable
 
     protected $appends = [
         'full_name',
-        //'roles',
         'groups',
     ];
 
