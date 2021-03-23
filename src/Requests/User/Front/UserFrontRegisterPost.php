@@ -25,21 +25,22 @@ class UserFrontRegisterPost extends AdminRequest
     {
         return [
             'email'                 => 'required|email|unique:users,email',
+            'email_confirmation'    => 'required|same:email',
             'password'              => 'required|string|min:8|max:16',
             'password_confirmation' => 'required|same:password',
-            'first_name'            => 'nullable|string',
-            'last_name'             => 'nullable|string',
             'user_name'             => 'required|string',
-            'gender'                => 'nullable|string',
-            'image'                 => 'nullable|string',
-            'phone'                 => 'nullable|string',
-            'birthday'              => 'nullable|date',
-            'country'               => 'nullable|string',
-            'state'                 => 'nullable|string',
-            'city'                  => 'nullable|string',
-            'district'              => 'nullable|string',
-            'address'               => 'nullable|string',
-            'zipcode'               => 'nullable|string'
+            'gender'                => 'required|string',
+            'identity'              => 'required|string',
+            'phone'                 => 'required|string',
+            'how'                   => 'required|string',
+
+            'unit'                  => 'nullable|string',
+            'unit_department'       => 'nullable|string',
+            'job_title'             => 'nullable|string',
+            'school'                => 'nullable|string',
+            'school_department'     => 'nullable|string',
+            'grade'                 => 'nullable|string',
+            'subscription'          => 'nullable|boolean',
         ];
     }
 }

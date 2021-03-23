@@ -10,6 +10,7 @@ use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontLoginPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontGetUserPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
@@ -53,7 +54,7 @@ class UserFrontController extends BaseController
 
     public function forgetchangePassword(UserFrontChangePasswordPost $request)
     {
-        $this->service->setUser($request->user);
+        $this->service->setUser($request->user('api'));
         $this->service->changePassword($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
@@ -86,11 +87,11 @@ class UserFrontController extends BaseController
     }
 
 
-    public function getItem(Request $request)
+    public function getItem(UserFrontGetUserPost $request)
     {
         $this->service->status = 'GetItemSuccess';
 
-        return $this->response($this->service->status,  new UserFrontResource($request->user));
+        return $this->response($this->service->status,  new UserFrontResource($request->user('api')));
     }
 
 
