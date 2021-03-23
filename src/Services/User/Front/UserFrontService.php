@@ -223,6 +223,13 @@ class UserFrontService extends UserService
             $input->put('password', bcrypt($password));
         }
 
+        if ($input->has('email')) {
+            $exist = $this->checkEmail($input->get('email'));
+            if ($exist) {
+                return ;
+            }
+        }
+
         $input->put('id', $this->user->id);
         $update = parent::store($input);
 

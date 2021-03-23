@@ -26,9 +26,9 @@ class UserFrontEditPost extends AdminRequest
         return [
             'id'                    => 'nullable|integer',
             'email'                 => 'nullable|email|unique:users,email',
-            'email_confirmation'    => 'nullable|same:email',
+            'email_confirmation'    => 'required_with:email|same:email',
             'password'              => 'nullable|string|min:8|max:16',
-            'password_confirmation' => 'nullable|same:password',
+            'password_confirmation' => 'required_with:password|same:password',
             'user_name'             => 'nullable|string',
             'gender'                => 'nullable|string',
             'identity'              => 'nullable|string',
