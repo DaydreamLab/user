@@ -43,6 +43,9 @@ Route::get('/api/user/login', [UserFrontController::class, 'getLogin'])
 Route::get('/api/user', [UserFrontController::class, 'getItem'])
     ->middleware(['expired']);
 
+Route::post('/api/user/edit', [UserFrontController::class, 'editProfile'])
+    ->middleware(['expired']);
+
 Route::get('/api/user/login/facebook', [UserFrontController::class, 'fbLogin']);
 Route::get('/api/user/login/facebook/callback', [UserFrontController::class, 'fbCallback']);
 //

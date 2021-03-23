@@ -20,7 +20,7 @@ class UserFrontResource extends JsonResource
             //'lastName'              => $this->last_name,
             'identity'              => $this->identity,
             'user_name'             => $this->user_name,
-            'gender'                => $this->gendor,
+            'gender'                => $this->gender,
             //'image'                 => $this->image,
             'phone'                 => $this->phone,
             //'birthday'              => $this->birthday,

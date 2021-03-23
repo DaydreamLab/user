@@ -11,6 +11,7 @@ use DaydreamLab\User\Requests\User\Front\UserFrontLoginPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontGetUserPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontEditPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
@@ -171,5 +172,14 @@ class UserFrontController extends BaseController
         $this->service->store($request->validated());
 
         return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function editProfile(UserFrontEditPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        $this->service->editProfile($request->validated());
+
+        return $this->response($this->service->status, new UserFrontResource($this->service->response));
     }
 }

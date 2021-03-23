@@ -213,4 +213,23 @@ class UserFrontService extends UserService
             $this->throwResponse('ItemNotExist', null, $input);
         }
     }
+
+
+    public function editProfile(Collection $input)
+    {
+        if ($input->has('password')) {
+            $password  = $input->get('password');
+            $input->forget('password');
+            $input->put('password', bcrypt($password));
+        }
+
+        $input->put('id', $this->user->id);
+        $update = parent::store($input);
+
+        if ($update) {
+            $this->response = $this->find($this->user->id)->refresh();
+        }
+
+        return $this->response;
+    }
 }
