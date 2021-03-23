@@ -32,7 +32,7 @@ class UserFrontRegisterPost extends AdminRequest
             'gender'                => 'required|string',
             'identity'              => 'required|string',
             'phone'                 => 'required|string',
-            'how'                   => 'required|string',
+            'how'                   => 'required|array',
 
             'unit'                  => 'nullable|string',
             'unit_department'       => 'nullable|string',
