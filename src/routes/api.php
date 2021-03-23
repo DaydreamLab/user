@@ -48,6 +48,7 @@ Route::post('/api/user/edit', [UserFrontController::class, 'editProfile'])
 
 Route::get('/api/user/login/facebook', [UserFrontController::class, 'fbLogin']);
 Route::get('/api/user/login/facebook/callback', [UserFrontController::class, 'fbCallback']);
+Route::get('/api/user/login/facebook/complete', [UserFrontController::class, 'fbLoginComplete']);
 //
 
 /************************************  後台 API  ************************************/
