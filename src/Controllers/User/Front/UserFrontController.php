@@ -122,6 +122,9 @@ class UserFrontController extends BaseController
     {
         if(config('daydreamlab.user.login.enable')) {
             $this->service->login($request->validated());
+            if ($this->service->status == 'NeedResetPassword') {
+                return $this->response($this->service->status, $this->service->response);
+            }
         } else {
             $this->service->status = 'LoginIsBlocked';
             $this->service->response = null;

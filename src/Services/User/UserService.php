@@ -8,11 +8,13 @@ use DaydreamLab\User\Events\Remove;
 use DaydreamLab\User\Events\Login;
 use DaydreamLab\User\Helpers\UserHelper;
 use DaydreamLab\User\Repositories\User\UserRepository;
+use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 class UserService extends BaseService
 {
@@ -103,8 +105,14 @@ class UserService extends BaseService
             if ($user->activation) { // 帳號已啟用
 
                 if ($user->activate_token === 'imported_user' && $user->last_reset_at == null) {
+                    $passwordResetService = app(PasswordResetService::class);
+                    $token = $passwordResetService->add(collect([
+                        'email'         => $input->get('email'),
+                        'token'         => Str::random(128),
+                        'expired_at'    => Carbon::now()->addHours(3)
+                    ]));
                     $this->status = 'NeedResetPassword';
-                    $this->response = null;
+                    $this->response = ['token' => $token->token];
                     return;
                 }
 
