@@ -110,12 +110,11 @@ class UserFrontService extends UserService
             return false;
         }
 
-        if ($this->checkEmail($fb_user->email)) {
-            return false;
+        $user = $this->findBy('email', '=', $fb_user->email)->first();
+        if (!$user) {
+            $user_data  = $this->helper->mergeDataFbUserCreate($fb_user);
+            $user       = $this->add($user_data);
         }
-
-        $user_data  = $this->helper->mergeDataFbUserCreate($fb_user);
-        $user       = $this->add($user_data);
 
         $social_data = $this->helper->mergeDataFbSocialUserCreate($fb_user, $user->id);
         $socialUser  = $this->socialUserService->store($social_data);
