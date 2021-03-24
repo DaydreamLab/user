@@ -4,7 +4,7 @@ namespace DaydreamLab\User\Requests\User\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class UserFrontFBRegisterPost extends AdminRequest
+class UserFrontFBLoginPost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UserFrontFBRegisterPost extends AdminRequest
     {
         return [
             'access_token'      => 'required|string',
-            'email'             => 'required|email'
+            'email'             => 'nullable|email'
         ];
     }
 }

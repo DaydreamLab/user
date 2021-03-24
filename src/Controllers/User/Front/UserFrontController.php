@@ -12,7 +12,7 @@ use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontGetUserPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontEditPost;
-use DaydreamLab\User\Requests\User\Front\UserFrontFBRegisterPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontFBLoginPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
@@ -69,9 +69,9 @@ class UserFrontController extends BaseController
     }
 
 
-    public function fbCallback()
+    public function fbCallback(UserFrontFBLoginPost $request)
     {
-        $this->service->fbLogin();
+        $this->service->fbLogin($request->validated());
 
         if ($this->service->status == 'FbEmailRequired') {
             return $this->response($this->service->status, $this->service->response);
@@ -81,18 +81,6 @@ class UserFrontController extends BaseController
             gettype($this->service->response) == 'object'
             ? new UserFrontLoginResource($this->service->response)
             : $this->service->response
-        );
-    }
-
-
-    public function fbLoginComplete(UserFrontFBRegisterPost $request)
-    {
-        $this->service->fbLoginComplete($request->validated());
-
-        return $this->response($this->service->status,
-            gettype($this->service->response) == 'object'
-                ? new UserFrontLoginResource($this->service->response)
-                : $this->service->response
         );
     }
 

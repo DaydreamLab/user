@@ -67,18 +67,18 @@ class UserFrontService extends UserService
     }
 
 
-    public function fbLogin()
+    public function fbLogin(Collection $input)
     {
         $fb_user = Socialite::driver('facebook')
             ->fields(['name', 'first_name', 'last_name', 'email', 'gender'])
-            ->stateless()
-            ->user();
+            ->userFromToken($input->get('access_token'));
 
         $social_user = $this->socialUserService->findByChain(
             ['provider', 'provider_id'],
             ['=', '='],
             ['facebook',$fb_user->id]
         )->first();
+
         if ($social_user) {     // 登入
             $user = $this->find($social_user->user_id);
             if ($user) {
@@ -92,6 +92,9 @@ class UserFrontService extends UserService
                 $this->response = null;
             }
         } else {
+            if ( !$fb_user->email && $input->has('email') ) {
+                $fb_user->email = $input->get('email');
+            }
             return $this->fbRegister($fb_user);
         }
 
@@ -123,37 +126,6 @@ class UserFrontService extends UserService
         $this->response = $this->helper->getUserLoginData($user) ;
 
         return $user;
-    }
-
-
-    public function fbLoginComplete(Collection $input)
-    {
-        $fb_user = Socialite::driver('facebook')->fields(['name', 'first_name', 'last_name', 'email', 'gender'])
-            ->userFromToken($input->get('access_token'));
-
-        $social_user = $this->socialUserService->findByChain(
-            ['provider', 'provider_id'],
-            ['=', '='],
-            ['facebook',$fb_user->id]
-        )->first();
-        if ($social_user) {     // 登入
-            $user = $this->find($social_user->user_id);
-            if ($user) {
-                // 更新 token
-                $social_user->token = $fb_user->token;
-                $social_user->save();
-                $this->status = 'FbLoginSuccess';
-                $this->response = $this->helper->getUserLoginData($user) ;
-            } else {
-                $this->status = 'FbRegisterUnfinished';
-                $this->response = null;
-            }
-        } else {
-            $fb_user->email = $input->get('email');
-            return $this->fbRegister($fb_user);
-        }
-
-        return $social_user;
     }
 
 
