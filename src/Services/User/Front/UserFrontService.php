@@ -108,7 +108,7 @@ class UserFrontService extends UserService
     public function fbRegister($fb_user)
     {
         if (!$fb_user->email) {
-            $this->status = 'FbEmailRequired';
+            $this->status = 'FbEmailIsRequired';
             $this->response = ['access_token' => $fb_user->token];
             return false;
         }
