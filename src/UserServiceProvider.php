@@ -44,7 +44,6 @@ class UserServiceProvider extends ServiceProvider
         $this->app['router']->aliasMiddleware('CORS', Cors::class);
         $this->commands($this->commands);
         //$this->registerEloquentFactoriesFrom(__DIR__.'/database/factories');
-
     }
 
 

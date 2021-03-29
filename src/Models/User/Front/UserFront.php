@@ -21,7 +21,7 @@ class UserFront extends User
     //static $custom_relations = [];
 
 
-    protected static function boot()
+    public static function boot()
     {
         parent::boot();
 

@@ -3,20 +3,38 @@
 namespace DaydreamLab\User\Models\User;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
+use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Database\Factories\UserFactory;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Kalnoy\Nestedset\Collection;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 
-class User extends Authenticatable
+class User extends BaseModel implements
+    AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract
 {
-    use HasApiTokens, Notifiable, CanResetPassword, HasCustomRelation, HasFactory;
+    use Authenticatable,
+        Authorizable,
+        CanResetPassword,
+        MustVerifyEmail,
+        Notifiable,
+        HasApiTokens,
+        RecordChanger,
+        HasFactory,
+        HasCustomRelation;
 
     protected $order_by = 'id';
 
@@ -85,7 +103,7 @@ class User extends Authenticatable
     ];
 
 
-    protected static function boot()
+    public static function boot()
     {
         parent::boot();
 
@@ -194,18 +212,13 @@ class User extends Authenticatable
     }
 
 
-//    public function getViewlevelsAttribute()
-//    {
-//        $access_groups = [];
-//
-//        foreach ($this->groups as $group)
-//        {
-//            $viewlevel = Viewlevel::where('title', '=', $group->description)->first();
-//            $access_groups = array_merge($access_groups, $viewlevel->rules);
-//        }
-//
-//        return $access_groups;
-//    }
+    /**
+     * @return string
+     */
+    public function getPrimaryKey(): string
+    {
+        return $this->primaryKey;
+    }
 
 
     public function groups()
