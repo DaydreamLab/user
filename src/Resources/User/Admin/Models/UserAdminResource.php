@@ -16,7 +16,7 @@ class UserAdminResource extends JsonResource
     {
         return [
             'email'                 => $this->email,
-            'first_name'             => $this->first_name,
+            'firstname'             => $this->first_name,
             'last_name'              => $this->last_name,
             'gender'                => $this->gendor,
             'image'                 => $this->image,
