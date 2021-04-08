@@ -18,7 +18,7 @@ class CreateSocialsUsersTable extends Migration
             $table->unsignedBigInteger('provider_id');
             $table->string('provider');
             $table->unsignedBigInteger('user_id');
-            $table->string('token');
+            $table->string('token', 500);
             $table->timestamps();
         });
     }
