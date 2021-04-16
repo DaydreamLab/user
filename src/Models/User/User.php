@@ -69,6 +69,7 @@ class User extends Authenticatable
         'reset_password',
         'last_reset_at',
         'last_login_at',
+        'login_fail_count',
         'timezone',
         'locale',
         'created_by',
