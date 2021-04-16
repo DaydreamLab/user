@@ -152,7 +152,7 @@ class UserService extends BaseService
                 $this->throwResponse($this->status, null, $input->only('email'));
             }
             $fail_count = $user->login_fail_count+1;
-            if ($fail_count >= 5) {
+            if ($fail_count >= config('daydreamlab.user.max_login_fail_attempt', 5)) {
                 $this->repo->update([
                     'login_fail_count' => $fail_count,
                     'block' => 1
