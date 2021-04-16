@@ -21,6 +21,10 @@ use DaydreamLab\User\Services\User\Front\UserFrontService;
 use DaydreamLab\User\Requests\User\Front\UserFrontStorePost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
+use Laravel\Passport\ApiTokenCookieFactory;
 use Laravel\Socialite\Facades\Socialite;
 
 class UserFrontController extends BaseController
@@ -135,11 +139,17 @@ class UserFrontController extends BaseController
             $this->service->response = null;
         }
 
-        return $this->response($this->service->status,
+        $response = $this->response($this->service->status,
             $this->service->response
             ? new UserFrontLoginResource($this->service->response)
             : null
         );
+
+        if (in_array($this->service->status, ['LoginSuccess', 'MultipleLoginSuccess'])) {
+            $response = $response->cookie('laravel_session', Str::random(128));
+        }
+
+        return $response;
     }
 
 
