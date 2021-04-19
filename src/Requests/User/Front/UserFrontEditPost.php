@@ -24,7 +24,6 @@ class UserFrontEditPost extends AdminRequest
     public function rules()
     {
         return [
-            'id'                    => 'nullable|integer',
             //'email'                 => 'nullable|email|unique:users,email',
             //'email_confirmation'    => 'required_with:email|same:email',
             'password'              => 'nullable|string|min:8|max:16',
