@@ -147,7 +147,6 @@ class UserFrontController extends BaseController
 
         if (in_array($this->service->status, ['LoginSuccess', 'MultipleLoginSuccess'])) {
             $response = $response->cookie(config('session.cookie'), Str::random(128));
-            $response = $response->cookie('_shieldon', Str::random(128));
         }
 
         return $response;
