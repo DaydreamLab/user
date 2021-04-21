@@ -147,20 +147,22 @@ class UserService extends BaseService
             }
         } else {
             $user = $this->findBy('email', '=', $input->get('email'))->first();
-            if ($user->block) {
-                $this->status = 'IsBlocked';
-                $this->throwResponse($this->status, null, $input->only('email'));
-            }
-            $fail_count = $user->login_fail_count+1;
-            if ($fail_count >= config('daydreamlab.user.max_login_fail_attempt', 5)) {
-                $this->repo->update([
-                    'login_fail_count' => $fail_count,
-                    'block' => 1
-                ], $user);
-            } else {
-                $this->repo->update([
-                    'login_fail_count' => $fail_count,
-                ], $user);
+            if ($user) {
+                if ($user->block) {
+                    $this->status = 'IsBlocked';
+                    $this->throwResponse($this->status, null, $input->only('email'));
+                }
+                $fail_count = $user->login_fail_count+1;
+                if ($fail_count >= config('daydreamlab.user.max_login_fail_attempt', 5)) {
+                    $this->repo->update([
+                        'login_fail_count' => $fail_count,
+                        'block' => 1
+                    ], $user);
+                } else {
+                    $this->repo->update([
+                        'login_fail_count' => $fail_count,
+                    ], $user);
+                }
             }
 
             $this->status = 'EmailOrPasswordIncorrect';
