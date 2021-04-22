@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Events\Add;
 use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Events\Remove;
