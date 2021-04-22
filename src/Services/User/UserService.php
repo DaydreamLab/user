@@ -141,7 +141,7 @@ class UserService extends BaseService
                     return  $this->response;
                 }
             } else { // 帳號尚未啟用
-                //$user->notify(new RegisteredNotification($user));
+                $user->notify(new RegisteredNotification($user));
                 $this->status = 'Unactivated';
                 $this->throwResponse($this->status, null, $input->only('email'));
             }
