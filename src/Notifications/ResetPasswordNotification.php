@@ -56,7 +56,7 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
                 ->action('Reset Password ', url($url))
                 ->line('If you did not request a password reset, no further action is required.')
             : (new MailMessage)
-                ->subject( '【'.config('app.name').' 忘記密碼】')
+                ->subject( '通訊大賽 帳號密碼重設】')
                 ->view($template, ['user' => $this->user, 'url' => url($url)]);
 
     }

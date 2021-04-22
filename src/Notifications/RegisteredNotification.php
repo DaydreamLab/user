@@ -51,7 +51,7 @@ class RegisteredNotification extends Notification implements ShouldQueue
                     ->action('Activate your account',  url($path))
                     ->line('Thank you for using our application!')
             :   (new MailMessage)
-                    ->subject( '【'.config('app.name').' 帳號啟用】')
+                    ->subject( '通訊大賽 帳號啟用')
                     ->view($template, ['url'=> url($path)]);
     }
 
