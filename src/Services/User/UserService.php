@@ -3,7 +3,7 @@
 namespace DaydreamLab\User\Services\User;
 
 use DaydreamLab\User\Notifications\RegisteredNotification;
-use DaydreamLab\User\Notifications\ResetPasswordNotification;
+use DaydreamLab\User\Notifications\OldUserResetPasswordNotification;
 use DaydreamLab\User\Events\Add;
 use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Events\Remove;
@@ -105,7 +105,7 @@ class UserService extends BaseService
                 'expired_at'    => Carbon::now()->addHours(3)
             ]));
             $this->status = 'NeedResetPassword';
-            $user->notify(new ResetPasswordNotification($user, $token));
+            $user->notify(new OldUserResetPasswordNotification($user, $token));
             $this->response = [];
             return;
         }
