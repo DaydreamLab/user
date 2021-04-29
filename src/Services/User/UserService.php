@@ -95,6 +95,19 @@ class UserService extends BaseService
 
     public function login(Collection $input)
     {
+        $user = $this->findBy('email', '=', $input->get('email'))->first();
+        if ($user->activate_token === 'imported_user' && $user->last_reset_at == null) {
+            $passwordResetService = app(PasswordResetService::class);
+            $token = $passwordResetService->add(collect([
+                'email'         => $input->get('email'),
+                'token'         => Str::random(128),
+                'expired_at'    => Carbon::now()->addHours(3)
+            ]));
+            $this->status = 'NeedResetPassword';
+            $this->response = ['token' => $token->token];
+            return;
+        }
+
         $auth = Auth::attempt([
             'email'     => Str::lower($input->get('email')),
             'password'  => $input->get('password')
@@ -104,18 +117,6 @@ class UserService extends BaseService
         $login = false;
         if ($auth) {
             if ($user->activation) { // 帳號已啟用
-
-                if ($user->activate_token === 'imported_user' && $user->last_reset_at == null) {
-                    $passwordResetService = app(PasswordResetService::class);
-                    $token = $passwordResetService->add(collect([
-                        'email'         => $input->get('email'),
-                        'token'         => Str::random(128),
-                        'expired_at'    => Carbon::now()->addHours(3)
-                    ]));
-                    $this->status = 'NeedResetPassword';
-                    $this->response = ['token' => $token->token];
-                    return;
-                }
 
                 if ($user->block) {
                     $this->status = 'IsBlocked';
