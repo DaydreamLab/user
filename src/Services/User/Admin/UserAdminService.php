@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
+use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
@@ -181,5 +182,15 @@ class UserAdminService extends UserService
     public function removeMapping($item)
     {
         $item->groups()->detach();
+    }
+
+
+    public function modify(Collection $input)
+    {
+        $result =  parent::modify($input);
+
+        event(new Modify($this->find($input->get('id')), $this->getServiceName(), $result, $input, $this->user));
+
+        return $result;
     }
 }
