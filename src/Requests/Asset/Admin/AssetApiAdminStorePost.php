@@ -31,6 +31,7 @@ class AssetApiAdminStorePost extends AdminRequest
             'service'       => 'nullable|string',
             'method'        => 'required|string',
             'url'           => 'required|string',
+            'asset_id'      => 'required|integer'
         ];
         return array_merge($rules, parent::rules());
     }

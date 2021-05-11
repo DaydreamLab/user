@@ -18,4 +18,22 @@ class AssetApiAdminService extends AssetApiService
     {
         parent::__construct($repo);
     }
+
+
+    public function addMapping($item, $input)
+    {
+        $item->assets()->attach($input->get('asset_id'));
+    }
+
+
+    public function modifyMapping($item, $input)
+    {
+        return $item->assets()->sync($input->get('asset_id'));
+    }
+
+
+    public function removeMapping($item)
+    {
+        return $item->assets()->detach();
+    }
 }

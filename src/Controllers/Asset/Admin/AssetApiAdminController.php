@@ -59,7 +59,7 @@ class AssetApiAdminController extends BaseController
         $this->service->store($request->validated());
 
         return $this->response($this->service->status,
-            gettype($this->service->response)
+            gettype($this->service->response) == 'object'
                 ? new AssetApiAdminResource($this->service->response)
                 : null
         );

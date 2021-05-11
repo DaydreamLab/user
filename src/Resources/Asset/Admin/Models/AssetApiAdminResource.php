@@ -19,6 +19,8 @@ class AssetApiAdminResource extends JsonResource
             'service'           => $this->service,
             'method'            => $this->method,
             'url'               => $this->url,
+            'asset_id'          => $this->asset->id,
+            'asset_title'       => $this->asset_title
         ];
     }
 }
