@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Repositories\Asset\Admin\AssetApiAdminRepository;
 use DaydreamLab\User\Services\Asset\AssetApiService;
+use Illuminate\Support\Collection;
 
 class AssetApiAdminService extends AssetApiService
 {
@@ -23,11 +24,10 @@ class AssetApiAdminService extends AssetApiService
 
     public function addMapping($item, $input)
     {
-        $item->assets()->attach($input->get('asset_id'));
         $super = UserGroup::where('title', 'Super User')->first();
-        if ($super) {
-            $super->apis()->attach($item->id);
-        }
+        $admin = UserGroup::where('title', 'Administrator')->first();
+        $item->assets()->attach($input->get('asset_id'));
+        $item->userGroups()->attach(array($super->id, $admin->id));
     }
 
 
@@ -39,10 +39,6 @@ class AssetApiAdminService extends AssetApiService
 
     public function removeMapping($item)
     {
-        return $item->assets()->detach();
-        $super = UserGroup::where('title', 'Super User')->first();
-        if ($super) {
-            $super->apis()->detach();
-        }
+        return $item->assets()->detach() && $item->userGroups()->detach();
     }
 }

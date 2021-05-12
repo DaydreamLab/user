@@ -75,7 +75,7 @@ class AssetAdminController extends BaseController
     public function store(AssetAdminStorePost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->storeNested($request->validated());
+        $this->service->store($request->validated());
 
         return $this->response($this->service->status,
             gettype($this->service->response) == 'object'

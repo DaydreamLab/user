@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Services\Asset\Admin;
 
 use DaydreamLab\JJAJ\Traits\LoggedIn;
+use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Repositories\Asset\Admin\AssetAdminRepository;
 use DaydreamLab\User\Services\Asset\AssetService;
 
@@ -15,6 +16,20 @@ class AssetAdminService extends AssetService
     public function __construct(AssetAdminRepository $repo)
     {
         parent::__construct($repo);
+    }
+
+
+    public function addMapping($item, $input)
+    {
+        $super = UserGroup::where('title', 'Super User')->first();
+        $admin = UserGroup::where('title', 'Administrator')->first();
+        $item->userGroups()->attach(array($super->id, $admin->id));
+    }
+
+
+    public function removeMapping($item)
+    {
+        return $item->userGroups()->detach() && $item->apis()->detach();
     }
 
 

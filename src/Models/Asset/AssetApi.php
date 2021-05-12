@@ -2,6 +2,7 @@
 namespace DaydreamLab\User\Models\Asset;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
+use DaydreamLab\User\Models\User\UserGroup;
 
 class AssetApi extends BaseModel
 {
@@ -60,6 +61,12 @@ class AssetApi extends BaseModel
     }
 
 
+    public function userGroups()
+    {
+        return $this->belongsToMany(UserGroup::class, 'users_groups_apis_maps', 'api_id', 'group_id')->withTimestamps();
+    }
+
+
     public function getAssetAttribute()
     {
         return $this->assets()->first();
@@ -72,4 +79,9 @@ class AssetApi extends BaseModel
         return $asset ? $asset->title : null;
     }
 
+
+    public function getUserGroupsAttribute()
+    {
+        return $this->userGroups()->get();
+    }
 }
