@@ -22,8 +22,13 @@ class AssetAdminService extends AssetService
     public function addMapping($item, $input)
     {
         $super = UserGroup::where('title', 'Super User')->first();
+        if ($super) {
+            $item->userGroups()->attach($super->id);
+        }
         $admin = UserGroup::where('title', 'Administrator')->first();
-        $item->userGroups()->attach(array($super->id, $admin->id));
+        if ($admin) {
+            $item->userGroups()->attach($admin->id);
+        }
     }
 
 

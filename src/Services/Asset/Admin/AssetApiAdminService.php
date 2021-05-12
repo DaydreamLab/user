@@ -25,9 +25,14 @@ class AssetApiAdminService extends AssetApiService
     public function addMapping($item, $input)
     {
         $super = UserGroup::where('title', 'Super User')->first();
+        if ($super) {
+            $item->userGroups()->attach($super->id);
+        }
         $admin = UserGroup::where('title', 'Administrator')->first();
+        if ($admin) {
+            $item->userGroups()->attach($admin->id);
+        }
         $item->assets()->attach($input->get('asset_id'));
-        $item->userGroups()->attach(array($super->id, $admin->id));
     }
 
 
