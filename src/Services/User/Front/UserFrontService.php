@@ -227,9 +227,10 @@ class UserFrontService extends UserService
         }
 
         if ($input->has('email')) {
-            $exist = $this->checkEmail($input->get('email'));
-            if ($exist) {
-                return ;
+            $user = $this->findBy('email', '=', $input->get('email'))->first();
+            if ($user && $user->id !== $this->user->id) {
+                $this->status = 'EmailIsRegistered';
+                $this->throwResponse($this->status, null, ['email' => $input->get('email')]);
             }
         }
 
