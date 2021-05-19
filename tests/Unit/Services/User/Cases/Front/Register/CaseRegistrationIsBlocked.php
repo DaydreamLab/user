@@ -19,7 +19,7 @@ class CaseRegistrationIsBlocked extends UserFrontTestBase
     public function testCase()
     {
         Config::set('daydreamlab.user.register.enable', 0);
-        $this->assertHttpResponseException('register', collect(), 'RegistrationIsBlocked');
+        $this->assertException('register', collect(), 'RegistrationIsBlocked');
     }
 
 

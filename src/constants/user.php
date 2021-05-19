@@ -36,6 +36,8 @@ return [
 
     'OLD_PASSWORD_INCORRECT'            => 403,
 
+    'PASSWORD_SAME_AS_PREVIOUS'         => 403,
+
     'REGISTER_SUCCESS'                  => 200,
     'REGISTRATION_IS_BLOCKED'           => 403,
     'RESET_PASSWORD_SUCCESS'            => 200,

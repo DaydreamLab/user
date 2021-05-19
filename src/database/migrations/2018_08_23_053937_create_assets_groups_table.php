@@ -19,7 +19,7 @@ class CreateAssetsGroupsTable extends Migration
             //$table->unsignedInteger('category_id')->nullable();
             $table->tinyInteger('state')->default(1);
             //$table->text('description')->nullable();
-            $table->unsignedInteger('created_by');
+            $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();
         });

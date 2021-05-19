@@ -3,7 +3,6 @@
 namespace DaydreamLab\User\Controllers\User\Front;
 
 use Carbon\Carbon;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontCheckEmailPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
@@ -19,6 +18,7 @@ use DaydreamLab\User\Requests\User\Front\UserFrontStorePost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Throwable;
 
 class UserFrontController extends BaseController
 {
@@ -37,7 +37,11 @@ class UserFrontController extends BaseController
 
     public function activate($token)
     {
-        $this->service->activate($token);
+        try {
+            $this->service->activate($token);
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -45,16 +49,24 @@ class UserFrontController extends BaseController
 
     public function checkEmail(UserFrontCheckEmailPost $request)
     {
-        $this->service->checkEmail($request->validated());
+        try {
+            $this->service->checkEmail($request->validated()->get('email'));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
 
 
-    public function forgetchangePassword(UserFrontChangePasswordPost $request)
+    public function forgetChangePassword(UserFrontChangePasswordPost $request)
     {
         $this->service->setUser($request->user);
-        $this->service->changePassword($request->validated());
+        try {
+            $this->service->changePassword($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -68,8 +80,11 @@ class UserFrontController extends BaseController
 
     public function fbCallback()
     {
-        $this->service->fbLogin();
-
+        try {
+            $this->service->fbLogin();
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
         return $this->response($this->service->status,
             gettype($this->service->response) == 'object'
             ? new UserFrontLoginResource($this->service->response)
@@ -80,7 +95,11 @@ class UserFrontController extends BaseController
 
     public function forgotPasswordTokenValidate($token)
     {
-        $this->service->forgotPasswordTokenValidate($token);
+        try {
+            $this->service->forgotPasswordTokenValidate($token);
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -119,7 +138,12 @@ class UserFrontController extends BaseController
     public function login(UserFrontLoginPost $request)
     {
         if(config('daydreamlab.user.login.enable')) {
-            $this->service->login($request->validated());
+            try {
+                $this->service->login($request->validated());
+            } catch (Throwable $t) {
+                $this->service->status = $t->status;
+                $this->service->response = $t->response;
+            }
         } else {
             $this->service->status = 'LoginIsBlocked';
             $this->service->response = null;
@@ -136,7 +160,11 @@ class UserFrontController extends BaseController
     public function register(UserFrontRegisterPost $request)
     {
         if (config('daydreamlab.user.register.enable')) {
-            $this->service->register($request->validated());
+            try {
+                $this->service->register($request->validated());
+            } catch (Throwable $t) {
+                $this->handleException($t);
+            }
         } else {
             $this->service->status = 'RegistrationIsBlocked';
         }
@@ -151,7 +179,11 @@ class UserFrontController extends BaseController
 
     public function resetPassword(UserFrontResetPasswordPost $request)
     {
-        $this->service->resetPassword($request->validated());
+        try {
+            $this->service->resetPassword($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -159,7 +191,11 @@ class UserFrontController extends BaseController
 
     public function sendResetLinkEmail(UserFrontForgetPasswordPost $request)
     {
-        $this->service->sendResetLinkEmail($request->validated());
+        try {
+            $this->service->sendResetLinkEmail($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -167,7 +203,11 @@ class UserFrontController extends BaseController
 
     public function store(UserFrontStorePost $request)
     {
-        $this->service->store($request->validated());
+        try {
+            $this->service->store($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }

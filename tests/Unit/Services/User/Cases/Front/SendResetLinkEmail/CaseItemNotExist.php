@@ -25,7 +25,7 @@ class CaseItemNotExist extends UserFrontTestBase
             ->shouldReceive('findBy')
             ->andReturn(collect());
 
-        $this->assertHttpResponseException('sendResetLinkEmail', $input, 'ItemNotExist');
+        $this->assertException('sendResetLinkEmail', $input, 'ItemNotExist');
     }
 
 

@@ -2,15 +2,14 @@
 
 namespace DaydreamLab\User\Services\User\Admin;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
+use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 
 class UserAdminService extends UserService
 {
@@ -18,20 +17,10 @@ class UserAdminService extends UserService
 
     protected $modelType = 'Admin';
 
-    protected $search_keys = [
-        'first_name',
-        'last_name',
-        'email',
-    ];
-
-    protected $eagers = [
-        //'groups',
-        //'viewlevels'
-    ];
-
     public function __construct(UserAdminRepository $repo)
     {
         parent::__construct($repo);
+        $this->response = $repo;
     }
 
 
@@ -43,14 +32,20 @@ class UserAdminService extends UserService
     }
 
 
+    public function beforeRemove($item)
+    {
+        if (!$item->canDelete) {
+            throw new ForbiddenException('IsPreserved');
+        }
+    }
+
+
     public function block(Collection $input)
     {
         $result = false;
         foreach ($input->get('ids') as $key => $id) {
             $user           = $this->find($id);
-            $result         = $this->repo->update([
-                'block' => $input->get('block')
-            ], $user);
+            $result         = $this->repo->update($user, ['block' => $input->get('block')]);
             if (!$result) {
                 break;
             }
@@ -65,11 +60,9 @@ class UserAdminService extends UserService
 
         event(new Block($this->getServiceName(), $result, $input, $this->user));
 
-        if($result) {
-            $this->status = $action. 'Success';
-        } else {
-            $this->status = $action. 'Fail';
-        }
+        $this->status = $result
+            ? $action. 'Success'
+            : $action . 'Fail';
 
         return $result;
     }
@@ -122,49 +115,17 @@ class UserAdminService extends UserService
     }
 
 
-    public function search(Collection $input)
-    {
-        if (!$this->user->isSuperUser()) {
-            $input->put('where', [
-                [
-                    'key'       => 'email',
-                    'operator'  => '!=',
-                    'value'     => 'admin@daydream-lab.com'
-                ]
-            ]);
-        }
-
-        $search_result = parent::search($input);
-
-        return $search_result;
-    }
-
-
     public function store(Collection $input)
     {
         if (InputHelper::null($input, 'id')) {
-            if (InputHelper::null($input, 'password')) {
-                $this->throwResponse('InvalidInput', ['password' => 'password can\'t be null']);
-            } else {
-                if ($this->checkEmail($input->get('email'))){
-                    $this->throwResponse('EmailIsRegistered');
-                }
-                $input->put('password', bcrypt($input->get('password')));
-                $input->put('activate_token', Str::random(48));
-            }
-        } else {
-            if (!InputHelper::null($input, 'password')) {
-                $input->put('password', bcrypt($input->get('password')));
-            } else {
-                $input->forget('password');
-            }
+            $this->checkEmail($input->get('email'));
         }
 
         // 確保使用者所指派的群組，具有該權限
         $inputGroupIds = collect($input->get('group_ids'));
         $userAccessGroupIds = $this->getUser()->accessGroupIds;
         if ($inputGroupIds->intersect($userAccessGroupIds)->count() != $inputGroupIds->count()) {
-            $this->throwResponse('InsufficientPermissionAssignGroup', [
+            throw new UnauthorizedException('InsufficientPermissionAssignGroup', [
                 'groupIds' => $inputGroupIds->diff($userAccessGroupIds)
             ]);
         }

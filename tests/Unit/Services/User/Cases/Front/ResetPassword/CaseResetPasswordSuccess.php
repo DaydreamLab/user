@@ -38,10 +38,15 @@ class CaseResetPasswordSuccess extends UserFrontTestBase
             ->shouldReceive('update')
             ->andReturn(true);
 
+        $this->repo
+            ->shouldReceive('modify')
+            ->andReturn(true);
+
         $input = collect([
             'token'     => $passwordReset->token,
             'password'  => Str::random()
         ]);
+
         $this->service->resetPassword($input);
         $this->assertEquals('ResetPasswordSuccess', $this->service->status);
     }

@@ -19,7 +19,7 @@ class CreateViewlevelsTable extends Migration
             $table->text('description')->nullable();
             $table->unsignedTinyInteger('canDelete')->default(1);
             $table->unsignedInteger('ordering')->default(1);
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });

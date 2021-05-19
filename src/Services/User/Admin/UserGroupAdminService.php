@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User\Admin;
 
+use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Repositories\User\Admin\UserGroupAdminRepository;
@@ -16,10 +17,6 @@ class UserGroupAdminService extends UserGroupService
     protected $viewlevelAdminService;
 
     protected $modelType = 'Admin';
-
-    protected $modelName = 'UserGroup';
-
-    protected $search_keys = ['title'];
 
     public function __construct(UserGroupAdminRepository $repo,
                                 ViewlevelAdminService $viewlevelAdminService)
@@ -54,15 +51,24 @@ class UserGroupAdminService extends UserGroupService
     }
 
 
+    public function beforeRemove($item)
+    {
+        if (!$item->canDelete) {
+            $pk = $this->repo->getModel()->getPrimaryKey();
+            throw new ForbiddenException('IsPreserved', [$pk => $item->{$pk}]);
+        }
+    }
+
+
     public function getItem($input)
     {
         $group = parent::getItem(collect(['id' => $input->get('id')]));
 
-        $group->assets = $group->assets()->get()->map(function ($item){
+        $group->assets = $group->assets->map(function ($item){
             return $item->id;
         });
 
-        $group->apis = $group->apis()->get()->map(function ($item){
+        $group->apis = $group->apis->map(function ($item){
             return $item->id;
         });
 

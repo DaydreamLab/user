@@ -31,7 +31,7 @@ class CaseInvalidAddIds extends UserTagAdminTestBase
             ->shouldReceive('getModel')
             ->andReturn(UserTag::factory()->create());
 
-        $this->assertHttpResponseException('apply', $input, 'InvalidApplyAddIds');
+        $this->assertException('apply', $input, 'InvalidApplyAddIds');
     }
 
 

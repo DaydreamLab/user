@@ -22,7 +22,7 @@ class CaseResetPasswordTokenInvalid extends UserFrontTestBase
             ->shouldReceive('findBy')
             ->andReturn(collect());
 
-        $this->assertHttpResponseException('forgotPasswordTokenValidate', Str::random(), 'ResetPasswordTokenInvalid');
+        $this->assertException('forgotPasswordTokenValidate', Str::random(), 'ResetPasswordTokenInvalid');
     }
 
 

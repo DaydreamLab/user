@@ -15,7 +15,7 @@ use DaydreamLab\User\Controllers\User\Admin\UserTagAdminController;
 Route::get('/api/user/activate/{token}', [UserFrontController::class, 'activate']);
 
 // 寄送忘記密碼Email
-Route::post('/api//password/email', [UserFrontController::class, 'sendResetLinkEmail']);
+Route::post('/api/password/email', [UserFrontController::class, 'sendResetLinkEmail']);
 
 // 驗證忘記密碼token合法
 Route::get('/api/password/reset/{token}', [UserFrontController::class, 'forgotPasswordTokenValidate']);
@@ -88,8 +88,7 @@ Route::get('api/admin/group/{id}', [AssetGroupAdminController::class, 'getItem']
     ->middleware(['expired', 'admin']);
 
 
-
-
+/****** User 會員 ******/
 Route::post('api/admin/user/block', [UserAdminController::class, 'block'])
  ->middleware(['expired', 'admin']);
 Route::post('api/admin/user/search', [UserAdminController::class, 'search'])

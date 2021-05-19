@@ -22,7 +22,7 @@ class CaseChangePasswordSuccess extends UserTestBase
     {
         $input = collect([
             'old_password' => 'daydream5182',
-            'password'     => $password = Str::random(8),
+            'password'     => bcrypt($password = Str::random(8)),
         ]);
 
         // 更改密碼

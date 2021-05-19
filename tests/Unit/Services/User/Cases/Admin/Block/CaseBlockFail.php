@@ -31,7 +31,7 @@ class CaseBlockFail extends UserAdminTestBase
             ->andReturn($user);
 
         $this->repo
-            ->shouldReceive('update')
+            ->shouldReceive('modify')
             ->andReturn(false);
 
         $this->service->block($input);

@@ -16,8 +16,8 @@ class UserAdminResource extends JsonResource
     {
         return [
             'email'                 => $this->email,
-            'firstname'             => $this->first_name,
-            'last_name'              => $this->last_name,
+            'firstName'             => $this->firstName,
+            'lastName'              => $this->lastName,
             'gender'                => $this->gendor,
             'image'                 => $this->image,
             'phone'                 => $this->phone,
@@ -30,8 +30,8 @@ class UserAdminResource extends JsonResource
             'zipcode'               => $this->zipcode,
             'activation'            => $this->activation,
             'block'                 => $this->block,
-            'groups'                => $this->groups->toArray(),
-            'access_ids'            => $this->access_ids
+            'groupIds'              => $this->groups->pluck('id'),
+            'accessIds'             => $this->accessIds
         ];
     }
 }

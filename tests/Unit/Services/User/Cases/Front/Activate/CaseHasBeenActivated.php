@@ -23,7 +23,7 @@ class CaseHasBeenActivated extends UserFrontTestBase
         $this->repo
             ->shouldReceive('findBy')
             ->andReturn(collect([$user]));
-        $this->assertHttpResponseException('activate', $user->activate_token, 'HasBeenActivated');
+        $this->assertException('activate', $user->activate_token, 'HasBeenActivated');
     }
 
 

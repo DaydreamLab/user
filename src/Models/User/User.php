@@ -17,9 +17,9 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Kalnoy\Nestedset\Collection;
 use Laravel\Passport\HasApiTokens;
-use Illuminate\Support\Facades\Auth;
 
 class User extends BaseModel implements
     AuthenticatableContract,
@@ -53,13 +53,13 @@ class User extends BaseModel implements
     protected $fillable = [
         'email',
         'password',
-        'first_name',
-        'last_name',
+        'firstName',
+        'lastName',
         'nickname',
         'redirect',
         'gender',
         'image',
-        'phone_code',
+        'phoneCode',
         'phone',
         'birthday',
         'timezone',
@@ -67,20 +67,19 @@ class User extends BaseModel implements
         'school',
         'job',
         'country',
-        'state',
+        'state_',
         'city',
         'district',
         'address',
         'zipcode',
-        'created_by',
-        'updated_by',
         'activation',
-        'activate_token',
-        //'redirect',
+        'activateToken',
         'block',
-        'reset_password',
-        'last_reset_at',
-        'last_login_at',
+        'canDelete',
+        'resetPassword',
+        'lastResetAt',
+        'lastPassword',
+        'lastLoginAt',
         'created_by',
         'updated_by'
     ];
@@ -92,14 +91,9 @@ class User extends BaseModel implements
      */
     protected $hidden = [
         'password',
-        'password_confirmation',
-        'remember_token',
     ];
 
     protected $appends = [
-        'full_name',
-        //'roles',
-        'groups',
     ];
 
 
@@ -107,21 +101,21 @@ class User extends BaseModel implements
     {
         parent::boot();
 
-        $user = Auth::guard('api')->user();
-
-        static::creating(function ($item) use($user) {
-            if ($user) {
-                $item->created_by = $user->id;
-            }
-            else{
-                $item->created_by = 1;
-            }
+        static::creating(function ($item){
+            $user = auth('api')->user();
+            $item->activateToken = Str::random(48);
+            $item->locale = 'zh-Hant';
+            $item->timezone = 'Asia/Taipei';
+            $item->created_by = $user
+                ? $user->id
+                : null;
         });
 
-        static::updating(function ($item) use ($user) {
-            if ($user) {
-                $item->updated_by = $user->id;
-            }
+        static::updating(function ($item) {
+            $user = auth('api')->user();
+            $item->updated_by = $item->created_by = $user
+                ? $user->id
+                : null;
         });
     }
 
@@ -244,19 +238,17 @@ class User extends BaseModel implements
 
     public function isAdmin()
     {
-        $super_user  = UserGroup::where('title', 'Super User')->first();
-        $admin       = UserGroup::where('title', 'Administrator')->first();
+        $admins = UserGroup::whereIn('title', ['Super User', 'Administrator'])->get();
 
         return $this
             ->groups()
-            ->where(function ($q) use ($admin, $super_user) {
-                $q->where(function ($q) use ($admin){
-                    $q->where('_lft', '>=', $admin->_lft)
-                        ->where('_rgt', '<=', $admin->_rgt);
-                })->orWhere(function ($q) use ($super_user) {
-                    $q->where('_lft', '>=', $super_user->_lft)
-                        ->where('_rgt', '<=', $super_user->_rgt);
-                });
+            ->where(function ($q) use ($admins) {
+                foreach ($admins as $admin) {
+                    $q->orWhere(function ($q) use ($admin){
+                        $q->where('_lft', '>=', $admin->_lft)
+                            ->where('_rgt', '<=', $admin->_rgt);
+                    });
+                }
         })->count();
     }
 

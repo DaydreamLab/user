@@ -28,13 +28,13 @@ class UserFactory extends Factory
         return [
             'email'         => $this->faker->email,
             'password'      => bcrypt(1234),
-            'first_name'    => $this->faker->firstName($gender),
-            'last_name'     => $this->faker->lastName,
+            'firstName'     => $this->faker->firstName($gender),
+            'lastName'      => $this->faker->lastName,
             'nickname'      => $this->faker->userName,
             'gender'        => $gender,
             'image'         => $this->faker->image(),
             'birthday'      => $this->faker->date(),
-            'activate_token'=> Str::random()
+            'activateToken' => Str::random()
         ];
     }
 }

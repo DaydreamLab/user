@@ -29,4 +29,12 @@ class UserFrontResetPasswordPost extends AdminRequest
             'passwordConfirm' => 'required|same:password',
         ];
     }
+
+
+    public function validated()
+    {
+        $validated = parent::validated();
+
+        return $validated;
+    }
 }

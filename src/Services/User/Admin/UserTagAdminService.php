@@ -2,6 +2,8 @@
 
 namespace DaydreamLab\User\Services\User\Admin;
 
+use DaydreamLab\JJAJ\Database\QueryCapsule;
+use DaydreamLab\JJAJ\Exceptions\BadRequestException;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Repositories\User\Admin\UserTagAdminRepository;
 use DaydreamLab\User\Services\User\UserTagService;
@@ -29,14 +31,16 @@ class UserTagAdminService extends UserTagService
     {
         $addTags    = $this->search($input->get('getAddQuery'));
         if ($addTags->count() != count($input->get('addIds'))) {
-            $this->throwResponse('InvalidApplyAddIds');
+            throw new BadRequestException('InvalidApplyAddIds');
         }
         $deleteTags = $this->search($input->get('getDeleteQuery'));
         if ($deleteTags->count() != count($input->get('deleteIds'))) {
-            $this->throwResponse('InvalidApplyDeleteIds');
+            throw new BadRequestException('InvalidApplyDeleteIds');
         }
 
-        $users = $this->userAdminService->findBySpecial('whereIn', 'id', $input->get('userIds'));
+        $q = $input->get('q') ?: new QueryCapsule();
+        $q->whereIn('id', $input->get('userIds'));
+        $users = $this->userAdminService->search(collect(['q' => $q]));
 
         foreach ($users as $user) {
             $user->tags()->sync($input->get('addIds'));

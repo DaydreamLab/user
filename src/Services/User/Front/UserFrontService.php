@@ -2,6 +2,9 @@
 
 namespace DaydreamLab\User\Services\User\Front;
 
+use DaydreamLab\JJAJ\Database\QueryCapsule;
+use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
+use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
@@ -11,6 +14,7 @@ use Carbon\Carbon;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
@@ -47,16 +51,13 @@ class UserFrontService extends UserService
         $user = $this->findBy('activate_token', '=', $token)->first();
         if ($user) {
             if ($user->activation) {
-                $this->status = 'HasBeenActivated';
-                $this->throwResponse('HasBeenActivated', null, ['token' => $token]);
+                throw new ForbiddenException('HasBeenActivated',  ['token' => $token]);
             } else {
-                $user->activation = 1;
-                $user->save();
+                $this->repo->modify($user, collect(['activation' => 1]));
                 $this->status = 'ActivationSuccess';
             }
         } else {
-            $this->status = 'ActivationTokenInvalid';
-            $this->throwResponse($this->status, null, ['token' => $token]);
+            throw new ForbiddenException('ActivationTokenInvalid',  ['token' => $token]);
         }
     }
 
@@ -74,11 +75,10 @@ class UserFrontService extends UserService
             ->stateless()
             ->user();
 
-        $social_user = $this->socialUserService->findByChain(
-            ['provider', 'provider_id'],
-            ['=', '='],
-            ['facebook',$fb_user->id]
-        )->first();
+        $q = new QueryCapsule();
+        $q->where('provider', 'facebook')
+            ->where('provider_id', $fb_user->id);
+        $social_user = $this->socialUserService->search(collect(['q' => $q]))->first();
         if ($social_user) {     // 登入
             $user = $this->find($social_user->user_id);
             if ($user) {
@@ -109,9 +109,7 @@ class UserFrontService extends UserService
             return false;
         }
 
-        if ($this->checkEmail($fb_user->email)) {
-            return false;
-        }
+        $this->checkEmail($fb_user->email);
 
         $user_data  = $this->helper->mergeDataFbUserCreate($fb_user);
         $user       = $this->add($user_data);
@@ -128,20 +126,17 @@ class UserFrontService extends UserService
 
     public function forgotPasswordTokenValidate($token)
     {
-        $reset_token = $this->passwordResetService->findBy('token', '=', $token)->first();
+        $reset_token = $this->passwordResetService->findBy('token', '=', $token)->last();
         if ($reset_token) {
             if (Carbon::now() > Carbon::parse($reset_token->expired_at)) {
-                $this->status = 'ResetPasswordTokenExpired';
-                $this->throwResponse($this->status, null, ['token' => $token]);
+                throw new ForbiddenException('ResetPasswordTokenExpired', ['token' => $token]);
             } elseif ($reset_token->reset_at) {
-                $this->status = 'ResetPasswordTokenIsUsed';
-                $this->throwResponse($this->status, null, ['token' => $token]);
+                throw new ForbiddenException('ResetPasswordTokenIsUsed', ['token' => $token]);
             } else {
                 $this->status = 'ResetPasswordTokenValid';
             }
         } else {
-            $this->status = 'ResetPasswordTokenInvalid';
-            $this->throwResponse( $this->status, null, ['token' => $token]);
+            throw new ForbiddenException('ResetPasswordTokenInvalid', ['token' => $token]);
         }
 
         return $reset_token;
@@ -154,25 +149,13 @@ class UserFrontService extends UserService
      */
     public function register(Collection $input)
     {
-        if (config('daydreamlab.user.register.enable')) {
-            $exist = $this->checkEmail($input->get('email'));
-            if ($exist) {
-                return ;
-            }
+        $this->checkEmail($input->get('email'));
+        $user = $this->add($input);
 
-            $password  = $input->get('password');
-            $input->forget('password');
-            $input->put('password', bcrypt($password));
-            $input->put('activate_token', Str::random(48));
+        $user->notify(new RegisteredNotification($user));
 
-            $user = $this->add($input);
-            $user->notify(new RegisteredNotification($user));
-            $this->status = 'RegisterSuccess';
-            $this->response = $user->refresh();
-        } else {
-            $this->status = 'RegistrationIsBlocked';
-            $this->throwResponse($this->status, null, $input);
-        }
+        $this->status = 'RegisterSuccess';
+        $this->response = $user->refresh();
 
         return $this->response;
     }
@@ -181,16 +164,24 @@ class UserFrontService extends UserService
     public function resetPassword(Collection $input)
     {
         $token = $this->forgotPasswordTokenValidate($input->get('token'));
+        $user  = $this->findBy('email', '=', $token->email)->first();
 
-        $user = $this->findBy('email', '=', $token->email)->first();
-        $data = [
+        if (Hash::check($input->get('password'), $user->password)) {
+            throw new ForbiddenException('PasswordSameAsPrevious');
+        }
+
+        $this->passwordResetService->update($token, collect([
+            'reset_at' => now()->toDateTimeString()
+        ]));
+
+
+        $this->repo->modify($user, collect([
             'password' => bcrypt($input->get('password')),
-            'last_reset_at' => now()->toDateTimeString()
-        ];
+            'lastResetAt' => now()->toDateTimeString(),
+            'lastPassword' => $user->password,
+            'resetPassword' => 0
+        ]));
 
-        $this->passwordResetService->update(['reset_at' => now()->toDateTimeString()], $token);
-
-        $this->update($data, $user);
         $user->tokens()->delete();
         $this->status = 'ResetPasswordSuccess';
     }
@@ -200,17 +191,23 @@ class UserFrontService extends UserService
     {
         $user = $this->findBy('email', '=', $input->get('email'))->first();
         if ($user) {
+
+            $this->passwordResetService->findBy('email', '=', $input->get('email'))
+                ->each(function ($p) {
+                    $p->delete();
+                });
+
             $token = $this->passwordResetService->add(collect([
                 'email'         => $input->get('email'),
                 'token'         => Str::random(128),
                 'expired_at'    => Carbon::now()->addHours(3)
             ]));
 
+            $this->repo->modify($user, collect(['resetPassword' => 1]));
             $user->notify(new ResetPasswordNotification($user, $token));
             $this->status = 'ResetPasswordEmailSend';
         } else {
-            $this->status = 'ItemNotExist';
-            $this->throwResponse('ItemNotExist', null, $input);
+            throw new NotFoundException('ItemNotExist', $input);
         }
     }
 }

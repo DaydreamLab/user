@@ -2,10 +2,12 @@
   {
     "title": "Root",
     "description": "Root",
+    "canDelete": 0,
     "children": [
       {
         "title": "Public",
         "description": "Public",
+        "canDelete": 0,
         "access": 1,
         "children": [
         ],
@@ -15,6 +17,7 @@
       {
         "title": "Guest",
         "description": "Guest",
+        "canDelete": 0,
         "access": 2,
         "children": [
         ],
@@ -24,6 +27,7 @@
       {
         "title": "Registered",
         "description": "Registered",
+        "canDelete": 0,
         "access": 3,
         "children": [
         ],
@@ -33,6 +37,7 @@
       {
         "title": "Administrator",
         "description": "Administrator",
+        "canDelete": 0,
         "access": 4,
         "children": [
         ],
@@ -44,6 +49,7 @@
       {
         "title": "Super User",
         "description": "Super User",
+        "canDelete": 0,
         "access": 5,
         "children": [
         ],

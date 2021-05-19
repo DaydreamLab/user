@@ -3,6 +3,7 @@
 namespace  DaydreamLab\User\Middlewares;
 
 use Closure;
+use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use Illuminate\Support\Facades\Auth;

@@ -21,7 +21,8 @@ class CaseActivationTokenInvalid extends UserFrontTestBase
         $this->repo
             ->shouldReceive('findBy')
             ->andReturn(collect());
-        $this->assertHttpResponseException('activate', Str::random(), 'ActivationTokenInvalid');
+
+        $this->assertException('activate', Str::random(), 'ActivationTokenInvalid');
     }
 
 

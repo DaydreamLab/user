@@ -2,11 +2,13 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\User\Events\Add;
 use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Events\Remove;
 use DaydreamLab\User\Events\Login;
 use DaydreamLab\User\Helpers\UserHelper;
+use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Support\Collection;
@@ -37,7 +39,7 @@ class UserService extends BaseService
     {
         $item = parent::add($input);
         $item
-            ? event(new Add($item, $this->getServiceName(), $input, $this->user))
+            ? event(new Add($item, $this->getServiceName(), $input->except('password'), $this->user))
             : null;
 
         return $item;
@@ -51,22 +53,19 @@ class UserService extends BaseService
             : Auth::guard('api')->user();
 
         if (!Hash::check($input->get('old_password'), $user->password)) {
-            $this->status = 'OldPasswordIncorrect';
-            $this->throwResponse($this->status);
+            throw new ForbiddenException('OldPasswordIncorrect');
         } else {
-            $user->password = bcrypt($input->get('password'));
-            if ($user->save()) {
-                if ($user->token()) {
-                    $user->token()->delete();
-                }
+            $this->repo->modify($user, collect([
+                'password' => $input->get('password')
+            ]));
 
-                $this->status = 'ChangePasswordSuccess';
-                return true;
-            } else {
-                $this->status = 'ChangePasswordFail';
-                $this->throwResponse($this->status);
-            }
+            $user->token()
+                ? $user->tokens()->delete()
+                : null;
+            $this->status = 'ChangePasswordSuccess';
         }
+
+        return $user;
     }
 
 
@@ -79,14 +78,14 @@ class UserService extends BaseService
     public function checkEmail($email)
     {
         $user = $this->findBy('email', '=', $email)->first();
-        if ($user) {
-            $this->status = 'EmailIsRegistered';
-            $this->throwResponse($this->status, null, ['email' => $email]);
-        } else {
-            $this->status = 'EmailIsNotRegistered';
-        }
 
-        return $user;
+        if ($user) {
+            throw new ForbiddenException('EmailIsRegistered', ['email' => $email]);
+        }
+        $this->status = 'EmailIsNotRegistered';
+        $this->response = $user;
+
+        return $this->response;
     }
 
 
@@ -97,15 +96,18 @@ class UserService extends BaseService
             'password'  => $input->get('password')
         ]);
 
+
         $user = Auth::user() ?: null;
         $login = false;
         if ($auth) {
-            if ($user->activation) { // 帳號已啟用
-                if ($user->block) {
+            if ($user->activated) { // 帳號已啟用
+                if ($user->blocked) {
                     $this->status = 'IsBlocked';
-                    $this->throwResponse($this->status, null, $input->only('email'));
+                    throw new ForbiddenException('IsBlocked', [
+                        'email' => $input->get('email')
+                    ]);
                 } else {
-                    $this->repo->update(['last_login_at' => now()], $user);
+                    $this->repo->modify($user, collect(['lastLoginAt' => now()]));
                     $tokens = $user->tokens()->get();
                     if(!config('daydreamlab.user.multiple_login')) {
                         $tokens->each(function ($token) {
@@ -120,21 +122,19 @@ class UserService extends BaseService
                     $this->response = $this->helper->getUserLoginData($user);
                     $login = true;
 
-                    return  $this->response;
+
                 }
             } else { // 帳號尚未啟用
                 //$user->notify(new RegisteredNotification($user));
-                $this->status = 'Unactivated';
-                $this->throwResponse($this->status, null, $input->only('email'));
+                throw new ForbiddenException('Unactivated', ['email' => $input->get('email')]);
             }
         } else {
-            $this->status = 'EmailOrPasswordIncorrect';
-            $this->throwResponse( $this->status);
+            throw new ForbiddenException('EmailOrPasswordIncorrect');
         }
 
         event(new Login($this->getServiceName(), $login,  $this->status, $user));
 
-        return $user;
+        return $this->response;
     }
 
 

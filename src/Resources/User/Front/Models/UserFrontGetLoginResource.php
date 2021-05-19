@@ -16,8 +16,8 @@ class UserFrontGetLoginResource extends JsonResource
     {
         return [
             //'id'            => $this->id,
-            'firstName'     => $this->first_name,
-            'lastName'      => $this->last_name,
+            'firstName'     => $this->firstName,
+            'lastName'      => $this->lastName,
             'redirect'      => '/',
             'token'         => $this->token,
             //'groups'        => $this->groups,

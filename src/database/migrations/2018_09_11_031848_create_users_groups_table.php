@@ -19,9 +19,10 @@ class CreateUsersGroupsTable extends Migration
             $table->nestedSet();
             $table->string('redirect')->nullable();
             $table->unsignedInteger('access')->nullable()->default(1);
+            $table->unsignedTinyInteger('canDelete')->nullable()->default(1);
             $table->text('description')->nullable();
             $table->unsignedInteger('ordering')->default(1);
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });

@@ -16,18 +16,20 @@ class UserFrontResource extends JsonResource
     {
         return [
             'email'                 => $this->email,
-            'firstName'             => $this->first_name,
-            'lastName'              => $this->last_name,
+            'firstName'             => $this->firstName,
+            'lastName'              => $this->lastName,
             'gender'                => $this->gendor,
             'image'                 => $this->image,
+            'phoneCode'             => $this->phoneCode,
             'phone'                 => $this->phone,
             'birthday'              => $this->birthday,
             'country'               => $this->country,
-            'state'                 => $this->state,
+            'state'                 => $this->state_,
             'city'                  => $this->city,
             'district'              => $this->district,
             'address'               => $this->address,
-            'zipcode'               => $this->zipcode
+            'zipcode'               => $this->zipcode,
+            'resetPassword'         => $this->resetPassword
         ];
     }
 }

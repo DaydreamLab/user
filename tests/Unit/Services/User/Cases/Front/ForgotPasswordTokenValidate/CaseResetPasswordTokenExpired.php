@@ -23,7 +23,7 @@ class CaseResetPasswordTokenExpired extends UserFrontTestBase
             ->shouldReceive('findBy')
             ->andReturn(collect([$passwordReset]));
 
-        $this->assertHttpResponseException('forgotPasswordTokenValidate', $passwordReset->token, 'ResetPasswordTokenExpired');
+        $this->assertException('forgotPasswordTokenValidate', $passwordReset->token, 'ResetPasswordTokenExpired');
     }
 
 

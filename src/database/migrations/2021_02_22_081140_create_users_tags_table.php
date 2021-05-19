@@ -18,7 +18,7 @@ class CreateUsersTagsTable extends Migration
             $table->string('title');
             $table->string('alias')->nullable();
             $table->text('description')->nullable();
-            $table->unsignedInteger('created_by');
+            $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();
         });

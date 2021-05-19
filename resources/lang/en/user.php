@@ -36,6 +36,8 @@ return [
 
     'OLD_PASSWORD_INCORRECT'            => '{$ModelName} old password incorrect',
 
+    'PASSWORD_SAME_AS_PREVIOUS'         => '{$ModelName} password can\'t same as previous one',
+
     'REGISTER_SUCCESS'                  => '{$ModelName} register success',
     'REGISTRATION_IS_BLOCKED'           => '{$ModelName} registration is blocked',
     'RESET_PASSWORD_SUCCESS'            => '{$ModelName} reset password success',

@@ -14,11 +14,9 @@ class UserGroupService extends BaseService
 
     protected $package = 'User';
 
-    protected $modelName = 'User';
+    protected $modelName = 'UserGroup';
 
     protected $modelType = 'Base';
-
-    protected $type = 'UserGroup';
 
     public function __construct(UserGroupRepository $repo)
     {
@@ -43,7 +41,7 @@ class UserGroupService extends BaseService
     }
 
 
-    // 這只會建立使用者可以 access 的 user group 並且把不能 access 的標記 disabled = 1
+    // 建立使用者可以 access 的 user group 並且把不能 access 的標記 disabled = 1
     // 並且成樹狀列表
     public function tree()
     {

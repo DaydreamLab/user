@@ -3,8 +3,6 @@
 namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminGetItem;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminListResourceCollection;
@@ -14,6 +12,7 @@ use DaydreamLab\User\Requests\User\Admin\UserAdminRemovePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminStorePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminSearchPost;
 use Illuminate\Http\Request;
+use Throwable;
 
 class UserAdminController extends BaseController
 {
@@ -32,8 +31,12 @@ class UserAdminController extends BaseController
 
     public function block(UserAdminBlockPost $request)
     {
-        $this->service->setUser($request->user());
-        $this->service->block($request->validated());
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->block($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -42,7 +45,11 @@ class UserAdminController extends BaseController
     public function getItem(UserAdminGetItem $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->getItem(collect(['id' => $request->route('id')]));
+        try {
+            $this->service->getItem(collect(['id' => $request->route('id')]));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, new UserAdminResource($this->service->response));
     }
@@ -51,7 +58,11 @@ class UserAdminController extends BaseController
     public function getSelfPage(Request $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->getSelfPage();
+        try {
+            $this->service->getSelfPage();
+        } catch (Throwable $t) {
+           $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -59,8 +70,12 @@ class UserAdminController extends BaseController
 
     public function remove(UserAdminRemovePost $request)
     {
-        $this->service->setUser($request->user());
-        $this->service->remove($request->validated());
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->remove($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -68,20 +83,12 @@ class UserAdminController extends BaseController
 
     public function store(UserAdminStorePost $request)
     {
-        $input = $request->validated();
-
-        if (!InputHelper::null($input, 'activation')) {
-            $activation = $input->get('activation');
-            $input->forget('activation');
-            if($activation == 'false') {
-                $input->put('activation', 0);
-            } else {
-                $input->put('activation', 1);
-            }
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->store($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
         }
-
-        $this->service->setUser($request->user());
-        $this->service->store($input);
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -90,7 +97,11 @@ class UserAdminController extends BaseController
     public function search(UserAdminSearchPost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->search($request->validated());
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, new UserAdminListResourceCollection($this->service->response));
     }

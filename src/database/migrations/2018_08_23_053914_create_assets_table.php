@@ -28,7 +28,7 @@ class CreateAssetsTable extends Migration
             $table->string('icon')->nullable();
             $table->unsignedTinyInteger('showNav');
 
-            $table->unsignedInteger('created_by');
+            $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();
         });

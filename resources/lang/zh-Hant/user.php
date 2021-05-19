@@ -35,6 +35,8 @@ return [
 
     'OLD_PASSWORD_INCORRECT'            => '輸入的就密碼錯誤',
 
+    'PASSWORD_SAME_AS_PREVIOUS'         => '密碼不可與上次密碼相同',
+
     'REGISTER_SUCCESS'                  => '使用者註冊成功',
     'REGISTRATION_IS_BLOCKED'           => '目前不開放使用者註冊',
     'RESET_PASSWORD_SUCCESS'            => '使用者重設密碼成功，請重新登入',

@@ -3,7 +3,6 @@
 namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserGroupAdminListResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Models\UserGroupAdminResource;
 use Illuminate\Http\Request;
@@ -12,6 +11,7 @@ use DaydreamLab\User\Requests\User\Admin\UserGroupAdminRemovePost;
 use DaydreamLab\User\Requests\User\Admin\UserGroupAdminStorePost;
 use DaydreamLab\User\Requests\User\Admin\UserGroupAdminStatePost;
 use DaydreamLab\User\Requests\User\Admin\UserGroupAdminSearchPost;
+use Throwable;
 
 class UserGroupAdminController extends BaseController
 {
@@ -32,7 +32,11 @@ class UserGroupAdminController extends BaseController
     public function getItem(Request $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->getItem(collect(['id' => $request->route('id')]));
+        try {
+            $this->service->getItem(collect(['id' => $request->route('id')]));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, new UserGroupAdminResource($this->service->response));
     }
@@ -41,7 +45,11 @@ class UserGroupAdminController extends BaseController
     public function getPage(Request $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->getPage($request->route('id'));
+        try {
+            $this->service->getPage($request->route('id'));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -50,7 +58,11 @@ class UserGroupAdminController extends BaseController
     public function remove(UserGroupAdminRemovePost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->removeNested($request->validated());
+        try {
+            $this->service->removeNested($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -59,7 +71,11 @@ class UserGroupAdminController extends BaseController
     public function state(UserGroupAdminStatePost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->state($request->validated());
+        try {
+            $this->service->state($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -68,7 +84,11 @@ class UserGroupAdminController extends BaseController
     public function store(UserGroupAdminStorePost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->store($request->validated());
+        try {
+            $this->service->store($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status,
             gettype($this->service->response) == 'object'
@@ -80,7 +100,11 @@ class UserGroupAdminController extends BaseController
     public function search(UserGroupAdminSearchPost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->search($request->validated());
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status,
             new UserGroupAdminListResourceCollection($this->service->response));
@@ -90,7 +114,11 @@ class UserGroupAdminController extends BaseController
     public function tree(Request $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->tree();
+        try {
+            $this->service->tree();
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }

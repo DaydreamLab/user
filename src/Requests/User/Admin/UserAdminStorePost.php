@@ -2,11 +2,7 @@
 
 namespace DaydreamLab\User\Requests\User\Admin;
 
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
-use DaydreamLab\User\Models\User\UserGroup;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class UserAdminStorePost extends AdminRequest
@@ -35,13 +31,13 @@ class UserAdminStorePost extends AdminRequest
         return [
             'id'                    => 'nullable|integer',
             'email'                 => 'required|email',
-            'first_name'            => 'required|string',
-            'last_name'             => 'required|string',
+            'firstName'             => 'required|string',
+            'lastName'              => 'required|string',
             'nickname'              => 'nullable|string',
             'gender'                => 'nullable|string',
             'image'                 => 'nullable|string',
             'birthday'              => 'nullable|date',
-            'phone_code'            => 'nullable|string',
+            'phoneCode'             => 'nullable|string',
             'phone'                 => 'nullable|string',
             'school'                => 'nullable|string',
             'job'                   => 'nullable|string',
@@ -53,13 +49,13 @@ class UserAdminStorePost extends AdminRequest
             'zipcode'               => 'nullable|string',
             'timezone'              => 'nullable|string',
             'locale'                => 'nullable|string',
-            'group_ids'             => 'required|array',
-            'group_ids.*'           => 'required|integer',
+            'groupIds'              => 'required|array',
+            'groupIds.*'            => 'required|integer',
             'block'                 => [
                 'nullable',
                 Rule::in([0,1])
             ],
-            'reset_password'        => [
+            'resetPassword'         => [
                 'nullable',
                 Rule::in([0,1])
             ],
@@ -67,8 +63,8 @@ class UserAdminStorePost extends AdminRequest
                 'nullable',
                 Rule::in([0,1])
             ],
-            'password'              => 'nullable|string|min:8|max:16',
-            'password_confirmation' => 'nullable|same:password',
+            'password'              => 'required_without:id|nullable|string|min:8|max:16',
+            'passwordConfirm'       => 'required_with:password|same:password',
         ];
     }
 
@@ -76,20 +72,15 @@ class UserAdminStorePost extends AdminRequest
     public function validated()
     {
         $validated = parent::validated();
-        $validated->forget('password_confirmation');
 
-        $groupIds = UserGroup::all()->map(function ($group) {
-            return $group->id;
-        })->all();
-
-        $validGroupIds =  array_intersect($validated->get('group_ids'), $groupIds);
-        if (!count($validGroupIds)) {
-            throw new HttpResponseException(ResponseHelper::genResponse(
-               Str::upper(Str::snake('InvalidInput')),
-               ['group_ids' => $validated->get('group_ids')],
-               null,
-               null
-            ));
+        if (!$validated->get('id')) {
+            $validated->put('password', bcrypt($validated->get('password')));
+        } else {
+            if ($validated->get('password')) {
+                $validated->put('password', bcrypt($validated->get('password')));
+            } else {
+                $validated->forget('password');
+            }
         }
 
         return $validated;

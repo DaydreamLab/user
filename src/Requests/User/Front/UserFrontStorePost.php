@@ -24,15 +24,16 @@ class UserFrontStorePost extends AdminRequest
     public function rules()
     {
         return [
-            'id'                    => 'nullable|integer',
             'email'                 => 'required|email',
-            'first_name'            => 'required|string',
-            'last_name'             => 'required|string',
+            'firstName'             => 'required|string',
+            'lastName'              => 'required|string',
             'nickname'              => 'nullable|string',
+            'password'              => 'nullable|string|min:8|max:16',
+            'passwordConfirm'       => 'required_with:password|nullable|same:password',
             'gender'                => 'nullable|string',
             'image'                 => 'nullable|string',
-            'birthday'              => 'nullable|date',
-            'phone_code'            => 'nullable|string',
+            'birthday'              => 'nullable|date_format:Y-m-d',
+            'phoneCode'             => 'nullable|string',
             'phone'                 => 'nullable|string',
             'school'                => 'nullable|string',
             'job'                   => 'nullable|string',
@@ -45,5 +46,17 @@ class UserFrontStorePost extends AdminRequest
             'timezone'              => 'nullable|string',
             'locale'                => 'nullable|string',
         ];
+    }
+
+
+    public function validated()
+    {
+        $validated = parent::validated();
+
+        if ($password = $validated->get('password')) {
+            $validated->put('password', bcrypt($password));
+        }
+
+        return $validated;
     }
 }

@@ -33,7 +33,7 @@ class CaseInvalidDeleteIds extends UserTagAdminTestBase
             ->shouldReceive('getModel')
             ->andReturn(UserTag::factory()->create());
 
-        $this->assertHttpResponseException('apply', $input, 'InvalidApplyDeleteIds');
+        $this->assertException('apply', $input, 'InvalidApplyDeleteIds');
     }
 
 

@@ -28,7 +28,7 @@ class CaseUnactivated extends UserTestBase
             'password' => 'daydream5182'
         ]);
 
-        $this->assertHttpResponseException('login', $input, 'Unactivated');
+        $this->assertException('login', $input, 'Unactivated');
     }
 
 

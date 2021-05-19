@@ -22,7 +22,7 @@ class CaseEmailOrPasswordIncorrect extends UserTestBase
             'password' => 'daydream5181'
         ]);
 
-        $this->assertHttpResponseException('login', $input, 'EmailOrPasswordIncorrect');
+        $this->assertException('login', $input, 'EmailOrPasswordIncorrect');
     }
 
 

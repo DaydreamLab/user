@@ -12,6 +12,7 @@ use DaydreamLab\User\Requests\User\Admin\UserTagAdminStorePost;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserTagAdminListResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Models\UserTagAdminResource;
 use DaydreamLab\User\Services\User\Admin\UserTagAdminService;
+use Throwable;
 
 class UserTagAdminController extends BaseController
 {
@@ -31,7 +32,12 @@ class UserTagAdminController extends BaseController
     public function apply(UserTagAdminApplyPost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->apply($request->validated());
+        try {
+            $this->service->apply($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -41,7 +47,11 @@ class UserTagAdminController extends BaseController
     public function getItem(UserTagAdminGetItem $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->getItem(collect(['id' => $request->route('id')]));
+        try {
+            $this->service->getItem(collect(['id' => $request->route('id')]));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -50,7 +60,11 @@ class UserTagAdminController extends BaseController
     public function remove(UserTagAdminRemovePost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->remove($request->validated());
+        try {
+            $this->service->remove($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -59,7 +73,11 @@ class UserTagAdminController extends BaseController
     public function store(UserTagAdminStorePost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->store($request->validated());
+        try {
+            $this->service->store($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status,
             gettype($this->service->response) == 'object'
@@ -72,7 +90,11 @@ class UserTagAdminController extends BaseController
     public function search(UserTagAdminSearchPost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->search($request->validated());
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status,
             new UserTagAdminListResourceCollection($this->service->response));

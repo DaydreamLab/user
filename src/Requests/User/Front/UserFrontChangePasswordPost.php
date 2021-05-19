@@ -29,4 +29,13 @@ class UserFrontChangePasswordPost extends AdminRequest
             'password_confirmation' => 'required|same:password'
         ];
     }
+
+
+    public function validated()
+    {
+        $validated = parent::validated();
+        $validated->put('password', bcrypt($validated->get('password')));
+
+        return $validated;
+    }
 }

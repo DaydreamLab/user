@@ -31,7 +31,7 @@ class CaseBlockSuccess extends UserAdminTestBase
             ->andReturn($user);
 
         $this->repo
-            ->shouldReceive('update')
+            ->shouldReceive('modify')
             ->andReturn(true);
 
         $this->service->block($input);

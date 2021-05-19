@@ -36,7 +36,9 @@ class CaseResetPasswordEmailSend extends UserFrontTestBase
 
         $this->service->sendResetLinkEmail($input);
 
+
         $this->assertEquals('ResetPasswordEmailSend', $this->service->status);
+        $this->assertEquals(1, $user->refresh()->resetPassword);
         Notification::assertSentTo([$user], ResetPasswordNotification::class);
     }
 

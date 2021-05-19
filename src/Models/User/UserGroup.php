@@ -38,6 +38,7 @@ class UserGroup extends BaseModel
         'parent_id',
         'access',
         'description',
+        'canDelete',
         'redirect',
         'ordering',
         'created_by',

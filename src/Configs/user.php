@@ -15,7 +15,7 @@ return [
 
     'forget' => [
         'mail' => [
-            'template'  => 'emails.Merchant.MerchantForgetPassword'
+            'template'  => 'default'
         ]
     ],
 

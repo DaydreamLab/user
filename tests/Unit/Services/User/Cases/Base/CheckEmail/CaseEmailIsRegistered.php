@@ -19,7 +19,7 @@ class CaseEmailIsRegistered extends UserTestBase
     {
         $email = 'admin@daydream-lab.com';
 
-        $this->assertHttpResponseException('checkEmail', $email, 'EmailIsRegistered' );
+        $this->assertException('checkEmail', $email, 'EmailIsRegistered' );
     }
 
 

@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\User\tests\Unit\Services\UserTas\Cases\Admin\Apply;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserTag;
 use DaydreamLab\User\Tests\Unit\Services\UserTag\Cases\Admin\UserTagAdminTestBase;
@@ -43,7 +42,8 @@ class CaseApplyTagSuccess extends UserTagAdminTestBase
             ->shouldReceive('search')
             ->once()
             ->andReturn(collect([$tag2]));
-        $this->userRepo->shouldReceive('findBySpecial')->andReturn(collect([$user]));
+        $this->userRepo->shouldReceive('getModel')->andReturn(User::factory()->make());
+        $this->userRepo->shouldReceive('search')->andReturn(User::all());
 
         $this->service->apply($input);
         $this->assertEquals('ApplyTagsSuccess', $this->service->status);

@@ -24,11 +24,11 @@ class UserFrontRegisterPost extends AdminRequest
     public function rules()
     {
         return [
-            'email'                 => 'required|email|unique:users,email',
+            'email'                 => 'required|email',
             'password'              => 'required|string|min:8|max:16',
-            'password_confirmation' => 'required|same:password',
-            'first_name'            => 'required|string',
-            'last_name'             => 'required|string',
+            'passwordConfirm'       => 'required|same:password',
+            'firstName'             => 'required|string',
+            'lastName'              => 'required|string',
             'gender'                => 'nullable|string',
             'image'                 => 'nullable|string',
             'phone'                 => 'nullable|string',
@@ -40,5 +40,18 @@ class UserFrontRegisterPost extends AdminRequest
             'address'               => 'nullable|string',
             'zipcode'               => 'nullable|string'
         ];
+    }
+
+
+    public function validated()
+    {
+        $validated = parent::validated();
+        $validated->put('password', bcrypt($validated->get('password')));
+        if ($state = $validated->get('state')) {
+            $validated->put('state_', $validated->get('state'));
+        }
+        $validated->forget(['state', 'passwordConfirm']);
+
+        return $validated;
     }
 }
