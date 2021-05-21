@@ -14,6 +14,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
+use App\Models\Team\TeamMember;
 
 class UserFrontService extends UserService
 {
@@ -239,6 +240,13 @@ class UserFrontService extends UserService
 
         if ($update) {
             $this->response = $this->find($this->user->id)->refresh();
+            if ($input->has('email')) {
+                $members = TeamMember::where('user_id', '=', $this->user->id)->get();
+                foreach($members as $member) {
+                    $member->email = $input->get('email');
+                    $member->save();
+                }
+            }
         }
 
         return $this->response;
