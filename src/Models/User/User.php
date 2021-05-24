@@ -2,11 +2,12 @@
 
 namespace DaydreamLab\User\Models\User;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
+use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\User\Database\Factories\UserFactory;
+use DaydreamLab\User\Models\Company\UserCompany;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
@@ -34,7 +35,8 @@ class User extends BaseModel implements
         HasApiTokens,
         RecordChanger,
         HasFactory,
-        HasCustomRelation;
+        HasCustomRelation,
+        UserInfo;
 
     protected $order_by = 'id';
 
@@ -51,8 +53,10 @@ class User extends BaseModel implements
      * @var array
      */
     protected $fillable = [
+        'company_id',
         'email',
         'password',
+        'name',
         'firstName',
         'lastName',
         'nickname',
@@ -61,11 +65,11 @@ class User extends BaseModel implements
         'image',
         'phoneCode',
         'phone',
+        'mobilePhoneCode',
+        'mobilePhone',
         'birthday',
         'timezone',
         'locale',
-        'school',
-        'job',
         'country',
         'state_',
         'city',
@@ -80,6 +84,7 @@ class User extends BaseModel implements
         'lastResetAt',
         'lastPassword',
         'lastLoginAt',
+        'lastLoginIp',
         'created_by',
         'updated_by'
     ];
@@ -104,6 +109,9 @@ class User extends BaseModel implements
         static::creating(function ($item){
             $user = auth('api')->user();
             $item->activateToken = Str::random(48);
+            $item->phoneCode = '+886';
+            $item->mobilePhoneCode = '+886';
+            $item->country = '臺灣';
             $item->locale = 'zh-Hant';
             $item->timezone = 'Asia/Taipei';
             $item->created_by = $user
@@ -117,6 +125,12 @@ class User extends BaseModel implements
                 ? $user->id
                 : null;
         });
+    }
+
+
+    public function company()
+    {
+        return $this->hasOne(UserCompany::class, 'user_id', 'id');
     }
 
 

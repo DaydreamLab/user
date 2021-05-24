@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('company_id')->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->string('name');
@@ -26,22 +27,23 @@ class CreateUsersTable extends Migration
             $table->date('birthday')->nullable();
             $table->string('phoneCode')->nullable();
             $table->string('phone')->nullable();
-            $table->string('school')->nullable();
-            $table->string('job')->nullable();
+            $table->string('mobilePhoneCode')->nullable();
+            $table->string('mobilePhone')->nullable();
             $table->string('country')->nullable();
             $table->string('state_')->nullable();
             $table->string('city')->nullable();
             $table->string('district')->nullable();
             $table->string('address')->nullable();
             $table->string('zipcode')->nullable();
-            $table->boolean('activated')->default(0);
+            $table->boolean('activation')->default(0);
             $table->string('activateToken')->nullable();
-            $table->unsignedTinyInteger('blocked')->nullable()->default(0);
+            $table->unsignedTinyInteger('block')->nullable()->default(0);
             $table->unsignedTinyInteger('canDelete')->nullable()->default(1);
             $table->unsignedTinyInteger('resetPassword')->default(0);
             $table->timestamp('lastResetAt')->nullable();
             $table->string('lastPassword')->nullable();
             $table->timestamp('lastLoginAt')->nullable();
+            $table->string('lastLoginIp')->nullable();
             $table->string('timezone')->nullable();
             $table->string('locale')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();

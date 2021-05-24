@@ -25,7 +25,17 @@ class UserFrontLoginPost extends AdminRequest
     {
         return [
             'email'     => 'required|email',
-            'password'  => 'required|string'
+            'password'  => 'required|string',
         ];
+    }
+
+
+    public function validated()
+    {
+        $validated = parent::validated();
+
+        $validated->put('lastLoginIp', $this->getCloudflareIp($this));
+
+        return $validated;
     }
 }

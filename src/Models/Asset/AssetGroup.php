@@ -26,6 +26,8 @@ class AssetGroup extends BaseModel
     protected $fillable = [
         'title',
         'state',
+        'description',
+        'ordering',
         'created_by',
         'updated_by'
     ];
@@ -49,10 +51,13 @@ class AssetGroup extends BaseModel
     protected $appends = [
     ];
 
+    protected $casts = [
+        'state' => 'integer'
+    ];
 
 
     public function assets()
     {
-        return $this->hasMany(Asset::class, 'group_id', 'id');
+        return $this->belongsToMany(Asset::class, 'assets_groups_assets_maps', 'group_id', 'asset_id');
     }
 }

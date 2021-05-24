@@ -1,0 +1,25 @@
+<?php
+
+namespace DaydreamLab\User\Resources\Api\Admin\Models;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class ApiAdminResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return [
+            'id'                => $this->id,
+            'name'              => $this->name,
+            'method'            => $this->method,
+            'url'               => $this->url,
+            'deacription'       => $this->description,
+        ];
+    }
+}

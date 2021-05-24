@@ -1,13 +1,15 @@
 <?php
+
 use DaydreamLab\User\Controllers\User\Front\UserFrontController;
 use DaydreamLab\User\Controllers\User\UserController;
 use DaydreamLab\User\Controllers\User\Admin\UserAdminController;
 use DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController;
 use DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController;
-use DaydreamLab\User\Controllers\Asset\Admin\AssetApiAdminController;
+use DaydreamLab\User\Controllers\Api\Admin\ApiAdminController;
 use DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController;
 use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
 use DaydreamLab\User\Controllers\User\Admin\UserTagAdminController;
+use DaydreamLab\User\Controllers\Company\Admin\CompanyAdminController;
 
  /************************************  前台 API  ************************************/
 
@@ -65,27 +67,46 @@ Route::get('api/admin/asset/{id}',  [AssetAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin']);
 
 
-Route::post('api/admin/api/remove', [AssetApiAdminController::class, 'remove'])
+Route::post('api/admin/api/remove', [ApiAdminController::class, 'remove'])
  ->middleware(['expired', 'admin']);
-Route::post('api/admin/api/state', [AssetApiAdminController::class, 'state'])
+Route::post('api/admin/api/state', [ApiAdminController::class, 'state'])
  ->middleware(['expired', 'admin']);
-Route::post('api/admin/api/store', [AssetApiAdminController::class, 'store'])
+Route::post('api/admin/api/store', [ApiAdminController::class, 'store'])
  ->middleware(['expired', 'admin']);
-Route::post('api/admin/api/search', [AssetApiAdminController::class, 'search'])
+Route::post('api/admin/api/search', [ApiAdminController::class, 'search'])
  ->middleware(['expired', 'admin']);
-Route::get('api/admin/api/{id}', [AssetApiAdminController::class, 'getItem'])
+Route::get('api/admin/api/{id}', [ApiAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin']);
 
-Route::post('api/admin/group/remove', [AssetGroupAdminController::class, 'remove'])
+Route::post('api/admin/asset/group/remove', [AssetGroupAdminController::class, 'remove'])
  ->middleware(['expired', 'admin']);
-Route::post('api/admin/group/state', [AssetGroupAdminController::class, 'state'])
+Route::post('api/admin/asset/group/state', [AssetGroupAdminController::class, 'state'])
  ->middleware(['expired', 'admin']);
-Route::post('api/admin/group/store', [AssetGroupAdminController::class, 'store'])
+Route::post('api/admin/asset/group/store', [AssetGroupAdminController::class, 'store'])
  ->middleware(['expired', 'admin']);
-Route::post('api/admin/group/search', [AssetGroupAdminController::class, 'search'])
+Route::post('api/admin/asset/group/search', [AssetGroupAdminController::class, 'search'])
  ->middleware(['expired', 'admin']);
-Route::get('api/admin/group/{id}', [AssetGroupAdminController::class, 'getItem'])
+Route::post('api/admin/asset/group/ordering', [AssetGroupAdminController::class, 'ordering'])
     ->middleware(['expired', 'admin']);
+Route::get('api/admin/asset/group/{id}', [AssetGroupAdminController::class, 'getItem'])
+    ->middleware(['expired', 'admin']);
+
+
+/**
+ * Company(公司)
+ */
+Route::post('api/admin/company/remove', [CompanyAdminController::class, 'remove'])
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/company/state', [CompanyAdminController::class, 'state'])
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/company/store', [CompanyAdminController::class, 'store'])
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/company/search', [CompanyAdminController::class, 'search'])
+    ->middleware(['expired', 'admin']);
+Route::get('api/admin/company/{id}', [CompanyAdminController::class, 'getItem'])
+    ->middleware(['expired', 'admin']);
+
+
 
 
 /****** User 會員 ******/

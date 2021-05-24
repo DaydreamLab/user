@@ -15,6 +15,7 @@ class UserFrontLoginResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'name'          => $this->name,
             'firstName'     => $this->firstName,
             'lastName'      => $this->lastName,
             'redirect'      => '/',

@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Models\Asset;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
+use DaydreamLab\User\Models\Api\Api;
 use Kalnoy\Nestedset\NodeTrait;
 
 class Asset extends BaseModel
@@ -81,13 +82,13 @@ class Asset extends BaseModel
 
     public function apis()
     {
-        return $this->belongsToMany(AssetApi::class, 'assets_apis_maps', 'asset_id', 'api_id');
+        return $this->belongsToMany(Api::class, 'assets_apis_maps', 'asset_id', 'api_id');
     }
 
 
     public function groups()
     {
-        return $this->belongsToMany(AssetGroup::class, 'assets_groups_maps', 'asset_id', 'group_id');
+        return $this->belongsToMany(AssetGroup::class, 'assets_groups_assets_maps', 'asset_id', 'group_id');
     }
 
 
@@ -101,6 +102,4 @@ class Asset extends BaseModel
     {
         return $this->groups()->get();
     }
-
-
 }

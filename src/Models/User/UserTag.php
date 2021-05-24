@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\User\Models\User;
 
-use DaydreamLab\Cms\Traits\Model\UserInfo;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Database\Factories\UserTagFactory;
@@ -10,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserTag extends BaseModel
 {
-    use UserInfo, HasFactory, RecordChanger {
+    use HasFactory, RecordChanger {
         RecordChanger::boot as traitBoot;
     }
     /**

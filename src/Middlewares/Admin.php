@@ -3,11 +3,18 @@
 namespace  DaydreamLab\User\Middlewares;
 
 use Closure;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
-use Illuminate\Support\Str;
+use DaydreamLab\JJAJ\Traits\ApiJsonResponse;
 
 class Admin
 {
+    use ApiJsonResponse;
+
+    public function __construct()
+    {
+        $this->package = 'user';
+        $this->modelName = 'User';
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -22,12 +29,7 @@ class Admin
             : $request->user('api');
 
         if (!$user || !$user->isAdmin()) {
-            return ResponseHelper::genResponse(
-                Str::upper(Str::snake('InsufficientPermissionAdministrator')),
-                null,
-                '',
-                ''
-            );
+            return  $this->response('InsufficientPermissionAdministrator', null);
         }
 
         return $next($request);

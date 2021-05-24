@@ -10,6 +10,8 @@ class UserAdminSearchPost extends ListRequest
     protected $modelName = 'User';
 
     protected $apiMethod = 'searchUser';
+
+    protected $searchKeys = ['email', 'name'];
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -42,7 +44,7 @@ class UserAdminSearchPost extends ListRequest
             'search'    => 'nullable|string',
             'groups'    => 'nullable|integer'
         ];
-        return array_merge($rules, parent::rules());
+        return array_merge(parent::rules(), $rules);
     }
 
 
@@ -50,18 +52,20 @@ class UserAdminSearchPost extends ListRequest
     {
         $validated = parent::validated();
 
-        if ($groupId = $validated->get('groups')) {
-            $validated->put('whereHas', [
-                [
-                    'relation' => 'groups',
-                    'callback'  => function ($q) use ($groupId) {
-                        $q->where('users_groups.id', $groupId);
-                    }
-                ]
-            ]);
+        $q = $validated->get('q');
+        if ($groups = $validated->get('groups')) {
+            if (is_array($groups)) {
+                $q->whereHas('groups', function ($q) use ($groups) {
+                    $q->whereIn('id', $groups);
+                });
+            } else {
+                $q->whereHas('groups', function ($q) use ($groups) {
+                    $q->where('id', $groups);
+                });
+            }
         }
-
-        $validated->forget('groups');
+        $validated->put('q', $q);
+        $validated->forget(['groups']);
 
         return $validated;
     }

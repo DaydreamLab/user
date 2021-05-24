@@ -26,8 +26,12 @@ class UserAdminService extends UserService
 
     public function addMapping($item, $input)
     {
-        if (count($input->get('group_ids'))) {
+        if (count($input->get('groupIds'))) {
             $item->groups()->attach($input->get('group_ids'));
+        }
+
+        if ($input->has('company')) {
+            $item->company()->create($input->get('company'));
         }
     }
 
@@ -112,6 +116,7 @@ class UserAdminService extends UserService
     public function modifyMapping($item, $input)
     {
         $item->groups()->sync($input->get('group_ids'), true);
+        $item->company()->update($input->get('company'));
     }
 
 

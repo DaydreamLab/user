@@ -14,6 +14,7 @@ class UserHelper
         $token->expires_at = now()->addSeconds(config('daydreamlab.user.token_expires_in'));
         $token->save();
         $data['token']       = $tokenResult->accessToken;
+        $data['name']       = $user->name;
         $data['firstName']  = $user->firstName;
         $data['lastName']   = $user->lastName;
         $data['tokenResult'] = $tokenResult;

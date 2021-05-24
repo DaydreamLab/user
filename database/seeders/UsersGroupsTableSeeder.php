@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Database\Seeders;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\User\UserGroup;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +15,7 @@ class UsersGroupsTableSeeder extends Seeder
      */
     public function run()
     {
-        $data = json_decode(file_get_contents(__DIR__ . '/jsons/usergroup.json'), true);
+        $data = Helper::getJson(__DIR__ . '/jsons/usergroup.json', true);
         $this->migrate($data, null);
     }
 

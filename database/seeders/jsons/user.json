@@ -2,40 +2,43 @@
   {
     "email": "admin@daydream-lab.com",
     "password": "daydream5182",
+    "name": "白日夢超級管理者",
     "firstName": "Daydream Lab",
     "lastName": "Super Admin",
     "nickname": "Admin",
-    "activated": 1,
+    "activation": 1,
     "canDelete": 0,
     "activateToken": "admin",
     "timezone": "Asia/Taipei",
     "locale": "zh-Hant",
-    "groups":[6]
+    "groups":["Super User"]
   },
   {
     "email": "administrator@daydream-lab.com",
     "password": "daydream5182",
+    "name": "白日夢管理者",
     "firstName": "Daydream Lab",
     "lastName": "Admin",
     "nickname": "Admin",
-    "activated": 1,
+    "activation": 1,
     "canDelete": 0,
     "activateToken": "administrator",
     "timezone": "Asia/Taipei",
     "locale": "zh-Hant",
-    "groups":[5]
+    "groups":["Administrator"]
   },
   {
     "email": "registered@daydream-lab.com",
+     "name": "白日夢一般會員",
     "password": "daydream5182",
     "firstName": "Registered",
     "lastName": "Registered",
     "nickname": "Registered",
-    "activated": 1,
+    "activation": 1,
     "canDelete": 0,
     "activateToken": "registered",
     "timezone": "Asia/Taipei",
     "locale": "zh-Hant",
-    "groups":[4]
+    "groups":["Registered"]
   }
 ]

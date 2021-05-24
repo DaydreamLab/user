@@ -14,7 +14,7 @@
         </testsuite>
         <testsuite name="unit">
             <directory suffix=".php">./tests/Unit/Services/*/Cases/Front/ForgotPassword*</directory>
-            <directory suffix=".php">./tests/Unit/Services/*/Cases/Base/*</directory>
+            <directory suffix=".php">./tests/Unit/Services/*/Cases/Base::q/*</directory>
             <directory suffix=".php">./tests/Unit/Services/*/Cases/Admin/*</directory>
         </testsuite>
     </testsuites>

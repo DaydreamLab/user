@@ -3,7 +3,10 @@
 namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\InputHelper;
+use DaydreamLab\User\Models\Asset\Admin\AssetGroupAdmin;
+use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminOrderingPost;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Throwable;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminGetItem;
 use DaydreamLab\User\Services\Asset\Admin\AssetGroupAdminService;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminRemovePost;
@@ -30,16 +33,37 @@ class AssetGroupAdminController extends BaseController
     public function getItem(AssetGroupAdminGetItem $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->getItem(collect(['id' => $request->route('id')]));
+        try {
+            $this->service->getItem(collect(['id' => $request->route('id')]));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, new AssetGroupAdminResource($this->service->response));
+    }
+
+
+    public function ordering(AssetGroupAdminOrderingPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->ordering($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
     public function remove(AssetGroupAdminRemovePost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->remove($request->validated());
+        try {
+            $this->service->remove($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -48,7 +72,12 @@ class AssetGroupAdminController extends BaseController
     public function state(AssetGroupAdminStatePost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->state($request->validated());
+
+        try {
+            $this->service->state($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -57,12 +86,17 @@ class AssetGroupAdminController extends BaseController
     public function store(AssetGroupAdminStorePost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->store($request->validated());
+
+        try {
+            $this->service->store($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status,
-            gettype($this->service->response)
+            $this->service->response instanceof AssetGroupAdmin
                 ? new AssetGroupAdminResource($this->service->response)
-                : null
+                : $this->service->response
         );
     }
 
@@ -70,7 +104,12 @@ class AssetGroupAdminController extends BaseController
     public function search(AssetGroupAdminSearchPost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->search($request->validated());
+
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, new AssetGroupAdminListResourceCollection($this->service->response));
     }

@@ -31,7 +31,7 @@ class CaseUnblockFail extends UserAdminTestBase
             ->andReturn($user);
 
         $this->repo
-            ->shouldReceive('modify')
+            ->shouldReceive('update')
             ->andReturn(false);
 
         $this->service->block($input);

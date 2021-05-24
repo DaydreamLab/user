@@ -3,14 +3,17 @@
 namespace  DaydreamLab\User\Middlewares;
 
 use Closure;
-use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
-use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use DaydreamLab\JJAJ\Traits\ApiJsonResponse;
 
 class Expired
 {
+    use ApiJsonResponse;
+
+    public function __construct()
+    {
+        $this->package = 'user';
+        $this->modelName = 'User';
+    }
     /**
      * Handle an incoming request.
      *
@@ -28,39 +31,19 @@ class Expired
             $token = $user->token();
             if ($token->expires_at < now()) {
                 $token->delete();
-                return ResponseHelper::genResponse(
-                    Str::upper(Str::snake('TokenExpired')),
-                    null,
-                    'User',
-                    'User'
-                );
+                return  $this->response('TokenExpired', null);
             }
 
             if ($user->block) {
-                return ResponseHelper::genResponse(
-                    Str::upper(Str::snake('IsBlocked')),
-                    null,
-                    'User',
-                    'User'
-                );
+                return  $this->response('IsBlocked', null);
             }
 
             if($token->multipleLogin) {
                 $token->delete();
-                return ResponseHelper::genResponse(
-                    Str::upper(Str::snake('TokenRevoked')),
-                    null,
-                    'User',
-                    'User'
-                );
+                return  $this->response('TokenRevoked', null);
             }
         } else {
-            return ResponseHelper::genResponse(
-                Str::upper(Str::snake('Unauthorized')),
-                null,
-                '',
-                ''
-            );
+            return  $this->response('Unauthorized', null);
         }
 
         return $next($request);

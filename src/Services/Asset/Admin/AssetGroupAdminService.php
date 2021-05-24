@@ -8,6 +8,7 @@ use DaydreamLab\User\Models\Asset\Admin\AssetGroupAdmin;
 use DaydreamLab\User\Repositories\Asset\Admin\AssetGroupAdminRepository;
 use DaydreamLab\User\Services\Asset\AssetGroupService;
 use Illuminate\Support\Collection;
+use function Webmozart\Assert\Tests\StaticAnalysis\countBetween;
 
 class AssetGroupAdminService extends AssetGroupService
 {
@@ -22,14 +23,23 @@ class AssetGroupAdminService extends AssetGroupService
     }
 
 
-    public function store(Collection $input)
+    public function addMapping($item, $input)
     {
-        $item = parent::store($input);
-
-        if (!gettype($item) == 'object') {
-            $item = $this->find($input->get('id'));
+        if (count($input->get('assetIds') ?: [])) {
+            $item->assets()->attach($input->get('assetIds'));
         }
+    }
 
-        return $item;
+
+    public function modifyMapping($item, $input)
+    {
+        $item->assets()->sync($input->get('assetIds') ?: []);
+    }
+
+
+
+    public function beforeRemove($item)
+    {
+        $item->assets()->detach();
     }
 }

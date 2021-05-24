@@ -21,6 +21,24 @@ class UserAdminStorePost extends AdminRequest
         return parent::authorize();
     }
 
+
+    public function handleCompany($company)
+    {
+        $company = $company ? collect($company) : collect();
+        $keys = ['name', 'ubn', 'phoneCode', 'phone', 'extNumber', 'country', 'state', 'city', 'district', 'address', 'zipcode', 'department', 'jobTitle'];
+        foreach ($keys as $key) {
+            if ($key == 'state') {
+                $company->put('state_', $company->get($key));
+                $company->forget('state');
+            } else {
+                $company->put($key, $company->get($key));
+            }
+        }
+
+        return $company->all();
+    }
+
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -31,16 +49,16 @@ class UserAdminStorePost extends AdminRequest
         return [
             'id'                    => 'nullable|integer',
             'email'                 => 'required|email',
-            'firstName'             => 'required|string',
-            'lastName'              => 'required|string',
+            'name'                  => 'required|string',
+            'firstName'             => 'nullable|string',
+            'lastName'              => 'nullable|string',
             'nickname'              => 'nullable|string',
             'gender'                => 'nullable|string',
             'image'                 => 'nullable|string',
             'birthday'              => 'nullable|date',
             'phoneCode'             => 'nullable|string',
             'phone'                 => 'nullable|string',
-            'school'                => 'nullable|string',
-            'job'                   => 'nullable|string',
+            'mobilePhone'           => 'nullable|string',
             'country'               => 'nullable|string',
             'state'                 => 'nullable|string',
             'city'                  => 'nullable|string',
@@ -50,7 +68,7 @@ class UserAdminStorePost extends AdminRequest
             'timezone'              => 'nullable|string',
             'locale'                => 'nullable|string',
             'groupIds'              => 'required|array',
-            'groupIds.*'            => 'required|integer',
+            'groupIds.*'            => 'nullable|integer',
             'block'                 => [
                 'nullable',
                 Rule::in([0,1])
@@ -65,6 +83,18 @@ class UserAdminStorePost extends AdminRequest
             ],
             'password'              => 'required_without:id|nullable|string|min:8|max:16',
             'passwordConfirm'       => 'required_with:password|same:password',
+            'company'               => 'nullable|array',
+            'company.phoneCode'     => 'nullable|string',
+            'company.phone'         => 'nullable|string',
+            'company.extNumber'     => 'nullable|string',
+            'company.country'       => 'nullable|string',
+            'company.state'         => 'nullable|string',
+            'company.city'          => 'nullable|string',
+            'company.district'      => 'nullable|string',
+            'company.address'       => 'nullable|string',
+            'company.zipcode'       => 'nullable|string',
+            'company.department'    => 'nullable|string',
+            'company.jobTitle'      => 'nullable|string',
         ];
     }
 
@@ -82,6 +112,9 @@ class UserAdminStorePost extends AdminRequest
                 $validated->forget('password');
             }
         }
+
+        $validated->put('groupIds', $validated->get('groupIds') ?: []);
+        $validated->put('company', $this->handleCompany($validated->get('company')));
 
         return $validated;
     }

@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use DaydreamLab\User\Services\User\Admin\UserGroupAdminService;
 use DaydreamLab\User\Requests\User\Admin\UserGroupAdminRemovePost;
 use DaydreamLab\User\Requests\User\Admin\UserGroupAdminStorePost;
-use DaydreamLab\User\Requests\User\Admin\UserGroupAdminStatePost;
 use DaydreamLab\User\Requests\User\Admin\UserGroupAdminSearchPost;
 use Throwable;
 
@@ -60,19 +59,6 @@ class UserGroupAdminController extends BaseController
         $this->service->setUser($request->user());
         try {
             $this->service->removeNested($request->validated());
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
-
-        return $this->response($this->service->status, $this->service->response);
-    }
-
-
-    public function state(UserGroupAdminStatePost $request)
-    {
-        $this->service->setUser($request->user());
-        try {
-            $this->service->state($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }

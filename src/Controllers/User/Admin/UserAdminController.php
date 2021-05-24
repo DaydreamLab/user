@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Models\User\Admin\UserAdmin;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminGetItem;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminListResourceCollection;
@@ -12,6 +13,8 @@ use DaydreamLab\User\Requests\User\Admin\UserAdminRemovePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminStorePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminSearchPost;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Throwable;
 
 class UserAdminController extends BaseController
@@ -90,7 +93,10 @@ class UserAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response instanceof UserAdmin
+            ? new UserAdminResource($this->service->response)
+            : $this->service->response
+        );
     }
 
 
@@ -103,6 +109,9 @@ class UserAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, new UserAdminListResourceCollection($this->service->response));
+        return $this->response($this->service->status, $this->service->response instanceof LengthAwarePaginator
+            ? new UserAdminListResourceCollection($this->service->response)
+            : $this->service->response
+        );
     }
 }

@@ -6,8 +6,7 @@ use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Models\Asset\Asset;
-use DaydreamLab\User\Models\Asset\AssetApi;
-use DaydreamLab\User\Models\Viewlevel\Viewlevel;
+use DaydreamLab\User\Models\Api\Api;
 use DaydreamLab\User\Traits\Model\WithAccess;
 use Kalnoy\Nestedset\NodeTrait;
 
@@ -77,7 +76,7 @@ class UserGroup extends BaseModel
 
     public function apis()
     {
-        return $this->belongsToMany(AssetApi::class, 'users_groups_apis_maps', 'group_id', 'api_id')
+        return $this->belongsToMany(Api::class, 'users_groups_apis_maps', 'group_id', 'api_id')
             ->withTimestamps();
     }
 

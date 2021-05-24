@@ -3,8 +3,8 @@
 namespace DaydreamLab\User\Database\Seeders;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Models\Api\Api;
 use DaydreamLab\User\Models\Asset\Asset;
-use DaydreamLab\User\Models\Asset\AssetApi;
 use DaydreamLab\User\Services\Asset\AssetService;
 use Illuminate\Database\Seeder;
 
@@ -18,7 +18,8 @@ class AssetsTableSeeder extends Seeder
      */
     public function run()
     {
-        $data = json_decode(file_get_contents(__DIR__ . '/jsons/asset.json'), true);
+
+        $data = Helper::getJson(__DIR__ . '/jsons/asset.json', true);
 
         $this->migrate($data, null);
 
@@ -69,8 +70,7 @@ class AssetsTableSeeder extends Seeder
 
             $api_ids = [];
             foreach ($apis as $api) {
-                $api['service'] = $service;
-                $api = AssetApi::create($api);
+                $api = Api::create($api);
                 $api_ids[] = $api->id;
             }
             $asset->apis()->attach($api_ids);

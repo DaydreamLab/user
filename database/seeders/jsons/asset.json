@@ -1,488 +1,498 @@
 [
-  {
-    "title": "Root",
-    "path": "",
-    "component": "",
-    "type": "",
-    "redirect": "",
-    "icon": "",
-    "state": 1,
-    "showNav": 0,
-    "children": [
-      {
-        "title": "",
-        "path": "/",
-        "component": "",
-        "type": "alias",
-        "redirect": "",
-        "icon": "home",
-        "state": 1,
-        "showNav": 1,
-        "created_by": 1,
-        "children": [
-          {
-            "title": "MOD_GLOBAL_MENU_CONTROL_PANEL",
-            "path": "",
-            "component": "index",
-            "type": "menu",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 1,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          }
-        ],
-        "apis": []
-      },
-      {
-        "title": "COM_DEV",
+    {
+        "title": "Root",
         "path": "",
         "component": "",
-        "type": "separator",
+        "type": "",
         "redirect": "",
         "icon": "",
         "state": 1,
-        "showNav": 1,
-        "created_by": 1,
-        "children": [],
-        "apis": []
-      },
-      {
-        "title": "COM_DEV_APIS_TITLE",
-        "path": "/api",
-        "component": "",
-        "type": "alias",
-        "redirect": "",
-        "icon": "th-list",
-        "state": 1,
-        "showNav": 1,
-        "created_by": 1,
+        "showNav": 0,
         "children": [
-          {
-            "title": "COM_DEV_API_MANAGER_TITLE",
-            "path": "",
-            "component": "api/list",
-            "service": "AssetApiAdminService",
-            "type": "menu",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 1,
-            "created_by": 1,
-            "children": [],
-            "apis": [
-              {
-                "method": "getApi",
-                "url": "/admin/api/{id}",
-                "created_by": 1
-              },
-              {
-                "method": "addApi",
-                "url": "/admin/api/store",
-                "created_by": 1
-              },
-              {
-                "method": "editApi",
-                "url": "/admin/api/store",
-                "created_by": 1
-              },
-              {
-                "method": "deleteApi",
-                "url": "/admin/api/remove",
-                "created_by": 1
-              },
-              {
-                "method": "searchApi",
-                "url": "/admin/api/search",
-                "created_by": 1
-              }
-            ]
-          },
-          {
-            "title": "COM_DEV_API_EDIT_TITLE",
-            "path": "/edit",
-            "component": "api/edit",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          }
+            {
+                "title": "",
+                "path": "/",
+                "component": "",
+                "type": "alias",
+                "redirect": "",
+                "icon": "home",
+                "state": 1,
+                "showNav": 1,
+                "created_by": 1,
+                "children": [
+                    {
+                        "title": "MOD_GLOBAL_MENU_CONTROL_PANEL",
+                        "path": "",
+                        "component": "index",
+                        "type": "menu",
+                        "redirect": "",
+                        "icon": "",
+                        "state": 1,
+                        "showNav": 1,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": []
+                    }
+                ],
+                "apis": []
+            },
+            {
+                "title": "COM_DEV",
+                "path": "",
+                "component": "",
+                "type": "separator",
+                "redirect": "",
+                "icon": "",
+                "state": 1,
+                "showNav": 1,
+                "created_by": 1,
+                "children": [],
+                "apis": []
+            },
+            {
+                "title": "COM_DEV_APIS_TITLE",
+                "path": "/api",
+                "component": "",
+                "type": "alias",
+                "redirect": "",
+                "icon": "th-list",
+                "state": 1,
+                "showNav": 1,
+                "created_by": 1,
+                "children": [
+                    {
+                        "title": "COM_DEV_API_MANAGER_TITLE",
+                        "path": "",
+                        "component": "api/list",
+                        "service": "AssetApiAdminService",
+                        "type": "menu",
+                        "redirect": "",
+                        "icon": "",
+                        "state": 1,
+                        "showNav": 1,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": [
+                            {
+                                "name": "取得API",
+                                "method": "getApi",
+                                "url": "/admin/api/{id}",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "新增API",
+                                "method": "addApi",
+                                "url": "/admin/api/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "編輯API",
+                                "method": "editApi",
+                                "url": "/admin/api/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "刪除API",
+                                "method": "deleteApi",
+                                "url": "/admin/api/remove",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "搜尋API",
+                                "method": "searchApi",
+                                "url": "/admin/api/search",
+                                "created_by": 1
+                            }
+                        ]
+                    },
+                    {
+                        "title": "COM_DEV_API_EDIT_TITLE",
+                        "path": "/edit",
+                        "component": "api/edit",
+                        "type": "function",
+                        "redirect": "",
+                        "icon": "",
+                        "state": 1,
+                        "showNav": 0,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": []
+                    }
+                ],
+                "apis": []
+            },
+            {
+                "title": "COM_DEV_ASSETS_TITLE",
+                "path": "/asset",
+                "component": "",
+                "type": "alias",
+                "redirect": "",
+                "icon": "th-list",
+                "state": 1,
+                "showNav": 1,
+                "created_by": 1,
+                "children": [
+                    {
+                        "title": "COM_DEV_ASSET_MANAGER_TITLE",
+                        "path": "",
+                        "component": "asset/list",
+                        "service": "AssetAdminService",
+                        "type": "menu",
+                        "redirect": "",
+                        "icon": "",
+                        "state": 1,
+                        "showNav": 1,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": [
+                            {
+                                "name": "取得資源",
+                                "method": "getAsset",
+                                "url": "/admin/asset/{id}",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "新增資源",
+                                "method": "addAsset",
+                                "url": "/admin/asset/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "編輯資源",
+                                "method": "editAsset",
+                                "url": "/admin/asset/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "刪除資源",
+                                "method": "deleteAsset",
+                                "url": "/admin/asset/remove",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "搜尋資源",
+                                "method": "searchAsset",
+                                "url": "/admin/asset/search",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "更新資源發佈狀態",
+                                "method": "updateAssetState",
+                                "url": "/admin/asset/state",
+                                "created_by": 1
+                            }
+                        ]
+                    },
+                    {
+                        "title": "COM_DEV_ASSET_EDIT_TITLE",
+                        "path": "/edit",
+                        "component": "asset/edit",
+                        "type": "function",
+                        "redirect": "",
+                        "icon": "",
+                        "state": 1,
+                        "showNav": 0,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": []
+                    },
+                    {
+                        "title": "COM_DEV_ASSET_ASSIGN_GROUP_TITLE",
+                        "path": "/assign/group",
+                        "component": "asset/assign/group",
+                        "type": "function",
+                        "redirect": "",
+                        "icon": "",
+                        "state": 1,
+                        "showNav": 0,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": []
+                    },
+                    {
+                        "title": "COM_DEV_ASSET_GROUP_MANAGER_TITLE",
+                        "path": "/group",
+                        "component": "asset/group/list",
+                        "type": "menu",
+                        "redirect": "",
+                        "icon": "",
+                        "state": 1,
+                        "showNav": 1,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": [
+                            {
+                                "name": "取得資源群組",
+                                "method": "getAssetGroup",
+                                "url": "/admin/asset/group/{id}",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "新增資源群組",
+                                "method": "addAssetGroup",
+                                "url": "/admin/asset/group/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "編輯資源群組",
+                                "method": "editAssetGroup",
+                                "url": "/admin/asset/group/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "刪除資源群組",
+                                "method": "deleteAssetGroup",
+                                "url": "/admin/asset/group/remove",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "搜尋資源群組",
+                                "method": "searchAssetGroup",
+                                "url": "/admin/asset/group/search",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "更新資源群組發佈狀態",
+                                "method": "updateAssetGroupState",
+                                "url": "/admin/asset/group/state",
+                                "created_by": 1
+                            }
+                        ]
+                    },
+                    {
+                        "title": "COM_DEV_ASSET_GROUP_EDIT_TITLE",
+                        "path": "/group/edit",
+                        "component": "asset/group/edit",
+                        "type": "function",
+                        "redirect": "",
+                        "icon": "",
+                        "state": 1,
+                        "showNav": 0,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": []
+                    }
+                ],
+                "apis": []
+            },
+            {
+                "title": "COM_USERS",
+                "path": "/user",
+                "component": "",
+                "type": "separator",
+                "redirect": "",
+                "icon": "",
+                "state": 1,
+                "showNav": 1,
+                "created_by": 1,
+                "children": [
+                    {
+                        "title": "COM_USERS_USER_MANAGER_TITLE",
+                        "path": "",
+                        "component": "user/list",
+                        "type": "menu",
+                        "redirect": "",
+                        "icon": "user",
+                        "state": 1,
+                        "showNav": 1,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": [
+                            {
+                                "name": "取得會員",
+                                "method": "getUser",
+                                "url": "/admin/user/{id}",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "新增會員",
+                                "method": "addUser",
+                                "url": "/admin/user/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "編輯會員",
+                                "method": "editUser",
+                                "url": "/admin/user/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "刪除會員",
+                                "method": "deleteUser",
+                                "url": "/admin/user/remove",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "搜尋會員",
+                                "method": "searchUser",
+                                "url": "/admin/user/search",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "封鎖會員",
+                                "method": "blockUser",
+                                "url": "/admin/user/block",
+                                "created_by": 1
+                            }
+                        ]
+                    },
+                    {
+                        "title": "COM_USERS_USER_EDIT_TITLE",
+                        "path": "/edit",
+                        "component": "user/edit",
+                        "type": "function",
+                        "redirect": "",
+                        "icon": "",
+                        "state": 1,
+                        "showNav": 0,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": []
+                    },
+                    {
+                        "title": "COM_USERS_GROUPS_MANAGER_TITLE",
+                        "path": "/group",
+                        "component": "user/group/list",
+                        "type": "menu",
+                        "redirect": "",
+                        "icon": "users",
+                        "state": 1,
+                        "showNav": 1,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": [
+                            {
+                                "name": "取得會員群組",
+                                "method": "getUserGroup",
+                                "url": "/admin/user/group/{id}",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "新增會員群組",
+                                "method": "addUserGroup",
+                                "url": "/admin/user/group/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "編輯會員群組",
+                                "method": "editUserGroup",
+                                "url": "/admin/user/group/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "刪除會員群組",
+                                "method": "deleteUserGroup",
+                                "url": "/admin/user/group/remove",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "搜尋會員群組",
+                                "method": "searchUserGroup",
+                                "url": "/admin/user/group/search",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "取得會員群組樹狀結構",
+                                "method": "getUserGroupTree",
+                                "url": "/admin/user/group/assignAccess",
+                                "created_by": 1
+                            }
+                        ]
+                    },
+                    {
+                        "title": "COM_USERS_GROUPS_EDIT_TITLE",
+                        "path": "/group/edit",
+                        "component": "user/group/edit",
+                        "type": "function",
+                        "redirect": "",
+                        "icon": "",
+                        "state": 1,
+                        "showNav": 0,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": []
+                    },
+                    {
+                        "title": "COM_USERS_VIEWLEVEL_MANAGER_TITLE",
+                        "path": "/viewlevel",
+                        "component": "user/viewlevel/list",
+                        "type": "menu",
+                        "redirect": "",
+                        "icon": "eye",
+                        "state": 1,
+                        "showNav": 1,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": [
+                            {
+                                "name": "取得閱讀權限",
+                                "method": "getViewlevel",
+                                "url": "/admin/viewlevel/{id}",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "新增閱讀權限",
+                                "method": "addViewlevel",
+                                "url": "/admin/viewlevel/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "編輯閱讀權限",
+                                "method": "editViewlevel",
+                                "url": "/admin/viewlevel/store",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "刪除閱讀權限",
+                                "method": "deleteViewlevel",
+                                "url": "/admin/viewlevel/remove",
+                                "created_by": 1
+                            },
+                            {
+                                "name": "搜尋閱讀權限",
+                                "method": "searchViewlevel",
+                                "url": "/admin/viewlevel/search",
+                                "created_by": 1
+                            }
+                        ]
+                    },
+                    {
+                        "title": "COM_USERS_VIEWLEVEL_EDIT_TITLE",
+                        "path": "/viewlevel/edit",
+                        "component": "user/viewlevel/edit",
+                        "type": "function",
+                        "redirect": "",
+                        "icon": "",
+                        "state": 1,
+                        "showNav": 0,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": []
+                    },
+                    {
+                        "title": "COM_USERS_LOG",
+                        "path": "/log",
+                        "component": "user/log",
+                        "type": "menu",
+                        "redirect": "",
+                        "icon": "clipboard-user",
+                        "state": 1,
+                        "showNav": 1,
+                        "created_by": 1,
+                        "children": [],
+                        "apis": [
+                            {
+                                "name": "搜尋使用者紀錄",
+                                "method": "searchLog",
+                                "url": "/admin/log/search",
+                                "created_by": 1
+                            }
+                        ]
+                    }
+                ],
+                "apis": []
+            }
         ],
         "apis": []
-      },
-      {
-        "title": "COM_DEV_ASSETS_TITLE",
-        "path": "/asset",
-        "component": "",
-        "type": "alias",
-        "redirect": "",
-        "icon": "th-list",
-        "state": 1,
-        "showNav": 1,
-        "created_by": 1,
-        "children": [
-          {
-            "title": "COM_DEV_ASSET_MANAGER_TITLE",
-            "path": "",
-            "component": "asset/list",
-            "service": "AssetAdminService",
-            "type": "menu",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 1,
-            "created_by": 1,
-            "children": [],
-            "apis": [
-              {
-                "method": "getAsset",
-                "url": "/admin/asset/{id}",
-                "created_by": 1
-              },
-              {
-                "method": "addAsset",
-                "url": "/admin/asset/store",
-                "created_by": 1
-              },
-              {
-                "method": "editAsset",
-                "url": "/admin/asset/store",
-                "created_by": 1
-              },
-              {
-                "method": "deleteAsset",
-                "url": "/admin/asset/remove",
-                "created_by": 1
-              },
-              {
-                "method": "searchAsset",
-                "url": "/admin/asset/search",
-                "created_by": 1
-              },
-              {
-                "method": "updateAssetState",
-                "url": "/admin/asset/state",
-                "created_by": 1
-              },
-              {
-                "method": "assignGroup",
-                "url": "/admin/asset/groups/map/store",
-                "created_by": 1
-              }
-            ]
-          },
-          {
-            "title": "COM_DEV_ASSET_EDIT_TITLE",
-            "path": "/edit",
-            "component": "asset/edit",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "COM_DEV_ASSET_ASSIGN_GROUP_TITLE",
-            "path": "/assign/group",
-            "component": "asset/assign/group",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "COM_DEV_ASSET_GROUP_MANAGER_TITLE",
-            "path": "/group",
-            "component": "asset/group/list",
-            "service": "AssetGroupAdminService",
-            "type": "menu",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 1,
-            "created_by": 1,
-            "children": [],
-            "apis": [
-              {
-                "method": "getAssetGroup",
-                "url": "/admin/asset/group/{id}",
-                "created_by": 1
-              },
-              {
-                "method": "addAssetGroup",
-                "url": "/admin/asset/group/store",
-                "created_by": 1
-              },
-              {
-                "method": "editAssetGroup",
-                "url": "/admin/asset/group/store",
-                "created_by": 1
-              },
-              {
-                "method": "deleteAssetGroup",
-                "url": "/admin/asset/group/remove",
-                "created_by": 1
-              },
-              {
-                "method": "searchAssetGroup",
-                "url": "/admin/asset/group/search",
-                "created_by": 1
-              },
-              {
-                "method": "updateAssetGroupState",
-                "url": "/admin/asset/group/state",
-                "created_by": 1
-              }
-            ]
-          },
-          {
-            "title": "COM_DEV_ASSET_GROUP_EDIT_TITLE",
-            "path": "/group/edit",
-            "component": "asset/group/edit",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          }
-        ],
-        "apis": []
-      },
-      {
-        "title": "COM_USERS",
-        "path": "/user",
-        "component": "",
-        "type": "separator",
-        "redirect": "",
-        "icon": "",
-        "state": 1,
-        "showNav": 1,
-        "created_by": 1,
-        "children": [
-          {
-            "title": "COM_USERS_USER_MANAGER_TITLE",
-            "path": "",
-            "component": "user/list",
-            "service": "UserAdminService",
-            "type": "menu",
-            "redirect": "",
-            "icon": "user",
-            "state": 1,
-            "showNav": 1,
-            "created_by": 1,
-            "children": [],
-            "apis": [
-              {
-                "method": "getUser",
-                "url": "/admin/user/{id}",
-                "created_by": 1
-              },
-              {
-                "method": "addUser",
-                "url": "/admin/user/store",
-                "created_by": 1
-              },
-              {
-                "method": "editUser",
-                "url": "/admin/user/store",
-                "created_by": 1
-              },
-              {
-                "method": "deleteUser",
-                "url": "/admin/user/remove",
-                "created_by": 1
-              },
-              {
-                "method": "searchUser",
-                "url": "/admin/user/search",
-                "created_by": 1
-              },
-              {
-                "method": "blockUser",
-                "url": "/admin/user/block",
-                "created_by": 1
-              },
-              {
-                "method": "assignUserGroup",
-                "url": "/admin/user/assignGroup",
-                "created_by": 1
-              }
-            ]
-          },
-          {
-            "title": "COM_USERS_USER_EDIT_TITLE",
-            "path": "/edit",
-            "component": "user/edit",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "COM_USERS_GROUPS_MANAGER_TITLE",
-            "path": "/group",
-            "component": "user/group/list",
-            "service": "UserGroupAdminService",
-            "type": "menu",
-            "redirect": "",
-            "icon": "users",
-            "state": 1,
-            "showNav": 1,
-            "created_by": 1,
-            "children": [],
-            "apis": [
-              {
-                "method": "getUserGroup",
-                "url": "/admin/user/group/{id}",
-                "created_by": 1
-              },
-              {
-                "method": "addUserGroup",
-                "url": "/admin/user/group/store",
-                "created_by": 1
-              },
-              {
-                "method": "editUserGroup",
-                "url": "/admin/user/group/store",
-                "created_by": 1
-              },
-              {
-                "method": "deleteUserGroup",
-                "url": "/admin/user/group/remove",
-                "created_by": 1
-              },
-              {
-                "method": "searchUserGroup",
-                "url": "/admin/user/group/search",
-                "created_by": 1
-              },
-              {
-                "method": "updateUserGroupState",
-                "url": "/admin/user/group/state",
-                "created_by": 1
-              },
-              {
-                "method": "getUserGroupTree",
-                "url": "/admin/user/group/assignAccess",
-                "created_by": 1
-              }
-            ]
-          },
-          {
-            "title": "COM_USERS_GROUPS_EDIT_TITLE",
-            "path": "/group/edit",
-            "component": "user/group/edit",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "COM_USERS_VIEWLEVEL_MANAGER_TITLE",
-            "path": "/viewlevel",
-            "component": "user/viewlevel/list",
-            "service": "ViewlevelAdminService",
-            "type": "menu",
-            "redirect": "",
-            "icon": "eye",
-            "state": 1,
-            "showNav": 1,
-            "created_by": 1,
-            "children": [],
-            "apis": [
-              {
-                "method": "getViewlevel",
-                "url": "/admin/viewlevel/{id}",
-                "created_by": 1
-              },
-              {
-                "method": "addViewlevel",
-                "url": "/admin/viewlevel/store",
-                "created_by": 1
-              },
-              {
-                "method": "editViewlevel",
-                "url": "/admin/viewlevel/store",
-                "created_by": 1
-              },
-              {
-                "method": "deleteViewlevel",
-                "url": "/admin/viewlevel/remove",
-                "created_by": 1
-              },
-              {
-                "method": "searchViewlevel",
-                "url": "/admin/viewlevel/search",
-                "created_by": 1
-              },
-              {
-                "method": "orderingViewlevel",
-                "url": "/admin/viewlevel/ordering",
-                "created_by": 1
-              }
-            ]
-          },
-          {
-            "title": "COM_USERS_VIEWLEVEL_EDIT_TITLE",
-            "path": "/viewlevel/edit",
-            "component": "user/viewlevel/edit",
-            "type": "function",
-            "redirect": "",
-            "icon": "",
-            "state": 1,
-            "showNav": 0,
-            "created_by": 1,
-            "children": [],
-            "apis": []
-          },
-          {
-            "title": "COM_USERS_LOG",
-            "path": "/log",
-            "component": "user/log",
-            "service": "LogService",
-            "type": "menu",
-            "redirect": "",
-            "icon": "clipboard-user",
-            "state": 1,
-            "showNav": 1,
-            "created_by": 1,
-            "children": [],
-            "apis": [
-              {
-                "method": "searchLog",
-                "url": "/admin/log/search",
-                "created_by": 1
-              }
-            ]
-          }
-        ],
-        "apis": []
-      }
-    ],
-    "apis": []
-  }
+    }
 ]

@@ -2,9 +2,10 @@
 
 namespace DaydreamLab\User\Resources\User\Admin\Models;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use DaydreamLab\JJAJ\Resources\BaseJsonResource;
+use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminResource;
 
-class UserAdminListResource extends JsonResource
+class UserAdminListResource extends BaseJsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,14 +15,20 @@ class UserAdminListResource extends JsonResource
      */
     public function toArray($request)
     {
+        $tz = $request->user('api')->timezone;
+
         return [
-            'id'                    => $this->id,
-            'email'                 => $this->email,
-            'firstName'            => $this->firstName,
-            'lastName'             => $this->lastName,
-            'block'                 => $this->block,
-            'activation'            => $this->activation,
-            'groups'                => $this->groups->pluck('title'),
+            'id'            => $this->id,
+            'email'         => $this->email,
+            'name'          => $this->name,
+            'firstName'     => $this->firstName,
+            'lastName'      => $this->lastName,
+            'company'       => $this->company ? new CompanyAdminResource($this->company) : null,
+            'block'         => $this->block,
+            'activation'    => $this->activation,
+            'lastLoginAt'   => $this->getDateTimeString($this->lastLoginAt, $tz),
+            'lastLoginIp'   => $this->lastLoginIp,
+            'groups'        => $this->groups->pluck('title'),
         ];
     }
 }

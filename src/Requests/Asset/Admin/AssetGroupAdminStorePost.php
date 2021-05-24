@@ -35,9 +35,10 @@ class AssetGroupAdminStorePost extends AdminRequest
                 'integer',
                 Rule::in([0,1,-2])
             ],
-            'asset_ids'     => 'required|array',
-            'asset_ids.*'   => 'nullable|integer',
+            'assetIds'     => 'nullable|array',
+            'assetIds.*'   => 'nullable|integer',
         ];
-        return array_merge($rules, parent::rules());
+
+        return array_merge(parent::rules(), $rules);
     }
 }

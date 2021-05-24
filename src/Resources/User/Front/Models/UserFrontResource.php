@@ -16,12 +16,14 @@ class UserFrontResource extends JsonResource
     {
         return [
             'email'                 => $this->email,
+            'name'                  => $this->name,
             'firstName'             => $this->firstName,
             'lastName'              => $this->lastName,
             'gender'                => $this->gendor,
             'image'                 => $this->image,
             'phoneCode'             => $this->phoneCode,
             'phone'                 => $this->phone,
+            'mobilePhone'           => $this->mobilePhone,
             'birthday'              => $this->birthday,
             'country'               => $this->country,
             'state'                 => $this->state_,

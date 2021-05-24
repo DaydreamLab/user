@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\User\Resources\Asset\Admin\Models;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use DaydreamLab\JJAJ\Resources\BaseJsonResource;
 
-class AssetAdminResource extends JsonResource
+class AssetAdminResource extends BaseJsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +14,8 @@ class AssetAdminResource extends JsonResource
      */
     public function toArray($request)
     {
+        $timezone = $this->user($request)->timezone;
+
         return [
             'id'                => $this->id,
             'parent_id'         => $this->parent_id,

@@ -2,7 +2,9 @@
 
 namespace DaydreamLab\User\Database\Seeders;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\User\User;
+use DaydreamLab\User\Models\User\UserGroup;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -14,7 +16,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $data = json_decode(file_get_contents(__DIR__ . '/jsons/user.json'), true);
+        $data = Helper::getJson(__DIR__ . '/jsons/user.json', true);
 
         $this->migrate($data, null);
     }
@@ -25,6 +27,9 @@ class UsersTableSeeder extends Seeder
         {
             $groups     = $item['groups'];
             unset($item['groups']);
+
+            $groups = UserGroup::whereIn('title', $groups)->pluck('id');
+
             $item['password'] = bcrypt($item['password']);
             $user = User::create($item);
             $user->groups()->attach($groups);

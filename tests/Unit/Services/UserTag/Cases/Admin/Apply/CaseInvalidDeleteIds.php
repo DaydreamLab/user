@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\tests\Unit\Services\UserTas\Cases\Admin\Apply;
+namespace DaydreamLab\User\tests\Unit\Services\UserTag\Cases\Admin\Apply;
 
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserTag;

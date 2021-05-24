@@ -2,7 +2,9 @@
 
 namespace DaydreamLab\User\Controllers\User\Front;
 
+use App\User;
 use Carbon\Carbon;
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontCheckEmailPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
@@ -141,8 +143,7 @@ class UserFrontController extends BaseController
             try {
                 $this->service->login($request->validated());
             } catch (Throwable $t) {
-                $this->service->status = $t->status;
-                $this->service->response = $t->response;
+                $this->handleException($t);
             }
         } else {
             $this->service->status = 'LoginIsBlocked';
@@ -150,9 +151,9 @@ class UserFrontController extends BaseController
         }
 
         return $this->response($this->service->status,
-            $this->service->response
+            $this->service->response instanceof \stdClass
             ? new UserFrontLoginResource($this->service->response)
-            : null
+            : $this->service->response
         );
     }
 

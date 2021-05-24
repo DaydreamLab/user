@@ -3,16 +3,18 @@
 namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminGetItem;
 use DaydreamLab\User\Resources\Asset\Admin\Collections\AssetAdminListResourceCollection;
 use DaydreamLab\User\Resources\Asset\Admin\Models\AssetAdminResource;
-use Illuminate\Http\Request;
 use DaydreamLab\User\Services\Asset\Admin\AssetAdminService;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminRemovePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminStorePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminStatePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminSearchPost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminOrderingPost;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Throwable;
 
 class AssetAdminController extends BaseController
 {
@@ -32,14 +34,24 @@ class AssetAdminController extends BaseController
     public function getItem(AssetAdminGetItem $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->getItem(collect(['id' => $request->route('id')]));
+        try {
+            $this->service->getItem(collect(['id' => $request->route('id')]));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
-        return$this->response($this->service->status, new AssetAdminResource($this->service->response));
+        return$this->response($this->service->status, $this->service->response instanceof Asset
+            ? new AssetAdminResource($this->service->response)
+            : $this->service->response);
     }
 
     public function treeList()
     {
-        $this->service->treeList();
+        try {
+            $this->service->treeList();
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -48,7 +60,11 @@ class AssetAdminController extends BaseController
     public function ordering(AssetAdminOrderingPost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->ordering($request->validated());
+        try {
+            $this->service->ordering($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -57,7 +73,11 @@ class AssetAdminController extends BaseController
     public function remove(AssetAdminRemovePost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->removeNested($request->validated());
+        try {
+            $this->service->removeNested($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -66,7 +86,11 @@ class AssetAdminController extends BaseController
     public function state(AssetAdminStatePost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->state($request->validated());
+        try {
+            $this->service->state($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -75,12 +99,15 @@ class AssetAdminController extends BaseController
     public function store(AssetAdminStorePost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->storeNested($request->validated());
+        try {
+            $this->service->storeNested($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
-        return $this->response($this->service->status,
-            gettype($this->service->response) == 'object'
+        return $this->response($this->service->status, $this->service->response instanceof Asset
             ? new AssetAdminResource($this->service->response)
-            : null
+            : $this->service->response
         );
     }
 
@@ -88,8 +115,15 @@ class AssetAdminController extends BaseController
     public function search(AssetAdminSearchPost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->search($request->validated());
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
-        return $this->response($this->service->status, new AssetAdminListResourceCollection($this->service->response));
+        return $this->response($this->service->status, $this->service->response instanceof LengthAwarePaginator
+            ? new AssetAdminListResourceCollection($this->service->response)
+            : $this->service->response
+        );
     }
 }

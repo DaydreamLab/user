@@ -3,11 +3,19 @@
 namespace  DaydreamLab\User\Middlewares;
 
 use Closure;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
-use Illuminate\Support\Facades\Auth;
+use DaydreamLab\JJAJ\Traits\ApiJsonResponse;
 
 class SuperUser
 {
+    use ApiJsonResponse;
+
+    public function __construct()
+    {
+        $this->package = 'user';
+        $this->modelName = 'User';
+    }
+
+
     /**
      * Handle an incoming request.
      *
@@ -20,7 +28,7 @@ class SuperUser
         $user = $request->user('api');
 
         if (!$user || !$user->isSuperUser()) {
-            return ResponseHelper::genResponse('InsufficientPermissionSuperAdmin', null, '', '');
+            return  $this->response('InsufficientPermissionSuperAdmin', null);
         }
 
         return $next($request);

@@ -100,14 +100,17 @@ class UserService extends BaseService
         $user = Auth::user() ?: null;
         $login = false;
         if ($auth) {
-            if ($user->activated) { // 帳號已啟用
+            if ($user->activation) { // 帳號已啟用
                 if ($user->blocked) {
                     $this->status = 'IsBlocked';
                     throw new ForbiddenException('IsBlocked', [
                         'email' => $input->get('email')
                     ]);
                 } else {
-                    $this->repo->modify($user, collect(['lastLoginAt' => now()]));
+                    $this->repo->modify($user, collect([
+                        'lastLoginAt' => now(),
+                        'lastLoginIp' => $input->get('lastLoginIp')
+                    ]));
                     $tokens = $user->tokens()->get();
                     if(!config('daydreamlab.user.multiple_login')) {
                         $tokens->each(function ($token) {
@@ -121,8 +124,6 @@ class UserService extends BaseService
                         : 'LoginSuccess';
                     $this->response = $this->helper->getUserLoginData($user);
                     $login = true;
-
-
                 }
             } else { // 帳號尚未啟用
                 //$user->notify(new RegisteredNotification($user));
