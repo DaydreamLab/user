@@ -37,7 +37,7 @@ class UserGroupAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, new UserGroupAdminResource($this->service->response));
+        return $this->response($this->service->status, $this->service->response, [], UserGroupAdminResource::class);
     }
 
 
@@ -76,10 +76,7 @@ class UserGroupAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status,
-            gettype($this->service->response) == 'object'
-                ? new UserGroupAdminResource($this->service->response)
-                : $this->service->response);
+        return $this->response($this->service->status, $this->service->response, [], UserGroupAdminResource::class);
     }
 
 
@@ -92,8 +89,7 @@ class UserGroupAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status,
-            new UserGroupAdminListResourceCollection($this->service->response));
+        return $this->response($this->service->status, $this->service->response, [], UserGroupAdminListResourceCollection::class);
     }
 
 

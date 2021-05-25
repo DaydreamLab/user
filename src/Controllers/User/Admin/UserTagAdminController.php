@@ -12,6 +12,7 @@ use DaydreamLab\User\Requests\User\Admin\UserTagAdminStorePost;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserTagAdminListResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Models\UserTagAdminResource;
 use DaydreamLab\User\Services\User\Admin\UserTagAdminService;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Throwable;
 
 class UserTagAdminController extends BaseController
@@ -53,7 +54,7 @@ class UserTagAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response, [], UserTagAdminResource::class);
     }
 
 
@@ -79,11 +80,7 @@ class UserTagAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status,
-            gettype($this->service->response) == 'object'
-            ? new UserTagAdminResource($this->service->response)
-            : $this->service->response
-        );
+        return $this->response($this->service->status, $this->service->response, [], UserTagAdminResource::class);
     }
 
 
@@ -96,7 +93,6 @@ class UserTagAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status,
-            new UserTagAdminListResourceCollection($this->service->response));
+        return $this->response($this->service->status, $this->service->response, [], UserTagAdminListResourceCollection::class);
     }
 }

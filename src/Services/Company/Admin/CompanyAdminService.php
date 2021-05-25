@@ -4,12 +4,15 @@ namespace DaydreamLab\User\Services\Company\Admin;
 
 use DaydreamLab\Cms\Repositories\Category\Admin\CategoryAdminRepository;
 use DaydreamLab\JJAJ\Database\QueryCapsule;
+use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
 use DaydreamLab\User\Services\Company\CompanyService;
 use Illuminate\Support\Collection;
 
 class CompanyAdminService extends CompanyService
 {
+    use LoggedIn;
+
     protected $modelType = 'Admin';
 
     protected $categoryAdminRepository;

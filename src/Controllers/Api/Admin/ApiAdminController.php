@@ -3,7 +3,6 @@
 namespace DaydreamLab\User\Controllers\Api\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\User\Models\Api\Api;
 use DaydreamLab\User\Requests\Api\Admin\ApiAdminGetItem;
 use DaydreamLab\User\Resources\Api\Admin\Collections\ApiAdminListResourceCollection;
 use DaydreamLab\User\Resources\Api\Admin\Models\ApiAdminResource;
@@ -12,7 +11,6 @@ use DaydreamLab\User\Requests\Api\Admin\ApiAdminRemovePost;
 use DaydreamLab\User\Requests\Api\Admin\ApiAdminStorePost;
 use DaydreamLab\User\Requests\Api\Admin\ApiAdminStatePost;
 use DaydreamLab\User\Requests\Api\Admin\ApiAdminSearchPost;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Throwable;
 
 class ApiAdminController extends BaseController
@@ -39,10 +37,7 @@ class ApiAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response instanceof Api
-            ? new ApiAdminResource($this->service->response)
-            : $this->service->response
-        );
+        return $this->response($this->service->status, $this->service->response, [], ApiAdminResource::class);
     }
 
 
@@ -81,10 +76,7 @@ class ApiAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response instanceof Api
-            ? new ApiAdminResource($this->service->response)
-            : $this->service->response
-        );
+        return $this->response($this->service->status, $this->service->response, [], ApiAdminResource::class);
     }
 
 
@@ -97,9 +89,6 @@ class ApiAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response instanceof LengthAwarePaginator
-            ? new ApiAdminListResourceCollection($this->service->response)
-            : $this->service->response
-        );
+        return $this->response($this->service->status, $this->service->response, [], ApiAdminListResourceCollection::class);
     }
 }

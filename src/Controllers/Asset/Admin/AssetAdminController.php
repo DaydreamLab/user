@@ -3,7 +3,6 @@
 namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminGetItem;
 use DaydreamLab\User\Resources\Asset\Admin\Collections\AssetAdminListResourceCollection;
 use DaydreamLab\User\Resources\Asset\Admin\Models\AssetAdminResource;
@@ -13,7 +12,6 @@ use DaydreamLab\User\Requests\Asset\Admin\AssetAdminStorePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminStatePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminSearchPost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminOrderingPost;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Throwable;
 
 class AssetAdminController extends BaseController
@@ -40,9 +38,7 @@ class AssetAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return$this->response($this->service->status, $this->service->response instanceof Asset
-            ? new AssetAdminResource($this->service->response)
-            : $this->service->response);
+        return $this->response($this->service->status, $this->service->response, [], AssetAdminResource::class);
     }
 
     public function treeList()
@@ -105,10 +101,7 @@ class AssetAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response instanceof Asset
-            ? new AssetAdminResource($this->service->response)
-            : $this->service->response
-        );
+        return $this->response($this->service->status, $this->service->response, [], AssetAdminResource::class);
     }
 
 
@@ -121,9 +114,6 @@ class AssetAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response instanceof LengthAwarePaginator
-            ? new AssetAdminListResourceCollection($this->service->response)
-            : $this->service->response
-        );
+        return $this->response($this->service->status, $this->service->response, [], AssetAdminListResourceCollection::class);
     }
 }

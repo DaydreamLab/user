@@ -11,6 +11,7 @@ use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminRemovePost;
 use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminStorePost;
 use DaydreamLab\User\Requests\Viewlevel\Admin\ViewlevelAdminSearchPost;
+use Throwable;
 
 class ViewlevelAdminController extends BaseController
 {
@@ -30,18 +31,24 @@ class ViewlevelAdminController extends BaseController
     public function getItem(ViewlevelAdminGetItem $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->getItem(collect(['id' => $request->route('id')]));
+        try {
+            $this->service->getItem(collect(['id' => $request->route('id')]));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
-        return $this->response($this->service->status,
-            new ViewlevelAdminResource($this->service->response)
-        );
+        return $this->response($this->service->status, $this->service->response, [], ViewlevelAdminResource::class);
     }
 
 
     public function ordering(ViewlevelAdminOrderingPost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->ordering($request->validated());
+        try {
+            $this->service->ordering($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -50,7 +57,11 @@ class ViewlevelAdminController extends BaseController
     public function remove(ViewlevelAdminRemovePost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->remove($request->validated());
+        try {
+            $this->service->remove($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -59,21 +70,25 @@ class ViewlevelAdminController extends BaseController
     public function store(ViewlevelAdminStorePost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->store($request->validated());
+        try {
+            $this->service->store($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
-        return $this->response($this->service->status,
-            gettype($this->service->response) == 'object'
-            ? new ViewlevelAdminResource($this->service->response)
-            : $this->service->response
-        );
+        return $this->response($this->service->status, $this->service->response, [], ViewlevelAdminResource::class);
     }
 
 
     public function search(ViewlevelAdminSearchPost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->search($request->validated());
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
-        return $this->response($this->service->status, new ViewlevelAdminListResourceCollection($this->service->response));
+        return $this->response($this->service->status, $this->service->response, [], ViewlevelAdminListResourceCollection::class);
     }
 }

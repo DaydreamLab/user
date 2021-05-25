@@ -3,10 +3,7 @@
 namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\User\Models\Asset\Admin\AssetGroupAdmin;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminOrderingPost;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Throwable;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminGetItem;
 use DaydreamLab\User\Services\Asset\Admin\AssetGroupAdminService;
@@ -41,7 +38,7 @@ class AssetGroupAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, new AssetGroupAdminResource($this->service->response));
+        return $this->response($this->service->status, $this->service->response, [], AssetGroupAdminResource::class);
     }
 
 
@@ -95,11 +92,7 @@ class AssetGroupAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status,
-            $this->service->response instanceof AssetGroupAdmin
-                ? new AssetGroupAdminResource($this->service->response)
-                : $this->service->response
-        );
+        return $this->response($this->service->status, $this->service->response, [], AssetGroupAdminResource::class);
     }
 
 
@@ -112,9 +105,6 @@ class AssetGroupAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response instanceof LengthAwarePaginator
-            ? new AssetGroupAdminListResourceCollection($this->service->response)
-            : $this->service->response
-        );
+        return $this->response($this->service->status, $this->service->response, [],AssetGroupAdminListResourceCollection::class);
     }
 }
