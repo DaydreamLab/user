@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Models\Company;
+namespace DaydreamLab\User\Models\User;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
