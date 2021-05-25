@@ -33,6 +33,6 @@ class ViewlevelAdminStorePost extends AdminRequest
             'groupIds'      => 'nullable|array',
             'groupIds.*'    => 'nullable|integer',
         ];
-        return array_merge($rules, parent::rules());
+        return array_merge(parent::rules(), $rules);
     }
 }

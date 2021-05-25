@@ -30,6 +30,7 @@ class AssetAdminStorePost extends AdminRequest
         $rules = [
             'id'        => 'nullable|integer',
             'parent_id' => 'nullable|integer',
+            'parantId'  => 'nullable|integer',
             'title'     => 'nullable|string',
             'path'      => 'nullable|string',
             'component' => 'nullable|string',
@@ -45,6 +46,19 @@ class AssetAdminStorePost extends AdminRequest
             'redirect'  => 'nullable|string',
             'showNav'   => 'integer|between:0,1',
         ];
-        return array_merge($rules, parent::rules());
+
+        return array_merge(parent::rules(), $rules);
+    }
+
+    public function validated()
+    {
+        $validated = parent::validated();
+        if ($validated->get('parentId')) {
+            $validated->put('parent_id', $validated->get('parentId'));
+        }
+
+        $validated->forget('parentId');
+
+        return $validated;
     }
 }

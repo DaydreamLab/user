@@ -37,7 +37,6 @@ class AssetGroupAdminService extends AssetGroupService
     }
 
 
-
     public function beforeRemove($item)
     {
         $item->assets()->detach();

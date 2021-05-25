@@ -9,6 +9,8 @@ class AssetGroupAdminSearchPost extends ListRequest
     protected $modelName = 'AssetGroup';
 
     protected $apiMethod = 'searchAssetGroup';
+
+    protected $searchKeys = ['title', 'description'];
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,6 +31,6 @@ class AssetGroupAdminSearchPost extends ListRequest
         $rules = [
             //
         ];
-        return array_merge($rules, parent::rules());
+        return array_merge(parent::rules(), $rules);
     }
 }

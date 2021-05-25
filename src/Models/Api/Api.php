@@ -47,7 +47,7 @@ class Api extends BaseModel
      * @var array
      */
     protected $appends = [
-        'asset_title'
+        //'asset_title'
     ];
 
 

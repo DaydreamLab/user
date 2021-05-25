@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\User\Models\Asset\Admin\AssetGroupAdmin;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminOrderingPost;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Throwable;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminGetItem;
 use DaydreamLab\User\Services\Asset\Admin\AssetGroupAdminService;
@@ -29,6 +30,7 @@ class AssetGroupAdminController extends BaseController
         parent::__construct($service);
         $this->service = $service;
     }
+
 
     public function getItem(AssetGroupAdminGetItem $request)
     {
@@ -104,13 +106,15 @@ class AssetGroupAdminController extends BaseController
     public function search(AssetGroupAdminSearchPost $request)
     {
         $this->service->setUser($request->user('api'));
-
         try {
             $this->service->search($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, new AssetGroupAdminListResourceCollection($this->service->response));
+        return $this->response($this->service->status, $this->service->response instanceof LengthAwarePaginator
+            ? new AssetGroupAdminListResourceCollection($this->service->response)
+            : $this->service->response
+        );
     }
 }

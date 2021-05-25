@@ -18,7 +18,8 @@
 
     "minimum-stability": "dev",
     "require": {
-        "daydreamlab/jjaj": "dev-base/develop",
+        "daydreamlab/jjaj": "dev-base/v2",
+        "daydreamlab/cms": "dev-base/v2",
         "kalnoy/nestedset": "^v5.0",
         "laravel/socialite": "^v5.0",
         "laravel/passport": "^10.0"
@@ -31,6 +32,10 @@
         {
             "type": "vcs",
             "url":  "https://github.com/DaydreamLab/JJAJ.git"
+        },
+        {
+            "type": "vcs",
+            "url":  "https://github.com/DaydreamLab/cms.git"
         }
     ],
     "extra": {

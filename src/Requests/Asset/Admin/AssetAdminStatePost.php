@@ -36,6 +36,6 @@ class AssetAdminStatePost extends AdminRequest
                 Rule::in([0,1,-2])
             ]
         ];
-        return array_merge($rules, parent::rules());
+        return array_merge(parent::rules(), $rules);
     }
 }

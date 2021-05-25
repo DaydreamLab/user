@@ -19,7 +19,7 @@ class ApiAdminResource extends JsonResource
             'name'              => $this->name,
             'method'            => $this->method,
             'url'               => $this->url,
-            'deacription'       => $this->description,
+            'description'       => $this->description,
         ];
     }
 }

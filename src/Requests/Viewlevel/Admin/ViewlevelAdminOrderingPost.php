@@ -30,7 +30,8 @@ class ViewlevelAdminOrderingPost extends AdminRequest
     {
         $rules = [
             'id'            => 'required|integer',
-            'index_diff'    => 'required|integer',
+            'index_diff'    => 'nullable|integer',
+            'indexDiff'     => 'nullable|integer',
             'order'         => ['nullable', Rule::in(['asc', 'desc'])]
         ];
 

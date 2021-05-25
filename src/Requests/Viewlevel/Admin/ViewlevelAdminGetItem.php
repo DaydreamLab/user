@@ -28,6 +28,6 @@ class ViewlevelAdminGetItem extends AdminRequest
     {
         $rules = [
         ];
-        return array_merge($rules, parent::rules());
+        return array_merge(parent::rules(), $rules);
     }
 }
