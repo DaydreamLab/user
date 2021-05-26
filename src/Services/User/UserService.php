@@ -97,7 +97,7 @@ class UserService extends BaseService
     public function login(Collection $input)
     {
         $user = $this->findBy('email', '=', $input->get('email'))->first();
-        if ($user->activate_token === 'imported_user' && $user->last_reset_at == null) {
+        if ($user && $user->activate_token === 'imported_user' && $user->last_reset_at == null) {
             $passwordResetService = app(PasswordResetService::class);
             $token = $passwordResetService->add(collect([
                 'email'         => $input->get('email'),
