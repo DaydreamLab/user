@@ -27,7 +27,7 @@ class UserServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/Configs' => config_path('daydreamlab')], 'user-configs');
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'user');
-        include __DIR__ . '/routes/api.php';
+        $this->loadRoutesFrom(__DIR__.'/routes/api.php');
     }
 
     /**

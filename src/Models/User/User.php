@@ -242,11 +242,11 @@ class User extends BaseModel implements
     }
 
 
-    public function higherPermissionThan($user_id)
+    public function higherPermissionThan($locker)
     {
-        $compared_user = self::find($user_id);
+        $lockerAccessGroupIds = $locker->accessGroupIds ?: [];
 
-        return count(array_intersect($compared_user->viewlevels, $this->viewlevels)) === count($compared_user->viewlevels) ;
+        return count(array_intersect($lockerAccessGroupIds, $this->accessGroupIds ?: [])) === count($lockerAccessGroupIds) ;
     }
 
 
