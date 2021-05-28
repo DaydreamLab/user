@@ -23,11 +23,11 @@ class ViewlevelAdminResource extends JsonResource
             'description'   => $this->description,
             'canDelete'     => $this->canDelete,
             'ordering'      => $this->ordering,
+            'createdAt'     => $this->getDateTimeString($this->created_at, $user->timezone),
+            'updatedAt'     => $this->getDateTimeString($this->updated_at, $user->timezone),
             'groups'        => $this->groups->map(function ($group) {
                     return $group->only(['id', 'title']);
                 })->all(),
-            'createdAt'     => $this->getDateTimeString($this->created_at, $user->timezone),
-            'updatedAt'     => $this->getDateTimeString($this->updated_at, $user->timezone),
         ];
     }
 }

@@ -28,6 +28,8 @@ class AssetAdminResource extends BaseJsonResource
             'refirect'          => $this->redirect,
             'icon'              => $this->icon,
             'showNav'           => $this->showNav,
+            'description'       => $this->description,
+            'ordering'          => $this->ordering,
             'tree_title'        => $this->tree_title,
             'tree_list_title'   => $this->tree_list_title,
         ];

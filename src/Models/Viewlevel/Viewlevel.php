@@ -55,6 +55,7 @@ class Viewlevel extends BaseModel
 
 
     protected $casts = [
+        'canDelete' => 'integer'
     ];
 
 

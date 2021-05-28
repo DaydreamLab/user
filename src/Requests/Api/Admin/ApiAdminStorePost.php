@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\Api\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
 class ApiAdminStorePost extends AdminRequest
 {
@@ -29,6 +30,7 @@ class ApiAdminStorePost extends AdminRequest
         $rules = [
             'id'            => 'nullable|integer',
             'name'          => 'required|string',
+            'state'         => ['required', Rule::in([0,1])],
             'method'        => 'required|string',
             'url'           => 'required|string',
             'description'   => 'nullable|string',

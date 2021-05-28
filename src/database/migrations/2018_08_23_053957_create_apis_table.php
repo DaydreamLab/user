@@ -16,6 +16,7 @@ class CreateApisTable extends Migration
         Schema::create('apis', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->tinyInteger('state')->default(1);
             $table->string('method');
             $table->string('url');
             $table->text('description')->nullable();

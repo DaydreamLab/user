@@ -42,6 +42,12 @@ class AssetService extends BaseService
     }
 
 
+    public function ordering(Collection $input)
+    {
+        return parent::orderingNested($input);
+    }
+
+
     public function remove(Collection $input)
     {
         $result = $this->removeNested($input);

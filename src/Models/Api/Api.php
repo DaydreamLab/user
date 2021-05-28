@@ -15,7 +15,7 @@ class Api extends BaseModel
     protected $table = 'apis';
 
 
-    protected $ordering = 'asc';
+    protected $order = 'asc';
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +23,7 @@ class Api extends BaseModel
      */
     protected $fillable = [
         'name',
+        'state',
         'method',
         'url',
         'description',
@@ -52,6 +53,7 @@ class Api extends BaseModel
 
 
     protected $casts = [
+        'state' => 'integer',
         'params' => 'array'
     ];
 

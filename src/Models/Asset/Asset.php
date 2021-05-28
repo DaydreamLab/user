@@ -34,12 +34,12 @@ class Asset extends BaseModel
         'path',
         'full_path',
         'component',
-        //'model',
         'type',
         'state',
         'redirect',
         'icon',
         'showNav',
+        'description',
         'ordering',
         'created_by',
         'updated_by'

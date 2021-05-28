@@ -30,9 +30,7 @@ class ViewlevelAdminOrderingPost extends AdminRequest
     {
         $rules = [
             'id'            => 'required|integer',
-            'index_diff'    => 'nullable|integer',
-            'indexDiff'     => 'nullable|integer',
-            'order'         => ['nullable', Rule::in(['asc', 'desc'])]
+            'ordering'      => 'nullable|integer',
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -41,10 +39,6 @@ class ViewlevelAdminOrderingPost extends AdminRequest
     public function validated()
     {
         $validated = parent::validated();
-
-        if (InputHelper::null($validated, 'order')) {
-            $validated->put('order', 'asc');
-        }
 
         return $validated;
     }

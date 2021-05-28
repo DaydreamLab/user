@@ -16,18 +16,17 @@ class CreateAssetsTable extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->nestedSet();
-            $table->unsignedInteger('ordering')->nullable()->default(1);
             $table->string('title')->nullable();
             $table->string('path')->nullable();
             $table->string('full_path')->nullable();
             $table->string('component')->nullable();
-            //$table->string('model')->nullable();
             $table->string('type');
             $table->tinyInteger('state');
             $table->string('redirect')->nullable();
             $table->string('icon')->nullable();
             $table->unsignedTinyInteger('showNav');
-
+            $table->text('description')->nullable();
+            $table->unsignedInteger('ordering')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();

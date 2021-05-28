@@ -28,8 +28,7 @@ class AssetGroupAdminOrderingPost extends AdminRequest
     {
         $rules = [
             'id'        => 'required|integer',
-            'index_diff'=> 'nullable|integer',
-            'indexDiff' => 'nullable|integer',
+            'ordering'  => 'nullable|integer',
         ];
         return array_merge(parent::rules(), $rules);
     }

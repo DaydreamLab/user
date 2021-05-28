@@ -9,6 +9,8 @@ class ApiAdminSearchPost extends ListRequest
     protected $modelName = 'Api';
 
     protected $apiMethod = 'searchApi';
+
+    protected $searchKeys = ['name', 'description'];
     /**
      * Determine if the user is authorized to make this request.
      *

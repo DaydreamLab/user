@@ -51,6 +51,21 @@ Route::get('/api/user/login/facebook/callback', [UserFrontController::class, 'fb
 
 /************************************  後台 API  ************************************/
 
+
+# Api
+Route::post('api/admin/api/remove', [ApiAdminController::class, 'remove'])
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/api/state', [ApiAdminController::class, 'state'])
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/api/store', [ApiAdminController::class, 'store'])
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/api/search', [ApiAdminController::class, 'search'])
+    ->middleware(['expired', 'admin']);
+Route::get('api/admin/api/{id}', [ApiAdminController::class, 'getItem'])
+    ->middleware(['expired', 'admin']);
+
+
+# Asset
 Route::post('api/admin/asset/remove', [AssetAdminController::class, 'remove'])
     ->middleware(['expired', 'admin']);
 Route::post('api/admin/asset/state',  [AssetAdminController::class, 'state'])
@@ -59,25 +74,16 @@ Route::post('api/admin/asset/store',  [AssetAdminController::class, 'store'])
     ->middleware(['expired', 'admin']);
 Route::post('api/admin/asset/search',  [AssetAdminController::class, 'search'])
     ->middleware(['expired', 'admin']);
-Route::post('api/admin/asset/ordering',  [AssetAdminController::class, 'ordering'])
-    ->middleware(['expired', 'admin']);
+Route::post('api/admin/asset/ordering',  [AssetAdminController::class, 'ordering']);
+    //->middleware(['expired', 'admin']);
 Route::get('api/admin/asset/treeList',  [AssetAdminController::class, 'treeList'])
     ->middleware(['expired', 'admin']);
 Route::get('api/admin/asset/{id}',  [AssetAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin']);
 
 
-Route::post('api/admin/api/remove', [ApiAdminController::class, 'remove'])
- ->middleware(['expired', 'admin']);
-Route::post('api/admin/api/state', [ApiAdminController::class, 'state'])
- ->middleware(['expired', 'admin']);
-Route::post('api/admin/api/store', [ApiAdminController::class, 'store'])
- ->middleware(['expired', 'admin']);
-Route::post('api/admin/api/search', [ApiAdminController::class, 'search'])
- ->middleware(['expired', 'admin']);
-Route::get('api/admin/api/{id}', [ApiAdminController::class, 'getItem'])
-    ->middleware(['expired', 'admin']);
 
+# Asset Group
 Route::post('api/admin/asset/group/remove', [AssetGroupAdminController::class, 'remove'])
  ->middleware(['expired', 'admin']);
 Route::post('api/admin/asset/group/state', [AssetGroupAdminController::class, 'state'])
@@ -92,9 +98,8 @@ Route::get('api/admin/asset/group/{id}', [AssetGroupAdminController::class, 'get
     ->middleware(['expired', 'admin']);
 
 
-/**
- * Company(公司)
- */
+
+# Company
 Route::post('api/admin/company/remove', [CompanyAdminController::class, 'remove'])
     ->middleware(['expired', 'admin']);
 Route::post('api/admin/company/state', [CompanyAdminController::class, 'state'])
