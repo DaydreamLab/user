@@ -3,17 +3,13 @@
 namespace DaydreamLab\User\Services\Asset;
 
 use DaydreamLab\JJAJ\Helpers\InputHelper;
-use DaydreamLab\JJAJ\Traits\NestedServiceTrait;
 use DaydreamLab\User\Repositories\Asset\AssetRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-
 class AssetService extends BaseService
 {
-    use NestedServiceTrait;
-
     protected $package = 'User';
 
     protected $modelName = 'Asset';

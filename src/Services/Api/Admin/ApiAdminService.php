@@ -34,7 +34,7 @@ class ApiAdminService extends ApiService
     }
 
 
-    public function beforeRemove($item)
+    public function removeMapping($item)
     {
         $item->assets()->detach();
         $item->usergroups()->detach();

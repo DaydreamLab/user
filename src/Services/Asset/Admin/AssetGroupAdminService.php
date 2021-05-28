@@ -37,7 +37,7 @@ class AssetGroupAdminService extends AssetGroupService
     }
 
 
-    public function beforeRemove($item)
+    public function removeMapping($item)
     {
         $item->assets()->detach();
     }
