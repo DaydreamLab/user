@@ -47,6 +47,9 @@ class UserAdminResource extends BaseJsonResource
             'updatedBy'             => $this->updaterName,
             'groupIds'              => $this->groups->pluck('id'),
             'accessIds'             => $this->accessIds,
+            'tags'                  => $this->tags->map(function ($tag) {
+                return $tag->only(['id', 'title']);
+            })
         ];
     }
 }

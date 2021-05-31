@@ -8,6 +8,7 @@ use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Api\Api;
 use DaydreamLab\User\Traits\Model\WithAccess;
+use Illuminate\Support\Str;
 use Kalnoy\Nestedset\NodeTrait;
 
 class UserGroup extends BaseModel
@@ -72,6 +73,12 @@ class UserGroup extends BaseModel
     protected $casts = [
         'canDelete' => 'integer'
     ];
+
+
+    public static function boot()
+    {
+        self::traitBoot();
+    }
 
 
     public function apis()

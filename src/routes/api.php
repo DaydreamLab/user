@@ -8,7 +8,6 @@ use DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController;
 use DaydreamLab\User\Controllers\Api\Admin\ApiAdminController;
 use DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController;
 use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
-use DaydreamLab\User\Controllers\User\Admin\UserTagAdminController;
 use DaydreamLab\User\Controllers\Company\Admin\CompanyAdminController;
 
  /************************************  前台 API  ************************************/
@@ -74,8 +73,8 @@ Route::post('api/admin/asset/store',  [AssetAdminController::class, 'store'])
     ->middleware(['expired', 'admin']);
 Route::post('api/admin/asset/search',  [AssetAdminController::class, 'search'])
     ->middleware(['expired', 'admin']);
-Route::post('api/admin/asset/ordering',  [AssetAdminController::class, 'ordering']);
-    //->middleware(['expired', 'admin']);
+Route::post('api/admin/asset/ordering',  [AssetAdminController::class, 'ordering'])
+    ->middleware(['expired', 'admin']);
 Route::get('api/admin/asset/treeList',  [AssetAdminController::class, 'treeList'])
     ->middleware(['expired', 'admin']);
 Route::get('api/admin/asset/{id}',  [AssetAdminController::class, 'getItem'])
@@ -128,17 +127,6 @@ Route::post('api/admin/user/store', [UserAdminController::class, 'store'])
 Route::get('api/admin/user/{id}', [UserAdminController::class, 'getItem'])
  ->middleware(['expired', 'admin']);
 
-
-Route::post('api/admin/user/tag/search', [UserTagAdminController::class, 'search'])
-    ->middleware(['expired', 'admin']);
-Route::post('api/admin/user/tag/remove', [UserTagAdminController::class, 'remove'])
-    ->middleware(['expired', 'admin']);
-Route::post('api/admin/user/tag/store', [UserTagAdminController::class, 'store'])
-    ->middleware(['expired', 'admin']);
-Route::post('api/admin/user/tag/apply', [UserTagAdminController::class, 'apply'])
-    ->middleware(['expired', 'admin']);
-Route::get('api/admin/user/tag/{id}}', [UserTagAdminController::class, 'getItem'])
-    ->middleware(['expired', 'admin']);
 
 
 Route::post('api/admin/user/group/search', [UserGroupAdminController::class, 'search'])

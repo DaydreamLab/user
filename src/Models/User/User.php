@@ -2,12 +2,12 @@
 
 namespace DaydreamLab\User\Models\User;
 
+use DaydreamLab\Cms\Models\Tag\Tag;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\User\Database\Factories\UserFactory;
-use DaydreamLab\User\Models\Company\UserCompany;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
@@ -313,7 +313,7 @@ class User extends BaseModel implements
 
     public function tags()
     {
-        return $this->belongsToMany(UserTag::class, 'users_tags_maps', 'user_id', 'tag_id')
+        return $this->belongsToMany(Tag::class, 'users_tags_maps', 'user_id', 'tag_id')
             ->withTimestamps();
     }
 }
