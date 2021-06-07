@@ -102,6 +102,7 @@ class User extends BaseModel implements
     ];
 
 
+
     public static function boot()
     {
         parent::boot();
@@ -140,12 +141,11 @@ class User extends BaseModel implements
      */
     public function getAccessIdsAttribute()
     {
-        $allViewlevels = Viewlevel::all();
-
+        $allViewlevels = Viewlevel::with('groups')->get()->all();
         $accessIds = [];
         foreach ($allViewlevels as $viewlevel) {
             $viewlevelGroupIds = $viewlevel->groups->pluck('id');
-            if ($viewlevelGroupIds->intersect($this->accessGroupIds)->count() == $viewlevelGroupIds->count()) {
+            if ($viewlevelGroupIds->intersect($this->accessGroupIds())->count() == $viewlevelGroupIds->count()) {
                 $accessIds[] = $viewlevel->id;
             }
         }
@@ -154,10 +154,21 @@ class User extends BaseModel implements
     }
 
 
-    public function getAccessGroupIdsAttribute()
+    public function accessGroups()
+    {
+        return $this->groups()->with('defaultAccessGroups');
+    }
+
+
+    /**
+     * 這邊很奇怪，不能直接用 groups->with('defaultAccessGroups')
+     * 反而要透過 accessGroups 這層，不然會當 mutator 一直重複 query，有空再來研究吧
+     * @return array
+     */
+    public function accessGroupIds()
     {
         $accessGroupIds = collect();
-        $this->groups->each(function ($group) use (&$accessGroupIds) {
+        $this->accessGroups->each(function ($group) use (&$accessGroupIds) {
             $accessGroupIds = $accessGroupIds->merge($group->defaultAccessGroups->pluck('id'));
             $accessGroupIds = $accessGroupIds->merge([$group->id]);
         });
