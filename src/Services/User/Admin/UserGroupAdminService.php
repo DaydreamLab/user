@@ -3,7 +3,6 @@
 namespace DaydreamLab\User\Services\User\Admin;
 
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Repositories\User\Admin\UserGroupAdminRepository;
 use DaydreamLab\User\Services\User\UserGroupService;
@@ -73,37 +72,6 @@ class UserGroupAdminService extends UserGroupService
         });
 
         return $group;
-    }
-
-
-    public function getPage($group_id)
-    {
-        $group          = $this->find($group_id);
-
-        $group_apis     = $group->apis()->get();
-        $assets         = $group->assets()->get()->toTree();
-
-        $apis = [];
-        foreach ($group_apis as $group_api)
-        {
-            $temp_api           = $group_api->only('id', 'method');
-            $temp_api['name']   = $temp_api['method'];
-
-            $temp_api_asset_id  = $group_api->asset->id;
-            if (!array_key_exists($temp_api_asset_id, $apis))
-            {
-                $apis[$temp_api_asset_id] = [];
-            }
-            $apis[$temp_api_asset_id][] = $temp_api;
-        }
-
-        $response['apis']       = $apis;
-        $response['assets']    = $assets;
-
-        $this->status = 'GetActionSuccess';
-        $this->response = $response;
-
-        return $response;
     }
 
 

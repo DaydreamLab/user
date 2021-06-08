@@ -18,9 +18,6 @@ class UserGroupAdminController extends BaseController
 
     protected $modelName = 'UserGroup';
 
-    protected $modelType = 'Admin';
-
-
     public function __construct(UserGroupAdminService $service)
     {
         parent::__construct($service);
@@ -41,19 +38,6 @@ class UserGroupAdminController extends BaseController
     }
 
 
-    public function getPage(Request $request)
-    {
-        $this->service->setUser($request->user('api'));
-        try {
-            $this->service->getPage($request->route('id'));
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
-
-        return $this->response($this->service->status, $this->service->response);
-    }
-
-
     public function remove(UserGroupAdminRemovePost $request)
     {
         $this->service->setUser($request->user());
@@ -67,19 +51,6 @@ class UserGroupAdminController extends BaseController
     }
 
 
-    public function store(UserGroupAdminStorePost $request)
-    {
-        $this->service->setUser($request->user('api'));
-        try {
-            $this->service->store($request->validated());
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
-
-        return $this->response($this->service->status, $this->service->response, [], UserGroupAdminResource::class);
-    }
-
-
     public function search(UserGroupAdminSearchPost $request)
     {
         $this->service->setUser($request->user());
@@ -90,6 +61,19 @@ class UserGroupAdminController extends BaseController
         }
 
         return $this->response($this->service->status, $this->service->response, [], UserGroupAdminListResourceCollection::class);
+    }
+
+
+    public function store(UserGroupAdminStorePost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->store($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, [], UserGroupAdminResource::class);
     }
 
 

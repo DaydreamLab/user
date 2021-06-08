@@ -6,6 +6,9 @@ use DaydreamLab\JJAJ\Requests\AdminRequest;
 
 class UserAdminRemovePost extends AdminRequest
 {
+    protected $apiMethod = 'deleteUser';
+
+    protected $modelName = 'User';
     /**
      * Determine if the user is authorized to make this request.
      *

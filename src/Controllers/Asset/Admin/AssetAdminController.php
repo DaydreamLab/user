@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Controllers\Asset\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminGetItem;
+use DaydreamLab\User\Requests\Asset\Admin\AssetAdminOrderingNestedPost;
 use DaydreamLab\User\Resources\Asset\Admin\Collections\AssetAdminListResourceCollection;
 use DaydreamLab\User\Resources\Asset\Admin\Models\AssetAdminResource;
 use DaydreamLab\User\Services\Asset\Admin\AssetAdminService;
@@ -11,7 +12,6 @@ use DaydreamLab\User\Requests\Asset\Admin\AssetAdminRemovePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminStorePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminStatePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetAdminSearchPost;
-use DaydreamLab\User\Requests\Asset\Admin\AssetAdminOrderingPost;
 use Throwable;
 
 class AssetAdminController extends BaseController
@@ -41,19 +41,8 @@ class AssetAdminController extends BaseController
         return $this->response($this->service->status, $this->service->response, [], AssetAdminResource::class);
     }
 
-    public function treeList()
-    {
-        try {
-            $this->service->treeList();
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
 
-        return $this->response($this->service->status, $this->service->response);
-    }
-
-
-    public function ordering(AssetAdminOrderingPost $request)
+    public function ordering(AssetAdminOrderingNestedPost $request)
     {
         $this->service->setUser($request->user());
         try {
@@ -76,6 +65,19 @@ class AssetAdminController extends BaseController
         }
 
         return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function search(AssetAdminSearchPost $request)
+    {
+        $this->service->setUser($request->user());
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, [], AssetAdminListResourceCollection::class);
     }
 
 
@@ -102,18 +104,5 @@ class AssetAdminController extends BaseController
         }
 
         return $this->response($this->service->status, $this->service->response, [], AssetAdminResource::class);
-    }
-
-
-    public function search(AssetAdminSearchPost $request)
-    {
-        $this->service->setUser($request->user());
-        try {
-            $this->service->search($request->validated());
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
-
-        return $this->response($this->service->status, $this->service->response, [], AssetAdminListResourceCollection::class);
     }
 }

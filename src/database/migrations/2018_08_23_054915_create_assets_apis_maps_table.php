@@ -15,6 +15,7 @@ class CreateAssetsApisMapsTable extends Migration
     {
         Schema::create('assets_apis_maps', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('asset_group_id');
             $table->unsignedBigInteger('asset_id');
             $table->unsignedBigInteger('api_id');
             $table->unsignedTinyInteger('disabled')->default(0);

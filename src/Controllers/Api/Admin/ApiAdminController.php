@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Controllers\Api\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\User\Requests\Api\Admin\ApiAdminGetItem;
+use DaydreamLab\User\Requests\Api\Admin\ApiAdminOrderingPost;
 use DaydreamLab\User\Resources\Api\Admin\Collections\ApiAdminListResourceCollection;
 use DaydreamLab\User\Resources\Api\Admin\Models\ApiAdminResource;
 use DaydreamLab\User\Services\Api\Admin\ApiAdminService;
@@ -41,6 +42,19 @@ class ApiAdminController extends BaseController
     }
 
 
+    public function ordering(ApiAdminOrderingPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->ordering($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
     public function remove(ApiAdminRemovePost $request)
     {
         $this->service->setUser($request->user('api'));
@@ -51,6 +65,19 @@ class ApiAdminController extends BaseController
         }
 
         return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function search(ApiAdminSearchPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, [], ApiAdminListResourceCollection::class);
     }
 
 
@@ -77,18 +104,5 @@ class ApiAdminController extends BaseController
         }
 
         return $this->response($this->service->status, $this->service->response, [], ApiAdminResource::class);
-    }
-
-
-    public function search(ApiAdminSearchPost $request)
-    {
-        $this->service->setUser($request->user('api'));
-        try {
-            $this->service->search($request->validated());
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
-
-        return $this->response($this->service->status, $this->service->response, [], ApiAdminListResourceCollection::class);
     }
 }

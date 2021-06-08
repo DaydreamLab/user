@@ -30,6 +30,7 @@ class CreateCompaniesTable extends Migration
             $table->string('zipcode')->nullable();
             $table->string('introtext')->nullable();
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('ordering')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('update_by')->nullable();
             $table->timestamps();

@@ -30,6 +30,7 @@ class ViewlevelAdminStorePost extends AdminRequest
             'id'            => 'nullable|integer',
             'title'         => 'required|string',
             'description'   => 'nullable|string',
+            'ordering'      => 'nullable|integer',
             'groupIds'      => 'nullable|array',
             'groupIds.*'    => 'nullable|integer',
             'ordering'      => 'nullable|integer|gte:0'

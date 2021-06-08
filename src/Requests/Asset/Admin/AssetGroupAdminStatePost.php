@@ -9,7 +9,7 @@ class AssetGroupAdminStatePost extends AdminRequest
 {
     protected $modelName = 'AssetGroup';
 
-    protected $apiMethod = 'updateAssetGroupState';
+    protected $apiMethod = 'stateAssetGroup';
     /**
      * Determine if the user is authorized to make this request.
      *

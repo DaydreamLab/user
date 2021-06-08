@@ -81,19 +81,6 @@ class UserAdminController extends BaseController
     }
 
 
-    public function store(UserAdminStorePost $request)
-    {
-        $this->service->setUser($request->user('api'));
-        try {
-            $this->service->store($request->validated());
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
-
-        return $this->response($this->service->status, $this->service->response, [], UserAdminResource::class);
-    }
-
-
     public function search(UserAdminSearchPost $request)
     {
         $this->service->setUser($request->user());
@@ -104,5 +91,18 @@ class UserAdminController extends BaseController
         }
 
         return $this->response($this->service->status, $this->service->response, [], UserAdminListResourceCollection::class);
+    }
+
+
+    public function store(UserAdminStorePost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->store($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, [], UserAdminResource::class);
     }
 }

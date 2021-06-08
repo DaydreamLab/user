@@ -68,6 +68,19 @@ class AssetGroupAdminController extends BaseController
     }
 
 
+    public function search(AssetGroupAdminSearchPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, [],AssetGroupAdminListResourceCollection::class);
+    }
+
+
     public function state(AssetGroupAdminStatePost $request)
     {
         $this->service->setUser($request->user('api'));
@@ -93,18 +106,5 @@ class AssetGroupAdminController extends BaseController
         }
 
         return $this->response($this->service->status, $this->service->response, [], AssetGroupAdminResource::class);
-    }
-
-
-    public function search(AssetGroupAdminSearchPost $request)
-    {
-        $this->service->setUser($request->user('api'));
-        try {
-            $this->service->search($request->validated());
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
-
-        return $this->response($this->service->status, $this->service->response, [],AssetGroupAdminListResourceCollection::class);
     }
 }

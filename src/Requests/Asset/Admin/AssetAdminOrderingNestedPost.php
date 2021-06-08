@@ -4,8 +4,10 @@ namespace DaydreamLab\User\Requests\Asset\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class AssetAdminOrderingPost extends AdminRequest
+class AssetAdminOrderingNestedPost extends AdminRequest
 {
+    protected $package = 'User';
+
     protected $modelName = 'Asset';
 
     protected $apiMethod = 'orderingAsset';

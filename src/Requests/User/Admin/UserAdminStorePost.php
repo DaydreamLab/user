@@ -46,7 +46,7 @@ class UserAdminStorePost extends AdminRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'id'                    => 'nullable|integer',
             'email'                 => 'required|email',
             'name'                  => 'required|string',
@@ -96,6 +96,7 @@ class UserAdminStorePost extends AdminRequest
             'company.department'    => 'nullable|string',
             'company.jobTitle'      => 'nullable|string',
         ];
+        return array_merge(parent::rules(), $rules);
     }
 
 

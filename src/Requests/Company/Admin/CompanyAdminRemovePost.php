@@ -26,9 +26,10 @@ class CompanyAdminRemovePost extends AdminRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'ids'       => 'required|array',
             'ids.*'     => 'required|integer'
         ];
+        return array_merge(parent::rules(), $rules);
     }
 }

@@ -3,10 +3,11 @@
 namespace DaydreamLab\User\Requests\Asset\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
-use Illuminate\Validation\Rule;
 
 class AssetAdminGetItem extends AdminRequest
 {
+    protected $package = 'User';
+
     protected $modelName = 'Asset';
 
     protected $apiMethod = 'getItem';

@@ -68,12 +68,12 @@ class AssetsTableSeeder extends Seeder
                 $parent->appendNode($asset);
             }
 
-            $api_ids = [];
-            foreach ($apis as $api) {
-                $api = Api::create($api);
-                $api_ids[] = $api->id;
-            }
-            $asset->apis()->attach($api_ids);
+//            $api_ids = [];
+//            foreach ($apis as $api) {
+//                $api = Api::create($api);
+//                $api_ids[] = $api->id;
+//            }
+//            $asset->apis()->attach($api_ids);
 
             if (count($children)) {
                 self::migrate($children, $asset);

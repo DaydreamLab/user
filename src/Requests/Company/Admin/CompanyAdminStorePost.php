@@ -27,7 +27,7 @@ class CompanyAdminStorePost extends AdminRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'id'            => 'nullable|integer',
             'categoryId'    => 'required|integer',
             'name'          => 'required|string',
@@ -42,7 +42,9 @@ class CompanyAdminStorePost extends AdminRequest
             'zipcode'       => 'nullable|string',
             'introtext'     => 'nullable|string',
             'description'   => 'nullable|string',
+            'ordering'      => 'nullable|integer'
         ];
+        return array_merge(parent::rules(), $rules);
     }
 
 

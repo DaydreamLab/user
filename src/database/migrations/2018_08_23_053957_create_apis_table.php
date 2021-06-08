@@ -20,6 +20,7 @@ class CreateApisTable extends Migration
             $table->string('method');
             $table->string('url');
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('ordering')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();

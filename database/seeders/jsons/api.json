@@ -1,0 +1,230 @@
+[
+    {
+        "name": "取得API",
+        "method": "getApi",
+        "url": "/admin/api/{id}",
+        "created_by": 1
+    },
+    {
+        "name": "新增API",
+        "method": "addApi",
+        "url": "/admin/api/store",
+        "created_by": 1
+    },
+    {
+        "name": "編輯API",
+        "method": "editApi",
+        "url": "/admin/api/store",
+        "created_by": 1
+    },
+    {
+        "name": "刪除API",
+        "method": "deleteApi",
+        "url": "/admin/api/remove",
+        "created_by": 1
+    },
+    {
+        "name": "搜尋API",
+        "method": "searchApi",
+        "url": "/admin/api/search",
+        "created_by": 1
+    },
+    {
+        "name": "排序API",
+        "method": "orderingApi",
+        "url": "/admin/api/ordering",
+        "created_by": 1
+    },
+    {
+        "name": "更新API發佈狀態",
+        "method": "stateApi",
+        "url": "/admin/api/state",
+        "created_by": 1
+    },
+    {
+        "name": "取得資源",
+        "method": "getAsset",
+        "url": "/admin/asset/{id}",
+        "created_by": 1
+    },
+    {
+        "name": "新增資源",
+        "method": "addAsset",
+        "url": "/admin/asset/store",
+        "created_by": 1
+    },
+    {
+        "name": "編輯資源",
+        "method": "editAsset",
+        "url": "/admin/asset/store",
+        "created_by": 1
+    },
+    {
+        "name": "刪除資源",
+        "method": "deleteAsset",
+        "url": "/admin/asset/remove",
+        "created_by": 1
+    },
+    {
+        "name": "搜尋資源",
+        "method": "searchAsset",
+        "url": "/admin/asset/search",
+        "created_by": 1
+    },
+    {
+        "name": "更新資源發佈狀態",
+        "method": "stateAsset",
+        "url": "/admin/asset/state",
+        "created_by": 1
+    },
+    {
+        "name": "排序資源",
+        "method": "stateAsset",
+        "url": "/admin/asset/ordering",
+        "created_by": 1
+    },
+    {
+        "name": "取得資源群組",
+        "method": "getAssetGroup",
+        "url": "/admin/asset/group/{id}",
+        "created_by": 1
+    },
+    {
+        "name": "新增資源群組",
+        "method": "addAssetGroup",
+        "url": "/admin/asset/group/store",
+        "created_by": 1
+    },
+    {
+        "name": "編輯資源群組",
+        "method": "editAssetGroup",
+        "url": "/admin/asset/group/store",
+        "created_by": 1
+    },
+    {
+        "name": "刪除資源群組",
+        "method": "deleteAssetGroup",
+        "url": "/admin/asset/group/remove",
+        "created_by": 1
+    },
+    {
+        "name": "搜尋資源群組",
+        "method": "searchAssetGroup",
+        "url": "/admin/asset/group/search",
+        "created_by": 1
+    },
+    {
+        "name": "更新資源群組發佈狀態",
+        "method": "stateAssetGroup",
+        "url": "/admin/asset/group/state",
+        "created_by": 1
+    },
+    {
+        "name": "排序資源群組發",
+        "method": "orderingAssetGroup",
+        "url": "/admin/asset/group/ordering",
+        "created_by": 1
+    },
+    {
+        "name": "取得會員",
+        "method": "getUser",
+        "url": "/admin/user/{id}",
+        "created_by": 1
+    },
+    {
+        "name": "新增會員",
+        "method": "addUser",
+        "url": "/admin/user/store",
+        "created_by": 1
+    },
+    {
+        "name": "編輯會員",
+        "method": "editUser",
+        "url": "/admin/user/store",
+        "created_by": 1
+    },
+    {
+        "name": "刪除會員",
+        "method": "deleteUser",
+        "url": "/admin/user/remove",
+        "created_by": 1
+    },
+    {
+        "name": "搜尋會員",
+        "method": "searchUser",
+        "url": "/admin/user/search",
+        "created_by": 1
+    },
+    {
+        "name": "封鎖會員",
+        "method": "blockUser",
+        "url": "/admin/user/block",
+        "created_by": 1
+    },
+    {
+        "name": "取得會員群組",
+        "method": "getUserGroup",
+        "url": "/admin/user/group/{id}",
+        "created_by": 1
+    },
+    {
+        "name": "新增會員群組",
+        "method": "addUserGroup",
+        "url": "/admin/user/group/store",
+        "created_by": 1
+    },
+    {
+        "name": "編輯會員群組",
+        "method": "editUserGroup",
+        "url": "/admin/user/group/store",
+        "created_by": 1
+    },
+    {
+        "name": "刪除會員群組",
+        "method": "deleteUserGroup",
+        "url": "/admin/user/group/remove",
+        "created_by": 1
+    },
+    {
+        "name": "搜尋會員群組",
+        "method": "searchUserGroup",
+        "url": "/admin/user/group/search",
+        "created_by": 1
+    },
+    {
+        "name": "取得閱讀權限",
+        "method": "getViewlevel",
+        "url": "/admin/viewlevel/{id}",
+        "created_by": 1
+    },
+    {
+        "name": "新增閱讀權限",
+        "method": "addViewlevel",
+        "url": "/admin/viewlevel/store",
+        "created_by": 1
+    },
+    {
+        "name": "編輯閱讀權限",
+        "method": "editViewlevel",
+        "url": "/admin/viewlevel/store",
+        "created_by": 1
+    },
+    {
+        "name": "刪除閱讀權限",
+        "method": "deleteViewlevel",
+        "url": "/admin/viewlevel/remove",
+        "created_by": 1
+    },
+    {
+        "name": "搜尋閱讀權限",
+        "method": "searchViewlevel",
+        "url": "/admin/viewlevel/search",
+        "created_by": 1
+    },
+    {
+        "name": "排序閱讀權限",
+        "method": "orderingViewlevel",
+        "url": "/admin/viewlevel/ordering",
+        "created_by": 1
+    }
+]

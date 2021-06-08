@@ -43,6 +43,7 @@ class Company extends BaseModel
         'zipcode',
         'introtext',
         'description',
+        'ordering',
         'created_by',
         'updated_by'
     ];

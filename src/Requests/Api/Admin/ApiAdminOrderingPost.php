@@ -1,14 +1,14 @@
 <?php
 
-namespace DaydreamLab\User\Requests\Company\Admin;
+namespace DaydreamLab\User\Requests\Api\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class CompanyAdminOrderingPost extends AdminRequest
+class ApiAdminOrderingPost extends AdminRequest
 {
-    protected $modelName = 'Company';
+    protected $modelName = 'Api';
 
-    protected $apiMethod = 'orderingCompany';
+    protected $apiMethod = 'orderingApi';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -27,10 +27,9 @@ class CompanyAdminOrderingPost extends AdminRequest
     public function rules()
     {
         $rules = [
-            'id'          => 'required|integer',
-            'ordering'    => 'nullable|integer',
+            'id'       => 'required|integer',
+            'ordering' => 'required|integer'
         ];
-
         return array_merge(parent::rules(), $rules);
     }
 }

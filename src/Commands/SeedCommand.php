@@ -25,6 +25,7 @@ class SeedCommand extends Command
 
 
     protected $seeders = [
+        'ApisTableSeeder',
         'AssetsTableSeeder',
         'UsersGroupsTableSeeder',
         'UsersTableSeeder',
