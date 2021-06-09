@@ -53,7 +53,6 @@ class User extends BaseModel implements
      * @var array
      */
     protected $fillable = [
-        'company_id',
         'email',
         'password',
         'name',
@@ -109,6 +108,7 @@ class User extends BaseModel implements
 
         static::creating(function ($item){
             $user = auth('api')->user();
+            $item->uuid = Str::uuid();
             $item->activateToken = Str::random(48);
             $item->phoneCode = '+886';
             $item->mobilePhoneCode = '+886';
@@ -129,9 +129,9 @@ class User extends BaseModel implements
     }
 
 
-    public function company()
+    public function companies()
     {
-        return $this->hasOne(UserCompany::class, 'user_id', 'id');
+        return $this->hasMany(UserCompany::class, 'user_id', 'id');
     }
 
 
@@ -165,7 +165,7 @@ class User extends BaseModel implements
      * 反而要透過 accessGroups 這層，不然會當 mutator 一直重複 query，有空再來研究吧
      * @return array
      */
-    public function accessGroupIds()
+    public function canAccessGroupIds()
     {
         $accessGroupIds = collect();
         $this->accessGroups->each(function ($group) use (&$accessGroupIds) {

@@ -3,10 +3,12 @@
 namespace DaydreamLab\User\Services\User\Admin;
 
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
+use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
+use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
@@ -17,10 +19,13 @@ class UserAdminService extends UserService
 
     protected $modelType = 'Admin';
 
-    public function __construct(UserAdminRepository $repo)
+    protected $companyAdminRepo;
+
+    public function __construct(UserAdminRepository $repo, CompanyAdminRepository $companyAdminRepo)
     {
         parent::__construct($repo);
-        $this->response = $repo;
+        $this->repo = $repo;
+        $this->companyAdminRepo = $companyAdminRepo;
     }
 
 
@@ -31,7 +36,17 @@ class UserAdminService extends UserService
         }
 
         if ($input->has('company')) {
-            $item->company()->create($input->get('company'));
+            $inputCompany = $input->get('company');
+            if (isset($inputCompany['company_id'])) {
+                $company = $this->companyAdminRepo->find($inputCompany['company_id']);
+                if (!$company) {
+                    throw new NotFoundException('ItemNotExist', [
+                        'company_id' => (int)$inputCompany['company_id']
+                    ], null, 'Company');
+                }
+                $inputCompany['user_id'] = $item->id;
+                $item->companies()->create($inputCompany);
+            }
         }
     }
 
@@ -128,7 +143,7 @@ class UserAdminService extends UserService
 
         // 確保使用者所指派的群組，具有該權限
         $inputGroupIds = collect($input->get('group_ids'));
-        $userAccessGroupIds = $this->getUser()->accessGroupIds;
+        $userAccessGroupIds = $this->getUser()->accessGroups->pluck('id');
         if ($inputGroupIds->intersect($userAccessGroupIds)->count() != $inputGroupIds->count()) {
             throw new UnauthorizedException('InsufficientPermissionAssignGroup', [
                 'groupIds' => $inputGroupIds->diff($userAccessGroupIds)

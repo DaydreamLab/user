@@ -25,9 +25,12 @@ class UserAdminStorePost extends AdminRequest
     public function handleCompany($company)
     {
         $company = $company ? collect($company) : collect();
-        $keys = ['name', 'ubn', 'phoneCode', 'phone', 'extNumber', 'country', 'state', 'city', 'district', 'address', 'zipcode', 'department', 'jobTitle'];
+        $keys = ['id', 'quit', 'name', 'ubn', 'phoneCode', 'phone', 'extNumber', 'country', 'state', 'city', 'district', 'address', 'zipcode', 'department', 'jobTitle'];
         foreach ($keys as $key) {
-            if ($key == 'state') {
+            if ($key == 'id') {
+                $company->put('company_id', $company->get($key));
+                $company->forget('id');
+            } elseif ($key == 'state') {
                 $company->put('state_', $company->get($key));
                 $company->forget('state');
             } else {
@@ -84,6 +87,8 @@ class UserAdminStorePost extends AdminRequest
             'password'              => 'required_without:id|nullable|string|min:8|max:16',
             'passwordConfirm'       => 'required_with:password|same:password',
             'company'               => 'nullable|array',
+            'company.id'            => 'nullable|integer',
+            'company.quit'          => ['nullable', Rule::in([0,1])],
             'company.phoneCode'     => 'nullable|string',
             'company.phone'         => 'nullable|string',
             'company.extNumber'     => 'nullable|string',

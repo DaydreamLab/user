@@ -17,6 +17,7 @@ class UserAdminResource extends BaseJsonResource
         $timezone = $this->user($request)->timezone;
 
         return [
+            'id'                    => $this->id,
             'email'                 => $this->email,
             'name'                  => $this->name,
             'firstName'             => $this->firstName,

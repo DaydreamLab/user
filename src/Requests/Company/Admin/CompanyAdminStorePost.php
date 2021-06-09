@@ -29,7 +29,7 @@ class CompanyAdminStorePost extends AdminRequest
     {
         $rules = [
             'id'            => 'nullable|integer',
-            'categoryId'    => 'required|integer',
+            'categoryId'    => 'nullable|integer',
             'name'          => 'required|string',
             'vat'           => 'nullable|string',
             'domain'        => 'required|string',
