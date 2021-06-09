@@ -3,9 +3,10 @@
 namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Requests\User\Admin\UserGroupAdminGetItem;
+use DaydreamLab\User\Requests\User\Admin\UserGroupAdminGetTree;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserGroupAdminListResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Models\UserGroupAdminResource;
-use Illuminate\Http\Request;
 use DaydreamLab\User\Services\User\Admin\UserGroupAdminService;
 use DaydreamLab\User\Requests\User\Admin\UserGroupAdminRemovePost;
 use DaydreamLab\User\Requests\User\Admin\UserGroupAdminStorePost;
@@ -25,7 +26,7 @@ class UserGroupAdminController extends BaseController
     }
 
 
-    public function getItem(Request $request)
+    public function getItem(UserGroupAdminGetItem $request)
     {
         $this->service->setUser($request->user('api'));
         try {
@@ -77,7 +78,7 @@ class UserGroupAdminController extends BaseController
     }
 
 
-    public function tree(Request $request)
+    public function tree(UserGroupAdminGetTree $request)
     {
         $this->service->setUser($request->user('api'));
         try {

@@ -192,6 +192,12 @@
         "created_by": 1
     },
     {
+        "name": "取得會員群組樹狀訪問清單",
+        "method": "getUserGroupTree",
+        "url": "/admin/user/group/tree",
+        "created_by": 1
+    },
+    {
         "name": "取得閱讀權限",
         "method": "getViewlevel",
         "url": "/admin/viewlevel/{id}",
