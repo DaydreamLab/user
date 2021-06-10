@@ -18,6 +18,7 @@ class CreateAssetsGroupsTable extends Migration
             $table->string('title');
             $table->tinyInteger('state')->default(1);
             $table->text('description')->nullable();
+            $table->text('params')->nullable();
             $table->unsignedBigInteger('ordering')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();

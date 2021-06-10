@@ -21,6 +21,7 @@ class AssetGroupAdminResource extends BaseJsonResource
             'title'         => $this->title,
             'state'         => $this->state,
             'description'   => $this->description,
+            'params'        => $this->params,
             'assetIds'      => $this->assets->pluck('id'),
             'createdAt'     => $this->getDateTimeString($this->created_at, $timezone),
             'updatedAt'     => $this->getDateTimeString($this->updated_at, $timezone),

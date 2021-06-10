@@ -31,6 +31,7 @@ class AssetGroupAdminStorePost extends AdminRequest
             'id'            => 'nullable|integer',
             'title'         => 'required|string',
             'state'         => ['required', Rule::in([0,1,-2])],
+            'params'    => 'nullable|string',
             'ordering'     => 'nullable|integer',
             'assetIds'     => 'nullable|array',
             'assetIds.*'   => 'nullable|integer',

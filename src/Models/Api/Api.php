@@ -27,6 +27,7 @@ class Api extends BaseModel
         'method',
         'url',
         'description',
+        'params',
         'created_by',
         'updated_by'
     ];

@@ -34,6 +34,7 @@ class ApiAdminStorePost extends AdminRequest
             'method'        => 'required|string',
             'url'           => 'required|string',
             'description'   => 'nullable|string',
+            'params'        => 'nullable|string',
             'ordering'      => 'nullable|integer',
             'assetIds'      => 'nullable|array',
             'assetIds.*'    => 'nullable|integer',

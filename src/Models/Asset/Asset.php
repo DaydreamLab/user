@@ -40,6 +40,7 @@ class Asset extends BaseModel
         'icon',
         'showNav',
         'description',
+        'params',
         'ordering',
         'created_by',
         'updated_by'
@@ -69,6 +70,11 @@ class Asset extends BaseModel
         'groups',
         'tree_title',
         'tree_list_title',
+    ];
+
+
+    protected $casts = [
+        'params'    => 'array'
     ];
 
 

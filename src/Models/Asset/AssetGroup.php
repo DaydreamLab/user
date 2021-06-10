@@ -28,6 +28,7 @@ class AssetGroup extends BaseModel
         'state',
         'description',
         'ordering',
+        'params',
         'created_by',
         'updated_by'
     ];
@@ -51,8 +52,10 @@ class AssetGroup extends BaseModel
     protected $appends = [
     ];
 
+
     protected $casts = [
-        'state' => 'integer'
+        'state'     => 'integer',
+        'params'    => 'array'
     ];
 
 

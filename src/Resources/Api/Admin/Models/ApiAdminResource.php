@@ -16,14 +16,15 @@ class ApiAdminResource extends BaseJsonResource
     {
         $tz = $request->user('api')->timezone;
         return [
-            'id'                => $this->id,
-            'name'              => $this->name,
-            'state'              => $this->state,
-            'method'            => $this->method,
-            'url'               => $this->url,
-            'description'       => $this->description,
-            'createdAt'         => $this->getDateTimeString($this->created_at, $tz),
-            'updateAt'          =>  $this->getDateTimeString($this->updated_at, $tz),
+            'id'            => $this->id,
+            'name'          => $this->name,
+            'state'         => $this->state,
+            'method'        => $this->method,
+            'url'           => $this->url,
+            'description'   => $this->description,
+            'params'        => $this->params,
+            'createdAt'     => $this->getDateTimeString($this->created_at, $tz),
+            'updateAt'      => $this->getDateTimeString($this->updated_at, $tz),
         ];
     }
 }
