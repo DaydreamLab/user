@@ -83,6 +83,7 @@ class UserGroup extends BaseModel
     public function apis()
     {
         return $this->belongsToMany(Api::class, 'users_groups_apis_maps', 'group_id', 'api_id')
+            ->with(['asset_group_id', 'asset_id', 'api_id'])
             ->withTimestamps();
     }
 
