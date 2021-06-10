@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Notifications;
 
+use DaydreamLab\Dddream\Models\Merchant\Merchant;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -49,6 +50,8 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
 
         $url = 'user/password/reset/' . $this->token->token;
 
+        $merchant = Merchant::first();
+
         return $template === 'default'
             ? (new MailMessage)
                 ->greeting('Dear ' . $this->user->first_name . ' ' . $this->user->last_name)
@@ -57,7 +60,7 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
                 ->line('If you did not request a password reset, no further action is required.')
             : (new MailMessage)
                 ->subject( '【'.env('APP_NAME').'忘記密碼】')
-                ->view($template, ['user' => $this->user, 'token' => $this->token->token]);
+                ->view($template, ['user' => $this->user, 'token' => $this->token->token, "merchant" => $merchant]);
 
     }
 
