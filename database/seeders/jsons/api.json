@@ -30,15 +30,15 @@
         "created_by": 1
     },
     {
-        "name": "排序API",
-        "method": "orderingApi",
-        "url": "/admin/api/ordering",
-        "created_by": 1
-    },
-    {
         "name": "更新API發佈狀態",
         "method": "stateApi",
         "url": "/admin/api/state",
+        "created_by": 1
+    },
+    {
+        "name": "排序API",
+        "method": "orderingApi",
+        "url": "/admin/api/ordering",
         "created_by": 1
     },
     {
