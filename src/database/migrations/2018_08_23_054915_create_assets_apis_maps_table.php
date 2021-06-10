@@ -19,6 +19,7 @@ class CreateAssetsApisMapsTable extends Migration
             $table->unsignedBigInteger('asset_id');
             $table->unsignedBigInteger('api_id');
             $table->unsignedTinyInteger('disabled')->default(0);
+            $table->unsignedTinyInteger('hidden')->default(0);
             $table->unsignedTinyInteger('checked')->default(0);
         });
     }
