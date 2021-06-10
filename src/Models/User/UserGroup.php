@@ -5,10 +5,9 @@ namespace DaydreamLab\User\Models\User;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
-use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Api\Api;
+use DaydreamLab\User\Models\Asset\AssetGroup;
 use DaydreamLab\User\Traits\Model\WithAccess;
-use Illuminate\Support\Str;
 use Kalnoy\Nestedset\NodeTrait;
 
 class UserGroup extends BaseModel
@@ -88,9 +87,9 @@ class UserGroup extends BaseModel
     }
 
 
-    public function assets($model = null)
+    public function assetGroups($model = null)
     {
-        return $this->belongsToMany(Asset::class, 'users_groups_assets_maps', 'group_id', 'asset_id')
+        return $this->belongsToMany(AssetGroup::class, 'users_groups_assets_groups_maps', 'user_group_id', 'asset_group_id')
             ->withTimestamps();
     }
 

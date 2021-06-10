@@ -16,6 +16,7 @@ class CreateUsersGroupsApisMapsTable extends Migration
         Schema::create('users_groups_apis_maps', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('group_id')->nullable();
+            $table->unsignedInteger('asset_group_id')->nullable();
             $table->unsignedInteger('asset_id')->nullable();
             $table->unsignedInteger('api_id')->nullable();
             $table->text('rules')->nullable();

@@ -63,7 +63,7 @@ class UserGroupAdminService extends UserGroupService
     {
         $group = parent::getItem(collect(['id' => $input->get('id')]));
 
-        $group->assets = $group->assets->map(function ($item){
+        $group->assetGroups = $group->assetGroups->map(function ($item){
             return $item->id;
         });
 

@@ -3,6 +3,7 @@ namespace DaydreamLab\User\Models\Asset;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
+use DaydreamLab\User\Models\User\UserGroup;
 
 class AssetGroup extends BaseModel
 {
@@ -62,5 +63,12 @@ class AssetGroup extends BaseModel
     public function assets()
     {
         return $this->belongsToMany(Asset::class, 'assets_groups_assets_maps', 'group_id', 'asset_id');
+    }
+
+
+    public function userGroups()
+    {
+        return $this->belongsToMany(UserGroup::class, 'users_groups_assets_groups_maps', 'asset_group_id', 'user_group_id')
+            ->withTimestamps();
     }
 }

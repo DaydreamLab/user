@@ -28,12 +28,17 @@ class AssetGroupAdminService extends AssetGroupService
         if (count($input->get('assetIds') ?: [])) {
             $item->assets()->attach($input->get('assetIds'));
         }
+
+        if (count($input->get('userGroupIds') ?: [])) {
+            $item->usergroups()->attach($input->get('userGroupIds'));
+        }
     }
 
 
     public function modifyMapping($item, $input)
     {
         $item->assets()->sync($input->get('assetIds') ?: []);
+        $item->usergroups()->sync($input->get('userGroupIds') ?: []);
     }
 
 
