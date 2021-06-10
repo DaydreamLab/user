@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersGroupsAssetsMapsTable extends Migration
+class CreateUsersGroupsAssetsGroupsMapsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateUsersGroupsAssetsMapsTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_groups_assets_maps', function (Blueprint $table) {
+        Schema::create('users_groups_assets_groups_maps', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('group_id')->nullable();
-            $table->unsignedBigInteger('asset_id')->nullable();
+            $table->unsignedBigInteger('user_group_id')->nullable();
+            $table->unsignedBigInteger('asset_group_id')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateUsersGroupsAssetsMapsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_groups_assets_maps');
+        Schema::dropIfExists('users_groups_assets_groups_maps');
     }
 }

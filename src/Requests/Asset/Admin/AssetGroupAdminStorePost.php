@@ -28,13 +28,15 @@ class AssetGroupAdminStorePost extends AdminRequest
     public function rules()
     {
         $rules = [
-            'id'            => 'nullable|integer',
-            'title'         => 'required|string',
-            'state'         => ['required', Rule::in([0,1,-2])],
-            'params'    => 'nullable|string',
-            'ordering'     => 'nullable|integer',
-            'assetIds'     => 'nullable|array',
-            'assetIds.*'   => 'nullable|integer',
+            'id'                => 'nullable|integer',
+            'title'             => 'required|string',
+            'state'             => ['required', Rule::in([0,1,-2])],
+            'params'            => 'nullable|string',
+            'ordering'          => 'nullable|integer',
+            'assetIds'          => 'nullable|array',
+            'assetIds.*'        => 'nullable|integer',
+            'userGroupIds'      => 'nullable|array',
+            'userGroupIds.*'    => 'nullable|integer',
         ];
 
         return array_merge(parent::rules(), $rules);

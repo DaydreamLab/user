@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Resources\User\Admin\Models;
 
+use DaydreamLab\User\Resources\User\Admin\Collections\UserGroupAdminPageResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserGroupAdminResource extends JsonResource
@@ -14,6 +15,8 @@ class UserGroupAdminResource extends JsonResource
      */
     public function toArray($request)
     {
+        $this->handlePage($this->assetGroups, $this->apis);
+
         return [
             'id'            => $this->id,
             'title'         => $this->title,
@@ -26,5 +29,11 @@ class UserGroupAdminResource extends JsonResource
             'ordering'      => $this->ordering,
             'redirect'      => $this->redirect,
         ];
+    }
+
+
+    public function handlePage($assetGroups, $apis)
+    {
+
     }
 }
