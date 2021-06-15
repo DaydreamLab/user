@@ -88,7 +88,8 @@ class Asset extends BaseModel
 
     public function apis()
     {
-        return $this->belongsToMany(Api::class, 'assets_apis_maps', 'asset_id', 'api_id');
+        return $this->belongsToMany(Api::class, 'assets_apis_maps', 'asset_id', 'api_id')
+            ->withPivot(['asset_group_id', 'hidden', 'disabled', 'checked']);
     }
 
 

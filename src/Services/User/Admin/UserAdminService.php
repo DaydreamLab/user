@@ -89,42 +89,19 @@ class UserAdminService extends UserService
 
     public function getSelfPage()
     {
+
         $user   = $this->getUser();
         $groups = $user->groups;
 
-        $group_apis     = collect();
-        $asset_assets   = \Kalnoy\Nestedset\Collection::make();
-        foreach ($groups as $group)
-        {
-            $apis           = $group->apis()->get();
-            $group_apis     = $group_apis->merge($apis);
-            $assets         = $group->assets()->get();
-            $asset_assets   = $asset_assets->merge($assets);
-        }
-        $asset_assets = $asset_assets->toTree();
-
-        $apis = [];
-        foreach ($group_apis as $group_api)
-        {
-            $temp_api_assets =  $group_api->assets()->get();
-            foreach ($temp_api_assets as $temp_api_asset)
-            {
-                $temp_api_asset_id  = $temp_api_asset->id;
-                if (!array_key_exists($temp_api_asset_id, $apis))
-                {
-                    $apis[$temp_api_asset_id] = [];
-                }
-                $apis[$temp_api_asset_id][] = $group_api->method;
-            }
-        }
-
-        $response['apis']      = $apis;
-        $response['assets']    = $asset_assets;
+        $pages = collect();
+        $groups->each(function ($group) use (&$pages) {
+            $pages = $pages->merge($group->page);
+        });
 
         $this->status = 'GetSelfPageSuccess';
-        $this->response = $response;
+        $this->response = $pages;
 
-        return $response;
+        return $this->response;
     }
 
 

@@ -59,22 +59,6 @@ class UserGroupAdminService extends UserGroupService
     }
 
 
-    public function getItem($input)
-    {
-        $group = parent::getItem(collect(['id' => $input->get('id')]));
-
-        $group->assetGroups = $group->assetGroups->map(function ($item){
-            return $item->id;
-        });
-
-        $group->apis = $group->apis->map(function ($item){
-            return $item->id;
-        });
-
-        return $group;
-    }
-
-
     public function modifyMapping($item, $input)
     {
         $item->assets()->sync($input->get('asset_ids'), true);

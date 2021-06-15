@@ -14,8 +14,6 @@ class UserGroupAdminResource extends JsonResource
      */
     public function toArray($request)
     {
-        $page = $this->handlePage($this->assetGroups, $this->apis);
-
         return [
             'id'            => $this->id,
             'title'         => $this->title,
@@ -25,40 +23,7 @@ class UserGroupAdminResource extends JsonResource
             'canDelete'     => $this->canDelete,
             'ordering'      => $this->ordering,
             'redirect'      => $this->redirect,
-            'page'          => $page
+            'page'          => $this->page
         ];
-    }
-
-
-    public function handlePage($assetGroups, $apis)
-    {
-        $data = [];
-        foreach ($assetGroups as $assetGroup) {
-            $tempAssetGroup = $assetGroup->only(['id', 'title']);
-
-            $assets = $assetGroup->assets;
-            foreach ($assets as $asset) {
-                $assetApis = $asset->apis->map(function ($assetApi) use ($apis, $assetGroup, $asset) {
-                    $targetApi = $apis->filter(function ($api) use ($assetGroup, $asset, $assetApi) {
-                        return $api->pivot->asset_group_id == $assetGroup->id
-                            && $api->pivot->asset_id == $asset->id
-                            && $api->pivot->api_id == $assetApi->id;
-                    })->first();
-                    return [
-                        'id'        => $assetApi->id,
-                        'name'      => $assetApi->name,
-                        'hidden'    => $assetApi->pivot->hidden,
-                        'disabled'  => $assetApi->pivot->disabled,
-                        'checked'   => $targetApi ? 1 : $assetApi->pivot->checked,
-                    ];
-                })->values()->all();
-                $tempAsset = $asset->only(['id', 'title']);
-                $tempAsset['apis'] = $assetApis;
-                $tempAssetGroup['assets'][] = $tempAsset;
-            }
-            $data[] = $tempAssetGroup;
-        }
-
-        return $data;
     }
 }

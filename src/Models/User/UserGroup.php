@@ -83,6 +83,7 @@ class UserGroup extends BaseModel
     public function apis()
     {
         return $this->belongsToMany(Api::class, 'users_groups_apis_maps', 'group_id', 'api_id')
+            ->withPivot(['asset_group_id', 'asset_id'])
             ->withTimestamps();
     }
 
@@ -90,6 +91,7 @@ class UserGroup extends BaseModel
     public function assetGroups($model = null)
     {
         return $this->belongsToMany(AssetGroup::class, 'users_groups_assets_groups_maps', 'user_group_id', 'asset_group_id')
+            ->with('assets', 'assets.apis')
             ->withTimestamps();
     }
 
@@ -97,6 +99,43 @@ class UserGroup extends BaseModel
     public function defaultAccessGroups()
     {
         return $this->belongsToMany(UserGroup::class, 'users_groups_default_access_maps', 'group_id', 'access_group_id');
+    }
+
+
+    /**
+     * 組合出群組的權限
+     * @return array
+     */
+    public function getPageAttribute()
+    {
+        $apis = $this->apis;
+        $data = collect();
+        $this->assetGroups->each(function ($assetGroup) use (&$data, $apis) {
+            $tempAssetGroup = $assetGroup->only(['id', 'title']);
+            $assetGroup->assets->each(function ($asset) use ($apis, $assetGroup, &$tempAssetGroup) {
+                $assetApis = $asset->apis->map(function ($assetApi) use ($apis, $assetGroup, $asset) {
+                    $targetApi = $apis->filter(function ($api) use ($assetGroup, $asset, $assetApi) {
+                        return $api->pivot->asset_group_id == $assetGroup->id
+                            && $api->pivot->asset_id == $asset->id
+                            && $api->pivot->api_id == $assetApi->id;
+                    })->first();;
+
+                    return [
+                        'id'        => $assetApi->id,
+                        'name'      => $assetApi->name,
+                        'hidden'    =>  $assetApi->pivot->attributes['hidden'], # 這邊不這樣取會取到 pivot model 的 $hidden[]
+                        'disabled'  => $assetApi->pivot->disabled,
+                        'checked'   => $targetApi ? 1 : $assetApi->pivot->checked,
+                    ];
+                })->values();
+                $tempAsset = $asset->only(['id', 'title']);
+                $tempAsset['apis'] = $assetApis;
+                $tempAssetGroup['assets'][] = collect($tempAsset);
+            });
+            $data->push(collect($tempAssetGroup));
+        });
+
+        return $data;
     }
 
 
