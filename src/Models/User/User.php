@@ -145,7 +145,7 @@ class User extends BaseModel implements
         $accessIds = [];
         foreach ($allViewlevels as $viewlevel) {
             $viewlevelGroupIds = $viewlevel->groups->pluck('id');
-            if ($viewlevelGroupIds->intersect($this->accessGroupIds())->count() == $viewlevelGroupIds->count()) {
+            if ($viewlevelGroupIds->intersect($this->canAccessGroupIds())->count() == $viewlevelGroupIds->count()) {
                 $accessIds[] = $viewlevel->id;
             }
         }
