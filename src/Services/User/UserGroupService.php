@@ -43,7 +43,7 @@ class UserGroupService extends BaseService
     public function tree()
     {
         $allGroups = $this->all()->where('title', '!=', 'Root');
-        $canAccessGroupIds = $this->getUser()->accessGroups->pluck('id');
+        $canAccessGroupIds = $this->getUser()->accessGroups->pluck('id')->toArray();
 
         $tree = $allGroups->each(function ($item, $key) use ($canAccessGroupIds) {
             $item->disabled = in_array($item->id, $canAccessGroupIds)
