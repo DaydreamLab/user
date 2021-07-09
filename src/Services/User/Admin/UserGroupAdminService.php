@@ -45,8 +45,8 @@ class UserGroupAdminService extends UserGroupService
 
     public function addMapping($item, $input)
     {
-        $item->assets()->attach($input->get('asset_ids'));
-        $item->apis()->attach($input->get('api_ids'));
+        //$item->assets()->attach($input->get('asset_ids'));
+//        $item->apis()->attach($input->get('api_ids'));
     }
 
 
@@ -61,15 +61,15 @@ class UserGroupAdminService extends UserGroupService
 
     public function modifyMapping($item, $input)
     {
-        $item->assets()->sync($input->get('asset_ids'), true);
-        $item->apis()->sync($input->get('api_ids'), true);
+        //$item->assets()->sync($input->get('asset_ids'), true);
+//        $item->apis()->sync($input->get('api_ids'), true);
     }
 
 
     public function removeMapping($item)
     {
-        $item->assets()->detach();
-        $item->apis()->detach();
+       // $item->assets()->detach();
+//        $item->apis()->detach();
         $item->descendants()->each(function ($descendant) {
            $descendant->viewlevels()->detach();
         });
