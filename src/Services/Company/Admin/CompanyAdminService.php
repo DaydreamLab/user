@@ -39,7 +39,8 @@ class CompanyAdminService extends CompanyService
     {
         if ($category_id) {
             $q = new QueryCapsule();
-            $q->where('extension', 'Company');
+            $q->where('extension', 'Company')
+                ->whereNotNull('parent_id');
 
             return $this->categoryAdminRepository->find($category_id, $q);
         } else {

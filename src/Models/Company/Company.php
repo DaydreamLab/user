@@ -68,6 +68,11 @@ class Company extends BaseModel
     ];
 
 
+    protected $casts = [
+        'category_id' => 'integer'
+    ];
+
+
     public static function boot()
     {
         self::traitBoot();
