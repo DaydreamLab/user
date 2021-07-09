@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Models\Company;
 
+use DaydreamLab\Cms\Models\Category\Category;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
@@ -78,4 +79,8 @@ class Company extends BaseModel
     }
 
 
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
 }
