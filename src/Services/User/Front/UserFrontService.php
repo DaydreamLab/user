@@ -5,14 +5,18 @@ namespace DaydreamLab\User\Services\User\Front;
 use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
+use DaydreamLab\User\Notifications\Channels\MitakeChannel;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
+use DaydreamLab\User\Notifications\User\Front\UserFrontSendVerificationCodeNotification;
 use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\User\Services\Social\SocialUserService;
 use Carbon\Carbon;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
 use DaydreamLab\User\Services\User\UserService;
+use DaydreamLab\User\Traits\CanSendNotification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -21,7 +25,7 @@ use Laravel\Socialite\Two\User;
 
 class UserFrontService extends UserService
 {
-    use LoggedIn;
+    use LoggedIn, CanSendNotification;
 
     protected $modelType = 'Front';
 
@@ -59,6 +63,22 @@ class UserFrontService extends UserService
         } else {
             throw new ForbiddenException('ActivationTokenInvalid',  ['token' => $token]);
         }
+    }
+
+
+
+    public function checkMobilePhone(Collection $input)
+    {
+        $mobilePhone = $input->get('mobilePhone');
+        $user = $this->findBy('mobilePhone', '=', $mobilePhone)->first();
+        if ($user) {
+            throw new ForbiddenException('MobilePhoneExist', ['mobilePhone' => $mobilePhone]);
+        }
+
+        $this->status = 'MobilePhoneNotExist';
+        $this->response = $user;
+
+        return $this->response;
     }
 
 
@@ -142,6 +162,43 @@ class UserFrontService extends UserService
         return $reset_token;
     }
 
+
+
+    public function getVerificationCode(Collection $input)
+    {
+        $user = $this->findBy('mobilePhone', '=', $input->get('mobilePhone'))->first();
+        if (!$user) {
+            $user = $this->store($input);
+        }
+
+        $code = config('app.env') == 'production' ? Helper::generateRandomIntegetString() : '0000';
+        if (config('app.env') == 'production'
+            && $user->lastSendAt
+            && Carbon::now()->diffInSeconds(Carbon::parse($user->lastSendAt)) < 60
+        ) {
+            $diff = 60 - Carbon::now()->diffInSeconds(Carbon::parse($user->lastSendAt));
+            throw new ForbiddenException('SendVerificationCodeInCoolDown', ['seconds' => $diff]);
+        }
+
+
+        $this->sendNotification(
+            'mitake',
+            $user->fullMobilePhone,
+            new UserFrontSendVerificationCodeNotification()
+        );
+
+
+
+        $this->repo->update($user, [
+            'verificationCode' => bcrypt('code'),
+            'lastSendAt' => now()->toDateTimeString()
+        ]);
+
+        $this->status = 'SendVerificationCodeSuccess';
+        $this->response = ['uuid' => $user->uuid];
+
+        return $this->response;
+    }
 
     /**
      * 註冊帳號

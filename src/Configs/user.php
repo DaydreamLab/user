@@ -21,4 +21,14 @@ return [
 
     'token_expires_in'  => 604800,
     'multiple_login'    => 1,
+
+    'sms' => [
+        'channel' => \DaydreamLab\User\Notifications\Channels\MitakeChannel::class,
+        'log'       => 1,
+        'mitake'    => [
+            'username'  => '',
+            'password'  => '',
+            'env'       => 'local'
+        ]
+    ]
 ];

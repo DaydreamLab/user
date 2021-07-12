@@ -33,6 +33,8 @@ return [
     'LOGOUT_SUCCESS'                    => 200,
 
     'MULTIPLE_LOGIN_SUCCESS'            => 200,
+    'MOBILE_PHONE_EXIST'                => 403,
+    'MOBILE_PHONE_NOT_EXIST'            => 200,
 
     'OLD_PASSWORD_INCORRECT'            => 403,
 
@@ -47,6 +49,9 @@ return [
     'RESET_PASSWORD_TOKEN_INVALID'      => 200,
     'RESET_PASSWORD_TOKEN_IS_USED'      => 403,
     'RESET_PASSWORD_TOKEN_EXPIRED'      => 403,
+
+    'SEND_VERIFICATION_CODE_SUCCESS'    => 200,
+    'SEND_VERIFICATION_CODE_IN_COOL_DOWN' => 200,
 
     'TOKEN_EXPIRED'                     => 401,
     'TOKEN_REVOKED'                     => 403,
