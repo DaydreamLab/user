@@ -30,13 +30,17 @@ class UserGroupAdminService extends UserGroupService
     {
         $item = parent::addNested($input);
 
-        $parent = $item->parent;
-        if ($parent && $parent->ancestors->pluck('title')->contains('Administrator')) {
+        $ancestorsTitle =  $item->ancestors->pluck('title');
+        if ($ancestorsTitle->intersect(['Administrator', 'Registered', 'Public', 'Guest'])->count()) {
             $adminViewlevel = $this->viewlevelAdminService->findBy('title', '=', 'Administrator')->first();
             $adminViewlevel->groups()->attach($item->id);
+            $adminGroup = $this->repo->findBy('title','=', 'Administrator')->first();
+            $adminGroup->defaultAccessGroups()->attach($item->id);
         }
 
         $superUserViewlevel = $this->viewlevelAdminService->findBy('title', '=', 'Super User')->first();
+        $superUserGroup = $this->repo->findBy('title', '=', 'Super User')->first();
+        $superUserGroup->defaultAccessGroups()->attach($item->id);
         $superUserViewlevel->groups()->attach($item->id);
 
         return $item;
@@ -45,8 +49,8 @@ class UserGroupAdminService extends UserGroupService
 
     public function addMapping($item, $input)
     {
-        $item->assets()->attach($input->get('asset_ids'));
-        $item->apis()->attach($input->get('api_ids'));
+//        $item->assets()->attach($input->get('asset_ids'));
+//        $item->apis()->attach($input->get('api_ids'));
     }
 
 
@@ -61,15 +65,15 @@ class UserGroupAdminService extends UserGroupService
 
     public function modifyMapping($item, $input)
     {
-        $item->assets()->sync($input->get('asset_ids'), true);
-        $item->apis()->sync($input->get('api_ids'), true);
+//        $item->assets()->sync($input->get('asset_ids'), true);
+//        $item->apis()->sync($input->get('api_ids'), true);
     }
 
 
     public function removeMapping($item)
     {
-        $item->assets()->detach();
-        $item->apis()->detach();
+//        $item->assets()->detach();
+//        $item->apis()->detach();
         $item->descendants()->each(function ($descendant) {
            $descendant->viewlevels()->detach();
         });

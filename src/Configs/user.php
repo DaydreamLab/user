@@ -21,4 +21,13 @@ return [
 
     'token_expires_in'  => 604800,
     'multiple_login'    => 1,
+
+    'sms' => [
+        'log'       => 0,
+        'mitake'    => [
+            'username'  => '',
+            'password'  => '',
+            'env'       => 'local'
+        ]
+    ]
 ];
