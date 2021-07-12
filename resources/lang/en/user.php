@@ -33,6 +33,7 @@ return [
     'LOGOUT_SUCCESS'                    => '{$ModelName} logout success',
 
     'MULTIPLE_LOGIN_SUCCESS'            => '{$ModelName} multiple login success',
+    'MOBILE_PHONE_NOT_EXIST'            => '{$ModelName} mobile phone not exist',
 
     'OLD_PASSWORD_INCORRECT'            => '{$ModelName} old password incorrect',
 
@@ -47,6 +48,9 @@ return [
     'RESET_PASSWORD_TOKEN_INVALID'      => '{$ModelName} reset password token invalid',
     'RESET_PASSWORD_TOKEN_IS_USED'      => '{$ModelName} reset password token is used',
     'RESET_PASSWORD_TOKEN_EXPIRED'      => '{$ModelName} reset password token expired',
+
+    'SEND_VERIFICATION_CODE_SUCCESS'    => 'Send verification code success',
+    'SEND_VERIFICATION_CODE_IN_COOL_DOWN' => 'Send verification code in cool down',
 
     'TOKEN_EXPIRED'                     => '{$ModelName} Token expired. Please login again',
     'TOKEN_REVOKED'                     => '{$ModelName} Token revoked',

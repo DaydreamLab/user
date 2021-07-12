@@ -28,6 +28,12 @@ Route::post('/api/password/reset', [UserFrontController::class, 'resetPassword']
 Route::post('/api/user/checkEmail', [UserFrontController::class, 'checkEmail'])
     ->middleware(['CORS']);
 
+# 檢查手機是否已經註冊過
+Route::post('/api/user/checkMobilePhone', [UserFrontController::class, 'checkMobilePhone']);
+
+# 取得手機驗證碼
+Route::post('/api/user/getVerificationCode', [UserFrontController::class, 'getVerificationCode']);
+
 // 登入
 Route::post('/api/user/login', [UserFrontController::class, 'login'])->name('login');
 

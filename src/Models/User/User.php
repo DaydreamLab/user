@@ -82,6 +82,7 @@ class User extends BaseModel implements
         'resetPassword',
         'lastResetAt',
         'lastPassword',
+        'lastSendAt',
         'lastLoginAt',
         'lastLoginIp',
         'created_by',
@@ -118,6 +119,12 @@ class User extends BaseModel implements
             $item->created_by = $user
                 ? $user->id
                 : null;
+            $item->password = $item->password
+                ? $item->password
+                : bcrypt(Str::random(8));
+            $item->verificationCode = $item->verificationCode
+                ? $item->verificationCode
+                : bcrypt(Str::random(8));
         });
 
         static::updating(function ($item) {
@@ -199,6 +206,12 @@ class User extends BaseModel implements
         }
 
         return $assets->unique('id')->values();
+    }
+
+
+    public function getFullMobilePhoneAttribute()
+    {
+        return $this->mobilePhoneCode . '-' . $this->mobilePhone;
     }
 
 

@@ -2,7 +2,7 @@
 
 namespace DaydreamLab\User\Notifications\Channels;
 
-use DaydreamLab\User\Models\Sms\SmsHistory;
+use DaydreamLab\User\Models\SmsHistory\SmsHistory;
 use GuzzleHttp\Client;
 use Illuminate\Notifications\Notification;
 
@@ -39,7 +39,7 @@ class MitakeChannel
 
     public function send($notifiable, Notification $notification)
     {
-        if (!$to = $notifiable->routeNotificationFor(MitakeChannel::class, $notification)) {
+        if (!$to = $notifiable->routeNotificationFor('mitake', $notification)) {
             return false;
         }
 
@@ -49,7 +49,7 @@ class MitakeChannel
         $this->params['smbody'] = strip_tags($message->content);
         $this->params['dstaddr'] = $to;
 
-        if (config('daydreamlab.user.mitake.env') == 'local') {
+        if (config('daydreamlab.user.sms.mitake.env') == 'local') {
             $sendResult = true;
             $msgId = '';
         } else {
@@ -75,7 +75,7 @@ class MitakeChannel
         }
 
 
-        if (config('app.mitake.log')) {
+        if (config('daydreamlab.user.sms.log')) {
             $strlen = mb_strlen($message->content, 'UTF-8');
             $data = [
                 'phoneCode'     => $this->phoneCode,
@@ -88,7 +88,7 @@ class MitakeChannel
                 'created_by'    => $message->creatorId
             ];
 
-            $data = array_merge($data, $message->extrafields);
+            $data = array_merge($data, $message->extraFields);
             SmsHistory::create($data);
         }
 

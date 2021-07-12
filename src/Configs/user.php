@@ -23,7 +23,8 @@ return [
     'multiple_login'    => 1,
 
     'sms' => [
-        'log'       => 0,
+        'channel' => \DaydreamLab\User\Notifications\Channels\MitakeChannel::class,
+        'log'       => 1,
         'mitake'    => [
             'username'  => '',
             'password'  => '',

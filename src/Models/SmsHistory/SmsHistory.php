@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Models\Sms;
+namespace DaydreamLab\User\Models\SmsHistory;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
@@ -67,6 +67,6 @@ class SmsHistory extends BaseModel
     public function receiver()
     {
         return $this->hasOne(User::class, 'mobilePhone', 'phone')
-            ->where('mobileCode', $this->phoneCode);
+            ->where('mobilePhoneCode', $this->phoneCode);
     }
 }

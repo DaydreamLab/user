@@ -16,9 +16,9 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('uuid');
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->string('password');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('firstName')->nullable();
             $table->string('lastName')->nullable();
             $table->string('nickname')->nullable();
@@ -37,12 +37,14 @@ class CreateUsersTable extends Migration
             $table->string('zipcode')->nullable();
             $table->boolean('activation')->default(0);
             $table->string('activateToken')->nullable();
+            $table->string('verificationCode')->nullable();
             $table->unsignedTinyInteger('block')->nullable()->default(0);
             $table->unsignedTinyInteger('canDelete')->nullable()->default(1);
             $table->unsignedTinyInteger('resetPassword')->default(0);
             $table->timestamp('lastResetAt')->nullable();
             $table->string('lastPassword')->nullable();
             $table->timestamp('lastLoginAt')->nullable();
+            $table->timestamp('lastSendAt')->nullable();
             $table->string('lastLoginIp')->nullable();
             $table->string('timezone')->nullable();
             $table->string('locale')->nullable();

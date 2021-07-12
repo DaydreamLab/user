@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\Dddream\Notifications\Channels;
+namespace DaydreamLab\User\Notifications\Channels;
 
 class MitakeMessage
 {
@@ -10,7 +10,7 @@ class MitakeMessage
 
     public $msgType;
 
-    public $extraFields;
+    public $extraFields = [];
 
     public function __construct($content, $type, $creatorId, $extraFields = [])
     {
