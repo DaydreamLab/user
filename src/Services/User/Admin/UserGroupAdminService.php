@@ -72,7 +72,6 @@ class UserGroupAdminService extends UserGroupService
 
     public function removeMapping($item)
     {
-
 //        $item->assets()->detach();
 //        $item->apis()->detach();
         $item->descendants()->each(function ($descendant) {
