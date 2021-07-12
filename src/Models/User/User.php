@@ -75,6 +75,8 @@ class User extends BaseModel implements
         'district',
         'address',
         'zipcode',
+        'blockReason',
+        'upgradeReason',
         'activation',
         'activateToken',
         'block',
@@ -129,9 +131,9 @@ class User extends BaseModel implements
     }
 
 
-    public function companies()
+    public function company()
     {
-        return $this->hasMany(UserCompany::class, 'user_id', 'id');
+        return $this->hasOne(UserCompany::class, 'user_id', 'id');
     }
 
 
@@ -142,6 +144,7 @@ class User extends BaseModel implements
     public function getAccessIdsAttribute()
     {
         $allViewlevels = Viewlevel::with('groups')->get()->all();
+
         $accessIds = [];
         foreach ($allViewlevels as $viewlevel) {
             $viewlevelGroupIds = $viewlevel->groups->pluck('id');

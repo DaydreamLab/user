@@ -2,6 +2,7 @@
   {
     "email": "admin@daydream-lab.com",
     "password": "daydream5182",
+    "mobilePhone": "0987987987",
     "name": "白日夢超級管理者",
     "firstName": "Daydream Lab",
     "lastName": "Super Admin",
@@ -15,6 +16,7 @@
   },
   {
     "email": "administrator@daydream-lab.com",
+    "mobilePhone": "0987987986",
     "password": "daydream5182",
     "name": "白日夢管理者",
     "firstName": "Daydream Lab",
@@ -29,6 +31,7 @@
   },
   {
     "email": "registered@daydream-lab.com",
+    "mobilePhone": "0987987985",
      "name": "白日夢一般會員",
     "password": "daydream5182",
     "firstName": "Registered",

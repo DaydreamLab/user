@@ -28,13 +28,15 @@ class CreateUsersTable extends Migration
             $table->string('phoneCode')->nullable();
             $table->string('phone')->nullable();
             $table->string('mobilePhoneCode')->nullable();
-            $table->string('mobilePhone')->nullable();
+            $table->string('mobilePhone')->unique();
             $table->string('country')->nullable();
             $table->string('state_')->nullable();
             $table->string('city')->nullable();
             $table->string('district')->nullable();
             $table->string('address')->nullable();
             $table->string('zipcode')->nullable();
+            $table->string('blockReason')->nullable();
+            $table->string('upgradeReason')->nullable();
             $table->boolean('activation')->default(0);
             $table->string('activateToken')->nullable();
             $table->unsignedTinyInteger('block')->nullable()->default(0);

@@ -34,9 +34,13 @@ class UserGroupAdminService extends UserGroupService
         if ($ancestorsTitle->intersect(['Administrator', 'Registered', 'Public', 'Guest'])->count()) {
             $adminViewlevel = $this->viewlevelAdminService->findBy('title', '=', 'Administrator')->first();
             $adminViewlevel->groups()->attach($item->id);
+            $adminGroup = $this->repo->findBy('title','=', 'Administrator')->first();
+            $adminGroup->defaultAccessGroups()->attach($item->id);
         }
 
         $superUserViewlevel = $this->viewlevelAdminService->findBy('title', '=', 'Super User')->first();
+        $superUserGroup = $this->repo->findBy('title', '=', 'Super User')->first();
+        $superUserGroup->defaultAccessGroups()->attach($item->id);
         $superUserViewlevel->groups()->attach($item->id);
 
         return $item;

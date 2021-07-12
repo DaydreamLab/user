@@ -16,8 +16,10 @@ class CreateUsersCompaniesTable extends Migration
         Schema::create('users_companies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('company_id');
-            $table->unsignedTinyInteger('quit');
+           //$table->unsignedBigInteger('company_id');
+            $table->string('name')->nullable();
+            $table->string('vat')->nullable();
+            $table->unsignedTinyInteger('quit')->nullable();
             $table->string('phoneCode')->nullable();
             $table->string('phone')->nullable();
             $table->string('extNumber')->nullable();
