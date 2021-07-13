@@ -16,7 +16,7 @@ class SmsHistory extends BaseModel
      *
      * @var string
      */
-    protected $table = 'smss_histories';
+    protected $table = 'sms_histories';
 
 
     protected $name = 'SmsHistory';
@@ -30,6 +30,7 @@ class SmsHistory extends BaseModel
     protected $fillable = [
         'phoneCode',
         'phone',
+        'category',
         'type',
         'MitakeMsgId',
         'message',

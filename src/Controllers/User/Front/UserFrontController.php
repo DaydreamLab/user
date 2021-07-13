@@ -11,6 +11,7 @@ use DaydreamLab\User\Requests\User\Front\UserFrontLoginPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Requests\User\Front\UserFrontVerifyCodeRequest;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontResource;
@@ -225,6 +226,18 @@ class UserFrontController extends BaseController
     {
         try {
             $this->service->store($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function verifyVerificationCode(UserFrontVerifyCodeRequest $request)
+    {
+        try {
+            $this->service->verifyVerificationCode($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }

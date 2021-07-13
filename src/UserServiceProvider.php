@@ -30,6 +30,8 @@ class UserServiceProvider extends ServiceProvider
     {
         $this->publishes([__DIR__ . '/constants' => config_path('constants/user')], 'user-configs');
         $this->publishes([__DIR__ . '/Configs' => config_path('daydreamlab')], 'user-configs');
+        $this->publishes([__DIR__ . '/Configs' => config_path('daydreamlab')], 'user-configs');
+        $this->publishes([__DIR__ . '/../resources/views/emails' => resource_path('views/emails')], 'emails-template');
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'user');
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');

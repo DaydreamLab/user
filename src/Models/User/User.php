@@ -77,6 +77,7 @@ class User extends BaseModel implements
         'zipcode',
         'activation',
         'activateToken',
+        'verificationCode',
         'block',
         'canDelete',
         'resetPassword',

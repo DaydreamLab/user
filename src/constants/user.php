@@ -26,6 +26,7 @@ return [
 
     'IS_BLOCKED'                        => 403,
     'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> 403,
+    'INVALID_VERIFICATION_CODE'         => 403,
 
     'LOGIN_SUCCESS'                     => 200,
     'LOGIN_FAIL'                        => 500,
@@ -58,4 +59,7 @@ return [
 
     'UNAUTHORIZED'                      => 403,
     'UNACTIVATED'                       => 403,
+
+    'VERIFY_VERIFICATION_CODE_SUCCESS'  => 200,
+    'VERIFICATION_CODE_EXPIRED'         => 403
 ];

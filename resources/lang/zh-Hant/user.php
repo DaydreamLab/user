@@ -25,6 +25,7 @@ return [
 
     'IS_BLOCKED'                        => '使用者已被封鎖',
     'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> '使用者不具有指派特定群組的權限',
+    'INVALID_VERIFICATION_CODE'         => '簡訊驗證碼錯誤',
 
     'LOGIN_SUCCESS'                     => '使用者登入成功',
     'LOGIN_FAIL'                        => '使用者登入失敗',
@@ -57,4 +58,7 @@ return [
 
     'UNAUTHORIZED'                      => '使用者未經授權',
     'UNACTIVATED'                       => '使用者帳號尚未啟用，請到您的信箱獲取帳號啟用連結',
+
+    'VERIFY_VERIFICATION_CODE_SUCCESS'  => '簡訊驗證碼驗證成功',
+    'VERIFICATION_CODE_EXPIRED'         => '簡訊驗證碼已過期'
 ];

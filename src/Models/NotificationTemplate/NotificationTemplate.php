@@ -1,16 +1,17 @@
 <?php
-namespace DaydreamLab\User\Models\Template;
+
+namespace DaydreamLab\User\Models\NotificationTemplate;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
 
-class Template extends BaseModel
+class NotificationTemplate extends BaseModel
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'templates';
+    protected $table = 'notification_templates';
 
 
     /**
@@ -19,10 +20,13 @@ class Template extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'router',
+        'channelType',
         'category',
+        'type',
+        'subject',
         'content',
         'contentHtml',
+        'params',
         'created_by',
         'updated_by'
     ];

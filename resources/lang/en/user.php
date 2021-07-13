@@ -26,6 +26,7 @@ return [
 
     'IS_BLOCKED'                        => '{$ModelName} is blocked',
     'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> '{$ModelName} insufficient permission assign group',
+    'INVALID_VERIFICATION_CODE'         => 'Invalid verification code',
 
     'LOGIN_SUCCESS'                     => '{$ModelName} login success',
     'LOGIN_FAIL'                        => '{$ModelName} login fail',
@@ -57,4 +58,7 @@ return [
 
     'UNAUTHORIZED'                      => '{$ModelName} unauthorized',
     'UNACTIVATED'                       => '{$ModelName} has not been activated. Please check your email to activate account',
+
+    'VERIFY_VERIFICATION_CODE_SUCCESS'  => 'Verify verification code success',
+    'VERIFICATION_CODE_EXPIRED'         => 'Verification code expired'
 ];

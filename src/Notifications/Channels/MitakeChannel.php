@@ -74,13 +74,13 @@ class MitakeChannel
             $sendResult = in_array($statusCode, [1,2,4]) ? 1 : 0;
         }
 
-
         if (config('daydreamlab.user.sms.log')) {
             $strlen = mb_strlen($message->content, 'UTF-8');
             $data = [
                 'phoneCode'     => $this->phoneCode,
                 'phone'         => $this->phone,
-                'type'          => $message->msgType,
+                'category'      => $message->category,
+                'type'          => $message->type,
                 'MitakeMsgId'   => $msgId,
                 'message'       => $message->content,
                 'messageLength' => $strlen,

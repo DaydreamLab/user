@@ -23,8 +23,10 @@ return [
     'multiple_login'    => 1,
 
     'sms' => [
-        'channel' => \DaydreamLab\User\Notifications\Channels\MitakeChannel::class,
-        'log'       => 1,
+        'channel' => 'mitake',
+        'log' => 1,
+        'cooldown' => 60, # 冷卻時間
+        'expiredMinutes' => 15,  # 驗證碼過期分鐘數
         'mitake'    => [
             'username'  => '',
             'password'  => '',

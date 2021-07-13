@@ -7,10 +7,9 @@ use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
-use DaydreamLab\User\Notifications\Channels\MitakeChannel;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
-use DaydreamLab\User\Notifications\User\Front\UserFrontSendVerificationCodeNotification;
+use DaydreamLab\User\Notifications\User\UserGetVerificationCodeNotification;
 use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\User\Services\Social\SocialUserService;
 use Carbon\Carbon;
@@ -163,7 +162,6 @@ class UserFrontService extends UserService
     }
 
 
-
     public function getVerificationCode(Collection $input)
     {
         $user = $this->findBy('mobilePhone', '=', $input->get('mobilePhone'))->first();
@@ -174,23 +172,21 @@ class UserFrontService extends UserService
         $code = config('app.env') == 'production' ? Helper::generateRandomIntegetString() : '0000';
         if (config('app.env') == 'production'
             && $user->lastSendAt
-            && Carbon::now()->diffInSeconds(Carbon::parse($user->lastSendAt)) < 60
+            && Carbon::now()->diffInSeconds(Carbon::parse($user->lastSendAt)) < config('daydreamlab.user.sms.cooldown')
         ) {
-            $diff = 60 - Carbon::now()->diffInSeconds(Carbon::parse($user->lastSendAt));
+            $diff = config('daydreamlab.user.sms.cooldown') - Carbon::now()->diffInSeconds(Carbon::parse($user->lastSendAt));
             throw new ForbiddenException('SendVerificationCodeInCoolDown', ['seconds' => $diff]);
         }
 
-
+        # 寄送簡訊
         $this->sendNotification(
-            'mitake',
+            config('daydreamlab.user.sms.channel'),
             $user->fullMobilePhone,
-            new UserFrontSendVerificationCodeNotification()
+            new UserGetVerificationCodeNotification($code)
         );
 
-
-
         $this->repo->update($user, [
-            'verificationCode' => bcrypt('code'),
+            'verificationCode' => bcrypt($code),
             'lastSendAt' => now()->toDateTimeString()
         ]);
 
@@ -265,6 +261,28 @@ class UserFrontService extends UserService
             $this->status = 'ResetPasswordEmailSend';
         } else {
             throw new NotFoundException('ItemNotExist', $input);
+        }
+    }
+
+
+    public function verifyVerificationCode(Collection $input)
+    {
+        $user = $this->findBy('mobilePhone', '=', $input->get('mobilePhone'))->first();
+        if (!$user) {
+            throw new NotFoundException('ItemNotExist', ['mobilePhone' => $input->get('mobilePhone')]);
+        }
+
+        $verify = Hash::check($input->get('verificationCode'), $user->verificationCode);
+        if ($verify) {
+            if (config('app.env') == 'production') {
+                if (now() > Carbon::parse($user->lastSendAt)->addMinutes(config('daydreamlab.user.sms.expiredTime'))) {
+                    throw new ForbiddenException('VerificationCodeExpired');
+                }
+            }
+
+            $this->status = 'VerifyVerificationCodeSuccess';
+        } else {
+            throw new ForbiddenException('InvalidVerificationCode');
         }
     }
 }

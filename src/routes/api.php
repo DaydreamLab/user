@@ -32,7 +32,10 @@ Route::post('/api/user/checkEmail', [UserFrontController::class, 'checkEmail'])
 Route::post('/api/user/checkMobilePhone', [UserFrontController::class, 'checkMobilePhone']);
 
 # 取得手機驗證碼
-Route::post('/api/user/getVerificationCode', [UserFrontController::class, 'getVerificationCode']);
+Route::post('/api/user/getCode', [UserFrontController::class, 'getVerificationCode']);
+
+# 驗證手機驗證碼
+Route::post('/api/user/verifyCode', [UserFrontController::class, 'verifyVerificationCode']);
 
 // 登入
 Route::post('/api/user/login', [UserFrontController::class, 'login'])->name('login');
