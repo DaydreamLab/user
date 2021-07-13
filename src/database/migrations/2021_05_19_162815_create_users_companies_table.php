@@ -18,6 +18,7 @@ class CreateUsersCompaniesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('company_id');
             $table->unsignedTinyInteger('quit');
+            $table->string('email')->nullable();
             $table->string('phoneCode')->nullable();
             $table->string('phone')->nullable();
             $table->string('extNumber')->nullable();
