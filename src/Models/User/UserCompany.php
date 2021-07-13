@@ -26,6 +26,7 @@ class UserCompany extends BaseModel
     protected $fillable = [
         'user_id',
         'company_id',
+        'email',
         'quit',
         'phoneCode',
         'phone',
