@@ -2,9 +2,8 @@
 
 namespace DaydreamLab\User\Controllers\User\Front;
 
-use App\User;
 use Carbon\Carbon;
-use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Requests\User\Front\UserFrontChangeCheckMobilePhoneRequest;
 use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontCheckEmailPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
@@ -12,13 +11,13 @@ use DaydreamLab\User\Requests\User\Front\UserFrontLoginPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Requests\User\Front\UserFrontVerifyCodeRequest;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontResource;
 use DaydreamLab\User\Services\User\Front\UserFrontService;
 use DaydreamLab\User\Requests\User\Front\UserFrontStorePost;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Throwable;
@@ -54,6 +53,18 @@ class UserFrontController extends BaseController
     {
         try {
             $this->service->checkEmail($request->validated()->get('email'));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function checkMobilePhone(UserFrontChangeCheckMobilePhoneRequest $request)
+    {
+        try {
+            $this->service->checkMobilePhone($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
@@ -138,6 +149,18 @@ class UserFrontController extends BaseController
     }
 
 
+    public function getVerificationCode(UserFrontChangeCheckMobilePhoneRequest $request)
+    {
+        try {
+            $this->service->getVerificationCode($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
     public function login(UserFrontLoginPost $request)
     {
         if(config('daydreamlab.user.login.enable')) {
@@ -203,6 +226,18 @@ class UserFrontController extends BaseController
     {
         try {
             $this->service->store($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function verifyVerificationCode(UserFrontVerifyCodeRequest $request)
+    {
+        try {
+            $this->service->verifyVerificationCode($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }

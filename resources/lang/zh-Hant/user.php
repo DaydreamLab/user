@@ -25,6 +25,7 @@ return [
 
     'IS_BLOCKED'                        => '使用者已被封鎖',
     'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> '使用者不具有指派特定群組的權限',
+    'INVALID_VERIFICATION_CODE'         => '簡訊驗證碼錯誤',
 
     'LOGIN_SUCCESS'                     => '使用者登入成功',
     'LOGIN_FAIL'                        => '使用者登入失敗',
@@ -32,6 +33,8 @@ return [
     'LOGOUT_SUCCESS'                    => '使用者登出成功',
 
     'MULTIPLE_LOGIN_SUCCESS'            => '使用者多重登入成功',
+    'MOBILE_PHONE_EXIST'                => '手機號碼已經註冊過',
+    'MOBILE_PHONE_NOT_EXIST'            => '手機號碼尚未註冊過',
 
     'OLD_PASSWORD_INCORRECT'            => '輸入的就密碼錯誤',
 
@@ -47,9 +50,15 @@ return [
     'RESET_PASSWORD_TOKEN_IS_USED'      => '重設密碼 token 已被使用',
     'RESET_PASSWORD_TOKEN_EXPIRED'      => '重設密碼 token 已過期',
 
+    'SEND_VERIFICATION_CODE_SUCCESS'    => '寄送簡訊驗證碼成功',
+    'SEND_VERIFICATION_CODE_IN_COOL_DOWN' => '寄送簡訊驗證碼冷卻中',
+
     'TOKEN_EXPIRED'                     => '使用者 token 已過期，請重新登入',
     'TOKEN_REVOKED'                     => '使用者 token 已被撤銷',
 
     'UNAUTHORIZED'                      => '使用者未經授權',
     'UNACTIVATED'                       => '使用者帳號尚未啟用，請到您的信箱獲取帳號啟用連結',
+
+    'VERIFY_VERIFICATION_CODE_SUCCESS'  => '簡訊驗證碼驗證成功',
+    'VERIFICATION_CODE_EXPIRED'         => '簡訊驗證碼已過期'
 ];
