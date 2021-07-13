@@ -42,6 +42,8 @@ return [
     'PASSWORD_SAME_AS_PREVIOUS'         => 403,
 
     'REGISTER_SUCCESS'                  => 200,
+    'REGISTER_FAIL'                     => 500,
+    'REGISTRATION_IS_NOT_COMPLETED'     => 403,
     'REGISTRATION_IS_BLOCKED'           => 403,
     'RESET_PASSWORD_SUCCESS'            => 200,
     'RESET_PASSWORD_FAIL'               => 500,
@@ -61,5 +63,6 @@ return [
     'UNACTIVATED'                       => 403,
 
     'VERIFY_VERIFICATION_CODE_SUCCESS'  => 200,
-    'VERIFICATION_CODE_EXPIRED'         => 403
+    'VERIFICATION_CODE_EXPIRED'         => 403,
+    'VERIFICATION_PENDING'              => 403,
 ];

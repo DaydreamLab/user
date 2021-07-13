@@ -54,6 +54,7 @@ class User extends BaseModel implements
      */
     protected $fillable = [
         'email',
+        'backupEmail',
         'password',
         'name',
         'firstName',
@@ -134,6 +135,12 @@ class User extends BaseModel implements
                 ? $user->id
                 : null;
         });
+    }
+
+
+    public function company()
+    {
+        return $this->hasOne(UserCompany::class, 'user_id', 'id');
     }
 
 

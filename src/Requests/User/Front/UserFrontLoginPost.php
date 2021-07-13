@@ -24,8 +24,11 @@ class UserFrontLoginPost extends AdminRequest
     public function rules()
     {
         return [
-            'email'     => 'required|email',
-            'password'  => 'required|string',
+            'email'             => 'nullable|email',
+            'password'          => 'required_with:email|string',
+            'mobilePhoneCode'   => 'nullable|string',
+            'mobilePhone'       => 'nullable|string',
+            'verificationCode'  => 'required_with:mobilePhone|string',
         ];
     }
 

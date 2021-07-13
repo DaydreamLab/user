@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Services\User;
 
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
+use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\User\Events\Add;
 use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Events\Remove;
@@ -91,47 +92,62 @@ class UserService extends BaseService
 
     public function login(Collection $input)
     {
-        $auth = Auth::attempt([
-            'email'     => Str::lower($input->get('email')),
-            'password'  => $input->get('password')
-        ]);
+        if ($input->get('email')) {
+            $auth = Auth::attempt([
+                'email'     => Str::lower($input->get('email')),
+                'password'  => $input->get('password')
+            ]);
 
-
-        $user = Auth::user() ?: null;
-        $login = false;
-        if ($auth) {
-            if ($user->activation) { // 帳號已啟用
-                if ($user->blocked) {
-                    $this->status = 'IsBlocked';
-                    throw new ForbiddenException('IsBlocked', [
-                        'email' => $input->get('email')
-                    ]);
-                } else {
-                    $this->repo->modify($user, collect([
-                        'lastLoginAt' => now(),
-                        'lastLoginIp' => $input->get('lastLoginIp')
-                    ]));
-                    $tokens = $user->tokens()->get();
-                    if(!config('daydreamlab.user.multiple_login')) {
-                        $tokens->each(function ($token) {
-                            $token->multipleLogin = 1;
-                            $token->save();
-                        });
-                    }
-
-                    $this->status = $tokens->count()
-                        ? 'MultipleLoginSuccess'
-                        : 'LoginSuccess';
-                    $this->response = $this->helper->getUserLoginData($user);
-                    $login = true;
-                }
-            } else { // 帳號尚未啟用
-                //$user->notify(new RegisteredNotification($user));
-                throw new ForbiddenException('Unactivated', ['email' => $input->get('email')]);
+            if (!$auth) {
+                throw new ForbiddenException('EmailOrPasswordIncorrect');
             }
+            $user = Auth::user();
         } else {
-            throw new ForbiddenException('EmailOrPasswordIncorrect');
+            $user = $this->findBy('mobilePhone', '=', $input->get('mobilePhone'))->first();
+            if (!$user) {
+                throw new NotFoundException('ItemNotExist', ['mobilePhone' => $input->get('mobilePhone')]);
+            }
         }
+
+        # 只送過驗證碼，但是沒有執行過完整流程
+        if (!$user->activation) {
+            if (!$user->email || !$user->name) {
+                $this->status = 'RegistrationIsNotCompleted';
+                $this->response = $user;
+                return $this->response;
+            } else {
+                throw new ForbiddenException('VerificationPending');
+            }
+        }
+
+        if ($user->block) {
+            throw new ForbiddenException('IsBlocked');
+        }
+
+        $this->repo->modify($user, collect([
+            'verificationCode' => bcrypt(Str::random()),
+            'lastLoginAt' => now(),
+            'lastLoginIp' => $input->get('lastLoginIp')
+        ]));
+        $tokens = $user->tokens()->get();
+        if(!config('daydreamlab.user.multiple_login')) {
+            $tokens->each(function ($token) {
+                $token->multipleLogin = 1;
+                $token->save();
+            });
+        }
+
+        $this->status = $tokens->count()
+            ? 'MultipleLoginSuccess'
+            : 'LoginSuccess';
+
+        $tokenResult = $user->createToken(config('app.name'));
+        $token = $tokenResult->token;
+        $token->expires_at = now()->addSeconds(config('daydreamlab.user.token_expires_in'));
+        $token->save();
+        $user->accessToken = $tokenResult->accessToken;
+        $this->response = $user;
+        $login = true;
 
         event(new Login($this->getServiceName(), $login,  $this->status, $user));
 

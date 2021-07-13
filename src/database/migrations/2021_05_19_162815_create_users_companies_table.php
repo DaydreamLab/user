@@ -16,8 +16,8 @@ class CreateUsersCompaniesTable extends Migration
         Schema::create('users_companies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('company_id');
-            $table->unsignedTinyInteger('quit');
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('phoneCode')->nullable();
             $table->string('phone')->nullable();
@@ -30,8 +30,9 @@ class CreateUsersCompaniesTable extends Migration
             $table->string('zipcode')->nullable();
             $table->string('department')->nullable();
             $table->string('jobTitle')->nullable();
+            $table->unsignedTinyInteger('quit')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('update_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

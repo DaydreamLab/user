@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\User\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
 
 class UserFrontRegisterMobilePhonePost extends AdminRequest
 {
@@ -24,20 +25,24 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
     public function rules()
     {
         return [
-            'uuid'          => 'required|uuid',
-            'name'          => 'required|string',
-            'email'         => 'required|email',
-            'company'       => 'required|array',
-            'company.name'  => 'required|string',
-
-            'phone'         => 'nullable|string',
-            'birthday'      => 'nullable|date',
-            'country'       => 'nullable|string',
-            'state'         => 'nullable|string',
-            'city'          => 'nullable|string',
-            'district'      => 'nullable|string',
-            'address'       => 'nullable|string',
-            'zipcode'       => 'nullable|string'
+            'uuid'              => 'required|uuid',
+            'name'              => 'required|string',
+            'email'             => 'required|email',
+            'backupEmail'       => 'nullable|email',
+            'company'           => 'required|array',
+            'company.name'      => 'required|string',
+            'company.email'      => 'required|email',
+            'company.vat'       => ['required', 'numeric', new TaiwanUnifiedBusinessNumber()],
+            'company.phoneCode' => 'required|numeric',
+            'company.phone'     => 'required|numeric',
+            'company.extNumber' => 'nullable|numeric',
+            'company.department'=> 'required|string',
+            'company.jobTitle'  => 'required|string',
+            'company.city'      => 'required|string',
+            'company.district'  => 'required|string',
+            'company.address'   => 'required|string',
+            'company.zipcode'   => 'nullable|numeric',
+            #todo: 電子報
         ];
     }
 
@@ -45,11 +50,6 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
     public function validated()
     {
         $validated = parent::validated();
-        $validated->put('password', bcrypt($validated->get('password')));
-        if ($state = $validated->get('state')) {
-            $validated->put('state_', $validated->get('state'));
-        }
-        $validated->forget(['state', 'passwordConfirm']);
 
         return $validated;
     }

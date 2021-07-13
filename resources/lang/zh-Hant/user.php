@@ -41,6 +41,8 @@ return [
     'PASSWORD_SAME_AS_PREVIOUS'         => '密碼不可與上次密碼相同',
 
     'REGISTER_SUCCESS'                  => '使用者註冊成功',
+    'REGISTER_FAIL'                     => '註冊失敗',
+    'REGISTRATION_IS_NOT_COMPLETED'     => '註冊流程尚未完成，請接續完成註冊',
     'REGISTRATION_IS_BLOCKED'           => '目前不開放使用者註冊',
     'RESET_PASSWORD_SUCCESS'            => '使用者重設密碼成功，請重新登入',
     'RESET_PASSWORD_FAIL'               => '使用者重設密碼失敗',
@@ -60,5 +62,6 @@ return [
     'UNACTIVATED'                       => '使用者帳號尚未啟用，請到您的信箱獲取帳號啟用連結',
 
     'VERIFY_VERIFICATION_CODE_SUCCESS'  => '簡訊驗證碼驗證成功',
-    'VERIFICATION_CODE_EXPIRED'         => '簡訊驗證碼已過期'
+    'VERIFICATION_CODE_EXPIRED'         => '簡訊驗證碼已過期',
+    'VERIFICATION_PENDING'              => '等待管理者審核中'
 ];

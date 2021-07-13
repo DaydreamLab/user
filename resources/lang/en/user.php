@@ -41,6 +41,8 @@ return [
     'PASSWORD_SAME_AS_PREVIOUS'         => '{$ModelName} password can\'t same as previous one',
 
     'REGISTER_SUCCESS'                  => '{$ModelName} register success',
+    'REGISTER_FAIL'                     => '{$ModelName} register fail',
+    'REGISTRATION_IS_NOT_COMPLETED'     => '{$ModelName} registration isn\'t complete',
     'REGISTRATION_IS_BLOCKED'           => '{$ModelName} registration is blocked',
     'RESET_PASSWORD_SUCCESS'            => '{$ModelName} reset password success',
     'RESET_PASSWORD_FAIL'               => '{$ModelName} reset password fail',
@@ -60,5 +62,6 @@ return [
     'UNACTIVATED'                       => '{$ModelName} has not been activated. Please check your email to activate account',
 
     'VERIFY_VERIFICATION_CODE_SUCCESS'  => 'Verify verification code success',
-    'VERIFICATION_CODE_EXPIRED'         => 'Verification code expired'
+    'VERIFICATION_CODE_EXPIRED'         => 'Verification code expired',
+    'VERIFICATION_PENDING'              => 'Waiting administrator verify account'
 ];

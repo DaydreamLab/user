@@ -8,6 +8,7 @@ use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontCheckEmailPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontLoginPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontRegisterMobilePhonePost;
 use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
@@ -178,23 +179,34 @@ class UserFrontController extends BaseController
     }
 
 
-    public function register(UserFrontRegisterPost $request)
+//    public function register(UserFrontRegisterPost $request)
+//    {
+//        if (config('daydreamlab.user.register.enable')) {
+//            try {
+//                $this->service->register($request->validated());
+//            } catch (Throwable $t) {
+//                $this->handleException($t);
+//            }
+//        } else {
+//            $this->service->status = 'RegistrationIsBlocked';
+//        }
+//
+//        return $this->response($this->service->status,
+//            $this->service->response
+//                ? new UserFrontResource($this->service->response)
+//                : null
+//        );
+//    }
+
+    public function register(UserFrontRegisterMobilePhonePost $request)
     {
-        if (config('daydreamlab.user.register.enable')) {
-            try {
-                $this->service->register($request->validated());
-            } catch (Throwable $t) {
-                $this->handleException($t);
-            }
-        } else {
-            $this->service->status = 'RegistrationIsBlocked';
+        try {
+            $this->service->registerMobilePhone($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
         }
 
-        return $this->response($this->service->status,
-            $this->service->response
-                ? new UserFrontResource($this->service->response)
-                : null
-        );
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -225,7 +237,7 @@ class UserFrontController extends BaseController
     public function store(UserFrontStorePost $request)
     {
         try {
-            $this->service->store($request->validated());
+            $this->service->modify($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }

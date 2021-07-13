@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\User\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
 
 class UserFrontStorePost extends AdminRequest
 {
@@ -24,26 +25,22 @@ class UserFrontStorePost extends AdminRequest
     public function rules()
     {
         return [
-            'email'                 => 'required|email',
-            'firstName'             => 'required|string',
-            'lastName'              => 'required|string',
-            'nickname'              => 'nullable|string',
-            'password'              => 'nullable|string|min:8|max:16',
-            'passwordConfirm'       => 'required_with:password|nullable|same:password',
-            'gender'                => 'nullable|string',
-            'image'                 => 'nullable|string',
-            'birthday'              => 'nullable|date_format:Y-m-d',
-            'phoneCode'             => 'nullable|string',
-            'phone'                 => 'nullable|string',
-            'mobilePhone'           => 'nullable|string',
-            'country'               => 'nullable|string',
-            'state'                 => 'nullable|string',
-            'city'                  => 'nullable|string',
-            'district'              => 'nullable|string',
-            'address'               => 'nullable|string',
-            'zipcode'               => 'nullable|string',
-            'timezone'              => 'nullable|string',
-            'locale'                => 'nullable|string',
+            'email'             => 'required|email',
+            'backupEmail'       => 'nullable|email',
+            'company'           => 'required|array',
+            'company.name'      => 'required|string',
+            'company.email'      => 'required|email',
+            'company.vat'       => ['required', 'numeric', new TaiwanUnifiedBusinessNumber()],
+            'company.phoneCode' => 'required|numeric',
+            'company.phone'     => 'required|numeric',
+            'company.extNumber' => 'nullable|numeric',
+            'company.department'=> 'required|string',
+            'company.jobTitle'  => 'required|string',
+            'company.city'      => 'required|string',
+            'company.district'  => 'required|string',
+            'company.address'   => 'required|string',
+            'company.zipcode'   => 'nullable|numeric',
+            #todo: 電子報
         ];
     }
 
@@ -51,10 +48,6 @@ class UserFrontStorePost extends AdminRequest
     public function validated()
     {
         $validated = parent::validated();
-
-        if ($password = $validated->get('password')) {
-            $validated->put('password', bcrypt($password));
-        }
 
         return $validated;
     }

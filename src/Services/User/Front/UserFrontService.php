@@ -4,9 +4,11 @@ namespace DaydreamLab\User\Services\User\Front;
 
 use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
+use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
+use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
 use DaydreamLab\User\Notifications\User\UserGetVerificationCodeNotification;
@@ -197,6 +199,28 @@ class UserFrontService extends UserService
     }
 
     /**
+     * 編輯會員資訊
+     * @param Collection $input
+     * @return bool
+     */
+    public function modify(Collection $input)
+    {
+        $user = $this->getUser();
+        $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
+        $userData['verificationCode'] = bcrypt(Str::random());
+        $update = $this->repo->update($user, $userData);
+        if (!$update) {
+            throw new InternalServerErrorException('UpdateFail');
+        }
+
+        $companyData = $input->get('company');
+        $userCompany = $user->company;
+        $userCompany->update($companyData);
+
+        $this->status = 'UpdateSuccess';
+    }
+
+    /**
      * 註冊帳號
      * @param Collection $input
      */
@@ -216,7 +240,28 @@ class UserFrontService extends UserService
 
     public function registerMobilePhone(Collection $input)
     {
+        $user = $this->findBy('uuid', '=', $input->get('uuid'))->first();
+        if (!$user) {
+            throw new NotFoundException('ItemNotExist');
+        }
 
+        $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
+        $userData['verificationCode'] = bcrypt(Str::random());
+        $update = $this->repo->update($user, $userData);
+        if (!$update) {
+            throw new InternalServerErrorException('RegisterFail');
+        }
+
+        $companyData = $input->get('company');
+        $companyData['user_id'] = $user->id;
+        $userCompany = UserCompany::create($companyData);
+        if (!$userCompany) {
+            throw new InternalServerErrorException('RegisterFail');
+        }
+
+        #todo 有沒有送通知?
+
+        $this->status = 'RegisterSuccess';
     }
 
 
