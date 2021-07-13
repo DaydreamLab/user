@@ -14,6 +14,8 @@ class CreateCompaniesCategoriesTable extends Migration
     public function up()
     {
         Schema::create('companies_categories', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->nestedSet();
             $table->string('title');
             $table->string('alias');
             $table->string('path');
