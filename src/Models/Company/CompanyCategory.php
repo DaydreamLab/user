@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\User\Models\Company;
 
-use DaydreamLab\Cms\Models\Category\Category;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;

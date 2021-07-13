@@ -214,6 +214,12 @@ class UserFrontService extends UserService
     }
 
 
+    public function registerMobilePhone(Collection $input)
+    {
+
+    }
+
+
     public function resetPassword(Collection $input)
     {
         $token = $this->forgotPasswordTokenValidate($input->get('token'));
