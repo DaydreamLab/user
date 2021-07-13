@@ -31,7 +31,7 @@ class CreateUsersCompaniesTable extends Migration
             $table->string('department')->nullable();
             $table->string('jobTitle')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('update_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }
