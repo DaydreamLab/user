@@ -68,6 +68,8 @@ class CompanyCategory extends BaseModel
 
 
     protected $casts = [
+        'params'        => 'array',
+        'extrafields'   => 'array'
     ];
 
 
