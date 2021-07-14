@@ -7,6 +7,7 @@ use DaydreamLab\User\Middlewares\Admin;
 use DaydreamLab\User\Middlewares\Expired;
 use DaydreamLab\User\Middlewares\SuperUser;
 use DaydreamLab\User\Notifications\Channels\MitakeChannel;
+use DaydreamLab\User\Notifications\Channels\XsmsChannel;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider;
@@ -54,6 +55,12 @@ class UserServiceProvider extends ServiceProvider
         Notification::resolved(function (ChannelManager $service) {
             $service->extend('mitake', function ($app) {
                 return new MitakeChannel();
+            });
+        });
+
+        Notification::resolved(function (ChannelManager $service) {
+            $service->extend('xsms', function ($app) {
+                return new XsmsChannel();
             });
         });
 

@@ -31,6 +31,11 @@ return [
             'username'  => '',
             'password'  => '',
             'env'       => 'local'
+        ],
+        'xsms' => [
+            'MDN' => '',
+            'UID' => '',
+            'UPASS' => '',
         ]
     ]
 ];

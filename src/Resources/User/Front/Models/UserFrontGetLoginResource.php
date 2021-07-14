@@ -16,10 +16,12 @@ class UserFrontGetLoginResource extends JsonResource
     {
         $data = [
             'uuid'          => $this->uuid,
-            'name'          => $this->name,
             'email'         => $this->email,
             'backupEmail'   => $this->backupEmail,
-            'company'       => [
+        ];
+
+        if ($this->company) {
+            $company = [
                 'name'          => $this->company->name,
                 'email'         => $this->company->email,
                 'phoneCode'     => $this->company->phoneCode,
@@ -31,8 +33,9 @@ class UserFrontGetLoginResource extends JsonResource
                 'zipcode'       => $this->company->zipcode,
                 'department'    => $this->company->department,
                 'jobTitle'      => $this->company->jobTitle,
-            ]
-        ];
+            ];
+            $data['company'] = $company;
+        }
 
         if ($this->accessToken) {
             $data['token'] = $this->accessToken;

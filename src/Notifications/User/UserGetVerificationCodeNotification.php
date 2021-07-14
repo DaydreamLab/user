@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Notifications\User;
 
 use DaydreamLab\User\Notifications\BaseNotification;
 use Illuminate\Bus\Queueable;
+use Psy\Command\ShowCommand;
 
 class UserGetVerificationCodeNotification extends BaseNotification
 {

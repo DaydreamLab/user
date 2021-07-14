@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Notifications;
 
 use DaydreamLab\User\Models\NotificationTemplate\NotificationTemplate;
 use DaydreamLab\User\Notifications\Channels\MitakeMessage;
+use DaydreamLab\User\Notifications\Channels\XsmsMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -162,6 +163,37 @@ class BaseNotification extends Notification implements ShouldQueue
         );
     }
 
+
+    public function toXsms($notifiable)
+    {
+        if ($this->useCustomTemplate) {
+            $template = NotificationTemplate::where('channelType', 'sms')
+                ->where('category', $this->category)
+                ->where('type', $this->type)
+                ->first();
+
+            if ($template) {
+                $this->subject = $template->subject
+                    ? $this->handleReplacement($template->subject)
+                    : $this->subject;
+                $this->content = $this->handleReplacement($template->content);
+            } else {
+                $this->content = $this->handleReplacement($this->defaultSmsContent('sms'));
+            }
+        } else {
+            $this->content = $this->handleReplacement($this->defaultSmsContent('sms'));
+        }
+
+        return new XsmsMessage(
+            $this->category,
+            $this->type,
+            $this->subject,
+            $this->content,
+            $this->creatorId,
+            []
+        );
+    }
+
     /**
      * Get the notification's delivery channels.
      *
@@ -170,6 +202,6 @@ class BaseNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', 'mitake'];
+        return ['mail', 'mitake', 'xsms'];
     }
 }
