@@ -4,15 +4,20 @@ namespace DaydreamLab\User\Services\User\Front;
 
 use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
+use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
+use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
+use DaydreamLab\User\Notifications\User\UserGetVerificationCodeNotification;
 use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\User\Services\Social\SocialUserService;
 use Carbon\Carbon;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
 use DaydreamLab\User\Services\User\UserService;
+use DaydreamLab\User\Traits\CanSendNotification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -21,7 +26,7 @@ use Laravel\Socialite\Two\User;
 
 class UserFrontService extends UserService
 {
-    use LoggedIn;
+    use LoggedIn, CanSendNotification;
 
     protected $modelType = 'Front';
 
@@ -59,6 +64,22 @@ class UserFrontService extends UserService
         } else {
             throw new ForbiddenException('ActivationTokenInvalid',  ['token' => $token]);
         }
+    }
+
+
+
+    public function checkMobilePhone(Collection $input)
+    {
+        $mobilePhone = $input->get('mobilePhone');
+        $user = $this->findBy('mobilePhone', '=', $mobilePhone)->first();
+        if ($user) {
+            throw new ForbiddenException('MobilePhoneExist', ['mobilePhone' => $mobilePhone]);
+        }
+
+        $this->status = 'MobilePhoneNotExist';
+        $this->response = $user;
+
+        return $this->response;
     }
 
 
@@ -143,6 +164,62 @@ class UserFrontService extends UserService
     }
 
 
+    public function getVerificationCode(Collection $input)
+    {
+        $user = $this->findBy('mobilePhone', '=', $input->get('mobilePhone'))->first();
+        if (!$user) {
+            $user = $this->store($input);
+        }
+
+        $code = config('app.env') == 'production' ? Helper::generateRandomIntegetString() : '0000';
+        if (config('app.env') == 'production'
+            && $user->lastSendAt
+            && Carbon::now()->diffInSeconds(Carbon::parse($user->lastSendAt)) < config('daydreamlab.user.sms.cooldown')
+        ) {
+            $diff = config('daydreamlab.user.sms.cooldown') - Carbon::now()->diffInSeconds(Carbon::parse($user->lastSendAt));
+            throw new ForbiddenException('SendVerificationCodeInCoolDown', ['seconds' => $diff]);
+        }
+
+        # 寄送簡訊
+        $this->sendNotification(
+            config('daydreamlab.user.sms.channel'),
+            $user->fullMobilePhone,
+            new UserGetVerificationCodeNotification($code)
+        );
+
+        $this->repo->update($user, [
+            'verificationCode' => bcrypt($code),
+            'lastSendAt' => now()->toDateTimeString()
+        ]);
+
+        $this->status = 'SendVerificationCodeSuccess';
+        $this->response = ['uuid' => $user->uuid];
+
+        return $this->response;
+    }
+
+    /**
+     * 編輯會員資訊
+     * @param Collection $input
+     * @return bool
+     */
+    public function modify(Collection $input)
+    {
+        $user = $this->getUser();
+        $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
+        $userData['verificationCode'] = bcrypt(Str::random());
+        $update = $this->repo->update($user, $userData);
+        if (!$update) {
+            throw new InternalServerErrorException('UpdateFail');
+        }
+
+        $companyData = $input->get('company');
+        $userCompany = $user->company;
+        $userCompany->update($companyData);
+
+        $this->status = 'UpdateSuccess';
+    }
+
     /**
      * 註冊帳號
      * @param Collection $input
@@ -158,6 +235,33 @@ class UserFrontService extends UserService
         $this->response = $user->refresh();
 
         return $this->response;
+    }
+
+
+    public function registerMobilePhone(Collection $input)
+    {
+        $user = $this->findBy('uuid', '=', $input->get('uuid'))->first();
+        if (!$user) {
+            throw new NotFoundException('ItemNotExist');
+        }
+
+        $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
+        $userData['verificationCode'] = bcrypt(Str::random());
+        $update = $this->repo->update($user, $userData);
+        if (!$update) {
+            throw new InternalServerErrorException('RegisterFail');
+        }
+
+        $companyData = $input->get('company');
+        $companyData['user_id'] = $user->id;
+        $userCompany = UserCompany::create($companyData);
+        if (!$userCompany) {
+            throw new InternalServerErrorException('RegisterFail');
+        }
+
+        #todo 有沒有送通知?
+
+        $this->status = 'RegisterSuccess';
     }
 
 
@@ -208,6 +312,28 @@ class UserFrontService extends UserService
             $this->status = 'ResetPasswordEmailSend';
         } else {
             throw new NotFoundException('ItemNotExist', $input);
+        }
+    }
+
+
+    public function verifyVerificationCode(Collection $input)
+    {
+        $user = $this->findBy('mobilePhone', '=', $input->get('mobilePhone'))->first();
+        if (!$user) {
+            throw new NotFoundException('ItemNotExist', ['mobilePhone' => $input->get('mobilePhone')]);
+        }
+
+        $verify = Hash::check($input->get('verificationCode'), $user->verificationCode);
+        if ($verify) {
+            if (config('app.env') == 'production') {
+                if (now() > Carbon::parse($user->lastSendAt)->addMinutes(config('daydreamlab.user.sms.expiredTime'))) {
+                    throw new ForbiddenException('VerificationCodeExpired');
+                }
+            }
+
+            $this->status = 'VerifyVerificationCodeSuccess';
+        } else {
+            throw new ForbiddenException('InvalidVerificationCode');
         }
     }
 }

@@ -25,10 +25,10 @@ class UserCompany extends BaseModel
      */
     protected $fillable = [
         'user_id',
-//        'company_id',
+        'company_id',
         'name',
+        'email',
         'vat',
-        'quit',
         'phoneCode',
         'phone',
         'mobilePhone',
@@ -41,6 +41,7 @@ class UserCompany extends BaseModel
         'zipcode',
         'department',
         'jobTitle',
+        'quit',
         'created_by',
         'updated_by'
     ];

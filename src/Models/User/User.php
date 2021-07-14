@@ -54,6 +54,7 @@ class User extends BaseModel implements
      */
     protected $fillable = [
         'email',
+        'backupEmail',
         'password',
         'name',
         'firstName',
@@ -79,11 +80,13 @@ class User extends BaseModel implements
         'upgradeReason',
         'activation',
         'activateToken',
+        'verificationCode',
         'block',
         'canDelete',
         'resetPassword',
         'lastResetAt',
         'lastPassword',
+        'lastSendAt',
         'lastLoginAt',
         'lastLoginIp',
         'created_by',
@@ -120,6 +123,12 @@ class User extends BaseModel implements
             $item->created_by = $user
                 ? $user->id
                 : null;
+            $item->password = $item->password
+                ? $item->password
+                : bcrypt(Str::random(8));
+            $item->verificationCode = $item->verificationCode
+                ? $item->verificationCode
+                : bcrypt(Str::random(8));
         });
 
         static::updating(function ($item) {
@@ -134,6 +143,12 @@ class User extends BaseModel implements
     public function company()
     {
         return $this->hasOne(UserCompany::class, 'user_id', 'id');
+    }
+
+
+    public function companies()
+    {
+        return $this->hasMany(UserCompany::class, 'user_id', 'id');
     }
 
 
@@ -202,6 +217,12 @@ class User extends BaseModel implements
         }
 
         return $assets->unique('id')->values();
+    }
+
+
+    public function getFullMobilePhoneAttribute()
+    {
+        return $this->mobilePhoneCode . '-' . $this->mobilePhone;
     }
 
 

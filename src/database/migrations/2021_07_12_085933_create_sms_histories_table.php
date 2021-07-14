@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSmssHistoriesTable extends Migration
+class CreateSmsHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateSmssHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('smss_histories', function (Blueprint $table) {
+        Schema::create('sms_histories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('phoneCode');
             $table->string('phone');
+            $table->string('category');
             $table->string('type');
             $table->text('message');
             $table->string('MitakeMsgId');
@@ -35,6 +36,6 @@ class CreateSmssHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('smss_histories');
+        Schema::dropIfExists('sms_histories');
     }
 }

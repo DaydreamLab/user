@@ -10,43 +10,52 @@ use DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController;
 use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
 use DaydreamLab\User\Controllers\Company\Admin\CompanyAdminController;
 
- /************************************  前台 API  ************************************/
-
+/************************************  前台 API  ************************************/
 // 啟用帳號
-Route::get('/api/user/activate/{token}', [UserFrontController::class, 'activate']);
+//Route::get('/api/user/activate/{token}', [UserFrontController::class, 'activate']);
 
 // 寄送忘記密碼Email
-Route::post('/api/password/email', [UserFrontController::class, 'sendResetLinkEmail']);
+//Route::post('/api/password/email', [UserFrontController::class, 'sendResetLinkEmail']);
 
 // 驗證忘記密碼token合法
-Route::get('/api/password/reset/{token}', [UserFrontController::class, 'forgotPasswordTokenValidate']);
+//Route::get('/api/password/reset/{token}', [UserFrontController::class, 'forgotPasswordTokenValidate']);
 
 // 重設密碼
-Route::post('/api/password/reset', [UserFrontController::class, 'resetPassword']);
+//Route::post('/api/password/reset', [UserFrontController::class, 'resetPassword']);
 
-// 檢查Email是否使用過
-Route::post('/api/user/checkEmail', [UserFrontController::class, 'checkEmail'])
-    ->middleware(['CORS']);
+# 檢查Email是否使用過
+Route::post('/api/user/checkEmail', [UserFrontController::class, 'checkEmail'])->middleware(['CORS']);
 
-// 登入
+# 檢查手機是否已經註冊過
+Route::post('/api/user/checkMobilePhone', [UserFrontController::class, 'checkMobilePhone']);
+
+# 編輯會員資料
+Route::post('/api/user/store', [UserFrontController::class, 'store']);
+
+# 取得手機驗證碼
+Route::post('/api/user/getCode', [UserFrontController::class, 'getVerificationCode']);
+
+# 驗證手機驗證碼
+Route::post('/api/user/verifyCode', [UserFrontController::class, 'verifyVerificationCode']);
+
+# 登入
 Route::post('/api/user/login', [UserFrontController::class, 'login'])->name('login');
 
-// 註冊
+# 註冊
 Route::post('/api/user/register', [UserFrontController::class, 'register']);
 
-// 登出
+# 登出
 Route::get('/api/user/logout', [UserController::class, 'logout']);
 
-// 檢查token狀態
-Route::get('/api/user/login', [UserFrontController::class, 'getLogin'])
-    ->middleware(['expired']);
+# 檢查token狀態
+Route::get('/api/user/login', [UserFrontController::class, 'getLogin'])->middleware(['expired']);
 
-Route::get('/api/user', [UserFrontController::class, 'getItem'])
-    ->middleware(['expired']);
+# 取的使用者資訊
+//Route::get('/api/user', [UserFrontController::class, 'getItem'])->middleware(['expired']);
 
-Route::get('/api/user/login/facebook', [UserFrontController::class, 'fbLogin']);
-Route::get('/api/user/login/facebook/callback', [UserFrontController::class, 'fbCallback']);
-//
+//Route::get('/api/user/login/facebook', [UserFrontController::class, 'fbLogin']);
+//Route::get('/api/user/login/facebook/callback', [UserFrontController::class, 'fbCallback']);
+
 
 /************************************  後台 API  ************************************/
 

@@ -14,13 +14,34 @@ class UserFrontGetLoginResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            //'id'            => $this->id,
-            'firstName'     => $this->firstName,
-            'lastName'      => $this->lastName,
-            'redirect'      => '/',
-            'token'         => $this->token,
-            //'groups'        => $this->groups,
+        $data = [
+            'uuid'          => $this->uuid,
+            'name'          => $this->name,
+            'email'         => $this->email,
+            'backupEmail'   => $this->backupEmail,
+            'company'       => [
+                'name'          => $this->company->name,
+                'email'         => $this->company->email,
+                'phoneCode'     => $this->company->phoneCode,
+                'phone'         => $this->company->phone,
+                'extNumber'     => $this->company->extNumber,
+                'city'          => $this->company->city,
+                'district'      => $this->company->district,
+                'address'       => $this->company->address,
+                'zipcode'       => $this->company->zipcode,
+                'department'    => $this->company->department,
+                'jobTitle'      => $this->company->jobTitle,
+            ]
         ];
+
+        if ($this->accessToken) {
+            $data['token'] = $this->accessToken;
+        }
+
+        if ($this->isAdmin()) {
+            $data['redirect'] = $this->groups->sortBy('id')->last()->redirect;
+        }
+
+        return $data;
     }
 }

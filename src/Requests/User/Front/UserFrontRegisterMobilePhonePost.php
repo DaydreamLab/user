@@ -5,7 +5,7 @@ namespace DaydreamLab\User\Requests\User\Front;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
 
-class UserFrontStorePost extends AdminRequest
+class UserFrontRegisterMobilePhonePost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,6 +25,8 @@ class UserFrontStorePost extends AdminRequest
     public function rules()
     {
         return [
+            'uuid'              => 'required|uuid',
+            'name'              => 'required|string',
             'email'             => 'required|email',
             'backupEmail'       => 'nullable|email',
             'company'           => 'required|array',

@@ -3,13 +3,16 @@
 namespace DaydreamLab\User\Controllers\User\Front;
 
 use Carbon\Carbon;
+use DaydreamLab\User\Requests\User\Front\UserFrontChangeCheckMobilePhoneRequest;
 use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontCheckEmailPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontLoginPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontRegisterMobilePhonePost;
 use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Requests\User\Front\UserFrontVerifyCodeRequest;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontResource;
@@ -51,6 +54,18 @@ class UserFrontController extends BaseController
     {
         try {
             $this->service->checkEmail($request->validated()->get('email'));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function checkMobilePhone(UserFrontChangeCheckMobilePhoneRequest $request)
+    {
+        try {
+            $this->service->checkMobilePhone($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
@@ -135,6 +150,18 @@ class UserFrontController extends BaseController
     }
 
 
+    public function getVerificationCode(UserFrontChangeCheckMobilePhoneRequest $request)
+    {
+        try {
+            $this->service->getVerificationCode($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
     public function login(UserFrontLoginPost $request)
     {
         if(config('daydreamlab.user.login.enable')) {
@@ -152,23 +179,34 @@ class UserFrontController extends BaseController
     }
 
 
-    public function register(UserFrontRegisterPost $request)
+//    public function register(UserFrontRegisterPost $request)
+//    {
+//        if (config('daydreamlab.user.register.enable')) {
+//            try {
+//                $this->service->register($request->validated());
+//            } catch (Throwable $t) {
+//                $this->handleException($t);
+//            }
+//        } else {
+//            $this->service->status = 'RegistrationIsBlocked';
+//        }
+//
+//        return $this->response($this->service->status,
+//            $this->service->response
+//                ? new UserFrontResource($this->service->response)
+//                : null
+//        );
+//    }
+
+    public function register(UserFrontRegisterMobilePhonePost $request)
     {
-        if (config('daydreamlab.user.register.enable')) {
-            try {
-                $this->service->register($request->validated());
-            } catch (Throwable $t) {
-                $this->handleException($t);
-            }
-        } else {
-            $this->service->status = 'RegistrationIsBlocked';
+        try {
+            $this->service->registerMobilePhone($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
         }
 
-        return $this->response($this->service->status,
-            $this->service->response
-                ? new UserFrontResource($this->service->response)
-                : null
-        );
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -199,7 +237,19 @@ class UserFrontController extends BaseController
     public function store(UserFrontStorePost $request)
     {
         try {
-            $this->service->store($request->validated());
+            $this->service->modify($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function verifyVerificationCode(UserFrontVerifyCodeRequest $request)
+    {
+        try {
+            $this->service->verifyVerificationCode($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }

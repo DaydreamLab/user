@@ -5,10 +5,11 @@ namespace DaydreamLab\User\Models\Company;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
+use Kalnoy\Nestedset\NodeTrait;
 
-class Company extends BaseModel
+class CompanyCategory extends BaseModel
 {
-    use UserInfo, RecordChanger {
+    use NodeTrait, UserInfo, RecordChanger {
         RecordChanger::boot as traitBoot;
     }
     /**
@@ -16,10 +17,10 @@ class Company extends BaseModel
      *
      * @var string
      */
-    protected $table = 'companies';
+    protected $table = 'companies_categories';
 
 
-    protected $name = 'Company';
+    protected $name = 'CompanyCategory';
 
 
     /**
@@ -28,22 +29,20 @@ class Company extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'name',
-        'category_id',
-        'vat',
-        'domain',
-        'logo',
-        'phoneCode',
-        'phone',
-        'country',
-        'state_',
-        'city',
-        'district',
-        'address',
-        'zipcode',
+        'title',
+        'alias',
+        'state',
+        'introimage',
         'introtext',
+        'image',
         'description',
+        'hits',
+        'access',
         'ordering',
+        'params',
+        'extrafields',
+        'extrafields_search',
+        'locked_by',
         'created_by',
         'updated_by'
     ];
@@ -68,23 +67,13 @@ class Company extends BaseModel
 
 
     protected $casts = [
-        'category_id' => 'integer'
+        'params'        => 'array',
+        'extrafields'   => 'array'
     ];
 
 
     public static function boot()
     {
         self::traitBoot();
-
-        static::creating(function ($item) {
-            $item->phoneCode = '+886';
-            $item->country = '臺灣';
-        });
-    }
-
-
-    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(CompanyCategory::class, 'category_id', 'id');
     }
 }
