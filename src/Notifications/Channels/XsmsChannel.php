@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Notifications\Channels;
 
+use DaydreamLab\JJAJ\Helpers\ArrayToXml;
 use DaydreamLab\User\Models\SmsHistory\SmsHistory;
 use GuzzleHttp\Client;
 use Illuminate\Notifications\Notification;
@@ -48,23 +49,20 @@ class XsmsChannel
         $message = $notification->toXsms($notifiable);
 
         $content = [
-            'Request' => [
-                'Subject' => $message->subject,
-                'Message' => $message->content,
-                'MDNList' => [
-                    [
-                        'MDN'       => $to,
-                        'Message'   => strip_tags($message->content)
-                    ]
+            'Subject' => $message->subject,
+            'Message' => $message->content,
+            'MDNList' => [
+                [
+                    'MDN'       => $to,
+                    'Message'   => strip_tags($message->content)
                 ]
             ]
         ];
-        $xml = new \SimpleXMLElement('<root>');
 
-        show($xml->asXML());
-        exit();
+        $xml = ArrayToXml::convertWithoutDeclaration($content, 'Request');
+        $this->params['Content'] = $xml;
 
-        if (config('daydreamlab.user.sms.xsms.env') == 'local') {
+        if (config('daydreamlab.user.sms.env') == 'local') {
             $sendResult = true;
             $msgId = '';
         } else {
@@ -73,20 +71,10 @@ class XsmsChannel
                 'form_params' => $this->params
             ]);
 
-            $content = $response->getBody()->getContents();
-
-            $contentExplode = explode('%0D%0A', urlencode($content));
-
-            /**
-             * 0: client id
-             * 1: message id
-             * 2: status code
-             * 3: account point
-             * 4: null
-             */
-            $statusCode = explode('=', urldecode($contentExplode[2]))[1];
-            $msgId      = explode('=', urldecode($contentExplode[1]))[1];
-            $sendResult = in_array($statusCode, [1,2,4]) ? 1 : 0;
+            $response = $response->getBody()->getContents();
+            $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
+            $statusCode = $arrayResponse->Code;
+            $sendResult = $arrayResponse->Code == 0 ? 1 : 0;
         }
 
         if (config('daydreamlab.user.sms.log')) {
@@ -96,10 +84,12 @@ class XsmsChannel
                 'phone'         => $this->phone,
                 'category'      => $message->category,
                 'type'          => $message->type,
-                'MitakeMsgId'   => $msgId,
+                'messageId'     => $msgId,
                 'message'       => $message->content,
                 'messageLength' => $strlen,
                 'messageCount'  => ceil($strlen / 70),
+                'success'       => $sendResult,
+                'responseCode'  => isset($statusCode) ?: '',
                 'created_by'    => $message->creatorId
             ];
 
