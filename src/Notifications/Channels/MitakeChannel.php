@@ -81,10 +81,12 @@ class MitakeChannel
                 'phone'         => $this->phone,
                 'category'      => $message->category,
                 'type'          => $message->type,
-                'MitakeMsgId'   => $msgId,
+                'messageId'     => $msgId,
                 'message'       => $message->content,
                 'messageLength' => $strlen,
                 'messageCount'  => ceil($strlen / 70),
+                'success'       => $sendResult,
+                'responseCode'  => isset($statusCode) ?: '',
                 'created_by'    => $message->creatorId
             ];
 
