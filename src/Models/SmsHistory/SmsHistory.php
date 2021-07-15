@@ -32,10 +32,12 @@ class SmsHistory extends BaseModel
         'phone',
         'category',
         'type',
-        'MitakeMsgId',
+        'messageId',
         'message',
         'messageCount',
         'messageLength',
+        'success',
+        'responseCode',
         'created_by',
         'updated_by'
     ];

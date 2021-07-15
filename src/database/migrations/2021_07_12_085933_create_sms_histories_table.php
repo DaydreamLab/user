@@ -20,9 +20,11 @@ class CreateSmsHistoriesTable extends Migration
             $table->string('category');
             $table->string('type');
             $table->text('message');
-            $table->string('MitakeMsgId');
+            $table->string('messageId');
             $table->unsignedInteger('messageCount')->default(0);
             $table->unsignedInteger('messageLength')->default(0);
+            $table->unsignedTinyInteger('success');
+            $table->string('responseCode')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
