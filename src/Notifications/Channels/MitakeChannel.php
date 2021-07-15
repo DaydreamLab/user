@@ -49,7 +49,7 @@ class MitakeChannel
         $this->params['smbody'] = strip_tags($message->content);
         $this->params['dstaddr'] = $to;
 
-        if (config('daydreamlab.user.sms.mitake.env') == 'local') {
+        if (config('daydreamlab.user.sms.env') == 'local') {
             $sendResult = true;
             $msgId = '';
         } else {
