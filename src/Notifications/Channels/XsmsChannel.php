@@ -99,20 +99,4 @@ class XsmsChannel
 
         return $sendResult;
     }
-
-
-    public function array_to_xml($array, &$xml) {
-        foreach($array as $key => $value) {
-            if(is_array($value)) {
-                if(!is_numeric($key)){
-                    $subnode = $xml->addChild($key);
-                    $this->array_to_xml($value, $subnode);
-                } else {
-                    $this->array_to_xml($value, $subnode);
-                }
-            } else {
-                $xml->addChild($key, $value);
-            }
-        }
-    }
 }
