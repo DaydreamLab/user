@@ -47,7 +47,8 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
             'company.district'  => 'required|string',
             'company.address'   => 'required|string',
             'company.zipcode'   => 'nullable|numeric',
-            #todo: 電子報
+            'newsletterAlias'   => 'nullable|array',
+            'newsletterAlias.*' => 'required|string',
         ];
     }
 

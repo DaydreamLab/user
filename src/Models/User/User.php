@@ -141,6 +141,29 @@ class User extends BaseModel implements
     }
 
 
+    public function accessGroups()
+    {
+        return $this->groups()->with('defaultAccessGroups');
+    }
+
+
+    /**
+     * 這邊很奇怪，不能直接用 groups->with('defaultAccessGroups')
+     * 反而要透過 accessGroups 這層，不然會當 mutator 一直重複 query，有空再來研究吧
+     * @return array
+     */
+    public function canAccessGroupIds()
+    {
+        $accessGroupIds = collect();
+        $this->accessGroups->each(function ($group) use (&$accessGroupIds) {
+            $accessGroupIds = $accessGroupIds->merge($group->defaultAccessGroups->pluck('id'));
+            $accessGroupIds = $accessGroupIds->merge([$group->id]);
+        });
+
+        return $accessGroupIds->all();
+    }
+
+
     public function company()
     {
         return $this->hasOne(UserCompany::class, 'user_id', 'id');
@@ -173,29 +196,6 @@ class User extends BaseModel implements
     }
 
 
-    public function accessGroups()
-    {
-        return $this->groups()->with('defaultAccessGroups');
-    }
-
-
-    /**
-     * 這邊很奇怪，不能直接用 groups->with('defaultAccessGroups')
-     * 反而要透過 accessGroups 這層，不然會當 mutator 一直重複 query，有空再來研究吧
-     * @return array
-     */
-    public function canAccessGroupIds()
-    {
-        $accessGroupIds = collect();
-        $this->accessGroups->each(function ($group) use (&$accessGroupIds) {
-            $accessGroupIds = $accessGroupIds->merge($group->defaultAccessGroups->pluck('id'));
-            $accessGroupIds = $accessGroupIds->merge([$group->id]);
-        });
-
-        return $accessGroupIds->all();
-    }
-
-
     public function getApisAttribute()
     {
         $groups = $this->groups()->with('apis')->get();
@@ -218,6 +218,18 @@ class User extends BaseModel implements
         }
 
         return $assets->unique('id')->values();
+    }
+
+
+    public function getAccessGroupIdsAttribute()
+    {
+        $accessGroupIds = collect();
+        $this->accessGroups->each(function ($group) use (&$accessGroupIds) {
+            $accessGroupIds = $accessGroupIds->merge($group->defaultAccessGroups->pluck('id'));
+            $accessGroupIds = $accessGroupIds->merge([$group->id]);
+        });
+
+        return $accessGroupIds->all();
     }
 
 
@@ -316,6 +328,18 @@ class User extends BaseModel implements
         return false;
     }
 
+    public static function newFactory()
+    {
+        return UserFactory::new();
+    }
+
+
+    public function newsletterCategories()
+    {
+        return $this->belongsToMany(Newsletter::class, 'newsletter_category_user_maps', 'user_id', 'category_id')
+            ->withTimestamps();
+    }
+
 
     public function setLimit($limit)
     {
@@ -338,19 +362,6 @@ class User extends BaseModel implements
         if ($order_by && $order_by != ''){
             $this->order_by = $order_by;
         }
-    }
-
-
-    public static function newFactory()
-    {
-        return UserFactory::new();
-    }
-
-
-    public function newsletters()
-    {
-        return $this->belongsToMany(Newsletter::class, 'newsletter_user_maps', 'user_id', 'newsletter_id')
-            ->withTimestamps();
     }
 
 
