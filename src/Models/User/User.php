@@ -143,25 +143,12 @@ class User extends BaseModel implements
 
     public function accessGroups()
     {
-        return $this->groups()->with('defaultAccessGroups');
+        return $this->groups()
+            ->with('defaultAccessGroups')
+            ->with('descendants')
+            ->with('ancestors');
     }
 
-
-    /**
-     * 這邊很奇怪，不能直接用 groups->with('defaultAccessGroups')
-     * 反而要透過 accessGroups 這層，不然會當 mutator 一直重複 query，有空再來研究吧
-     * @return array
-     */
-    public function canAccessGroupIds()
-    {
-        $accessGroupIds = collect();
-        $this->accessGroups->each(function ($group) use (&$accessGroupIds) {
-            $accessGroupIds = $accessGroupIds->merge($group->defaultAccessGroups->pluck('id'));
-            $accessGroupIds = $accessGroupIds->merge([$group->id]);
-        });
-
-        return $accessGroupIds->all();
-    }
 
 
     public function company()
@@ -187,7 +174,7 @@ class User extends BaseModel implements
         $accessIds = [];
         foreach ($allViewlevels as $viewlevel) {
             $viewlevelGroupIds = $viewlevel->groups->pluck('id');
-            if ($viewlevelGroupIds->intersect($this->canAccessGroupIds())->count() == $viewlevelGroupIds->count()) {
+            if ($viewlevelGroupIds->intersect($this->accessGroupIds)->count() == $viewlevelGroupIds->count()) {
                 $accessIds[] = $viewlevel->id;
             }
         }
@@ -224,8 +211,21 @@ class User extends BaseModel implements
     public function getAccessGroupIdsAttribute()
     {
         $accessGroupIds = collect();
+
         $this->accessGroups->each(function ($group) use (&$accessGroupIds) {
-            $accessGroupIds = $accessGroupIds->merge($group->defaultAccessGroups->pluck('id'));
+            if ($group->level) {
+                # 子節點所有權限
+                $accessGroupIds = $accessGroupIds->merge($group->descendants->pluck('id'));
+                $ancestorRoot = $group->ancestors->filter(function ($g) {
+                    return $g->level == 0;
+                })->first();
+
+                # 根節點本身以外的所有預設權限
+                $exceptAncestorRootGroupIds = $ancestorRoot->defaultAccessGroups->where('id', '!=', $ancestorRoot->id)->pluck('id');
+                $accessGroupIds = $accessGroupIds->merge($exceptAncestorRootGroupIds);
+            } else {
+                $accessGroupIds = $accessGroupIds->merge($group->defaultAccessGroups->pluck('id'));
+            }
             $accessGroupIds = $accessGroupIds->merge([$group->id]);
         });
 
@@ -249,6 +249,7 @@ class User extends BaseModel implements
     {
         return $this->groups()->get();
     }
+
 
     public function getLimit()
     {

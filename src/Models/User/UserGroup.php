@@ -102,6 +102,11 @@ class UserGroup extends BaseModel
     }
 
 
+    public function getLevelAttribute()
+    {
+        return $this->ancestors->count();
+    }
+
     /**
      * 組合出群組的權限
      * @return array
@@ -135,7 +140,7 @@ class UserGroup extends BaseModel
             $data->push(collect($tempAssetGroup));
         });
 
-        return $data;
+        return $data->all();
     }
 
 

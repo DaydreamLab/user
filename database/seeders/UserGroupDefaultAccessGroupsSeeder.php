@@ -4,7 +4,6 @@ namespace DaydreamLab\User\Database\Seeders;
 
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\User\UserGroup;
-use DaydreamLab\User\Services\Viewlevel\Admin\ViewlevelAdminService;
 use Illuminate\Database\Seeder;
 
 class UserGroupDefaultAccessGroupsSeeder extends Seeder

@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User\Front;
 
+use DaydreamLab\Cms\Services\NewsletterSubscription\Front\NewsletterSubscriptionFrontService;
 use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
@@ -213,9 +214,16 @@ class UserFrontService extends UserService
             throw new InternalServerErrorException('UpdateFail');
         }
 
+//        app(NewsletterSubscriptionFrontService::class)->
+//
         $companyData = $input->get('company');
         $userCompany = $user->company;
-        $userCompany->update($companyData);
+        if ($userCompany) {
+            $userCompany->update($companyData);
+        } else {
+            $companyData['user_id'] = $user->id;
+            $user->company()->create($companyData);
+        }
 
         $this->status = 'UpdateSuccess';
     }
