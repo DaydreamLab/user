@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Models\User;
 
+use DaydreamLab\Cms\Models\Newsletter\Newsletter;
 use DaydreamLab\Cms\Models\Tag\Tag;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
@@ -343,6 +344,13 @@ class User extends BaseModel implements
     public static function newFactory()
     {
         return UserFactory::new();
+    }
+
+
+    public function newsletters()
+    {
+        return $this->belongsToMany(Newsletter::class, 'newsletter_user_maps', 'user_id', 'newsletter_id')
+            ->withTimestamps();
     }
 
 

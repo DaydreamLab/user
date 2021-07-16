@@ -7,6 +7,10 @@ use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
 
 class UserFrontStorePost extends AdminRequest
 {
+    protected $modelName = 'User';
+
+    protected $apiMethod = 'storeUser';
+
     /**
      * Determine if the user is authorized to make this request.
      *

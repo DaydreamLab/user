@@ -100,6 +100,7 @@ class UserAdminStorePost extends AdminRequest
             'company.zipcode'       => 'nullable|string',
             'company.department'    => 'nullable|string',
             'company.jobTitle'      => 'nullable|string',
+            'newsletter'
         ];
         return array_merge(parent::rules(), $rules);
     }

@@ -4,14 +4,13 @@ namespace DaydreamLab\User\Requests\User\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class UserFrontVerifyCodeRequest extends AdminRequest
+class UserFrontGetVerificationCodeRequest extends AdminRequest
 {
     protected $modelName = 'User';
 
-    protected $apiMethod = 'verifyVerificationCode';
+    protected $apiMethod = 'getVerificationCode';
 
     protected $needAuth = false;
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -32,7 +31,6 @@ class UserFrontVerifyCodeRequest extends AdminRequest
         return [
             'mobilePhoneCode'  => 'required|regex:/\+[0-9]+$/',
             'mobilePhone'      => 'required|numeric',
-            'verificationCode' => 'required|numeric'
         ];
     }
 

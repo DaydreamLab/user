@@ -3,7 +3,7 @@
 namespace DaydreamLab\User\Controllers\User\Front;
 
 use Carbon\Carbon;
-use DaydreamLab\User\Requests\User\Front\UserFrontChangeCheckMobilePhoneRequest;
+use DaydreamLab\User\Requests\User\Front\UserFrontCheckMobilePhoneRequest;
 use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontCheckEmailPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
@@ -62,7 +62,7 @@ class UserFrontController extends BaseController
     }
 
 
-    public function checkMobilePhone(UserFrontChangeCheckMobilePhoneRequest $request)
+    public function checkMobilePhone(UserFrontCheckMobilePhoneRequest $request)
     {
         try {
             $this->service->checkMobilePhone($request->validated());
@@ -150,13 +150,14 @@ class UserFrontController extends BaseController
     }
 
 
-    public function getVerificationCode(UserFrontChangeCheckMobilePhoneRequest $request)
+    public function getVerificationCode(UserFrontCheckMobilePhoneRequest $request)
     {
         try {
             $this->service->getVerificationCode($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
+
 
         return $this->response($this->service->status, $this->service->response);
     }

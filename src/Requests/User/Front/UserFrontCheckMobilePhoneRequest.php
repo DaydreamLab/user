@@ -4,8 +4,13 @@ namespace DaydreamLab\User\Requests\User\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class UserFrontChangeCheckMobilePhoneRequest extends AdminRequest
+class UserFrontCheckMobilePhoneRequest extends AdminRequest
 {
+    protected $modelName = 'User';
+
+    protected $apiMethod = 'checkMobilePhone';
+
+    protected $needAuth = false;
     /**
      * Determine if the user is authorized to make this request.
      *

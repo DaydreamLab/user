@@ -2,18 +2,15 @@
 
 namespace DaydreamLab\User\Listeners;
 
-
 use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\Observer\Services\Log\LogService;
 
 class UserEventSubscriber
 {
 
     protected $logService;
 
-    public function __construct(LogService $logService)
+    public function __construct()
     {
-        $this->logService = $logService;
     }
 
 
@@ -138,7 +135,5 @@ class UserEventSubscriber
             'DaydreamLab\User\Events\Remove',
             'DaydreamLab\User\Listeners\UserEventSubscriber@onRemove'
         );
-
-
     }
 }

@@ -7,6 +7,11 @@ use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
 
 class UserFrontRegisterMobilePhonePost extends AdminRequest
 {
+    protected $modelName = 'User';
+
+    protected $apiMethod = 'register';
+
+    protected $needAuth = false;
     /**
      * Determine if the user is authorized to make this request.
      *
