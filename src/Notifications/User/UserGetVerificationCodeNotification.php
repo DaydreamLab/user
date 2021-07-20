@@ -10,7 +10,7 @@ class UserGetVerificationCodeNotification extends BaseNotification
 {
     use Queueable;
 
-    protected $category = 'user';
+    protected $category = 'User';
 
     protected $type = 'getVerificationCode';
 
