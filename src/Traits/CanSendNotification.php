@@ -6,8 +6,12 @@ use Illuminate\Support\Facades\Notification;
 
 trait CanSendNotification
 {
-    public function sendNotification($channel, $to, $notification)
+    public function sendNotification($channelType, $to, $notification)
     {
-        Notification::route($channel, $to)->notify($notification);
+        if ($channelType == 'sms') {
+            Notification::route(config('daydreamlab.user.sms.channel'), $to)->notify($notification);
+        } elseif ($channelType == 'mail') {
+            Notification::route('mail', $to)->notify($notification);
+        }
     }
 }

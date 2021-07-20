@@ -183,7 +183,7 @@ class UserFrontService extends UserService
 
         # 寄送簡訊
         $this->sendNotification(
-            config('daydreamlab.user.sms.channel'),
+            'sms',
             $user->fullMobilePhone,
             new UserGetVerificationCodeNotification($code)
         );
