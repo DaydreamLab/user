@@ -59,7 +59,7 @@ return [
     'TOKEN_EXPIRED'                     => 401,
     'TOKEN_REVOKED'                     => 403,
 
-    'UNAUTHORIZED'                      => 403,
+    'UNAUTHORIZED'                      => 401,
     'UNACTIVATED'                       => 403,
 
     'VERIFY_VERIFICATION_CODE_SUCCESS'  => 200,
