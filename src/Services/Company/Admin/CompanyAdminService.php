@@ -47,4 +47,16 @@ class CompanyAdminService extends CompanyService
             return  true;
         }
     }
+
+
+    public function store(Collection $input)
+    {
+        $result = parent::store($input);
+        if ($input->has('id')) {
+            $result = $this->find($input->get('id'));
+        }
+        $this->response = $result;
+
+        return $this->response;
+    }
 }
