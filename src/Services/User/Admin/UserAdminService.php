@@ -32,10 +32,13 @@ class UserAdminService extends UserService
 
     public function addMapping($item, $input)
     {
-        if (count($input->get('groupIds'))) {
+        if (count($input->get('groupIds') ?: [])) {
             $item->groups()->attach($input->get('groupIds'));
         }
 
+        if (count($input->get('brandIds') ?:[])) {
+            $item->brands()->attach($input->get('brandIds'));
+        }
 
         if ($item->company) {
             $item->company->update($input->get('company'));
@@ -85,7 +88,6 @@ class UserAdminService extends UserService
 
     public function getSelfPage()
     {
-
         $user   = $this->getUser();
         $groups = $user->groups;
 
@@ -103,8 +105,19 @@ class UserAdminService extends UserService
 
     public function modifyMapping($item, $input)
     {
-        $item->groups()->sync($input->get('group_ids'), true);
+        $item->groups()->sync($input->get('groupIds'), true);
         $item->company()->update($input->get('company'));
+
+        if (count($input->get('brandIds') ?: [])) {
+            $item->brands()->sync($input->get('brandIds'));
+        }
+    }
+
+
+    public function removeMapping($item)
+    {
+        $item->groups()->detach();
+        $item->brands()->detach();
     }
 
 
@@ -115,7 +128,7 @@ class UserAdminService extends UserService
         }
 
         // 確保使用者所指派的群組，具有該權限
-        $inputGroupIds = collect($input->get('group_ids'));
+        $inputGroupIds = collect($input->get('groupIds'));
         $userAccessGroupIds = $this->getUser()->accessGroupIds;
         if ($inputGroupIds->intersect($userAccessGroupIds)->count() != $inputGroupIds->count()) {
             throw new UnauthorizedException('InsufficientPermissionAssignGroup', [
@@ -126,11 +139,5 @@ class UserAdminService extends UserService
         $result = parent::store($input);
 
         return $result;
-    }
-
-
-    public function removeMapping($item)
-    {
-        $item->groups()->detach();
     }
 }

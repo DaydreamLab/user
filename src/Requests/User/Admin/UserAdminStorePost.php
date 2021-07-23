@@ -25,7 +25,7 @@ class UserAdminStorePost extends AdminRequest
     public function handleCompany($company)
     {
         $company = $company ? collect($company) : collect();
-        $keys = ['id', 'quit', 'name', 'ubn', 'phoneCode', 'phone', 'extNumber', 'country', 'state', 'city', 'district', 'address', 'zipcode', 'department', 'jobTitle'];
+        $keys = ['id', 'quit', 'name', 'vat', 'phoneCode', 'phone', 'extNumber', 'country', 'state', 'city', 'district', 'address', 'zipcode', 'department', 'jobTitle'];
         foreach ($keys as $key) {
             if ($key == 'id') {
                 $company->put('company_id', $company->get($key));
@@ -70,6 +70,8 @@ class UserAdminStorePost extends AdminRequest
             'zipcode'               => 'nullable|string',
             'timezone'              => 'nullable|string',
             'locale'                => 'nullable|string',
+            'brandIds'              => 'nullable|array',
+            'brandIds.*'            => 'nullable|integer',
             'groupIds'              => 'required|array',
             'groupIds.*'            => 'nullable|integer',
             'block'                 => [

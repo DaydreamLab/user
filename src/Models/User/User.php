@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Models\User;
 
+use DaydreamLab\Cms\Models\Brand\Brand;
 use DaydreamLab\Cms\Models\Newsletter\Newsletter;
 use DaydreamLab\Cms\Models\Tag\Tag;
 use DaydreamLab\JJAJ\Models\BaseModel;
@@ -150,6 +151,12 @@ class User extends BaseModel implements
     }
 
 
+    public function brands()
+    {
+        return $this->belongsToMany(Brand::class, 'brands_users_maps', 'user_id', 'brand_id')
+            ->withTimestamps();
+    }
+
 
     public function company()
     {
@@ -248,6 +255,18 @@ class User extends BaseModel implements
     public function getGroupsAttribute()
     {
         return $this->groups()->get();
+    }
+
+
+    public function getIsAdminAttribute()
+    {
+        return $this->isAdmin();
+    }
+
+
+    public function getIsSuperUserAttribute()
+    {
+        return $this->isSuperUser();
     }
 
 
