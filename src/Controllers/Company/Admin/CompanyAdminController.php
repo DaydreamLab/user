@@ -7,6 +7,7 @@ use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminListResourc
 use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminResource;
 use DaydreamLab\User\Services\Company\Admin\CompanyAdminService;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminRemovePost;
+use DaydreamLab\User\Requests\Company\Admin\CompanyAdminRestorePost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminStorePost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminSearchPost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminOrderingPost;
@@ -44,6 +45,19 @@ class CompanyAdminController extends BaseController
         $this->service->setUser($request->user('api'));
         try {
             $this->service->ordering($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function restore(CompanyAdminRestorePost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->restore($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }

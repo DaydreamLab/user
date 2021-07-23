@@ -31,8 +31,10 @@ class CreateCompaniesTable extends Migration
             $table->string('introtext')->nullable();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('ordering')->nullable();
+            $table->unsignedInteger('locked_by')->nullable()->default(0);
+            $table->timestamp('locked_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('update_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ class CompanyAdminListResource extends BaseJsonResource
      */
     public function toArray($request)
     {
-        $timezone = $request->user('api')->timezone;
+        $tz = $request->user('api')->timezone;
 
         return [
             'id'                => $this->id,
@@ -22,8 +22,13 @@ class CompanyAdminListResource extends BaseJsonResource
             'vat'               => $this->vat,
             'domain'            => $this->domain,
             'categoryTitle'     => $this->category->title,
-            'updatedAt'         => $this->getDateTimeString($this->updatedAt, $timezone),
-            'updater'           => $this->updaterName,
+            'created_at'        => $this->getDateTimeString($this->created_at, $tz),
+            'updated_at'        => $this->getDateTimeString($this->updated_at, $tz),
+            'locked_at'         => $this->getDateTimeString($this->locked_at, $tz),
+            'creatorName'       => $this->creatorName,
+            'updaterName'       => $this->updaterName,
+            'lockerName'        => $this->lockerName,
+            'locker'            => ($this->locker) ? $this->locker->only(['id', 'uuid', 'name']) : []
         ];
     }
 }

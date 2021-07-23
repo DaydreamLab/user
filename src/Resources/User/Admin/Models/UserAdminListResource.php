@@ -24,6 +24,8 @@ class UserAdminListResource extends BaseJsonResource
             'firstName'     => $this->firstName,
             'lastName'      => $this->lastName,
             'company'       => $this->company ? new CompanyAdminResource($this->company) : null,
+            'mobilePhoneCode' => $this->moiblePhoneCode,
+            'mobilePhone'   => $this->mobilePhone,
             'block'         => $this->block,
             'activation'    => $this->activation,
             'lastLoginAt'   => $this->getDateTimeString($this->lastLoginAt, $tz),

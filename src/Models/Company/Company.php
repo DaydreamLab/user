@@ -44,6 +44,8 @@ class Company extends BaseModel
         'introtext',
         'description',
         'ordering',
+        'locked_at',
+        'locked_by',
         'created_by',
         'updated_by'
     ];
@@ -68,7 +70,8 @@ class Company extends BaseModel
 
 
     protected $casts = [
-        'category_id' => 'integer'
+        'category_id' => 'integer',
+        'locked_at' => 'datetime:Y-m-d H:i:s',
     ];
 
 
