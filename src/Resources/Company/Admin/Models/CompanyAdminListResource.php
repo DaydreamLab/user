@@ -20,6 +20,7 @@ class CompanyAdminListResource extends BaseJsonResource
             'id'                => $this->id,
             'name'              => $this->name,
             'vat'               => $this->vat,
+            'domain'            => $this->domain,
             'categoryTitle'     => $this->category->title,
             'updatedAt'         => $this->getDateTimeString($this->updatedAt, $timezone),
             'updater'           => $this->updaterName,
