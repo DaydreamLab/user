@@ -51,7 +51,9 @@ class UserAdminResource extends BaseJsonResource
             'tags'                  => $this->tags->map(function ($tag) {
                 return $tag->only(['id', 'title']);
             }),
-            'company'               => $this->company
+            'company'               => $this->company,
+            'blockReason'           => $this->blockReason,
+            'upgradeReason'         => $this->upgradeReason
         ];
     }
 }
