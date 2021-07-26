@@ -29,9 +29,21 @@ class CompanyAdminSearchPost extends ListRequest
                 'nullable',
                 'integer',
                 Rule::in([0,1,-2])
-            ]
+            ],
+            'company_category' => 'nullable|integer'
         ];
 
         return array_merge(parent::rules(), $rules);
+    }
+
+
+    public function validated()
+    {
+        $validated = parent::validated();
+
+        $validated->put('category_id', $validated->get('company_category'));
+        $validated->forget('company_category');
+
+        return $validated;
     }
 }
