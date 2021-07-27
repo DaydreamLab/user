@@ -42,7 +42,7 @@ class UserAdminSearchPost extends ListRequest
                 Rule::in([0,1])
             ],
             'search'    => 'nullable|string',
-            'groups'    => 'nullable|integer'
+            'user_group'    => 'nullable|integer'
         ];
         return array_merge(parent::rules(), $rules);
     }
@@ -53,19 +53,19 @@ class UserAdminSearchPost extends ListRequest
         $validated = parent::validated();
 
         $q = $validated->get('q');
-        if ($groups = $validated->get('groups')) {
+        if ($groups = $validated->get('user_group')) {
             if (is_array($groups)) {
                 $q->whereHas('groups', function ($q) use ($groups) {
-                    $q->whereIn('id', $groups);
+                    $q->whereIn('users_groups_maps.group_id', $groups);
                 });
             } else {
                 $q->whereHas('groups', function ($q) use ($groups) {
-                    $q->where('id', $groups);
+                    $q->where('users_groups_maps.group_id', $groups);
                 });
             }
         }
         $validated->put('q', $q);
-        $validated->forget(['groups']);
+        $validated->forget(['user_group']);
 
         return $validated;
     }
