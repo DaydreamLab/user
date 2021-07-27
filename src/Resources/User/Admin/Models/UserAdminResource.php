@@ -51,7 +51,7 @@ class UserAdminResource extends BaseJsonResource
             'tags'                  => $this->tags->map(function ($tag) {
                 return $tag->only(['id', 'title']);
             }),
-            'company'               => $this->company->makeHidden(['created_at', 'updated_at', 'created_by', 'updated_by']),
+            'company'               => ($this->company) ? $this->company->makeHidden(['created_at', 'updated_at', 'created_by', 'updated_by']) : [],
             'blockReason'           => $this->blockReason,
             'upgradeReason'         => $this->upgradeReason
         ];

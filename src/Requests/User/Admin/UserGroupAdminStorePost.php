@@ -34,10 +34,18 @@ class UserGroupAdminStorePost extends AdminRequest
             'title'         => 'required|string',
             'description'   => 'nullable|string',
             'redirect'      => 'nullable|string',
-            'api_ids'       => 'required|array',
-            'api_ids.*'     => 'nullable|integer',
-            'asset_ids'     => 'required|array',
-            'asset_ids.*'   => 'nullable|integer',
+            'page'                          => 'nullable|array',
+            'page.*'                        => 'nullable|array',
+            'page.*.id'                     => 'nullable|integer',
+            'page.*.assets'                 => 'nullable|array',
+            'page.*.assets.id'              => 'nullable|integer',
+            'page.*.assets.apis'            => 'nullable|array',
+            'page.*.assets.apis.*'          => 'nullable|array',
+            'page.*.assets.apis.*.id'       => 'nullable|integer',
+            //'page.*.assets.apis.*.hidden'   => 'nullable|integer',
+            //'page.*.assets.apis.*.disabled' => 'nullable|integer',
+            'page.*.assets.apis.*.checked'  => 'nullable|integer'
+
         ];
         return array_merge(parent::rules(), $rules);
     }
