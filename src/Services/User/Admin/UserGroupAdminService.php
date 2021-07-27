@@ -49,7 +49,7 @@ class UserGroupAdminService extends UserGroupService
 
     public function addMapping($item, $input)
     {
-        $page = $input->get('page');
+        $page = $input->get('page') ? : [];
         foreach ($page as $assetGroup) {
             $assets = $assetGroup['assets'];
             $assetGroupId = $assetGroup['id'];
@@ -78,7 +78,7 @@ class UserGroupAdminService extends UserGroupService
 
     public function modifyMapping($item, $input)
     {
-        $page = $input->get('page');
+        $page = $input->get('page') ? : [];
         foreach ($page as $assetGroup) {
             $assets = $assetGroup['assets'];
             $assetGroupId = $assetGroup['id'];
