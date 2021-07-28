@@ -46,4 +46,32 @@ class AssetGroupAdminService extends AssetGroupService
     {
         $item->assets()->detach();
     }
+
+
+    public function page(Collection $input)
+    {
+        $assetGroups = $this->all();
+        $page = [];
+        foreach ($assetGroups as $assetGroup) {
+            $tempAssetGroup = $assetGroup->only(['id', 'title']);
+            foreach ($assetGroup->assets as $asset) {
+                $assetApis = $asset->apis->map(function ($assetApi) {
+                    return [
+                        'id'        => $assetApi->id,
+                        'name'      => $assetApi->name,
+                        'hidden'    => $assetApi->pivot->hidden,
+                        'disabled'  => $assetApi->pivot->disabled,
+                        'checked'   => $assetApi->pivot->checked,
+                    ];
+                })->values();
+                $tempAsset = $asset->only(['id', 'title']);
+                $tempAsset['apis'] = $assetApis;
+                $tempAssetGroup['assets'][] = $tempAsset;
+            }
+            $page[] = $tempAssetGroup;
+        }
+        $this->response = $page;
+        $this->status = 'getItemSuccess';
+        return $this->response;
+    }
 }

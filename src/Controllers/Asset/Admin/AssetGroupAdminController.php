@@ -7,6 +7,7 @@ use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminOrderingPost;
 use Throwable;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminGetItem;
 use DaydreamLab\User\Services\Asset\Admin\AssetGroupAdminService;
+use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminPageRequest;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminRemovePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminStorePost;
 use DaydreamLab\User\Requests\Asset\Admin\AssetGroupAdminStatePost;
@@ -47,6 +48,19 @@ class AssetGroupAdminController extends BaseController
         $this->service->setUser($request->user('api'));
         try {
             $this->service->modify($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function page(AssetGroupAdminPageRequest $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->page($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }

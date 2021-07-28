@@ -123,12 +123,12 @@ class UserGroup extends BaseModel
                         return $api->pivot->asset_group_id == $assetGroup->id
                             && $api->pivot->asset_id == $asset->id
                             && $api->pivot->api_id == $assetApi->id;
-                    })->first();;
+                    })->first();
 
                     return [
                         'id'        => $assetApi->id,
                         'name'      => $assetApi->name,
-                        'hidden'    =>  $assetApi->pivot->attributes['hidden'], # 這邊不這樣取會取到 pivot model 的 $hidden[]
+                        'hidden'    => $assetApi->pivot->attributes['hidden'], # 這邊不這樣取會取到 pivot model 的 $hidden[]
                         'disabled'  => $assetApi->pivot->disabled,
                         'checked'   => $targetApi ? 1 : $assetApi->pivot->checked,
                     ];
