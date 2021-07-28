@@ -40,10 +40,18 @@ class UserGroupAdminService extends UserGroupService
 
         $superUserViewlevel = $this->viewlevelAdminService->findBy('title', '=', 'Super User')->first();
         $superUserGroup = $this->repo->findBy('title', '=', 'Super User')->first();
-        $superUserGroup->defaultAccessGroups()->attach($item->id);
         $superUserViewlevel->groups()->attach($item->id);
+        $superUserGroup->defaultAccessGroups()->attach($item->id);
 
-        return $item;
+        $newViewLevel = $this->viewlevelAdminService->store(collect([
+            'title' => $item->title,
+            'canDelete' => 0,
+            'groupIds' => [$item->id]
+        ]));
+        $item->access = $newViewLevel->id;
+        $item->save();
+
+        return $item->refresh();
     }
 
 
