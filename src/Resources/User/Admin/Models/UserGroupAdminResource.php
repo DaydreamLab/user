@@ -19,7 +19,7 @@ class UserGroupAdminResource extends JsonResource
             'title'         => $this->title,
             'parent_id'     => $this->parent_id,
             'tree_title'    => $this->tree_title,
-            'description'   => $this->tree_title,
+            'description'   => $this->description,
             'canDelete'     => $this->canDelete,
             'ordering'      => $this->ordering,
             'redirect'      => $this->redirect,
