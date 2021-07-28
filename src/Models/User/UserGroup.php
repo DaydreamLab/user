@@ -7,6 +7,7 @@ use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Models\Api\Api;
 use DaydreamLab\User\Models\Asset\AssetGroup;
+use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use DaydreamLab\User\Traits\Model\WithAccess;
 use Kalnoy\Nestedset\NodeTrait;
 
@@ -159,6 +160,13 @@ class UserGroup extends BaseModel
     public function users()
     {
         return $this->belongsToMany(User::class, 'users_groups_maps', 'group_id', 'user_id')
+            ->withTimestamps();
+    }
+
+
+    public function viewlevels()
+    {
+        return $this->belongsToMany(Viewlevel::class, 'viewlevels_users_groups_maps', 'group_id', 'viewlevel_id')
             ->withTimestamps();
     }
 }
