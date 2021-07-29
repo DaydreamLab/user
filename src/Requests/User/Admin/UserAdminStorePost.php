@@ -86,7 +86,7 @@ class UserAdminStorePost extends AdminRequest
                 'nullable',
                 Rule::in([0,1])
             ],
-            'password'              => 'required_without:id|nullable|string|min:8|max:16',
+            'password'              => 'nullable|string|min:8|max:16',
             'passwordConfirm'       => 'required_with:password|same:password',
             'company'               => 'nullable|array',
             'company.id'            => 'nullable|integer',
