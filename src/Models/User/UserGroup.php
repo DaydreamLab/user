@@ -118,6 +118,9 @@ class UserGroup extends BaseModel
         $data = collect();
         $this->assetGroups->each(function ($assetGroup) use (&$data, $apis) {
             $tempAssetGroup = $assetGroup->only(['id', 'title']);
+            $tempAssetGroup['path'] = isset($assetGroup->params['path']) ? $assetGroup->params['path'] : '';
+            $tempAssetGroup['type'] = isset($assetGroup->params['type']) ? $assetGroup->params['type'] : '';
+            $tempAssetGroup['component'] = isset($assetGroup->params['component']) ? $assetGroup->params['component'] : '';
             $assetGroup->assets->each(function ($asset) use ($apis, $assetGroup, &$tempAssetGroup) {
                 $assetApis = $asset->apis->map(function ($assetApi) use ($apis, $assetGroup, $asset) {
                     $targetApi = $apis->filter(function ($api) use ($assetGroup, $asset, $assetApi) {
@@ -134,7 +137,7 @@ class UserGroup extends BaseModel
                         'checked'   => $targetApi ? 1 : $assetApi->pivot->checked,
                     ];
                 })->values();
-                $tempAsset = $asset->only(['id', 'title']);
+                $tempAsset = $asset->only(['id', 'title', 'path', 'component', 'type', 'icon', 'showNav']);
                 $tempAsset['apis'] = $assetApis;
                 $tempAssetGroup['assets'][] = collect($tempAsset);
             });
