@@ -68,6 +68,8 @@ class UserAdminStorePost extends AdminRequest
             'district'              => 'nullable|string',
             'address'               => 'nullable|string',
             'zipcode'               => 'nullable|string',
+            'blockReason'           => 'nullable|string',
+            'upgradeReason'         => 'nullable|string',
             'timezone'              => 'nullable|string',
             'locale'                => 'nullable|string',
             'brandIds'              => 'nullable|array',
