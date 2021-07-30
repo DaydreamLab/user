@@ -128,7 +128,6 @@ class UserFrontController extends BaseController
     }
 
 
-
     public function getLogin(Request $request)
     {
         $user = Auth::guard('api')->authenticate();

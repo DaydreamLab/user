@@ -150,7 +150,7 @@ class UserFrontService extends UserService
     {
         $reset_token = $this->passwordResetService->findBy('token', '=', $token)->last();
         if ($reset_token) {
-            if (Carbon::now() > Carbon::parse($reset_token->expired_at)) {
+            if (now() > Carbon::parse($reset_token->expired_at)) {
                 throw new ForbiddenException('ResetPasswordTokenExpired', ['token' => $token]);
             } elseif ($reset_token->reset_at) {
                 throw new ForbiddenException('ResetPasswordTokenIsUsed', ['token' => $token]);
@@ -175,9 +175,9 @@ class UserFrontService extends UserService
         $code = config('app.env') == 'production' ? Helper::generateRandomIntegetString() : '0000';
         if (config('app.env') == 'production'
             && $user->lastSendAt
-            && Carbon::now()->diffInSeconds(Carbon::parse($user->lastSendAt)) < config('daydreamlab.user.sms.cooldown')
+            && now()->diffInSeconds(Carbon::parse($user->lastSendAt)) < config('daydreamlab.user.sms.cooldown')
         ) {
-            $diff = config('daydreamlab.user.sms.cooldown') - Carbon::now()->diffInSeconds(Carbon::parse($user->lastSendAt));
+            $diff = config('daydreamlab.user.sms.cooldown') - now()->tz('UTC')->diffInSeconds(Carbon::parse($user->lastSendAt, 'UTC'));
             throw new ForbiddenException('SendVerificationCodeInCoolDown', ['seconds' => $diff]);
         }
 
@@ -312,7 +312,7 @@ class UserFrontService extends UserService
             $token = $this->passwordResetService->add(collect([
                 'email'         => $input->get('email'),
                 'token'         => Str::random(128),
-                'expired_at'    => Carbon::now()->addHours(3)
+                'expired_at'    => now()->addHours(3)
             ]));
 
             $this->repo->modify($user, collect(['resetPassword' => 1]));
