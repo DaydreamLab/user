@@ -18,6 +18,7 @@ class UserFrontGetLoginResource extends JsonResource
             'uuid'          => $this->uuid,
             'email'         => $this->email,
             'backupEmail'   => $this->backupEmail,
+            'name'          => $this->name
         ];
 
         if ($this->company) {
@@ -32,7 +33,7 @@ class UserFrontGetLoginResource extends JsonResource
                 'address'       => $this->company->address,
                 'zipcode'       => $this->company->zipcode,
                 'department'    => $this->company->department,
-                'jobTitle'      => $this->company->jobTitle,
+                'jobTitle'      => $this->company->jobTitle
             ];
         }
 
