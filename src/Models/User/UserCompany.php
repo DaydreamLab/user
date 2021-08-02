@@ -27,20 +27,24 @@ class UserCompany extends BaseModel
         'user_id',
         'company_id',
         'name',
-        'email',
         'vat',
         'phoneCode',
         'phone',
-        'mobilePhone',
         'extNumber',
+        'email',
+        'department',
+        'jobTitle',
+        'industry',
+        'scale',
+        'purchaseRole',
+        'interestedIssue',
+
         'country',
         'state_',
         'city',
         'district',
         'address',
         'zipcode',
-        'department',
-        'jobTitle',
         'quit',
         'created_by',
         'updated_by'
@@ -66,5 +70,6 @@ class UserCompany extends BaseModel
 
 
     protected $casts = [
+        'interestedIssue' => 'array'
     ];
 }

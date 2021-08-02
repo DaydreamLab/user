@@ -14,7 +14,7 @@ class AssetAdminResource extends BaseJsonResource
      */
     public function toArray($request)
     {
-        $timezone = $this->user($request)->timezone;
+        $timezone = $request->user('api')->timezone;
 
         return [
             'id'                => $this->id,

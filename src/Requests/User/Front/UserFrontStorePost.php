@@ -29,22 +29,25 @@ class UserFrontStorePost extends AdminRequest
     public function rules()
     {
         return [
-            'email'             => 'required|email',
-            'backupEmail'       => 'nullable|email',
-            'company'           => 'required|array',
-            'company.name'      => 'required|string',
-            'company.email'      => 'required|email',
-            'company.vat'       => ['required', 'numeric', new TaiwanUnifiedBusinessNumber()],
-            'company.phoneCode' => 'required|numeric',
-            'company.phone'     => 'required|numeric',
-            'company.extNumber' => 'nullable|numeric',
-            'company.department'=> 'required|string',
-            'company.jobTitle'  => 'required|string',
-            'company.city'      => 'required|string',
-            'company.district'  => 'required|string',
-            'company.address'   => 'required|string',
-            'company.zipcode'   => 'nullable|numeric',
+            'name'                  => 'nullable|string',
+            'email'                 => 'required|email',
+            'backupEmail'           => 'nullable|email',
+            'company'               => 'required|array',
+            'company.name'          => 'required|string',
+            'company.vat'           => ['required', 'numeric', new TaiwanUnifiedBusinessNumber()],
+            'company.phoneCode'     => 'nullable|numeric',
+            'company.phone'         => 'required|numeric',
+            'company.extNumber'     => 'nullable|numeric',
+            'company.email'         => 'required|email',
+            'company.department'    => 'required|string',
+            'company.jobTitle'      => 'required|string',
+            'company.industry'      => 'nullable|string',
+            'company.scale'         => 'nullable|string',
+            'company.purchaseRole'  => 'nullable|string',
+            'company.interestedIssue'   => 'nullable|array',
             #todo: 電子報
+            'newsletterCategoriesAlias'     => 'nullable|array',
+            'newsletterCategoriesAlias.*'   => 'nullable|string'
         ];
     }
 

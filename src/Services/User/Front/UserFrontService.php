@@ -225,6 +225,12 @@ class UserFrontService extends UserService
             $user->company()->create($companyData);
         }
 
+        if ( $subscribe = $input->get('newsletterCategoriesAlias') ) {
+            $nsfs = app(NewsletterSubscriptionFrontService::class);
+            $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe]));
+        }
+
+
         $this->status = 'UpdateSuccess';
     }
 
