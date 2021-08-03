@@ -27,8 +27,20 @@ class UserGroupAdminSearchPost extends ListRequest
     public function rules()
     {
         $rules = [
-            //
+            'group_id'  => 'nullable|integer'
         ];
         return array_merge($rules, parent::rules());
+    }
+
+
+    public function validated()
+    {
+        $validated = parent::validated();
+        if ( $group_id = $validated->get('group_id') ) {
+            $validated['q'] = $this->q->where('parent_id', $group_id);
+            $validated->forget('group_id');
+        }
+
+        return $validated;
     }
 }
