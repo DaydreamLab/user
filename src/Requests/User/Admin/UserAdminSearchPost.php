@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\User\Admin;
 
 use DaydreamLab\JJAJ\Requests\ListRequest;
+use DaydreamLab\User\Models\User\UserGroup;
 use Illuminate\Validation\Rule;
 
 class UserAdminSearchPost extends ListRequest
@@ -41,8 +42,9 @@ class UserAdminSearchPost extends ListRequest
                 'integer',
                 Rule::in([0,1])
             ],
-            'search'    => 'nullable|string',
-            'user_group'    => 'nullable|integer'
+            'search'        => 'nullable|string',
+            'user_group'    => 'nullable|integer',
+            'parent_group'  => 'nullable|integer'
         ];
         return array_merge(parent::rules(), $rules);
     }
@@ -51,6 +53,16 @@ class UserAdminSearchPost extends ListRequest
     public function validated()
     {
         $validated = parent::validated();
+
+        if ($parent = $validated->get('parent_group')) {
+            $g = UserGroup::where('id', $parent)->first();
+            $c = $g->descendants->pluck(['id'])->toArray();
+            $ids = array_merge($c, [$g->id]);
+            $validated['q'] = $this->q->whereHas('groups', function ($q) use ($ids) {
+                $q->whereIn('users_groups_maps.group_id', $ids);
+            });
+        }
+        $validated->forget('parent_group');
 
         $q = $validated->get('q');
         if ($groups = $validated->get('user_group')) {
