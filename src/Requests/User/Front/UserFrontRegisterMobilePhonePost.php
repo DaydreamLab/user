@@ -43,12 +43,16 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
             'company.extNumber' => 'nullable|numeric',
             'company.department'=> 'required|string',
             'company.jobTitle'  => 'required|string',
+            'company.industry'      => 'nullable|string',
+            'company.scale'         => 'nullable|string',
+            'company.purchaseRole'  => 'nullable|string',
+            'company.interestedIssue'   => 'nullable|array',
             'company.city'      => 'required|string',
             'company.district'  => 'required|string',
             'company.address'   => 'required|string',
             'company.zipcode'   => 'nullable|numeric',
-            'newsletterAlias'   => 'nullable|array',
-            'newsletterAlias.*' => 'required|string',
+            'newsletterCategoriesAlias'     => 'nullable|array',
+            'newsletterCategoriesAlias.*'   => 'nullable|string'
         ];
     }
 

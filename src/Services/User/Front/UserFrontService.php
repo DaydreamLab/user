@@ -273,6 +273,10 @@ class UserFrontService extends UserService
             throw new InternalServerErrorException('RegisterFail');
         }
 
+        if ( $subscribe = $input->get('newsletterCategoriesAlias') ) {
+            $nsfs = app(NewsletterSubscriptionFrontService::class);
+            $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe]));
+        }
         #todo 有沒有送通知?
 
         $this->status = 'RegisterSuccess';
