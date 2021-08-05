@@ -7,6 +7,7 @@ use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Models\Api\Api;
 use DaydreamLab\User\Models\Asset\AssetGroup;
+use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use DaydreamLab\User\Traits\Model\WithAccess;
 use Kalnoy\Nestedset\NodeTrait;
@@ -97,6 +98,13 @@ class UserGroup extends BaseModel
     }
 
 
+    public function assets($model = null)
+    {
+        return $this->belongsToMany(Asset::class, 'users_groups_assets_maps', 'user_group_id', 'asset_id')
+            ->withTimestamps();
+    }
+
+
     public function defaultAccessGroups()
     {
         return $this->belongsToMany(UserGroup::class, 'users_groups_default_access_maps', 'group_id', 'access_group_id');
@@ -115,13 +123,21 @@ class UserGroup extends BaseModel
     public function getPageAttribute()
     {
         $apis = $this->apis;
+        $assetGroupIds = $this->assetGroups->pluck(['id'])->toArray();
+        $assetIds = $this->assets->pluck(['id'])->toArray();
         $data = collect();
-        $this->assetGroups->each(function ($assetGroup) use (&$data, $apis) {
+        $allAssetGroups = AssetGroup::all();
+        $allAssetGroups->each(function ($assetGroup) use (&$data, $apis, $assetGroupIds, $assetIds) {
             $tempAssetGroup = $assetGroup->only(['id', 'title']);
             $tempAssetGroup['path'] = isset($assetGroup->params['path']) ? $assetGroup->params['path'] : '';
             $tempAssetGroup['type'] = isset($assetGroup->params['type']) ? $assetGroup->params['type'] : '';
             $tempAssetGroup['component'] = isset($assetGroup->params['component']) ? $assetGroup->params['component'] : '';
-            $assetGroup->assets->each(function ($asset) use ($apis, $assetGroup, &$tempAssetGroup) {
+            $tempAssetGroup['visible'] = (in_array($assetGroup->id, $assetGroupIds)) ? 1 : 0;
+
+            $assetGroup->assets->each(function ($asset) use ($apis, $assetIds, $assetGroup, &$tempAssetGroup) {
+                $tempAsset = $asset->only(['id', 'title', 'path', 'component', 'type', 'icon', 'showNav']);
+                $tempAsset['visible'] = (in_array($asset->id, $assetIds)) ? 1 : 0;
+
                 $assetApis = $asset->apis->map(function ($assetApi) use ($apis, $assetGroup, $asset) {
                     $targetApi = $apis->filter(function ($api) use ($assetGroup, $asset, $assetApi) {
                         return $api->pivot->asset_group_id == $assetGroup->id
@@ -132,12 +148,12 @@ class UserGroup extends BaseModel
                     return [
                         'id'        => $assetApi->id,
                         'name'      => $assetApi->name,
+                        'method'    => $assetApi->method,
                         'hidden'    => $assetApi->pivot->attributes['hidden'], # 這邊不這樣取會取到 pivot model 的 $hidden[]
                         'disabled'  => $assetApi->pivot->disabled,
                         'checked'   => $targetApi ? 1 : $assetApi->pivot->checked,
                     ];
                 })->values();
-                $tempAsset = $asset->only(['id', 'title', 'path', 'component', 'type', 'icon', 'showNav']);
                 $tempAsset['apis'] = $assetApis;
                 $tempAssetGroup['assets'][] = collect($tempAsset);
             });

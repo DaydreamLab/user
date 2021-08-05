@@ -61,10 +61,15 @@ class UserGroupAdminService extends UserGroupService
         foreach ($page as $assetGroup) {
             $assets = $assetGroup['assets'];
             $assetGroupId = $assetGroup['id'];
-            $item->assetGroups()->attach($assetGroupId);
+            if ($assetGroup['visible']) {
+                $item->assetGroups()->attach($assetGroupId);
+            }
             foreach ($assets as $asset) {
                 $assetId = $asset['id'];
                 $apis = $asset['apis'];
+                if ($asset['visible']) {
+                    $item->assets()->attach($assetId);
+                }
                 foreach ($apis as $api) {
                     if ($api['checked']) {
                         $item->apis()->attach($api['id'], ['asset_group_id' => $assetGroupId, 'asset_id' => $assetId]);
@@ -90,10 +95,19 @@ class UserGroupAdminService extends UserGroupService
         foreach ($page as $assetGroup) {
             $assets = $assetGroup['assets'];
             $assetGroupId = $assetGroup['id'];
-            $item->assetGroups()->syncWithoutDetaching($assetGroupId);
+            if ($assetGroup['visible']) {
+                $item->assetGroups()->syncWithoutDetaching($assetGroupId);
+            } else {
+                $item->assetGroups()->detach($assetGroupId);
+            }
             foreach ($assets as $asset) {
                 $assetId = $asset['id'];
                 $apis = $asset['apis'];
+                if ($asset['visible']) {
+                    $item->assets()->syncWithoutDetaching($assetId);
+                } else {
+                    $item->assets()->detach($assetId);
+                }
                 foreach ($apis as $api) {
                     if ($api['checked']) {
                         $item->apis()->syncWithPivotValues($api['id'], ['asset_group_id' => $assetGroupId, 'asset_id' => $assetId], false);
@@ -109,6 +123,7 @@ class UserGroupAdminService extends UserGroupService
     public function removeMapping($item)
     {
         $item->assetGroups()->detach();
+        $item->assets()->detach();
         $item->apis()->detach();
         $item->descendants()->each(function ($descendant) {
            $descendant->viewlevels()->detach();

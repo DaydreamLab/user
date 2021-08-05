@@ -54,17 +54,23 @@ class AssetGroupAdminService extends AssetGroupService
         $page = [];
         foreach ($assetGroups as $assetGroup) {
             $tempAssetGroup = $assetGroup->only(['id', 'title']);
+            $tempAssetGroup['path'] = isset($assetGroup->params['path']) ? $assetGroup->params['path'] : '';
+            $tempAssetGroup['type'] = isset($assetGroup->params['type']) ? $assetGroup->params['type'] : '';
+            $tempAssetGroup['component'] = isset($assetGroup->params['component']) ? $assetGroup->params['component'] : '';
+            $tempAssetGroup['visible'] = 0;
             foreach ($assetGroup->assets as $asset) {
                 $assetApis = $asset->apis->map(function ($assetApi) {
                     return [
                         'id'        => $assetApi->id,
                         'name'      => $assetApi->name,
+                        'method'    => $assetApi->method,
                         'hidden'    => $assetApi->pivot->hidden,
                         'disabled'  => $assetApi->pivot->disabled,
                         'checked'   => $assetApi->pivot->checked,
                     ];
                 })->values();
                 $tempAsset = $asset->only(['id', 'title']);
+                $tempAsset['visible'] = 0;
                 $tempAsset['apis'] = $assetApis;
                 $tempAssetGroup['assets'][] = $tempAsset;
             }
