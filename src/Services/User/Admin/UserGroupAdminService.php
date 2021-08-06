@@ -110,9 +110,15 @@ class UserGroupAdminService extends UserGroupService
                 }
                 foreach ($apis as $api) {
                     if ($api['checked']) {
-                        $item->apis()->syncWithPivotValues($api['id'], ['asset_group_id' => $assetGroupId, 'asset_id' => $assetId], false);
+                        $pivot = $item->apis()->wherePivot('api_id', $api['id'])->wherePivot('asset_group_id', $assetGroupId)->wherePivot('asset_id', $assetId)->first();
+                        if (!$pivot) {
+                            $item->apis()->attach($api['id'], ['asset_group_id' => $assetGroupId, 'asset_id' => $assetId]);
+                        }
                     } else {
-                        $item->apis()->detach($api['id']);
+                        $pivot = $item->apis()->wherePivot('api_id', $api['id'])->wherePivot('asset_group_id', $assetGroupId)->wherePivot('asset_id', $assetId)->first();
+                        if ($pivot) {
+                            $item->apis()->wherePivot('api_id', $api['id'])->wherePivot('asset_group_id', $assetGroupId)->wherePivot('asset_id', $assetId)->detach();
+                        }
                     }
                 }
             }
