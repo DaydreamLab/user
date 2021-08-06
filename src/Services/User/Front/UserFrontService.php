@@ -19,11 +19,13 @@ use Carbon\Carbon;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
 use DaydreamLab\User\Services\User\UserService;
 use DaydreamLab\User\Traits\CanSendNotification;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
+use LINE\LINEBot;
 
 class UserFrontService extends UserService
 {
@@ -352,6 +354,27 @@ class UserFrontService extends UserService
             $this->status = 'VerifyVerificationCodeSuccess';
         } else {
             throw new ForbiddenException('InvalidVerificationCode');
+        }
+    }
+
+
+    public function lineBotChat(Request $request)
+    {
+        $httpClient = new LINEBot\HTTPClient\CurlHTTPClient(env('LINE_ACCESS_TOKEN'));
+        $bot = new LINEBot($httpClient, [
+            'channelSecret' => env('LINE_CHANNEL_SECRET')
+        ]);
+
+        $headers = $request->headers->all();
+        $signature = $headers['x-line-signature'][0];
+        if ($signature == '') {
+            http_response_code(400);
+            return;
+        }
+
+        $events = $bot->parseEventRequest($request->getContent(), $signature);
+        foreach ($events as $event) {
+            $resp = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('Hello'));
         }
     }
 }

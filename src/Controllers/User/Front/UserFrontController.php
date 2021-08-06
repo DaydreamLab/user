@@ -258,4 +258,8 @@ class UserFrontController extends BaseController
     }
 
 
+    public function lineBotChat(Request $request)
+    {
+        $this->service->lineBotChat($request);
+    }
 }
