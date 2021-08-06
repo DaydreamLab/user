@@ -256,4 +256,6 @@ class UserFrontController extends BaseController
 
         return $this->response($this->service->status, $this->service->response);
     }
+
+
 }

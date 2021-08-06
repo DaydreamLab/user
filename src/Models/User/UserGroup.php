@@ -154,7 +154,9 @@ class UserGroup extends BaseModel
                         'checked'   => $targetApi ? 1 : $assetApi->pivot->checked,
                     ];
                 })->values();
-                $tempAsset['apis'] = $assetApis;
+                $tempAsset['apis'] = $assetApis->filter(function ($a) {
+                    return !$a['hidden'];
+                });
                 $tempAssetGroup['assets'][] = collect($tempAsset);
             });
             $data->push(collect($tempAssetGroup));
