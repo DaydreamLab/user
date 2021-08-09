@@ -376,5 +376,6 @@ class UserFrontService extends UserService
         foreach ($events as $event) {
             $resp = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('Hello'));
         }
+        http_response_code(200);
     }
 }
