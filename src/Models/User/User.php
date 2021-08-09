@@ -198,7 +198,7 @@ class User extends BaseModel implements
             $apis = $apis->merge($group->apis);
         }
 
-        return $apis->unique('id')->values();
+        return $apis->values();
     }
 
 
