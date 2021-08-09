@@ -365,12 +365,12 @@ class UserFrontService extends UserService
             'channelSecret' => env('LINE_CHANNEL_SECRET')
         ]);
 
-        $headers = $request->headers->all();
-        $signature = $headers['x-line-signature'][0];
-        if ($signature == '') {
-            http_response_code(400);
-            return;
-        }
+//        $headers = $request->headers->all();
+//        $signature = $headers['x-line-signature'][0];
+//        if ($signature == '') {
+//            http_response_code(400);
+//            return;
+//        }
 
 //        $events = $bot->parseEventRequest($request->getContent(), $signature);
 //        foreach ($events as $event) {
