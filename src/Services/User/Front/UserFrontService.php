@@ -360,22 +360,6 @@ class UserFrontService extends UserService
 
     public function lineBotChat(Request $request)
     {
-        $httpClient = new LINEBot\HTTPClient\CurlHTTPClient(env('LINE_ACCESS_TOKEN'));
-        $bot = new LINEBot($httpClient, [
-            'channelSecret' => env('LINE_CHANNEL_SECRET')
-        ]);
-
-        $headers = $request->headers->all();
-        $signature = $headers['x-line-signature'][0];
-        if ($signature == '') {
-            http_response_code(400);
-            return;
-        }
-
-        $events = $bot->parseEventRequest($request->getContent(), $signature);
-        foreach ($events as $event) {
-            $resp = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('Hello'));
-        }
         http_response_code(200);
     }
 }
