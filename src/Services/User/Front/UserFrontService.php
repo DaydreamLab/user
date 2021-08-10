@@ -459,7 +459,7 @@ class UserFrontService extends UserService
                                             'action' => [
                                                 'type' => 'uri',
                                                 'label' => '開始綁定',
-                                                'uri' => url('api/linebot/linkAccount')
+                                                'uri' => url('api/linebot/linkAccount/'.$lineId)
                                             ]
                                         ]
                                     ]
@@ -479,14 +479,14 @@ class UserFrontService extends UserService
     }
 
 
-    public function linkAccount(Request $request)
+    public function linkAccount(Request $request, $lineId)
     {
         $httpClient = new LINEBot\HTTPClient\CurlHTTPClient(config('daydreamlab.user.linebot.accessToken'));
         $bot = new LINEBot($httpClient, [
             'channelSecret' => config('daydreamlab.user.linebot.channelSecret')
         ]);
 
-        $res = $bot->createLinkToken($userId);
+        $res = $bot->createLinkToken($lineId);
         if ($res->isSucceeded()) {
             $baseURL = url();
             $baseURL .= 'login/lineLinkToken/'. $res->getJSONDecodedBody()['linkToken'];

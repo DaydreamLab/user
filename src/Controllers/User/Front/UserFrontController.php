@@ -270,8 +270,8 @@ class UserFrontController extends BaseController
     }
 
 
-    public function linkAccount(Request $request)
+    public function linkAccount(Request $request, $lineId)
     {
-        $this->service->linkAccount($request);
+        $this->service->linkAccount($request, $lineId);
     }
 }
