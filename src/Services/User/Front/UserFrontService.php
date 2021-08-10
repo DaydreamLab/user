@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
 use LINE\LINEBot;
+use LINE\LINEBot\Event\PostbackEvent;
 use LINE\LINEBot\Exception\InvalidEventRequestException;
 use LINE\LINEBot\Exception\InvalidSignatureException;
 use LINE\LINEBot\RichMenuBuilder;
