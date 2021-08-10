@@ -442,21 +442,25 @@ class UserFrontService extends UserService
                                     'type' => 'box',
                                     'layout' => 'horizontal',
                                     'contents' => [
-                                        'type' => 'text',
-                                        'text' => '請點擊下方按鈕進行帳號綁定',
-                                        'wrap' => true
+                                        [
+                                            'type' => 'text',
+                                            'text' => '請點擊下方按鈕進行帳號綁定',
+                                            'wrap' => true
+                                        ]
                                     ]
                                 ],
                                 'footer' => [
                                     'type' => 'box',
                                     'layout' => 'horizontal',
                                     'contents' => [
-                                        'type' => 'button',
-                                        'style' => 'primary',
-                                        'action' => [
-                                            'type' => 'uri',
-                                            'label' => '開始綁定',
-                                            'uri' => 'https://demo.zerone2021.daydream-lab.com'
+                                        [
+                                            'type' => 'button',
+                                            'style' => 'primary',
+                                            'action' => [
+                                                'type' => 'uri',
+                                                'label' => '開始綁定',
+                                                'uri' => url('login')
+                                            ]
                                         ]
                                     ]
                                 ]
