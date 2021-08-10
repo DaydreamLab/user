@@ -425,13 +425,7 @@ class UserFrontService extends UserService
             return;
         }
 
-        try {
-            $events = $bot->parseEventRequest($input->getContent(), $signature);
-        } catch (InvalidSignatureException $e) {
-
-        } catch (InvalidEventRequestException $e) {
-
-        }
+        $events = $bot->parseEventRequest($input->getContent(), $signature);
 
         foreach ($events as $event) {
             if ($event instanceof PostbackEvent) {
