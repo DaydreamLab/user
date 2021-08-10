@@ -465,6 +465,7 @@ class UserFrontService extends UserService
 //                        ]));
                         break;
                     default:
+                        $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder($text));
                         break;
                 }
             } else {
