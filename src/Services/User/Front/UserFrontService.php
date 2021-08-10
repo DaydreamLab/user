@@ -490,7 +490,7 @@ class UserFrontService extends UserService
         if ($res->isSucceeded()) {
 
 
-            return redirect('https://mobilehero.com');
+            echo "???????";
         }
     }
 }
