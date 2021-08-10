@@ -26,6 +26,10 @@ use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
 use LINE\LINEBot;
+use LINE\LINEBot\RichMenuBuilder;
+use LINE\LINEBot\RichMenuBuilder\RichMenuAreaBoundsBuilder;
+use LINE\LINEBot\RichMenuBuilder\RichMenuAreaBuilder;
+use LINE\LINEBot\RichMenuBuilder\RichMenuSizeBuilder;
 
 class UserFrontService extends UserService
 {
@@ -358,11 +362,56 @@ class UserFrontService extends UserService
     }
 
 
+    public function lineRichmenu(Request $request)
+    {
+        $httpClient = new LINEBot\HTTPClient\CurlHTTPClient(config('daydreamlab.user.linebot.accessToken'));
+        $bot = new LINEBot($httpClient, [
+            'channelSecret' => config('daydreamlab.user.linebot.channelSecret')
+        ]);
+
+        $res = $bot->createRichMenu(
+            new RichMenuBuilder(
+                RichMenuSizeBuilder::getHalf(),
+                true,
+                'ZeroneRichmenu',
+                '功能選單',
+                [
+                    new RichMenuAreaBuilder(
+                        new RichMenuAreaBoundsBuilder(0, 0, 1250, 843),
+                        new LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder("帳號綁定", "帳號綁定")
+                    ),
+                    new RichMenuAreaBuilder(
+                        new RichMenuAreaBoundsBuilder(1250, 0, 1250, 843),
+                        new LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder("解除綁定", "解除綁定")
+                    )
+                ]
+            )
+        );
+
+        if ($res->isSucceeded()) {
+            $currentRichMenuID = $res->getJSONDecodedBody()['richMenuId'];
+            $path = base_path().'/vendor/daydreamlab/user/resources/line/richmenu.jpg';
+            if ( file_exists($path) ) {
+                $res = $bot->uploadRichMenuImage($currentRichMenuID, $path, 'image/jpeg');
+                if ($res->isSucceeded()) {
+                    $res = $bot->linkRichMenu("all", $currentRichMenuID);
+                    if ($res->isSucceeded()) {
+                        echo 'succ';
+                        return true;
+                    }
+                }
+            }
+        }
+        echo 'fail';
+        return false;
+    }
+
+
     public function lineBotChat(Request $request)
     {
-        $httpClient = new LINEBot\HTTPClient\CurlHTTPClient(env('LINE_ACCESS_TOKEN'));
+        $httpClient = new LINEBot\HTTPClient\CurlHTTPClient(config('daydreamlab.user.linebot.accessToken'));
         $bot = new LINEBot($httpClient, [
-            'channelSecret' => env('LINE_CHANNEL_SECRET')
+            'channelSecret' => config('daydreamlab.user.linebot.channelSecret')
         ]);
 
         $headers = $request->headers->all();
@@ -377,5 +426,22 @@ class UserFrontService extends UserService
             $resp = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('Hello'));
         }
         http_response_code(200);
+    }
+
+
+    public function linkAccount(Request $request)
+    {
+        $httpClient = new LINEBot\HTTPClient\CurlHTTPClient(config('daydreamlab.user.linebot.accessToken'));
+        $bot = new LINEBot($httpClient, [
+            'channelSecret' => config('daydreamlab.user.linebot.channelSecret')
+        ]);
+
+        $res = $bot->createLinkToken($userId);
+        if ($res->isSucceeded()) {
+            $baseURL = url();
+            $baseURL .= 'login/lineLinkToken/'. $res->getJSONDecodedBody()['linkToken'];
+
+            return redirect($baseURL);
+        }
     }
 }

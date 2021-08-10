@@ -258,8 +258,20 @@ class UserFrontController extends BaseController
     }
 
 
+    public function lineRichmenu(Request $request)
+    {
+        $this->service->lineRichmenu($request);
+    }
+
+
     public function lineBotChat(Request $request)
     {
         $this->service->lineBotChat($request);
+    }
+
+
+    public function linkAccount(Request $request)
+    {
+        $this->service->linkAccount($request);
     }
 }

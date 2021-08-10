@@ -57,7 +57,9 @@ Route::get('/api/user/login', [UserFrontController::class, 'getLogin'])->middlew
 //Route::get('/api/user/login/facebook/callback', [UserFrontController::class, 'fbCallback']);
 
 # Line bot
+Route::get('api/linebot/richmenu', [UserFrontController::class, 'lineRichmenu']);
 Route::post('api/linebot/callback', [UserFrontController::class, 'lineBotChat']);
+Route::get('api/linebot/linkAccount', [UserFrontController::class, 'linkAccount']);
 
 /************************************  後台 API  ************************************/
 
