@@ -26,10 +26,13 @@ use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
 use LINE\LINEBot;
+use LINE\LINEBot\Exception\InvalidEventRequestException;
+use LINE\LINEBot\Exception\InvalidSignatureException;
 use LINE\LINEBot\RichMenuBuilder;
 use LINE\LINEBot\RichMenuBuilder\RichMenuAreaBoundsBuilder;
 use LINE\LINEBot\RichMenuBuilder\RichMenuAreaBuilder;
 use LINE\LINEBot\RichMenuBuilder\RichMenuSizeBuilder;
+
 
 class UserFrontService extends UserService
 {
@@ -421,9 +424,56 @@ class UserFrontService extends UserService
             return;
         }
 
-        $events = $bot->parseEventRequest($request->getContent(), $signature);
+        try {
+            $events = $bot->parseEventRequest($input->getContent(), $signature);
+        } catch (InvalidSignatureException $e) {
+
+        } catch (InvalidEventRequestException $e) {
+
+        }
+
         foreach ($events as $event) {
-            $resp = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('Hello'));
+            if ($event instanceof PostbackEvent) {
+                $text = $event->getPostbackData();
+                $lineId = $event->getUserId();
+                switch ($text) {
+                    case '帳號綁定':
+                        $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\RawMessageBuilder([
+                            'type' => 'flex',
+                            'altText' => '帳號綁定',
+                            'contents' => [
+                                'type' => 'bubble',
+                                'body' => [
+                                    'type' => 'box',
+                                    'layout' => 'horizontal',
+                                    'contents' => [
+                                        'type' => 'text',
+                                        'text' => '請點擊下方按鈕進行帳號綁定',
+                                        'wrap' => true
+                                    ]
+                                ],
+                                'footer' => [
+                                    'type' => 'box',
+                                    'layout' => 'horizontal',
+                                    'contents' => [
+                                        'type' => 'button',
+                                        'style' => 'primary',
+                                        'action' => [
+                                            'type' => 'uri',
+                                            'label' => '開始綁定',
+                                            'uri' => url()
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]));
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('Hello'));
+            }
         }
         http_response_code(200);
     }
