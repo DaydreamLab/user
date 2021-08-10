@@ -456,7 +456,7 @@ class UserFrontService extends UserService
                                         'action' => [
                                             'type' => 'uri',
                                             'label' => '開始綁定',
-                                            'uri' => url()
+                                            'uri' => 'https://demo.zerone2021.daydream-lab.com'
                                         ]
                                     ]
                                 ]
