@@ -459,7 +459,7 @@ class UserFrontService extends UserService
                                             'action' => [
                                                 'type' => 'uri',
                                                 'label' => '開始綁定',
-                                                'uri' => url('login')
+                                                'uri' => url('api/linebot/linkAccount')
                                             ]
                                         ]
                                     ]
