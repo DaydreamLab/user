@@ -488,9 +488,9 @@ class UserFrontService extends UserService
 
         $res = $bot->createLinkToken($lineId);
         if ($res->isSucceeded()) {
-            $baseURL = url('login/lineLinkToken/'. $res->getJSONDecodedBody()['linkToken']);
 
-            return redirect($baseURL);
+
+            return redirect('https://mobilehero.com');
         }
     }
 }
