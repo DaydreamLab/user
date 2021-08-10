@@ -438,35 +438,36 @@ class UserFrontService extends UserService
                 $lineId = $event->getUserId();
                 switch ($text) {
                     case '帳號綁定':
-                        $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\RawMessageBuilder([
-                            'type' => 'flex',
-                            'altText' => '帳號綁定',
-                            'contents' => [
-                                'type' => 'bubble',
-                                'body' => [
-                                    'type' => 'box',
-                                    'layout' => 'horizontal',
-                                    'contents' => [
-                                        'type' => 'text',
-                                        'text' => '請點擊下方按鈕進行帳號綁定',
-                                        'wrap' => true
-                                    ]
-                                ],
-                                'footer' => [
-                                    'type' => 'box',
-                                    'layout' => 'horizontal',
-                                    'contents' => [
-                                        'type' => 'button',
-                                        'style' => 'primary',
-                                        'action' => [
-                                            'type' => 'uri',
-                                            'label' => '開始綁定',
-                                            'uri' => url()
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]));
+                        $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder($text));
+//                        $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\RawMessageBuilder([
+//                            'type' => 'flex',
+//                            'altText' => '帳號綁定',
+//                            'contents' => [
+//                                'type' => 'bubble',
+//                                'body' => [
+//                                    'type' => 'box',
+//                                    'layout' => 'horizontal',
+//                                    'contents' => [
+//                                        'type' => 'text',
+//                                        'text' => '請點擊下方按鈕進行帳號綁定',
+//                                        'wrap' => true
+//                                    ]
+//                                ],
+//                                'footer' => [
+//                                    'type' => 'box',
+//                                    'layout' => 'horizontal',
+//                                    'contents' => [
+//                                        'type' => 'button',
+//                                        'style' => 'primary',
+//                                        'action' => [
+//                                            'type' => 'uri',
+//                                            'label' => '開始綁定',
+//                                            'uri' => url()
+//                                        ]
+//                                    ]
+//                                ]
+//                            ]
+//                        ]));
                         break;
                     default:
                         break;
