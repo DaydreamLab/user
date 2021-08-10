@@ -488,9 +488,9 @@ class UserFrontService extends UserService
 
         $res = $bot->createLinkToken($lineId);
         if ($res->isSucceeded()) {
+            $baseURL = url('login/lineLinkToken/'. $res->getJSONDecodedBody()['linkToken']);
 
-
-            echo "???????";
+            return redirect($baseURL);
         }
     }
 }
