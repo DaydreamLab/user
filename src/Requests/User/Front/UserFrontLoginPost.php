@@ -34,6 +34,7 @@ class UserFrontLoginPost extends AdminRequest
             'mobilePhoneCode'   => 'nullable|string',
             'mobilePhone'       => 'nullable|string',
             'verificationCode'  => 'required_with:mobilePhone|string',
+            'lineLinkToken'     => 'nullable|string'
         ];
     }
 

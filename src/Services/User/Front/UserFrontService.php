@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
 use LINE\LINEBot;
+use LINE\LINEBot\Event\AccountLinkEvent;
 use LINE\LINEBot\Event\PostbackEvent;
 use LINE\LINEBot\Exception\InvalidEventRequestException;
 use LINE\LINEBot\Exception\InvalidSignatureException;
@@ -467,12 +468,63 @@ class UserFrontService extends UserService
                             ]
                         ]));
                         break;
+                    case '解除綁定':
+                        $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\RawMessageBuilder([
+                            'type' => 'flex',
+                            'altText' => '解除綁定',
+                            'contents' => [
+                                'type' => 'bubble',
+                                'body' => [
+                                    'type' => 'box',
+                                    'layout' => 'horizontal',
+                                    'contents' => [
+                                        [
+                                            'type' => 'text',
+                                            'text' => '確定解除帳號綁定？',
+                                            'wrap' => true
+                                        ]
+                                    ]
+                                ],
+                                'footer' => [
+                                    'type' => 'box',
+                                    'layout' => 'horizontal',
+                                    'contents' => [
+                                        [
+                                            'type' => 'button',
+                                            'style' => 'primary',
+                                            'action' => [
+                                                "type" => "postback",
+                                                "label" => "解除綁定",
+                                                "data" => "[TemplateMsg][AccountUnlink]"
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]));
+                        break;
+                    case strpos($text, '[TemplateMsg][AccountUnlink]') !== false:
+                        $user = $this->findBy('line_user_id', '=', $lineId)->first();
+                        if ($user) {
+                            $this->repo->update($user, ['line_user_id' => null, 'line_nonce' => null]);
+                            $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('解除成功'));
+                        } else {
+                            $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('尚未綁定'));
+                        }
+                        break;
                     default:
                         $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder($text));
                         break;
                 }
+            } elseif ($event instanceof AccountLinkEvent) {
+                $linkResult = $event->getResult();
+                $lineUserId = $event->getUserId();
+                $nonce = $event->getNonce();
+                $user = $this->findBy('line_nonce', '=', $nonce)->first();
+                $this->repo->update($user, ['line_user_id' => $lineUserId]);
+                $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('綁定完成'));
             } else {
-                $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('Hello'));
+                $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('您好'));
             }
         }
         http_response_code(200);
@@ -488,9 +540,10 @@ class UserFrontService extends UserService
 
         $res = $bot->createLinkToken($lineId);
         if ($res->isSucceeded()) {
-            $baseURL = url('login/lineLinkToken/'. $res->getJSONDecodedBody()['linkToken']);
+            $baseURL = url('login?lineLinkToken='. $res->getJSONDecodedBody()['linkToken']);
 
             return redirect($baseURL);
         }
     }
+
 }

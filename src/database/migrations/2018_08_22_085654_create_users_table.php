@@ -51,6 +51,8 @@ class CreateUsersTable extends Migration
             $table->string('lastLoginIp')->nullable();
             $table->string('timezone')->nullable();
             $table->string('locale')->nullable();
+            $table->string('line_user_id')->nullable();
+            $table->string('line_nonce')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

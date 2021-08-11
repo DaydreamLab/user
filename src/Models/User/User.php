@@ -91,6 +91,8 @@ class User extends BaseModel implements
         'lastSendAt',
         'lastLoginAt',
         'lastLoginIp',
+        'line_user_id',
+        'line_nonce',
         'created_by',
         'updated_by'
     ];

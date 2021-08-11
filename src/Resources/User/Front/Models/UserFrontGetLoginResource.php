@@ -41,6 +41,10 @@ class UserFrontGetLoginResource extends JsonResource
             $data['token'] = $this->accessToken;
         }
 
+        if ($this->lineAccountLinkRedirectUrl) {
+            $data['lineAccountLinkRedirectUrl'] = $this->lineAccountLinkRedirectUrl;
+        }
+
         if ($this->isAdmin()) {
             $data['redirect'] = $this->groups->sortBy('id')->last()->redirect;
         }

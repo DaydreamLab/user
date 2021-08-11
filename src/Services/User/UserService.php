@@ -149,6 +149,15 @@ class UserService extends BaseService
         $this->response = $user;
         $login = true;
 
+        # 如果有帶 line account link token
+        if ($lineLinkToken = $input->get('lineLinkToken')) {
+            $nonce = $this->createNonce();
+            $freshUser = $user->fresh();
+            $freshUser->line_nonce = $nonce;
+            $freshUser->save();
+            $this->response['lineAccountLinkRedirectUrl'] = "https://access.line.me/dialog/bot/accountLink?linkToken=" . $lineLinkToken . "&nonce=" . $nonce;
+        }
+
         event(new Login($this->getServiceName(), $login,  $this->status, $user));
 
         return $this->response;
@@ -182,5 +191,16 @@ class UserService extends BaseService
         event(new Remove($this->getServiceName(), $result, $input, $this->user));
 
         return $result;
+    }
+
+
+    private function createNonce($bits = 128)
+    {
+        $bytes = ceil($bits / 8);
+        $return = '';
+        for ($i = 0; $i < $bytes; $i++) {
+            $return .= chr(mt_rand(0, 255));
+        }
+        return base64_encode($return);
     }
 }
