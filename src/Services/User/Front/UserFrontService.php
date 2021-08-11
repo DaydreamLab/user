@@ -469,47 +469,52 @@ class UserFrontService extends UserService
                         ]));
                         break;
                     case '解除綁定':
-                        $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\RawMessageBuilder([
-                            'type' => 'flex',
-                            'altText' => '解除綁定',
-                            'contents' => [
-                                'type' => 'bubble',
-                                'body' => [
-                                    'type' => 'box',
-                                    'layout' => 'horizontal',
-                                    'contents' => [
-                                        [
-                                            'type' => 'text',
-                                            'text' => '確定解除帳號綁定？',
-                                            'wrap' => true
+                        $user = $this->findBy('line_user_id', '=', $lineId)->first();
+                        if ($user) {
+                            $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\RawMessageBuilder([
+                                'type' => 'flex',
+                                'altText' => '解除綁定',
+                                'contents' => [
+                                    'type' => 'bubble',
+                                    'body' => [
+                                        'type' => 'box',
+                                        'layout' => 'horizontal',
+                                        'contents' => [
+                                            [
+                                                'type' => 'text',
+                                                'text' => '確定解除帳號綁定？',
+                                                'wrap' => true
+                                            ]
                                         ]
-                                    ]
-                                ],
-                                'footer' => [
-                                    'type' => 'box',
-                                    'layout' => 'horizontal',
-                                    'contents' => [
-                                        [
-                                            'type' => 'button',
-                                            'style' => 'primary',
-                                            'action' => [
-                                                "type" => "postback",
-                                                "label" => "解除綁定",
-                                                "data" => "[TemplateMsg][AccountUnlink]"
+                                    ],
+                                    'footer' => [
+                                        'type' => 'box',
+                                        'layout' => 'horizontal',
+                                        'contents' => [
+                                            [
+                                                'type' => 'button',
+                                                'style' => 'primary',
+                                                'action' => [
+                                                    "type" => "postback",
+                                                    "label" => "解除綁定",
+                                                    "data" => "[TemplateMsg][AccountUnlink]"
+                                                ]
                                             ]
                                         ]
                                     ]
                                 ]
-                            ]
-                        ]));
+                            ]));
+                        } else {
+                            $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('尚未綁定'));
+                        }
                         break;
                     case strpos($text, '[TemplateMsg][AccountUnlink]') !== false:
                         $user = $this->findBy('line_user_id', '=', $lineId)->first();
-                        if ($user) {
-                            $this->repo->update($user, ['line_user_id' => null, 'line_nonce' => null]);
+                        $update = $this->repo->update($user, ['line_user_id' => null, 'line_nonce' => null]);
+                        if ($update) {
                             $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('解除成功'));
                         } else {
-                            $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('尚未綁定'));
+                            $res = $bot->replyMessage($event->getReplyToken(), new LINEBot\MessageBuilder\TextMessageBuilder('解除失敗'));
                         }
                         break;
                     default:
