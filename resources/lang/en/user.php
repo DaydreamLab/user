@@ -63,5 +63,8 @@ return [
 
     'VERIFY_VERIFICATION_CODE_SUCCESS'  => 'Verify verification code success',
     'VERIFICATION_CODE_EXPIRED'         => 'Verification code expired',
-    'VERIFICATION_PENDING'              => 'Waiting administrator verify account'
+    'VERIFICATION_PENDING'              => 'Waiting administrator verify account',
+
+    'LINE_BIND_SUCCESS' => 'Line bind successfully',
+    'LINE_BIND_DUPLICATE' => 'This account is already bind with line',
 ];

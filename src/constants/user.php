@@ -65,4 +65,7 @@ return [
     'VERIFY_VERIFICATION_CODE_SUCCESS'  => 200,
     'VERIFICATION_CODE_EXPIRED'         => 403,
     'VERIFICATION_PENDING'              => 403,
+
+    'LINE_BIND_SUCCESS' => 200,
+    'LINE_BIND_DUPLICATE' => 403,
 ];

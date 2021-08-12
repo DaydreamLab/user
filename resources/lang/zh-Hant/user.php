@@ -63,5 +63,8 @@ return [
 
     'VERIFY_VERIFICATION_CODE_SUCCESS'  => '簡訊驗證碼驗證成功',
     'VERIFICATION_CODE_EXPIRED'         => '簡訊驗證碼已過期',
-    'VERIFICATION_PENDING'              => '等待管理者審核中'
+    'VERIFICATION_PENDING'              => '等待管理者審核中',
+
+    'LINE_BIND_SUCCESS' => 'Line 綁定成功',
+    'LINE_BIND_DUPLICATE' => '此帳號已綁定過 Line',
 ];
