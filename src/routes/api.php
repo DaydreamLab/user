@@ -1,14 +1,16 @@
 <?php
 
-use DaydreamLab\User\Controllers\User\Front\UserFrontController;
+use Illuminate\Support\Facades\DB;
+use DaydreamLab\User\Models\Line\Line;
 use DaydreamLab\User\Controllers\User\UserController;
-use DaydreamLab\User\Controllers\User\Admin\UserAdminController;
-use DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController;
-use DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController;
 use DaydreamLab\User\Controllers\Api\Admin\ApiAdminController;
+use DaydreamLab\User\Controllers\User\Admin\UserAdminController;
+use DaydreamLab\User\Controllers\User\Front\UserFrontController;
+use DaydreamLab\User\Controllers\Asset\Admin\AssetAdminController;
+use DaydreamLab\User\Controllers\User\Admin\UserGroupAdminController;
+use DaydreamLab\User\Controllers\Company\Admin\CompanyAdminController;
 use DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController;
 use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
-use DaydreamLab\User\Controllers\Company\Admin\CompanyAdminController;
 
 /************************************  前台 API  ************************************/
 // 啟用帳號
@@ -49,6 +51,9 @@ Route::get('/api/user/logout', [UserController::class, 'logout']);
 
 # 檢查token狀態
 Route::get('/api/user/login', [UserFrontController::class, 'getLogin'])->middleware(['expired']);
+
+# 綁定 Line ID
+Route::post('/api/user/lineBind', [UserFrontController::class, 'lineBind'])->middleware(['expired']);
 
 # 取的使用者資訊
 //Route::get('/api/user', [UserFrontController::class, 'getItem'])->middleware(['expired']);

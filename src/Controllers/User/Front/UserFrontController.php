@@ -2,26 +2,28 @@
 
 namespace DaydreamLab\User\Controllers\User\Front;
 
+use Throwable;
 use Carbon\Carbon;
-use DaydreamLab\User\Requests\User\Front\UserFrontCheckMobilePhoneRequest;
-use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
-use DaydreamLab\User\Requests\User\Front\UserFrontCheckEmailPost;
-use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
-use DaydreamLab\User\Requests\User\Front\UserFrontLoginPost;
-use DaydreamLab\User\Requests\User\Front\UserFrontRegisterMobilePhonePost;
-use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
-use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
-use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\User\Requests\User\Front\UserFrontVerifyCodeRequest;
-use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
-use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
-use DaydreamLab\User\Resources\User\Front\Models\UserFrontResource;
-use DaydreamLab\User\Services\User\Front\UserFrontService;
-use DaydreamLab\User\Requests\User\Front\UserFrontStorePost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use Throwable;
+use phpDocumentor\Reflection\TypeResolver;
+use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Services\User\Front\UserFrontService;
+use DaydreamLab\User\Requests\User\Front\UserFrontLoginPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontStorePost;
+use DaydreamLab\User\Requests\User\Front\UserFrontLineBindPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontCheckEmailPost;
+use DaydreamLab\User\Resources\User\Front\Models\UserFrontResource;
+use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontVerifyCodeRequest;
+use DaydreamLab\User\Requests\User\Front\UserFrontChangePasswordPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontForgetPasswordPost;
+use DaydreamLab\User\Resources\User\Front\Models\UserFrontLoginResource;
+use DaydreamLab\User\Requests\User\Front\UserFrontCheckMobilePhoneRequest;
+use DaydreamLab\User\Requests\User\Front\UserFrontRegisterMobilePhonePost;
+use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 
 class UserFrontController extends BaseController
 {
@@ -178,6 +180,17 @@ class UserFrontController extends BaseController
         return $this->response($this->service->status,  $this->service->response , [], UserFrontGetLoginResource::class);
     }
 
+
+    public function lineBind(UserFrontLineBindPost $request)
+    {
+        try {
+            $this->service->lineBind($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
 
 //    public function register(UserFrontRegisterPost $request)
 //    {
