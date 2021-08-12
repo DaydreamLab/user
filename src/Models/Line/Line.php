@@ -38,4 +38,10 @@ class Line extends BaseModel
     {
 
     }
+    
+
+    public function users()
+    {
+        return $this->hasMany(User::class, "id", "user_id");
+    }
 }

@@ -10,6 +10,7 @@ use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\User\Database\Factories\UserFactory;
+use DaydreamLab\User\Models\Line\Line;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
@@ -171,6 +172,11 @@ class User extends BaseModel implements
         return $this->hasMany(UserCompany::class, 'user_id', 'id');
     }
 
+ 
+    public function line()
+    {
+        return $this->hasOne(Line::class, 'user_id', 'id');
+    }
 
     /**
      * @return array
