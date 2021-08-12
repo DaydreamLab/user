@@ -16,6 +16,7 @@ use DaydreamLab\User\Notifications\User\UserGetVerificationCodeNotification;
 use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\User\Services\Social\SocialUserService;
 use Carbon\Carbon;
+use DaydreamLab\User\Repositories\Line\LineRepository;
 use DaydreamLab\User\Repositories\User\Front\UserFrontRepository;
 use DaydreamLab\User\Services\User\UserService;
 use DaydreamLab\User\Traits\CanSendNotification;
@@ -46,15 +47,19 @@ class UserFrontService extends UserService
 
     protected $passwordResetService;
 
+    protected $lineRepo;
+
     public function __construct(
         UserFrontRepository     $repo,
         SocialUserService       $socialUserService,
-        PasswordResetService    $passwordResetService
+        PasswordResetService    $passwordResetService,
+        LineRepository          $lineRepo
     )
     {
         parent::__construct($repo);
         $this->socialUserService    = $socialUserService;
         $this->passwordResetService = $passwordResetService;
+        $this->lineRepo =  $lineRepo;
     }
 
 
@@ -363,6 +368,26 @@ class UserFrontService extends UserService
             $this->status = 'VerifyVerificationCodeSuccess';
         } else {
             throw new ForbiddenException('InvalidVerificationCode');
+        }
+    }
+    
+
+    public function lineBind(Collection $input)
+    {
+        $liffUserId = $input->get('lineId');
+        $userId = auth()->guard("api")->user()->id;
+        
+        $isBinded = $this->lineRepo->getModel()::where("user_id", "=", $userId)->exists();
+        if ($isBinded) {
+            // 公司會員已綁定過 line
+            $this->status = "LineBindDuplicate";
+        } else {
+            // 公司會員尚未綁定過 line
+            $this->lineRepo->add(collect([
+                "line_user_id" => $liffUserId,
+                "user_id" => $userId,
+            ]));
+            $this->status = "LineBindSuccess";
         }
     }
 
