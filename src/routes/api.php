@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
-use DaydreamLab\User\Models\Line\Line;
 use DaydreamLab\User\Controllers\User\UserController;
 use DaydreamLab\User\Controllers\Api\Admin\ApiAdminController;
 use DaydreamLab\User\Controllers\User\Admin\UserAdminController;
