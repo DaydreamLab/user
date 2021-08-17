@@ -275,6 +275,18 @@ class UserFrontService extends UserService
             throw new NotFoundException('ItemNotExist');
         }
 
+        $verify = Hash::check($input->get('verificationCode'), $user->verificationCode);
+        if ($verify) {
+            if (config('app.env') == 'production') {
+                if (now() > Carbon::parse($user->lastSendAt)->addMinutes(config('daydreamlab.user.sms.expiredTime'))) {
+                    throw new ForbiddenException('VerificationCodeExpired');
+                }
+            }
+            $this->status = 'VerifyVerificationCodeSuccess';
+        } else {
+            throw new ForbiddenException('InvalidVerificationCode');
+        }
+
         $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
         $userData['verificationCode'] = bcrypt(Str::random());
         $update = $this->repo->update($user, $userData);

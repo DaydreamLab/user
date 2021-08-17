@@ -124,6 +124,18 @@ class UserService extends BaseService
             throw new ForbiddenException('IsBlocked');
         }
 
+        $verify = Hash::check($input->get('verificationCode'), $user->verificationCode);
+        if ($verify) {
+            if (config('app.env') == 'production') {
+                if (now() > Carbon::parse($user->lastSendAt)->addMinutes(config('daydreamlab.user.sms.expiredTime'))) {
+                    throw new ForbiddenException('VerificationCodeExpired');
+                }
+            }
+            $this->status = 'VerifyVerificationCodeSuccess';
+        } else {
+            throw new ForbiddenException('InvalidVerificationCode');
+        }
+
         $this->repo->modify($user, collect([
             'verificationCode' => bcrypt(Str::random()),
             'lastLoginAt' => now(),
