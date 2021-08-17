@@ -34,7 +34,7 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
             'name'              => 'required|string',
             'email'             => 'required|email',
             'backupEmail'       => 'nullable|email',
-            'verificationCode'  => 'required|string',
+            'verificationCode'  => 'required|numeric',
             'company'           => 'required|array',
             'company.name'      => 'required|string',
             'company.email'     => 'required|email',
