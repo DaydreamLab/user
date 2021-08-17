@@ -104,6 +104,10 @@ class UserAdminStorePost extends AdminRequest
             'company.zipcode'       => 'nullable|string',
             'company.department'    => 'nullable|string',
             'company.jobTitle'      => 'nullable|string',
+            'company.industry'      => 'nullable|string',
+            'company.scale'         => 'nullable|string',
+            'company.purchaseRole'  => 'nullable|string',
+            'company.interestedIssue'   => 'nullable|array',
 
             'newsletterCategoriesAlias'     => 'nullable|array',
             'newsletterCategoriesAlias.*'   => 'nullable|string'

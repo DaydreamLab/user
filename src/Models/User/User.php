@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Models\User;
 
 use DaydreamLab\Cms\Models\Brand\Brand;
 use DaydreamLab\Cms\Models\Newsletter\Newsletter;
+use DaydreamLab\Cms\Models\NewsletterSubscription\NewsletterSubscription;
 use DaydreamLab\Cms\Models\Tag\Tag;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
@@ -366,6 +367,22 @@ class User extends BaseModel implements
     {
         return $this->belongsToMany(Newsletter::class, 'newsletter_category_user_maps', 'user_id', 'category_id')
             ->withTimestamps();
+    }
+
+
+    public function newsletterSubscriptions()
+    {
+        return $this->hasMany(NewsletterSubscription::class, 'user_id', 'id');
+    }
+
+
+    public function getNewsletterSubscriptionsAttribute()
+    {
+        return $this->newsletterSubscriptions()->get()->map(function ($n) {
+            return $n->newsletterCategories->map(function ($nc) {
+                return $nc->only(['alias', 'title']);
+            });
+        });
     }
 
 

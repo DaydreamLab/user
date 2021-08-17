@@ -33,7 +33,11 @@ class UserFrontGetLoginResource extends JsonResource
                 'address'       => $this->company->address,
                 'zipcode'       => $this->company->zipcode,
                 'department'    => $this->company->department,
-                'jobTitle'      => $this->company->jobTitle
+                'jobTitle'      => $this->company->jobTitle,
+                'industry'      => $this->company->industry,
+                'scale'         => $this->company->scale,
+                'purchaseRole'  => $this->company->purchaseRole,
+                'interestedIssue'   => $this->company->interestedIssue
             ];
         }
 

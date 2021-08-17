@@ -54,7 +54,7 @@ Route::get('/api/user/login', [UserFrontController::class, 'getLogin'])->middlew
 Route::post('/api/user/lineBind', [UserFrontController::class, 'lineBind'])->middleware(['expired']);
 
 # 取的使用者資訊
-//Route::get('/api/user', [UserFrontController::class, 'getItem'])->middleware(['expired']);
+Route::get('/api/user/profile', [UserFrontController::class, 'getItem'])->middleware(['expired']);
 
 //Route::get('/api/user/login/facebook', [UserFrontController::class, 'fbLogin']);
 //Route::get('/api/user/login/facebook/callback', [UserFrontController::class, 'fbCallback']);

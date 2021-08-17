@@ -246,7 +246,7 @@ class UserFrontService extends UserService
             $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe]));
         }
 
-
+        $this->response = $user->refresh();
         $this->status = 'UpdateSuccess';
     }
 

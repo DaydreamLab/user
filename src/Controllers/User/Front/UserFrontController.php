@@ -126,7 +126,7 @@ class UserFrontController extends BaseController
     {
         $this->service->status = 'GetItemSuccess';
 
-        return $this->response($this->service->status,  new UserFrontResource($request->user));
+        return $this->response($this->service->status,  $request->user('api'), [], UserFrontResource::class);
     }
 
 

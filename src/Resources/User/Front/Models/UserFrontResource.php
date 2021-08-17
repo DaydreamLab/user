@@ -14,24 +14,34 @@ class UserFrontResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'email'                 => $this->email,
-            'name'                  => $this->name,
-            'firstName'             => $this->firstName,
-            'lastName'              => $this->lastName,
-            'gender'                => $this->gendor,
-            'image'                 => $this->image,
-            'phoneCode'             => $this->phoneCode,
-            'phone'                 => $this->phone,
-            'mobilePhone'           => $this->mobilePhone,
-            'birthday'              => $this->birthday,
-            'country'               => $this->country,
-            'state'                 => $this->state_,
-            'city'                  => $this->city,
-            'district'              => $this->district,
-            'address'               => $this->address,
-            'zipcode'               => $this->zipcode,
-            'resetPassword'         => $this->resetPassword
+        $data = [
+            'uuid'          => $this->uuid,
+            'email'         => $this->email,
+            'backupEmail'   => $this->backupEmail,
+            'name'          => $this->name,
+            'newsletterSubscriptions' => $this->newsletterSubscriptions
         ];
+
+        if ($this->company) {
+            $data['company'] = [
+                'name'          => $this->company->name,
+                'email'         => $this->company->email,
+                'phoneCode'     => $this->company->phoneCode,
+                'phone'         => $this->company->phone,
+                'extNumber'     => $this->company->extNumber,
+                'city'          => $this->company->city,
+                'district'      => $this->company->district,
+                'address'       => $this->company->address,
+                'zipcode'       => $this->company->zipcode,
+                'department'    => $this->company->department,
+                'jobTitle'      => $this->company->jobTitle,
+                'industry'      => $this->company->industry,
+                'scale'         => $this->company->scale,
+                'purchaseRole'  => $this->company->purchaseRole,
+                'interestedIssue'   => $this->company->interestedIssue
+            ];
+        }
+
+        return $data;
     }
 }
