@@ -38,7 +38,7 @@ class UserCompany extends BaseModel
         'scale',
         'purchaseRole',
         'interestedIssue',
-
+        'issueOther',
         'country',
         'state_',
         'city',

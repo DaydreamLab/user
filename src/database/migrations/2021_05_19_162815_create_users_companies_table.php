@@ -29,6 +29,7 @@ class CreateUsersCompaniesTable extends Migration
             $table->string('scale')->nullable();
             $table->string('purchaseRole')->nullable();
             $table->text('interestedIssue')->nullable();
+            $table->text('issueOther')->nullable();
             $table->string('country')->nullable();
             $table->string('state_')->nullable();
             $table->string('city')->nullable();

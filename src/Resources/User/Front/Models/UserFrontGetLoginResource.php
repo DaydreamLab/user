@@ -37,7 +37,8 @@ class UserFrontGetLoginResource extends JsonResource
                 'industry'      => $this->company->industry,
                 'scale'         => $this->company->scale,
                 'purchaseRole'  => $this->company->purchaseRole,
-                'interestedIssue'   => $this->company->interestedIssue
+                'interestedIssue'   => $this->company->interestedIssue,
+                'issueOther'    => $this->company->issueOther
             ];
         }
 

@@ -108,6 +108,7 @@ class UserAdminStorePost extends AdminRequest
             'company.scale'         => 'nullable|string',
             'company.purchaseRole'  => 'nullable|string',
             'company.interestedIssue'   => 'nullable|array',
+            'company.issueOther'    => 'nullable|string',
 
             'newsletterCategoriesAlias'     => 'nullable|array',
             'newsletterCategoriesAlias.*'   => 'nullable|string'
