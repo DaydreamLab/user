@@ -107,6 +107,18 @@ class UserService extends BaseService
             if (!$user) {
                 throw new NotFoundException('ItemNotExist', ['mobilePhone' => $input->get('mobilePhone')]);
             }
+
+            $verify = Hash::check($input->get('verificationCode'), $user->verificationCode);
+            if ($verify) {
+                if (config('app.env') == 'production') {
+                    if (now() > Carbon::parse($user->lastSendAt)->addMinutes(config('daydreamlab.user.sms.expiredTime'))) {
+                        throw new ForbiddenException('VerificationCodeExpired');
+                    }
+                }
+                $this->status = 'VerifyVerificationCodeSuccess';
+            } else {
+                throw new ForbiddenException('InvalidVerificationCode');
+            }
         }
 
         # 只送過驗證碼，但是沒有執行過完整流程
@@ -122,18 +134,6 @@ class UserService extends BaseService
 
         if ($user->block) {
             throw new ForbiddenException('IsBlocked');
-        }
-
-        $verify = Hash::check($input->get('verificationCode'), $user->verificationCode);
-        if ($verify) {
-            if (config('app.env') == 'production') {
-                if (now() > Carbon::parse($user->lastSendAt)->addMinutes(config('daydreamlab.user.sms.expiredTime'))) {
-                    throw new ForbiddenException('VerificationCodeExpired');
-                }
-            }
-            $this->status = 'VerifyVerificationCodeSuccess';
-        } else {
-            throw new ForbiddenException('InvalidVerificationCode');
         }
 
         $this->repo->modify($user, collect([
