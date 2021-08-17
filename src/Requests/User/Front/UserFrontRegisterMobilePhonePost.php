@@ -34,7 +34,7 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
             'name'              => 'required|string',
             'email'             => 'required|email',
             'backupEmail'       => 'nullable|email',
-            'verificationCode'  => 'required|numeric',
+            'verificationCode'  => 'required|string',
             'company'           => 'required|array',
             'company.name'      => 'required|string',
             'company.email'     => 'required|email',
@@ -48,6 +48,7 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
             'company.scale'         => 'nullable|string',
             'company.purchaseRole'  => 'nullable|string',
             'company.interestedIssue'   => 'nullable|array',
+            'company.interestedIssue.*' => 'nullable|string',
             'company.issueOther'    => 'nullable|string',
             'newsletterCategoriesAlias'     => 'nullable|array',
             'newsletterCategoriesAlias.*'   => 'nullable|string'

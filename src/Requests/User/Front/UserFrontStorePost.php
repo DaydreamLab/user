@@ -45,6 +45,7 @@ class UserFrontStorePost extends AdminRequest
             'company.scale'         => 'nullable|string',
             'company.purchaseRole'  => 'nullable|string',
             'company.interestedIssue'   => 'nullable|array',
+            'company.interestedIssue.*' => 'nullable|string',
             'company.issueOther'    => 'nullable|string',
             #todo: 電子報
             'newsletterCategoriesAlias'     => 'nullable|array',

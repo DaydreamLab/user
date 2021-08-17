@@ -7,7 +7,7 @@ return [
         'mail'  => [
             'template'  => 'default'
         ],
-        'groups' => [4]
+        'groups' => [3]
     ],
     'login' => [
         'enable'    => 1

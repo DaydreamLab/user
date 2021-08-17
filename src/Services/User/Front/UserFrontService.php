@@ -303,7 +303,7 @@ class UserFrontService extends UserService
 
         if ( $subscribe = $input->get('newsletterCategoriesAlias') ) {
             $nsfs = app(NewsletterSubscriptionFrontService::class);
-            $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe]));
+            $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe, 'email' => $input->get('email')]));
         }
         #todo 有沒有送通知?
 
