@@ -25,6 +25,7 @@ class UserFrontGetLoginResource extends JsonResource
             $data['company'] = [
                 'name'          => $this->company->name,
                 'email'         => $this->company->email,
+                'vat'           => $this->company->vat,
                 'phoneCode'     => $this->company->phoneCode,
                 'phone'         => $this->company->phone,
                 'extNumber'     => $this->company->extNumber,

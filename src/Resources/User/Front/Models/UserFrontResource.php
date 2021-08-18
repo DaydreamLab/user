@@ -25,6 +25,7 @@ class UserFrontResource extends JsonResource
         if ($this->company) {
             $data['company'] = [
                 'name'          => $this->company->name,
+                'vat'           => $this->company->vat,
                 'email'         => $this->company->email,
                 'phoneCode'     => $this->company->phoneCode,
                 'phone'         => $this->company->phone,
