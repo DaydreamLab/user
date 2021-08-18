@@ -79,8 +79,6 @@ class UserAdminSearchPost extends ListRequest
         $validated->put('q', $q);
         $validated->forget(['user_group']);
 
-
-
         return $validated;
     }
 }

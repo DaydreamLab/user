@@ -289,6 +289,7 @@ class UserFrontService extends UserService
 
         $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
         $userData['verificationCode'] = bcrypt(Str::random());
+        $userData['activation'] = 1;
         $update = $this->repo->update($user, $userData);
         if (!$update) {
             throw new InternalServerErrorException('RegisterFail');

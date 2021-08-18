@@ -131,11 +131,11 @@ class UserService extends BaseService
                 throw new ForbiddenException('VerificationPending');
             }
         }
-
+/*
         if ($user->block) {
             throw new ForbiddenException('IsBlocked');
         }
-
+*/
         $this->repo->modify($user, collect([
             'verificationCode' => bcrypt(Str::random()),
             'lastLoginAt' => now(),
