@@ -27,15 +27,16 @@ return [
         'log' => 1,
         'cooldown' => 60, # 冷卻時間
         'expiredMinutes' => 15,  # 驗證碼過期分鐘數
+        'env'       => 'local',
         'mitake'    => [
             'username'  => '',
             'password'  => '',
-            'env'       => 'local'
+
         ],
         'xsms' => [
-            'MDN' => '',
-            'UID' => '',
-            'UPASS' => '',
+            'mdn' => '',
+            'uid' => '',
+            'upass' => '',
         ]
     ],
 

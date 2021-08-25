@@ -23,8 +23,8 @@ class XsmsChannel
     {
         $this->params = [
             'MDN'   => config('daydreamlab.user.sms.xsms.mdn'),
-            'UID'   => config('daydreamlab.user.sms.xsms.password'),
-            'UPASS' => config('daydreamlab.user.sms.xsms.password'),
+            'UID'   => config('daydreamlab.user.sms.xsms.uid'),
+            'UPASS' => config('daydreamlab.user.sms.xsms.upass'),
         ];
     }
 
@@ -49,12 +49,11 @@ class XsmsChannel
         $message = $notification->toXsms($notifiable);
 
         $content = [
-            'Subject' => $message->subject,
+            'Subject' => 'TEST',
             'Message' => $message->content,
             'MDNList' => [
                 [
-                    'MDN'       => $to,
-                    'Message'   => strip_tags($message->content)
+                    'MSISDN' => $to,
                 ]
             ]
         ];
@@ -67,11 +66,14 @@ class XsmsChannel
             $msgId = '';
         } else {
             $client = new Client();
+
             $response = $client->post($this->baseUrl, [
                 'form_params' => $this->params
             ]);
-
+show($this->params);
             $response = $response->getBody()->getContents();
+show($response);
+exit();
             $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
             $statusCode = $arrayResponse->Code;
             $sendResult = $arrayResponse->Code == 0 ? 1 : 0;
