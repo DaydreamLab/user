@@ -70,10 +70,9 @@ class XsmsChannel
             $response = $client->post($this->baseUrl, [
                 'form_params' => $this->params
             ]);
-show($this->params);
+
             $response = $response->getBody()->getContents();
-show($response);
-exit();
+
             $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
             $statusCode = $arrayResponse->Code;
             $sendResult = $arrayResponse->Code == 0 ? 1 : 0;
