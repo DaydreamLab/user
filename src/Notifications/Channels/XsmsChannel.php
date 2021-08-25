@@ -11,7 +11,7 @@ class XsmsChannel
 {
     protected $client;
 
-    public $baseUrl = 'https://xsms.aptg.com.tw/XSMSAP/api/APIRTFastRequest';
+    public $baseUrl = 'https://xsms.aptg.com.tw/XSMSAP/api/APIRTFastHttpRequest';
 
     public $params = [];
 
