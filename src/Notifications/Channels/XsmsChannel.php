@@ -49,7 +49,7 @@ class XsmsChannel
         $message = $notification->toXsms($notifiable);
 
         $content = [
-            'Subject' => 'TEST',
+            'Subject' => $message->subject,
             'Message' => $message->content,
             'MDNList' => [
                 [
