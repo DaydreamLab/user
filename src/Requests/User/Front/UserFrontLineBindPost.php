@@ -9,6 +9,8 @@ class UserFrontLineBindPost extends AdminRequest
     protected $modelName = 'Line';
 
     protected $apiMethod = 'lineBind';
+
+    protected $needAuth = false;
     /**
      * Determine if the user is authorized to make this request.
      *

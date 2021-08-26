@@ -230,8 +230,6 @@ class UserFrontService extends UserService
             throw new InternalServerErrorException('UpdateFail');
         }
 
-//        app(NewsletterSubscriptionFrontService::class)->
-//
         $companyData = $input->get('company');
         $userCompany = $user->company;
         if ($userCompany) {

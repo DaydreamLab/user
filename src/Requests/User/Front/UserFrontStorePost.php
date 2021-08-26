@@ -11,6 +11,7 @@ class UserFrontStorePost extends AdminRequest
 
     protected $apiMethod = 'storeUser';
 
+    protected $needAuth = false;
     /**
      * Determine if the user is authorized to make this request.
      *
