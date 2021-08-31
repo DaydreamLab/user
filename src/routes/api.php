@@ -1,4 +1,4 @@
- <?php
+<?php
 
  /************************************  前台 API  ************************************/
  Route::post('api/user/register', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@register');

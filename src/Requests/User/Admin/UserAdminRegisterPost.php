@@ -1,9 +1,8 @@
 <?php
 
-namespace DaydreamLab\User\Requests\User;
+namespace DaydreamLab\User\Requests\User\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
-use Illuminate\Validation\Rule;
 
 class UserAdminRegisterPost extends AdminRequest
 {
