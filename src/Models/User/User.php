@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Models\User;
 
+use DaydreamLab\Dddream\Models\Schedule\ScheduleItem;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
@@ -237,5 +238,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id');
     }
-
+    
 }
