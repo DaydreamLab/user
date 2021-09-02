@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Requests\AdminRequest;
 
 class UserFrontCheckEmailPost extends AdminRequest
 {
+    protected $needAuth = false;
     /**
      * Determine if the user is authorized to make this request.
      *
