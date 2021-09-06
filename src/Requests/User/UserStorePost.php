@@ -28,7 +28,7 @@ class UserStorePost extends AdminRequest
             'id'                    => 'nullable|integer',
             'email'                 => 'required|email',
             'first_name'            => 'required|string',
-            'last_name'             => 'required|string',
+            'last_name'             => 'nullable|string',
             'nickname'              => 'nullable|string',
             'gender'                => 'nullable|string',
             'image'                 => 'nullable|string',

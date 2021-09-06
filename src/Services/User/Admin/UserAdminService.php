@@ -195,12 +195,12 @@ class UserAdminService extends UserService
 
         $input->forget('password_confirmation');
 
-
         $result = parent::store($input);
         if (gettype($result) == 'boolean') {    //更新使用者
             $user = $this->find($input->get('id'));
             $user->groups()->detach();
             $user->groups()->attach($input->get('group_ids'));
+            $result = $user;
         }
         else {//新增使用者
             $result->groups()->attach($input->get('group_ids'));
