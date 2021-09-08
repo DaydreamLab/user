@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User\Front;
 
+use DaydreamLab\Dddream\Notifications\Merchant\MerchantResetPasswordSuccess;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
@@ -219,6 +220,9 @@ class UserFrontService extends UserService
             if($user->save()){
                 $token->delete();
                 $this->status = 'USER_RESET_PASSWORD_SUCCESS';
+
+                Notification::route('mail', $user->email)
+                    ->notify(new MerchantResetPasswordSuccess($user));
             }
             else{
                 $this->status = 'USER_RESET_PASSWORD_FAIL';
