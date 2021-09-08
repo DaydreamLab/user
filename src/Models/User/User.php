@@ -120,7 +120,7 @@ class User extends BaseModel implements
         static::creating(function ($item){
             $user = auth('api')->user();
             $item->uuid = Str::uuid();
-            $item->activateToken = Str::random(48);
+            //$item->activateToken = Str::random(48);
             $item->phoneCode = '+886';
             $item->mobilePhoneCode = '+886';
             $item->country = '臺灣';
