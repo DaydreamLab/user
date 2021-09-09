@@ -2,6 +2,8 @@
 
 namespace DaydreamLab\User\Services\User\Admin;
 
+use DaydreamLab\Cms\Models\Item\Item;
+use DaydreamLab\Cms\Services\NewsletterSubscription\Admin\NewsletterSubscriptionAdminService;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
@@ -105,7 +107,37 @@ class UserAdminService extends UserService
 
     public function modifyMapping($item, $input)
     {
-        $item->groups()->sync($input->get('groupIds'), true);
+        $changes = $item->groups()->sync($input->get('groupIds'), true);
+        if (count($attached = $changes['attached'])) {
+
+            if (in_array(7, $attached)) {
+                $categories = Item::whereIn('alias', ['01_newsletter'])->whereHas('category', function ($q) {
+                    $q->where('content_type', 'newsletter_category');
+                })->get()->pluck('id')->all();
+            } elseif (in_array(6, $attached)) {
+                $categories = Item::whereIn('alias', ['01_newsletter', '01_deal_newsletter'])->whereHas('category', function ($q) {
+                    $q->where('content_type', 'newsletter_category');
+                })->get()->pluck('id')->all();
+            } else {
+                $categories = [];
+            }
+
+            $data = [
+                'user_id' => $item->id,
+                'email' => $item->email,
+                'newsletterCategoryIds' => $categories
+            ];
+
+            $newsletterSSer = app(NewsletterSubscriptionAdminService::class);
+            $sub = $newsletterSSer->findBy('user_id', '=', $item->id)->first();
+            if ($sub) {
+                $data['id'] = $sub->id;
+                $newsletterSSer->modify(collect($data));
+            } else {
+                $newsletterSSer->add(collect($data));
+            }
+        }
+
         $item->company()->update($input->get('company'));
 
         if (count($input->get('brandIds') ?: [])) {
@@ -141,6 +173,8 @@ class UserAdminService extends UserService
             $result = $this->find($input->get('id'));
         }
         $this->response = $result;
+
+        # 根據會員群組的變動更新電子報訂閱
 
         return $result;
     }
