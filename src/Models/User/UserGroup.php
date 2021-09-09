@@ -122,28 +122,30 @@ class UserGroup extends BaseModel
      */
     public function getPageAttribute()
     {
-        $apis = $this->apis;
         $assetGroupIds = $this->assetGroups->pluck(['id'])->toArray();
         $assetIds = $this->assets->pluck(['id'])->toArray();
         $data = collect();
         $allAssetGroups = AssetGroup::all();
-        $allAssetGroups->each(function ($assetGroup) use (&$data, $apis, $assetGroupIds, $assetIds) {
+        $allAssetGroups->each(function ($assetGroup) use (&$data, $assetGroupIds, $assetIds) {
             $tempAssetGroup = $assetGroup->only(['id', 'title']);
             $tempAssetGroup['path'] = isset($assetGroup->params['path']) ? $assetGroup->params['path'] : '';
             $tempAssetGroup['type'] = isset($assetGroup->params['type']) ? $assetGroup->params['type'] : '';
             $tempAssetGroup['component'] = isset($assetGroup->params['component']) ? $assetGroup->params['component'] : '';
             $tempAssetGroup['visible'] = (in_array($assetGroup->id, $assetGroupIds)) ? 1 : 0;
 
-            $assetGroup->assets->each(function ($asset) use ($apis, $assetIds, $assetGroup, &$tempAssetGroup) {
+            $assetGroup->assets->each(function ($asset) use ($assetIds, $assetGroup, &$tempAssetGroup) {
                 $tempAsset = $asset->only(['id', 'title', 'path', 'component', 'type', 'icon', 'showNav']);
                 $tempAsset['visible'] = (in_array($asset->id, $assetIds)) ? 1 : 0;
 
-                $assetApis = $asset->apis->map(function ($assetApi) use ($apis, $assetGroup, $asset) {
-                    $targetApi = $apis->filter(function ($api) use ($assetGroup, $asset, $assetApi) {
-                        return $api->pivot->asset_group_id == $assetGroup->id
-                            && $api->pivot->asset_id == $asset->id
-                            && $api->pivot->api_id == $assetApi->id;
-                    })->first();
+                $assetApis = $asset->apis->map(function ($assetApi) use ($assetGroup, $asset) {
+//                    $targetApi = $this->apis->filter(function ($api) use ($assetGroup, $asset, $assetApi) {
+//                        return $api->pivot->asset_group_id == $assetGroup->id
+//                            && $api->pivot->asset_id == $asset->id
+//                            && $api->pivot->api_id == $assetApi->id;
+//                    })->first();
+                    $targetApi = $this->apis()->wherePivot('asset_group_id', $assetGroup->id)
+                        ->wherePivot('asset_id', $asset->id)
+                        ->wherePivot('api_id', $assetApi->id)->first();
 
                     return [
                         'id'        => $assetApi->id,
