@@ -34,9 +34,9 @@ class Expired
                 return  $this->response('TokenExpired', null);
             }
 
-            if ($user->block) {
-                return  $this->response('IsBlocked', null);
-            }
+//            if ($user->block) {
+//                return  $this->response('IsBlocked', null);
+//            }
 
             if($token->multipleLogin) {
                 $token->delete();
