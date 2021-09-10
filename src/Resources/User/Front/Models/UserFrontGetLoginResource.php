@@ -18,7 +18,8 @@ class UserFrontGetLoginResource extends JsonResource
             'uuid'          => $this->uuid,
             'email'         => $this->email,
             'backupEmail'   => $this->backupEmail,
-            'name'          => $this->name
+            'name'          => $this->name,
+            'group'         => $this->groups->first() ? $this->groups->first()->title : ''
         ];
 
         if ($this->company) {

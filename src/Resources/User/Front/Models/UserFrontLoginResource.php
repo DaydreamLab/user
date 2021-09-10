@@ -17,6 +17,7 @@ class UserFrontLoginResource extends JsonResource
         $data = [
             'uuid'          => $this->uuid,
             'name'          => $this->name,
+            'group'         => $this->groups->first() ? $this->groups->first()->title : '',
             'email'         => $this->email,
             'backupEmail'   => $this->backupEmail,
             'company'       => [

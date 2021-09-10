@@ -109,7 +109,7 @@ class UserAdminService extends UserService
     {
         $changes = $item->groups()->sync($input->get('groupIds'), true);
         if (count($attached = $changes['attached'])) {
-
+# 根據會員群組的變動更新電子報訂閱
             if (in_array(7, $attached)) {
                 $categories = Item::whereIn('alias', ['01_newsletter'])->whereHas('category', function ($q) {
                     $q->where('content_type', 'newsletter_category');
@@ -173,8 +173,6 @@ class UserAdminService extends UserService
             $result = $this->find($input->get('id'));
         }
         $this->response = $result;
-
-        # 根據會員群組的變動更新電子報訂閱
 
         return $result;
     }
