@@ -370,19 +370,18 @@ class User extends BaseModel implements
     }
 
 
-    public function newsletterSubscriptions()
+    public function newsletterSubscription()
     {
-        return $this->hasMany(NewsletterSubscription::class, 'user_id', 'id');
+        return $this->hasOne(NewsletterSubscription::class, 'user_id', 'id');
     }
 
 
     public function getNewsletterSubscriptionsAttribute()
     {
-        return $this->newsletterSubscriptions()->get()->map(function ($n) {
-            return $n->newsletterCategories->map(function ($nc) {
-                return $nc->only(['alias', 'title']);
-            });
-        });
+        $n = $this->newsletterSubscription()->first();
+        return ($n) ? $n->newsletterCategories->map(function ($nc) {
+            return $nc->only(['alias', 'title']);
+        })->toArray() : [];
     }
 
 
