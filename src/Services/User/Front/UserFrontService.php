@@ -215,6 +215,18 @@ class UserFrontService extends UserService
         return $this->response;
     }
 
+
+    public function getByUUID($uuid)
+    {
+        $user = $this->findBy('uuid', '=', $uuid)->first();
+        if (!$user) {
+            throw new NotFoundException('ItemNotExist');
+        }
+        $this->status = 'GetItemSuccess';
+        $this->response = $user;
+        return $this->response;
+    }
+
     /**
      * 編輯會員資訊
      * @param Collection $input
@@ -223,6 +235,50 @@ class UserFrontService extends UserService
     public function modify(Collection $input)
     {
         $user = $this->getUser();
+        $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
+        $update = $this->repo->update($user, $userData);
+        if (!$update) {
+            throw new InternalServerErrorException('UpdateFail');
+        }
+
+        $companyData = $input->get('company');
+        $userCompany = $user->company;
+        if ($userCompany) {
+            $userCompany->update($companyData);
+        } else {
+            $companyData['user_id'] = $user->id;
+            $user->company()->create($companyData);
+        }
+
+        if ( $subscribe = $input->get('newsletterCategoriesAlias') ) {
+            $nsfs = app(NewsletterSubscriptionFrontService::class);
+            $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe]));
+        }
+
+        $this->response = $user->refresh();
+        $this->status = 'UpdateSuccess';
+    }
+
+
+    public function updateOldUser(Collection $input)
+    {
+        $user = $this->findBy('uuid', '=', $input->get('uuid'))->first();
+        if (!$user) {
+            throw new NotFoundException('ItemNotExist');
+        }
+
+        $verify = Hash::check($input->get('verificationCode'), $user->verificationCode);
+        if ($verify) {
+            if (config('app.env') == 'production') {
+                if (now() > Carbon::parse($user->lastSendAt)->addMinutes(config('daydreamlab.user.sms.expiredTime'))) {
+                    throw new ForbiddenException('VerificationCodeExpired');
+                }
+            }
+            $this->status = 'VerifyVerificationCodeSuccess';
+        } else {
+            throw new ForbiddenException('InvalidVerificationCode');
+        }
+
         $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
         $userData['verificationCode'] = bcrypt(Str::random());
         $userData['activation'] = 1;
@@ -242,7 +298,7 @@ class UserFrontService extends UserService
 
         if ( $subscribe = $input->get('newsletterCategoriesAlias') ) {
             $nsfs = app(NewsletterSubscriptionFrontService::class);
-            $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe]));
+            $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe, 'email' => $input->get('email')]));
         }
 
         $this->response = $user->refresh();

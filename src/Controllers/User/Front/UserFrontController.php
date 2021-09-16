@@ -130,6 +130,17 @@ class UserFrontController extends BaseController
     }
 
 
+    public function getByUUID($uuid)
+    {
+        try {
+            $this->service->getByUUID($uuid);
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+        return $this->response($this->service->status,  $this->service->response, [], UserFrontResource::class);
+    }
+
+
     public function getLogin(Request $request)
     {
         $user = Auth::guard('api')->authenticate();
@@ -251,6 +262,18 @@ class UserFrontController extends BaseController
     {
         try {
             $this->service->modify($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function updateOldUser(UserFrontStorePost $request)
+    {
+        try {
+            $this->service->updateOldUser($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }

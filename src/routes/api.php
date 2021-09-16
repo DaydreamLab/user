@@ -29,8 +29,11 @@ Route::post('/api/user/checkEmail', [UserFrontController::class, 'checkEmail'])-
 # 檢查手機是否已經註冊過
 Route::post('/api/user/checkMobilePhone', [UserFrontController::class, 'checkMobilePhone']);
 
+# 更新舊會員資料
+Route::post('api/user/oldUserUpdate', [UserFrontController::class, 'updateOldUser']);
+
 # 編輯會員資料
-Route::post('/api/user/store', [UserFrontController::class, 'store']);
+Route::post('/api/user/store', [UserFrontController::class, 'store'])->middleware(['expired']);
 
 # 取得手機驗證碼
 Route::post('/api/user/getCode', [UserFrontController::class, 'getVerificationCode']);
@@ -48,13 +51,14 @@ Route::post('/api/user/register', [UserFrontController::class, 'register']);
 Route::get('/api/user/logout', [UserController::class, 'logout']);
 
 # 檢查token狀態
-Route::get('/api/user/login', [UserFrontController::class, 'getLogin'])->middleware(['expired']);
+Route::get('/api/user/getLogin', [UserFrontController::class, 'getLogin'])->middleware(['expired']);
 
 # 綁定 Line ID
 Route::post('/api/user/lineBind', [UserFrontController::class, 'lineBind'])->middleware(['expired']);
 
-# 取的使用者資訊
+# 取得使用者資訊
 Route::get('/api/user/profile', [UserFrontController::class, 'getItem'])->middleware(['expired']);
+Route::get('/api/user/profile/{uuid}', [UserFrontController::class, 'getByUUID']);
 
 //Route::get('/api/user/login/facebook', [UserFrontController::class, 'fbLogin']);
 //Route::get('/api/user/login/facebook/callback', [UserFrontController::class, 'fbCallback']);

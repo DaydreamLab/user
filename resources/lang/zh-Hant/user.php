@@ -36,7 +36,8 @@ return [
     'MOBILE_PHONE_EXIST'                => '手機號碼已經註冊過',
     'MOBILE_PHONE_NOT_EXIST'            => '手機號碼尚未註冊過',
 
-    'OLD_PASSWORD_INCORRECT'            => '輸入的就密碼錯誤',
+    'OLD_PASSWORD_INCORRECT'            => '輸入的舊密碼錯誤',
+    'OLD_USER_NEED_TO_COMPLETE_DATA'    => '舊會員需要完善會員資料',
 
     'PASSWORD_SAME_AS_PREVIOUS'         => '密碼不可與上次密碼相同',
 

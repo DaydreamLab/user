@@ -123,10 +123,12 @@ class UserService extends BaseService
 
         # 只送過驗證碼，但是沒有執行過完整流程
         if (!$user->activation) {
-            if ( !$user->email
-                || !$user->name
-                || ($user->activateToken == 'importedUser') ) {
+            if ( !$user->email || !$user->name) {
                 $this->status = 'RegistrationIsNotCompleted';
+                $this->response = $user;
+                return $this->response;
+            } elseif ($user->activateToken == 'importedUser') {
+                $this->status = 'OldUserNeedToCompleteData';
                 $this->response = $user;
                 return $this->response;
             } else {
