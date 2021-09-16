@@ -31,7 +31,8 @@ class UserFrontStorePost extends AdminRequest
     {
         return [
             'uuid'                  => 'nullable|uuid',
-            'verificationCode'      => 'nullable|numeric',
+            'mobilePhoneCode'       => 'nullable|regex:/\+[0-9]+$/',
+            'mobilePhone'           => 'nullable|numeric',
             'name'                  => 'nullable|string',
             'email'                 => 'required|email',
             'backupEmail'           => 'nullable|email',

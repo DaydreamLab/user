@@ -16,6 +16,8 @@ class UserFrontResource extends JsonResource
     {
         $data = [
             'uuid'          => $this->uuid,
+            'mobilePhoneCode' => $this->mobilePhoneCode,
+            'mobilePhone'   => $this->mobilePhone,
             'email'         => $this->email,
             'backupEmail'   => $this->backupEmail,
             'name'          => $this->name,
