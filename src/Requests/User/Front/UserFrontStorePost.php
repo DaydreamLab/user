@@ -30,6 +30,7 @@ class UserFrontStorePost extends AdminRequest
     public function rules()
     {
         return [
+            'uuid'                  => 'required|uuid',
             'name'                  => 'nullable|string',
             'email'                 => 'required|email',
             'backupEmail'           => 'nullable|email',
