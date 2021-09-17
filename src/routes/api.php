@@ -58,6 +58,7 @@ Route::post('/api/user/lineBind', [UserFrontController::class, 'lineBind'])->mid
 
 # 取得使用者資訊
 Route::get('/api/user/profile', [UserFrontController::class, 'getItem'])->middleware(['expired']);
+# 取得舊會員資料
 Route::get('/api/user/profile/{uuid}', [UserFrontController::class, 'getByUUID']);
 
 //Route::get('/api/user/login/facebook', [UserFrontController::class, 'fbLogin']);

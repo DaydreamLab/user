@@ -278,7 +278,7 @@ class UserFrontController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response, [], UserFrontGetLoginResource::class);
     }
 
 

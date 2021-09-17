@@ -222,6 +222,9 @@ class UserFrontService extends UserService
         if (!$user) {
             throw new NotFoundException('ItemNotExist');
         }
+        if ($user->activation) {
+            throw new ForbiddenException('HasBeenActivated');
+        }
         $this->status = 'GetItemSuccess';
         $this->response = $user;
         return $this->response;
@@ -289,7 +292,21 @@ class UserFrontService extends UserService
             $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe, 'email' => $input->get('email')]));
         }
 
-        $this->response = $user->refresh();
+        $tokens = $user->tokens()->get();
+        if(!config('daydreamlab.user.multiple_login')) {
+            $tokens->each(function ($token) {
+                $token->multipleLogin = 1;
+                $token->save();
+            });
+        }
+
+        $tokenResult = $user->createToken(config('app.name'));
+        $token = $tokenResult->token;
+        $token->expires_at = now()->addSeconds(config('daydreamlab.user.token_expires_in'));
+        $token->save();
+        $user->accessToken = $tokenResult->accessToken;
+        $this->response = $user;
+
         $this->status = 'UpdateSuccess';
     }
 
