@@ -6,6 +6,7 @@ use DaydreamLab\Cms\Models\Brand\Brand;
 use DaydreamLab\Cms\Models\Newsletter\Newsletter;
 use DaydreamLab\Cms\Models\NewsletterSubscription\NewsletterSubscription;
 use DaydreamLab\Cms\Models\Tag\Tag;
+use DaydreamLab\Dsth\Models\Order\Order;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
@@ -146,6 +147,12 @@ class User extends BaseModel implements
     }
 
 
+    public static function newFactory()
+    {
+        return UserFactory::new();
+    }
+
+
     public function accessGroups()
     {
         return $this->groups()
@@ -173,12 +180,44 @@ class User extends BaseModel implements
         return $this->hasMany(UserCompany::class, 'user_id', 'id');
     }
 
+
+    public function groups()
+    {
+        return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id')
+            ->withTimestamps();
+    }
+
  
     public function line()
     {
         return $this->hasOne(Line::class, 'user_id', 'id');
     }
 
+
+    public function newsletterCategories()
+    {
+        return $this->belongsToMany(Newsletter::class, 'newsletter_category_user_maps', 'user_id', 'category_id')
+            ->withTimestamps();
+    }
+
+
+    public function newsletterSubscription()
+    {
+        return $this->hasOne(NewsletterSubscription::class, 'user_id', 'id');
+    }
+
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'userId', 'id');
+    }
+
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'users_tags_maps', 'user_id', 'tag_id')
+            ->withTimestamps();
+    }
     /**
      * @return array
      * 先藉由此使用者屬於哪些會群組，而這些會員再找出隸屬於哪些閱讀權限，
@@ -267,6 +306,15 @@ class User extends BaseModel implements
     }
 
 
+    public function getNewsletterSubscriptionsAttribute()
+    {
+        $n = $this->newsletterSubscription()->first();
+        return ($n) ? $n->newsletterCategories->map(function ($nc) {
+            return $nc->only(['alias', 'title']);
+        })->toArray() : [];
+    }
+
+
     public function getIsAdminAttribute()
     {
         return $this->isAdmin();
@@ -296,20 +344,12 @@ class User extends BaseModel implements
         return $this->order_by;
     }
 
-
     /**
      * @return string
      */
     public function getPrimaryKey(): string
     {
         return $this->primaryKey;
-    }
-
-
-    public function groups()
-    {
-        return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id')
-            ->withTimestamps();
     }
 
 
@@ -357,33 +397,6 @@ class User extends BaseModel implements
         return false;
     }
 
-    public static function newFactory()
-    {
-        return UserFactory::new();
-    }
-
-
-    public function newsletterCategories()
-    {
-        return $this->belongsToMany(Newsletter::class, 'newsletter_category_user_maps', 'user_id', 'category_id')
-            ->withTimestamps();
-    }
-
-
-    public function newsletterSubscription()
-    {
-        return $this->hasOne(NewsletterSubscription::class, 'user_id', 'id');
-    }
-
-
-    public function getNewsletterSubscriptionsAttribute()
-    {
-        $n = $this->newsletterSubscription()->first();
-        return ($n) ? $n->newsletterCategories->map(function ($nc) {
-            return $nc->only(['alias', 'title']);
-        })->toArray() : [];
-    }
-
 
     public function setLimit($limit)
     {
@@ -406,12 +419,5 @@ class User extends BaseModel implements
         if ($order_by && $order_by != ''){
             $this->order_by = $order_by;
         }
-    }
-
-
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'users_tags_maps', 'user_id', 'tag_id')
-            ->withTimestamps();
     }
 }
