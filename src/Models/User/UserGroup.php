@@ -14,7 +14,9 @@ use Kalnoy\Nestedset\NodeTrait;
 
 class UserGroup extends BaseModel
 {
-    use NodeTrait, HasCustomRelation, WithAccess,
+    use NodeTrait,
+        //HasCustomRelation,
+        WithAccess,
         RecordChanger {
         RecordChanger::boot as traitBoot;
     }
