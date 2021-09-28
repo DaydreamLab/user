@@ -43,5 +43,20 @@
     "timezone": "Asia/Taipei",
     "locale": "zh-Hant",
     "groups":["Registered"]
+  },
+  {
+    "email": "admin@zerone.com.tw",
+    "mobilePhone": "0987654321",
+    "password": "zerone@2021",
+    "name": "零壹管理者",
+    "firstName": "Zerone",
+    "lastName": "Admin",
+    "nickname": "Zerone",
+    "activation": 1,
+    "canDelete": 0,
+    "activateToken": "administrator",
+    "timezone": "Asia/Taipei",
+    "locale": "zh-Hant",
+    "groups":["Administrator"]
   }
 ]
