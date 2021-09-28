@@ -12,5 +12,16 @@ class CompanyFront extends Company
      */
     protected $table = 'companies';
 
-
+    protected $hidden = [
+        'id',
+        'category_id',
+        'locked_by',
+        'locked_at',
+        'ordering',
+        'created_by',
+        'created_at',
+        'updated_by',
+        'updated_at',
+        'state_'
+    ];
 }

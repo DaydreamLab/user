@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Services\Company\Front;
 
 use DaydreamLab\User\Repositories\Company\Front\CompanyFrontRepository;
 use DaydreamLab\User\Services\Company\CompanyService;
+use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 
 class CompanyFrontService extends CompanyService
 {
@@ -13,5 +14,19 @@ class CompanyFrontService extends CompanyService
     {
         parent::__construct($repo);
         $this->repo = $repo;
+    }
+
+
+    public function getInfo($vat)
+    {
+        $company = $this->findBy('vat', '=', $vat)->first();
+
+        if (!$company) {
+            throw new NotFoundException('ItemNotExist');
+        }
+
+        $this->status = 'GetItemSuccess';
+        $this->response = $company;
+        return $this->response;
     }
 }

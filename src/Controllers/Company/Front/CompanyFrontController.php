@@ -8,9 +8,12 @@ use DaydreamLab\User\Requests\Company\Front\CompanyFrontRemovePost;
 use DaydreamLab\User\Requests\Company\Front\CompanyFrontStorePost;
 use DaydreamLab\User\Requests\Company\Front\CompanyFrontSearchPost;
 use DaydreamLab\User\Requests\Company\Front\CompanyFrontOrderingPost;
+use Throwable;
 
 class CompanyFrontController extends BaseController
 {
+    protected $package = 'User';
+
     protected $modelName = 'Company';
 
     protected $modelType = 'Front';
@@ -19,6 +22,18 @@ class CompanyFrontController extends BaseController
     {
         parent::__construct($service);
         $this->service = $service;
+    }
+
+
+    public function getInfo($vat)
+    {
+        try {
+            $this->service->getInfo($vat);
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
