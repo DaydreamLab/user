@@ -8,6 +8,7 @@ class AssetGroupAdminPageRequest extends AdminRequest
 {
     protected $modelName = 'AssetGroup';
 
+    protected $needAuth = false;
     /**
      * Determine if the user is authorized to make this request.
      *

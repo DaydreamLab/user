@@ -9,6 +9,7 @@ use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
+use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
@@ -245,6 +246,18 @@ class UserFrontService extends UserService
         }
 
         $companyData = $input->get('company');
+        # 如果有統編，帶入公司id，公司不存在則新增
+        if ($companyData['vat']) {
+            $cpy = Company::where('vat', $companyData['vat'])->first();
+            if (!$cpy) {
+                $cpy = Company::create([
+                    'name' => $companyData['name'],
+                    'vat' => $companyData['vat'],
+                    'phone' => $companyData['phone']
+                ]);
+            }
+            $companyData['company_id'] = $cpy->id;
+        }
         $userCompany = $user->company;
         if ($userCompany) {
             $userCompany->update($companyData);
@@ -279,6 +292,18 @@ class UserFrontService extends UserService
         }
 
         $companyData = $input->get('company');
+        # 如果有統編，帶入公司id，公司不存在則新增
+        if ($companyData['vat']) {
+            $cpy = Company::where('vat', $companyData['vat'])->first();
+            if (!$cpy) {
+                $cpy = Company::create([
+                    'name' => $companyData['name'],
+                    'vat' => $companyData['vat'],
+                    'phone' => $companyData['phone']
+                ]);
+            }
+            $companyData['company_id'] = $cpy->id;
+        }
         $userCompany = $user->company;
         if ($userCompany) {
             $userCompany->update($companyData);
@@ -356,6 +381,18 @@ class UserFrontService extends UserService
         }
 
         $companyData = $input->get('company');
+        # 如果有統編，帶入公司id，公司不存在則新增
+        if ($companyData['vat']) {
+            $cpy = Company::where('vat', $companyData['vat'])->first();
+            if (!$cpy) {
+                $cpy = Company::create([
+                    'name' => $companyData['name'],
+                    'vat' => $companyData['vat'],
+                    'phone' => $companyData['phone']
+                ]);
+            }
+            $companyData['company_id'] = $cpy->id;
+        }
         $companyData['user_id'] = $user->id;
         $userCompany = UserCompany::create($companyData);
         if (!$userCompany) {

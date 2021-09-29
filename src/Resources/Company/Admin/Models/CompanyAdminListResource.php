@@ -21,7 +21,7 @@ class CompanyAdminListResource extends BaseJsonResource
             'name'              => $this->name,
             'vat'               => $this->vat,
             'domain'            => $this->domain,
-            'categoryTitle'     => $this->category->title,
+            'categoryTitle'     => ($this->category) ? $this->category->title : '',
             'created_at'        => $this->getDateTimeString($this->created_at, $tz),
             'updated_at'        => $this->getDateTimeString($this->updated_at, $tz),
             'locked_at'         => $this->getDateTimeString($this->locked_at, $tz),

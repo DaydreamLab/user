@@ -38,7 +38,7 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
             'company'           => 'nullable|array',
             'company.name'      => 'nullable|string',
             'company.email'     => 'nullable|email',
-            'company.vat'       => ['required', 'numeric', new TaiwanUnifiedBusinessNumber()],
+            'company.vat'       => ['nullable', 'numeric', new TaiwanUnifiedBusinessNumber()],
             'company.phoneCode' => 'nullable|numeric',
             'company.phone'     => 'nullable|numeric',
             'company.extNumber' => 'nullable|numeric',

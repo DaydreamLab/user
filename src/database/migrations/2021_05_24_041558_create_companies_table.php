@@ -15,10 +15,10 @@ class CreateCompaniesTable extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('category_id');
+            $table->string('category_id')->nullable();
             $table->string('name');
             $table->string('vat')->nullable();
-            $table->string('domain');
+            $table->string('domain')->nullable();
             $table->string('logo')->nullable();
             $table->string('phoneCode')->nullable();
             $table->string('phone')->nullable();
