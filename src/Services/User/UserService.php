@@ -123,7 +123,7 @@ class UserService extends BaseService
 
         # 只送過驗證碼，但是沒有執行過完整流程
         if (!$user->activation) {
-            if ( !$user->email || !$user->name) {
+            if ( !$user->email || !$user->name || $user->activateToken == 'couponAddUser') {
                 $this->status = 'RegistrationIsNotCompleted';
                 $this->response = $user;
                 return $this->response;
