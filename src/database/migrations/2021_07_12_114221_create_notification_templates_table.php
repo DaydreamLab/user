@@ -14,7 +14,7 @@ class CreateNotificationTemplatesTable extends Migration
     public function up()
     {
         Schema::create('notification_templates', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->bigIncrements('id');
             $table->string('channelType');
             $table->string('category');
             $table->string('type');
