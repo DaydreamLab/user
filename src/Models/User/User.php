@@ -40,7 +40,7 @@ class User extends BaseModel implements
         HasApiTokens,
         RecordChanger,
         HasFactory,
-        //HasCustomRelation,
+        HasCustomRelation,
         UserInfo;
 
     protected $order_by = 'id';

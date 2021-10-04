@@ -18,7 +18,7 @@ class UserFront extends User
         'id',
     ];
 
-    //static $custom_relations = [];
+    //private static $custom_relations = [];
 
 
     public static function boot()
