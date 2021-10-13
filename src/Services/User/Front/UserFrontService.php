@@ -11,6 +11,7 @@ use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\User\UserCompany;
+use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
 use DaydreamLab\User\Notifications\User\UserGetVerificationCodeNotification;
@@ -392,7 +393,17 @@ class UserFrontService extends UserService
                 ]);
             }
             $companyData['company_id'] = $cpy->id;
+            # 根據公司的身份決定註冊使用者的群組 ex.經銷會員 -> 經銷會員
+            if ($cpy->category != null) {
+                if ($cpy->category->title == '經銷會員') {
+                    $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
+                    if ($dealerUserGroup) {
+                        $user->groups()->sync($dealerUserGroup->id);
+                    }
+                }
+            }
         }
+
         $companyData['user_id'] = $user->id;
         $userCompany = UserCompany::create($companyData);
         if (!$userCompany) {
