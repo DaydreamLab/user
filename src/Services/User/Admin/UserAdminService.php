@@ -134,8 +134,9 @@ class UserAdminService extends UserService
                 $data['id'] = $sub->id;
                 $newsletterSSer->modify(collect($data));
             } else {
-                $newsletterSSer->add(collect($data));
+                $sub = $newsletterSSer->add(collect($data));
             }
+            $newsletterSSer->edmProcessSubscription($item->email, $sub); # 串接edm訂閱管理
         }
 
         $item->company()->update($input->get('company'));
@@ -171,6 +172,10 @@ class UserAdminService extends UserService
         $result = parent::store($input);
         if ($input->has('id')) {
             $result = $this->find($input->get('id'));
+        }
+        if ($result->block == 1) {
+            $newsletterSSer = app(NewsletterSubscriptionAdminService::class);
+            $newsletterSSer->edmAddBlackList($result->email);
         }
         $this->response = $result;
 
