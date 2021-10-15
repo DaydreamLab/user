@@ -38,7 +38,7 @@ class UserFrontStorePost extends AdminRequest
             'backupEmail'           => 'nullable|email',
             'company'               => 'required|array',
             'company.name'          => 'required|string',
-            'company.vat'           => ['required', 'numeric', new TaiwanUnifiedBusinessNumber()],
+            'company.vat'           => ['nullable', 'numeric', new TaiwanUnifiedBusinessNumber()],
             'company.phoneCode'     => 'nullable|numeric',
             'company.phone'         => 'required|numeric',
             'company.extNumber'     => 'nullable|numeric',
