@@ -28,7 +28,6 @@ class SmsHistory extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'notificationId',
         'phoneCode',
         'phone',
         'category',
