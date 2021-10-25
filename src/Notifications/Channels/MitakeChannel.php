@@ -77,6 +77,7 @@ class MitakeChannel
         if (config('daydreamlab.user.sms.log')) {
             $strlen = mb_strlen($message->content, 'UTF-8');
             $data = [
+                'notificationId'=> $notification->id,
                 'phoneCode'     => $this->phoneCode,
                 'phone'         => $this->phone,
                 'category'      => $message->category,

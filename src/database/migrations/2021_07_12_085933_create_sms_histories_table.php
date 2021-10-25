@@ -15,6 +15,7 @@ class CreateSmsHistoriesTable extends Migration
     {
         Schema::create('sms_histories', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('notificationId');
             $table->string('phoneCode');
             $table->string('phone');
             $table->string('category');
