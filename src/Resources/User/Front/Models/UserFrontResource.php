@@ -22,6 +22,7 @@ class UserFrontResource extends JsonResource
             'backupEmail'   => $this->backupEmail,
             'name'          => $this->name,
             'group'         => $this->groups->first() ? $this->groups->first()->title : '',
+            'groupId'       => $this->groups->first() ? $this->groups->first()->id : null,
             'newsletterSubscriptions' => $this->newsletterSubscriptions
         ];
 
