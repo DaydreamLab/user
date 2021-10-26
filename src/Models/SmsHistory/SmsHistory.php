@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Models\SmsHistory;
 
+use DaydreamLab\Dsth\Models\Notification\Notification;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\User\Models\User\User;
@@ -68,9 +69,28 @@ class SmsHistory extends BaseModel
     }
 
 
+    public function notification()
+    {
+        return $this->belongsTo(Notification::class, 'notificationId', 'id');
+    }
+
+
     public function receiver()
     {
         return $this->hasOne(User::class, 'mobilePhone', 'phone')
             ->where('mobilePhoneCode', $this->phoneCode);
+    }
+
+
+    public function getSenderAtrribute()
+    {
+        $user = ($this->notification) ? $this->notification->creator : null;
+        return $user;
+    }
+
+
+    public function getSenderNameAttribute()
+    {
+        return ($this->sender) ? $this->sender->name : '';
     }
 }
