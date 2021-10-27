@@ -334,6 +334,7 @@ class UserFrontService extends UserService
         $this->response = $user;
 
         $this->status = 'UpdateSuccess';
+        $this->sendNotification('mail', $user->email, new RegisteredNotification($user));
     }
 
     /**
@@ -414,7 +415,8 @@ class UserFrontService extends UserService
             $nsfs = app(NewsletterSubscriptionFrontService::class);
             $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe, 'email' => $input->get('email')]));
         }
-        #todo 有沒有送通知?
+        # 通知
+        $this->sendNotification('mail', $user->email, new RegisteredNotification($user));
 
         $this->status = 'RegisterSuccess';
     }
