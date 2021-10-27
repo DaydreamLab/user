@@ -14,6 +14,8 @@ class UserFrontGetLoginResource extends JsonResource
      */
     public function toArray($request)
     {
+        $userGroup = $this->groups->first();
+
         $data = [
             'uuid'                  => $this->uuid,
             'email'                 => $this->email,
@@ -21,9 +23,11 @@ class UserFrontGetLoginResource extends JsonResource
             'name'                  => $this->name,
             'mobilePhoneCode'       => $this->mobilePhoneCode,
             'mobilePhoneNumber'     => $this->mobilePhoneNumber,
-            'groupId'               =>  $this->groups->first()->id,
-            'group'                 => $this->groups->first()
-                ? $this->groups->first()->title
+            'groupId'               => $userGroup
+                ? $userGroup->id
+                : null,
+            'group'                 => $userGroup
+                ? $userGroup->title
                 : ''
         ];
 
