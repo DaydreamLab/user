@@ -1,5 +1,5 @@
 <?php
 
 return [
-    //'UNDEFINED_STATUS'                  => 500,
+    'VAT_NOT_EXIST'     => '公司統編資料尚未建立'
 ];

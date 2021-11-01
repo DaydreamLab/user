@@ -21,11 +21,9 @@ class CompanyFrontService extends CompanyService
     {
         $company = $this->findBy('vat', '=', $vat)->first();
 
-        if (!$company) {
-            throw new NotFoundException('ItemNotExist');
-        }
-
-        $this->status = 'GetItemSuccess';
+        $this->status = $company
+            ? 'GetItemSuccess'
+            : 'VatNotExist';
         $this->response = $company;
         return $this->response;
     }

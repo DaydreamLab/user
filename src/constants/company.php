@@ -1,5 +1,5 @@
 <?php
 
 return [
-    //'UNDEFINED_STATUS'                  => 500,
+    'VAT_NOT_EXIST'     => 200
 ];
