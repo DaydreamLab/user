@@ -127,7 +127,7 @@ class UserGroup extends BaseModel
         $assetGroupIds = $this->assetGroups->pluck(['id'])->toArray();
         $assetIds = $this->assets->pluck(['id'])->toArray();
         $data = collect();
-        $allAssetGroups = AssetGroup::all();
+        $allAssetGroups = AssetGroup::all()->sortBy('ordering');
         $allAssetGroups->each(function ($assetGroup) use (&$data, $assetGroupIds, $assetIds) {
             $tempAssetGroup = $assetGroup->only(['id', 'title']);
             $tempAssetGroup['path'] = isset($assetGroup->params['path']) ? $assetGroup->params['path'] : '';

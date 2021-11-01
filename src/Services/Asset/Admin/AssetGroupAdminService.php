@@ -50,7 +50,7 @@ class AssetGroupAdminService extends AssetGroupService
 
     public function page(Collection $input)
     {
-        $assetGroups = $this->all();
+        $assetGroups = $this->all()->sortBy('ordering');
         $page = [];
         foreach ($assetGroups as $assetGroup) {
             $tempAssetGroup = $assetGroup->only(['id', 'title']);
