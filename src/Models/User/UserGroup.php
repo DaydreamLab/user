@@ -160,6 +160,9 @@ class UserGroup extends BaseModel
                 });
                 $tempAssetGroup['assets'][] = collect($tempAsset);
             });
+            if (!isset($tempAssetGroup['assets'])) {
+                $tempAssetGroup['assets'] = [];
+            }
             $data->push(collect($tempAssetGroup));
         });
 
