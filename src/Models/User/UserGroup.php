@@ -133,6 +133,7 @@ class UserGroup extends BaseModel
             $tempAssetGroup['path'] = isset($assetGroup->params['path']) ? $assetGroup->params['path'] : '';
             $tempAssetGroup['type'] = isset($assetGroup->params['type']) ? $assetGroup->params['type'] : '';
             $tempAssetGroup['component'] = isset($assetGroup->params['component']) ? $assetGroup->params['component'] : '';
+            $tempAssetGroup['icon'] = isset($assetGroup->params['icon']) ? $assetGroup->params['icon'] : '';
             $tempAssetGroup['visible'] = (in_array($assetGroup->id, $assetGroupIds)) ? 1 : 0;
 
             $assetGroup->assets->each(function ($asset) use ($assetIds, $assetGroup, &$tempAssetGroup) {
@@ -140,11 +141,7 @@ class UserGroup extends BaseModel
                 $tempAsset['visible'] = (in_array($asset->id, $assetIds)) ? 1 : 0;
 
                 $assetApis = $asset->apis->map(function ($assetApi) use ($assetGroup, $asset) {
-//                    $targetApi = $this->apis->filter(function ($api) use ($assetGroup, $asset, $assetApi) {
-//                        return $api->pivot->asset_group_id == $assetGroup->id
-//                            && $api->pivot->asset_id == $asset->id
-//                            && $api->pivot->api_id == $assetApi->id;
-//                    })->first();
+
                     $targetApi = $this->apis()->wherePivot('asset_group_id', $assetGroup->id)
                         ->wherePivot('asset_id', $asset->id)
                         ->wherePivot('api_id', $assetApi->id)->first();
