@@ -74,6 +74,9 @@ class AssetGroupAdminService extends AssetGroupService
                 $tempAsset['apis'] = $assetApis;
                 $tempAssetGroup['assets'][] = $tempAsset;
             }
+            if (!isset($tempAssetGroup['assets'])) {
+                $tempAssetGroup['assets'] = [];
+            }
             $page[] = $tempAssetGroup;
         }
         $this->response = $page;
