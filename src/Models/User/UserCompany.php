@@ -72,4 +72,10 @@ class UserCompany extends BaseModel
     protected $casts = [
         'interestedIssue' => 'array'
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }
