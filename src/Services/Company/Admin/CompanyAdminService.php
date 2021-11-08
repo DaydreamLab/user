@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Services\Company\Admin;
 use DaydreamLab\Cms\Repositories\Category\Admin\CategoryAdminRepository;
 use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
+use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
 use DaydreamLab\User\Services\Company\CompanyService;
 use Illuminate\Support\Collection;
@@ -32,6 +33,30 @@ class CompanyAdminService extends CompanyService
         $this->checkCategoryId($input->get('category_id'));
 
         return parent::add($input);
+    }
+
+
+    public function afterModify(Collection $input, $item)
+    {
+        # 根據公司的身份改變公司成員的群組 ex.經銷會員 -> 經銷會員
+        if ($item->category != null) {
+            if ($item->category->title == '經銷會員') {
+                $userGroup = UserGroup::where('title', '經銷會員')->first();
+
+            } else {
+                $userGroup = UserGroup::where('title', '一般會員')->first();
+            }
+
+            foreach ($item->userCompanies as $userCompany) {
+//                $userCompany::update([
+//                    'name' => $item->name,
+//                    'vat' => $item->vat
+//                ]);
+                if ($user = $userCompany->user) {
+                    $user->groups()->sync($userGroup->id);
+                }
+            }
+        }
     }
 
 
