@@ -173,7 +173,7 @@ class UserAdminService extends UserService
         if ($input->has('id')) {
             $result = $this->find($input->get('id'));
         }
-        if ($result->block == 1) {
+        if ( $result->block == 1 && in_array(config('app.env'), ['production', 'staging']) ) {
             $newsletterSSer = app(NewsletterSubscriptionAdminService::class);
             $newsletterSSer->edmAddBlackList($result->email);
         }
