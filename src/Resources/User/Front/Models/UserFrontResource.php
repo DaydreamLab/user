@@ -26,27 +26,25 @@ class UserFrontResource extends JsonResource
             'newsletterSubscriptions' => $this->newsletterSubscriptions
         ];
 
-        if ($this->company) {
-            $data['company'] = [
-                'name'          => $this->company->name,
-                'vat'           => $this->company->vat,
-                'email'         => $this->company->email,
-                'phoneCode'     => $this->company->phoneCode,
-                'phone'         => $this->company->phone,
-                'extNumber'     => $this->company->extNumber,
-                'city'          => $this->company->city,
-                'district'      => $this->company->district,
-                'address'       => $this->company->address,
-                'zipcode'       => $this->company->zipcode,
-                'department'    => $this->company->department,
-                'jobTitle'      => $this->company->jobTitle,
-                'industry'      => $this->company->industry,
-                'scale'         => $this->company->scale,
-                'purchaseRole'  => $this->company->purchaseRole,
-                'interestedIssue'   => $this->company->interestedIssue,
-                'issueOther'    => $this->company->issueOther
-            ];
-        }
+        $data['company'] = [
+            'name'          => ($this->company) ? $this->company->name: null,
+            'vat'           => ($this->company) ? $this->company->vat: null,
+            'email'         => ($this->company) ? $this->company->email: null,
+            'phoneCode'     => ($this->company) ? $this->company->phoneCode: null,
+            'phone'         => ($this->company) ? $this->company->phone: null,
+            'extNumber'     => ($this->company) ? $this->company->extNumber: null,
+            'city'          => ($this->company) ? $this->company->city: null,
+            'district'      => ($this->company) ? $this->company->district: null,
+            'address'       => ($this->company) ? $this->company->address: null,
+            'zipcode'       => ($this->company) ? $this->company->zipcode: null,
+            'department'    => ($this->company) ? $this->company->department: null,
+            'jobTitle'      => ($this->company) ? $this->company->jobTitle: null,
+            'industry'      => ($this->company) ? $this->company->industry: null,
+            'scale'         => ($this->company) ? $this->company->scale: null,
+            'purchaseRole'  => ($this->company) ? $this->company->purchaseRole: null,
+            'interestedIssue'   => ($this->company) ? $this->company->interestedIssue: null,
+            'issueOther'    => ($this->company) ? $this->company->issueOther: null
+        ];
 
         return $data;
     }
