@@ -404,7 +404,7 @@ class UserFrontService extends UserService
                 if ($cpy->category->title == '經銷會員') {
                     $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
                     if ($dealerUserGroup) {
-                        $user->groups()->sync($dealerUserGroup->id);
+                        $user->groups()->sync([$dealerUserGroup->id]);
                     }
                 }
             }

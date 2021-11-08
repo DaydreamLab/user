@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Models\Company;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
+use DaydreamLab\User\Models\User\UserGroup;
 use Kalnoy\Nestedset\NodeTrait;
 
 class CompanyCategory extends BaseModel
@@ -77,5 +78,19 @@ class CompanyCategory extends BaseModel
     public static function boot()
     {
         self::traitBoot();
+    }
+
+
+    public function userGroup()
+    {
+        return $this->hasOne(UserGroup::class, 'title', 'title');
+    }
+
+
+    public function getUserGroupIdAttribute()
+    {
+        return $this->userGroup ?
+            $this->userGroup->id
+            : UserGroup::where('title', '=', '一般會員')->first()->id;
     }
 }

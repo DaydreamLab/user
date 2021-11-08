@@ -53,7 +53,7 @@ class CompanyAdminService extends CompanyService
 //                    'vat' => $item->vat
 //                ]);
                 if ($user = $userCompany->user) {
-                    $user->groups()->sync($userGroup->id);
+                    $user->groups()->sync([$userGroup->id]);
                 }
             }
         }

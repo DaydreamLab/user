@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Services\User\Admin;
 
 use DaydreamLab\Cms\Models\Item\Item;
 use DaydreamLab\Cms\Services\NewsletterSubscription\Admin\NewsletterSubscriptionAdminService;
+use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
@@ -44,13 +45,18 @@ class UserAdminService extends UserService
             $item->brands()->attach($input->get('brandIds'));
         }
 
-        if ($item->company) {
-            $item->company->update($input->get('company'));
-        } else {
-            $company = $input->get('company');
-            $company['user_id'] = $item->id;
-            UserCompany::create($company);
+        # 會員新增時，先檢查公司統編，若存在則更新會員使用者群組（一般會員、經銷會員），同時必定創建一個 userCompany
+        $inputUserCompany = $input->get('company') ?: [];
+        if (isset($inputUserCompany['name'])) {
+            $company = $this->companyAdminRepo->findBy('name', '=', $inputUserCompany['name'])->first();
+            if ($company) {
+                $inputUserCompany['vat'] = $company->vat;
+                $inputUserCompany['company_id'] = $company->id;
+                $item->groups()->sync([$company->category->userGroupId]);
+            }
         }
+        $inputUserCompany['user_id'] = $item->id;
+        $item->company()->create($inputUserCompany);
     }
 
 
@@ -90,6 +96,15 @@ class UserAdminService extends UserService
     }
 
 
+    /**
+     * 處理批次匯入訂單的會員資料建立or更新問題
+     */
+    public function createOrUpdate(Collection $input)
+    {
+
+    }
+
+
     public function getSelfPage()
     {
         $user   = $this->getUser();
@@ -104,12 +119,6 @@ class UserAdminService extends UserService
         $this->response = $pages;
 
         return $this->response;
-    }
-
-
-    public function handleUserCompany(&$inputCompany)
-    {
-
     }
 
 
@@ -147,37 +156,43 @@ class UserAdminService extends UserService
             $newsletterSSer->edmProcessSubscription($item->email, $sub); # 串接edm訂閱管理
         }
 
+
         if ($item->company) {
-            $inputCompany = $input->get('company');
-            if (isset($inputCompany['vat']) && $inputCompany['vat'] != $item->company->vat) {
-                $normalCategory = CompanyCategory::where('title', '一般會員')->first();
-                $inputCompany['category_id'] = $normalCategory->id;
-                $cpy = Company::create([
-                    'name' => $inputCompany['name'],
-                    'vat' => $inputCompany['vat'],
-                    'phone' => $inputCompany['phone'],
-                    'category_id' => $normalCategory->id
-                ]);
-                $inputCompany['company_id'] = $cpy->id;
-            }
+            $inputUserCompany = $input->get('company') ?: [];
+            if (isset($inputUserCompany['name'])) {
+                $company = $this->companyAdminRepo->findBy('name', '=', $inputUserCompany['name'])->first();
+                if ($company) {
+                    $inputUserCompany['vat'] = $company->vat;
+                    $inputUserCompany['company_id'] = $company->id;
+                    $item->groups()->sync([$company->category->userGroupId]);
+                } else {
+                    # 統編資料不存在但是有填寫統編，則建立統編資料並歸戶同公司名稱的所有人員
+                    if (isset($inputUserCompany['vat'])) {
+                        $normalCategory = CompanyCategory::where('title', '一般會員')->first();
+                        $company = $this->companyAdminRepo->create([
+                            'name' => $inputUserCompany['name'],
+                            'vat' => $inputUserCompany['vat'],
+                            'phone' => $inputUserCompany['phone'],
+                            'category_id' => $normalCategory->id
+                        ]);
 
-            $item->company->update($inputCompany);
-        } else {
-            $inputCompany = $input->get('company');
-            if (isset($inputCompany['vat'])) {
-                $normalCategory = CompanyCategory::where('title', '一般會員')->first();
-                $inputCompany['category_id'] = $normalCategory->id;
-                $cpy = Company::create([
-                    'name' => $inputCompany['name'],
-                    'vat' => $inputCompany['vat'],
-                    'phone' => $inputCompany['phone'],
-                    'category_id' => $normalCategory->id
-                ]);
-                $inputCompany['company_id'] = $cpy->id;
+                        $q = new QueryCapsule();
+                        $q->whereHas('company', function ($q) use ($inputUserCompany) {
+                            $q->where('users_companies.name', $inputUserCompany['name']);
+                        });
+                        $companyUsers = $this->search(collect(['q' => $q]));
+                        $companyUsers->each(function ($companyUser) use ($company) {
+                            $companyUser->company()->update([
+                                'company_id'    => $company->id,
+                                'vat'           => $company->vat
+                            ]);
+                            $companyUser->groups()->sync([$company->category->userGroupId]);
+                        });
+                    } else {
+                        $item->company->update($inputUserCompany);
+                    }
+                }
             }
-
-            $inputCompany['user_id'] = $item->id;
-            UserCompany::create($inputCompany);
         }
 
         if (count($input->get('brandIds') ?: [])) {

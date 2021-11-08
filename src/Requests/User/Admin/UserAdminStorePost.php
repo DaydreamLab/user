@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\User\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
 use Illuminate\Validation\Rule;
 
 class UserAdminStorePost extends AdminRequest
@@ -92,6 +93,7 @@ class UserAdminStorePost extends AdminRequest
             'passwordConfirm'       => 'required_with:password|same:password',
             'company'               => 'nullable|array',
             'company.id'            => 'nullable|integer',
+            'company.vat'          => ['nullable', new TaiwanUnifiedBusinessNumber()],
             'company.quit'          => ['nullable', Rule::in([0,1])],
             'company.phoneCode'     => 'nullable|string',
             'company.phone'         => 'nullable|string',

@@ -79,7 +79,6 @@ class UserService extends BaseService
     public function checkEmail($email)
     {
         $user = $this->findBy('email', '=', $email)->first();
-
         if ($user) {
             throw new ForbiddenException('EmailIsRegistered', ['email' => $email]);
         }
