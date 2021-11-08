@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Models\User;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
+use DaydreamLab\User\Models\Company\Company;
 
 class UserCompany extends BaseModel
 {
@@ -72,4 +73,10 @@ class UserCompany extends BaseModel
     protected $casts = [
         'interestedIssue' => 'array'
     ];
+
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'id');
+    }
 }

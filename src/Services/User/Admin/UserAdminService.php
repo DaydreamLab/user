@@ -10,6 +10,8 @@ use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
+use DaydreamLab\User\Models\Company\Company;
+use DaydreamLab\User\Models\Company\CompanyCategory;
 use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
@@ -105,6 +107,12 @@ class UserAdminService extends UserService
     }
 
 
+    public function handleUserCompany(&$inputCompany)
+    {
+
+    }
+
+
     public function modifyMapping($item, $input)
     {
         $changes = $item->groups()->sync($input->get('groupIds'), true);
@@ -139,7 +147,38 @@ class UserAdminService extends UserService
             $newsletterSSer->edmProcessSubscription($item->email, $sub); # 串接edm訂閱管理
         }
 
-        $item->company()->update($input->get('company'));
+        if ($item->company) {
+            $inputCompany = $input->get('company');
+            if (isset($inputCompany['vat']) && $inputCompany['vat'] != $item->company->vat) {
+                $normalCategory = CompanyCategory::where('title', '一般會員')->first();
+                $inputCompany['category_id'] = $normalCategory->id;
+                $cpy = Company::create([
+                    'name' => $inputCompany['name'],
+                    'vat' => $inputCompany['vat'],
+                    'phone' => $inputCompany['phone'],
+                    'category_id' => $normalCategory->id
+                ]);
+                $inputCompany['company_id'] = $cpy->id;
+            }
+
+            $item->company->update($inputCompany);
+        } else {
+            $inputCompany = $input->get('company');
+            if (isset($inputCompany['vat'])) {
+                $normalCategory = CompanyCategory::where('title', '一般會員')->first();
+                $inputCompany['category_id'] = $normalCategory->id;
+                $cpy = Company::create([
+                    'name' => $inputCompany['name'],
+                    'vat' => $inputCompany['vat'],
+                    'phone' => $inputCompany['phone'],
+                    'category_id' => $normalCategory->id
+                ]);
+                $inputCompany['company_id'] = $cpy->id;
+            }
+
+            $inputCompany['user_id'] = $item->id;
+            UserCompany::create($inputCompany);
+        }
 
         if (count($input->get('brandIds') ?: [])) {
             $item->brands()->sync($input->get('brandIds'));

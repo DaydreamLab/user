@@ -10,6 +10,7 @@ use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Models\Company\Company;
+use DaydreamLab\User\Models\Company\CompanyCategory;
 use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Notifications\RegisteredNotification;
@@ -297,10 +298,12 @@ class UserFrontService extends UserService
         if ($companyData['vat']) {
             $cpy = Company::where('vat', $companyData['vat'])->first();
             if (!$cpy) {
+                $normalCategory = CompanyCategory::where('title', '一般會員')->first();
                 $cpy = Company::create([
                     'name' => $companyData['name'],
                     'vat' => $companyData['vat'],
-                    'phone' => $companyData['phone']
+                    'phone' => $companyData['phone'],
+                    'category_id' => $normalCategory->id
                 ]);
             }
             $companyData['company_id'] = $cpy->id;
@@ -387,10 +390,12 @@ class UserFrontService extends UserService
         if ($companyData['vat']) {
             $cpy = Company::where('vat', $companyData['vat'])->first();
             if (!$cpy) {
+                $normalCategory = CompanyCategory::where('title', '一般會員')->first();
                 $cpy = Company::create([
                     'name' => $companyData['name'],
                     'vat' => $companyData['vat'],
-                    'phone' => $companyData['phone']
+                    'phone' => $companyData['phone'],
+                    'category_id' => $normalCategory->id
                 ]);
             }
             $companyData['company_id'] = $cpy->id;
