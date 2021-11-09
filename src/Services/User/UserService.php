@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use Carbon\Carbon;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\User\Events\Add;
