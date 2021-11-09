@@ -42,7 +42,7 @@ class UserFrontResource extends JsonResource
             'industry'      => ($this->company) ? $this->company->industry: null,
             'scale'         => ($this->company) ? $this->company->scale: null,
             'purchaseRole'  => ($this->company) ? $this->company->purchaseRole: null,
-            'interestedIssue'   => ($this->company) ? $this->company->interestedIssue: null,
+            'interestedIssue'   => ($this->company) ? $this->company->interestedIssue: [],
             'issueOther'    => ($this->company) ? $this->company->issueOther: null
         ];
 
