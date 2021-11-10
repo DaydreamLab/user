@@ -211,7 +211,7 @@ class UserAdminService extends UserService
     public function store(Collection $input)
     {
         if (InputHelper::null($input, 'id')) {
-            $this->checkEmail($input->get('email'));
+            //$this->checkEmail($input->get('email'));
         }
 
         // 確保使用者所指派的群組，具有該權限
