@@ -11,6 +11,8 @@ class CompanyAdminSearchPost extends ListRequest
 
     protected $apiMethod = 'searchCompany';
 
+    protected $searchKeys = ['name', 'vat', 'domain'];
+
     public function authorize()
     {
         return parent::authorize();
