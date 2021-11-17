@@ -268,10 +268,9 @@ class UserFrontService extends UserService
             $user->company()->create($companyData);
         }
 
-        if ( $subscribe = $input->get('newsletterCategoriesAlias') ) {
-            $nsfs = app(NewsletterSubscriptionFrontService::class);
-            $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe]));
-        }
+
+        $nsfs = app(NewsletterSubscriptionFrontService::class);
+        $nsfs->store(collect(['newsletterCategoriesAlias' => $input->get('newsletterCategoriesAlias')]));
 
         $this->response = $user->refresh();
         $this->status = 'UpdateSuccess';
@@ -316,10 +315,8 @@ class UserFrontService extends UserService
             $user->company()->create($companyData);
         }
 
-        if ( $subscribe = $input->get('newsletterCategoriesAlias') ) {
-            $nsfs = app(NewsletterSubscriptionFrontService::class);
-            $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe, 'email' => $input->get('email')]));
-        }
+        $nsfs = app(NewsletterSubscriptionFrontService::class);
+        $nsfs->store(collect(['newsletterCategoriesAlias' =>  $input->get('newsletterCategoriesAlias'), 'email' => $input->get('email')]));
 
         $tokens = $user->tokens()->get();
         if(!config('daydreamlab.user.multiple_login')) {
@@ -416,10 +413,6 @@ class UserFrontService extends UserService
             throw new InternalServerErrorException('RegisterFail');
         }
 
-        if ( $subscribe = $input->get('newsletterCategoriesAlias') ) {
-            $nsfs = app(NewsletterSubscriptionFrontService::class);
-            $nsfs->store(collect(['newsletterCategoriesAlias' => $subscribe, 'email' => $input->get('email')]));
-        }
         # 通知
         $this->sendNotification('mail', $user->email, new RegisteredNotification($user));
 

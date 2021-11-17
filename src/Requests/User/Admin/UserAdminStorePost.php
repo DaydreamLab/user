@@ -26,7 +26,7 @@ class UserAdminStorePost extends AdminRequest
     public function handleCompany($company)
     {
         $company = $company ? collect($company) : collect();
-        $keys = ['company_id', 'quit', 'name', 'vat', 'phoneCode', 'phone', 'extNumber', 'country', 'state', 'city', 'district', 'address', 'zipcode', 'department', 'jobTitle'];
+        $keys = ['company_id', 'quit', 'name', 'email', 'vat', 'phoneCode', 'phone', 'extNumber', 'country', 'state', 'city', 'district', 'address', 'zipcode', 'department', 'jobTitle'];
         foreach ($keys as $key) {
             if ($key == 'company_id') {
                 $company->put('company_id', $company->get($key));

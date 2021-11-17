@@ -164,6 +164,7 @@ class UserAdminService extends UserService
                 if ($company) {
                     $inputUserCompany['vat'] = $company->vat;
                     $inputUserCompany['company_id'] = $company->id;
+                    $item->company->update($inputUserCompany);
                     $item->groups()->sync([$company->category->userGroupId]);
                 } else {
                     # 統編資料不存在但是有填寫統編，則建立統編資料並歸戶同公司名稱的所有人員
