@@ -315,6 +315,11 @@ class UserFrontService extends UserService
             $user->company()->create($companyData);
         }
 
+        # 處理line綁定
+        if ($input->get('lineId')) {
+            $this->lineBind($input);
+        }
+
         $nsfs = app(NewsletterSubscriptionFrontService::class);
         $nsfs->store(collect(['newsletterCategoriesAlias' =>  $input->get('newsletterCategoriesAlias'), 'email' => $input->get('email')]));
 

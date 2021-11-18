@@ -53,7 +53,8 @@ class UserFrontStorePost extends AdminRequest
             'company.issueOther'    => 'nullable|string',
             #todo: 電子報
             'newsletterCategoriesAlias'     => 'nullable|array',
-            'newsletterCategoriesAlias.*'   => 'nullable|string'
+            'newsletterCategoriesAlias.*'   => 'nullable|string',
+            'lineId'                => 'nullable|string'
         ];
     }
 
