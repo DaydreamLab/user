@@ -52,7 +52,7 @@ class RegisteredNotification extends Notification implements ShouldQueue
                     ->line('Thank you for using our application!')
             :   (new MailMessage)
                     ->subject('[零壹科技] 帳號已啟用')
-                    ->view($template, ['user'=> $this->user]);
+                    ->view($template, ['user'=> $this->user, 'subject' => '[零壹科技] 帳號已啟用']);
     }
 
     /**
