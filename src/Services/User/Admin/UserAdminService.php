@@ -96,6 +96,14 @@ class UserAdminService extends UserService
     }
 
 
+    public function checkMobilePhone($mobilePhone)
+    {
+        $user = $this->findBy('mobilePhone', '=', $mobilePhone)->first();
+        if ($user) {
+            throw new ForbiddenException('MobilePhoneExist', ['mobilePhone' => $mobilePhone]);
+        }
+        return $user;
+    }
     /**
      * 處理批次匯入訂單的會員資料建立or更新問題
      */
@@ -213,7 +221,8 @@ class UserAdminService extends UserService
     public function store(Collection $input)
     {
         if (InputHelper::null($input, 'id')) {
-            //$this->checkEmail($input->get('email'));
+//            $this->checkEmail($input->get('email'));
+            $this->checkMobilePhone($input->get('mobilePhone'));
         }
 
         // 確保使用者所指派的群組，具有該權限
