@@ -178,9 +178,11 @@ class BaseNotification extends Notification implements ShouldQueue
                     : $this->subject;
                 $this->content = $this->handleReplacement($template->content);
             } else {
+                $this->subject = $this->subject ?: $this->defaultSubject();
                 $this->content = $this->handleReplacement($this->defaultSmsContent('sms'));
             }
         } else {
+            $this->subject = $this->subject ?: $this->defaultSubject();
             $this->content = $this->handleReplacement($this->defaultSmsContent('sms'));
         }
 

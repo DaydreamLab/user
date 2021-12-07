@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Notifications\Channels;
 
+use DaydreamLab\Dsth\Notifications\DeveloperNotification;
 use DaydreamLab\JJAJ\Helpers\ArrayToXml;
 use DaydreamLab\User\Models\SmsHistory\SmsHistory;
 use GuzzleHttp\Client;
