@@ -18,6 +18,7 @@ use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class UserAdminService extends UserService
 {
@@ -217,12 +218,12 @@ class UserAdminService extends UserService
     }
 
 
-
     public function store(Collection $input)
     {
         if (InputHelper::null($input, 'id')) {
 //            $this->checkEmail($input->get('email'));
-            $this->checkMobilePhone($input->get('mobilePhone'));
+            //$this->checkMobilePhone($input->get('mobilePhone'));
+            $input->put('mobilePhone', Str::random(10));
         }
 
         // 確保使用者所指派的群組，具有該權限
