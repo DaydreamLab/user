@@ -76,7 +76,7 @@ class XsmsChannel
 
             if (config('daydreamlab.user.sms.debug')) {
                 \Illuminate\Support\Facades\Notification::route('mail', 'technique@daydream-lab.com')
-                    ->notify(new DeveloperNotification('簡訊', [
+                    ->notify(new DeveloperNotification('簡訊Debug', '', [
                         'post' => $this->params,
                         'response' => $response
                     ]));
