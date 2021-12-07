@@ -74,6 +74,14 @@ class XsmsChannel
 
             $response = $response->getBody()->getContents();
 
+            if (config('daydreamlab.user.sms.debug')) {
+                \Illuminate\Support\Facades\Notification::route('mail', 'technique@daydream-lab.com')
+                    ->notify(new DeveloperNotification('簡訊', [
+                        'post' => $this->params,
+                        'response' => $response
+                    ]));
+            }
+
             $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
             $statusCode = $arrayResponse->Code;
             $sendResult = $arrayResponse->Code == 0 ? 1 : 0;
