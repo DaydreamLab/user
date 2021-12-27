@@ -18,7 +18,6 @@ class UserAdminExportResource extends BaseJsonResource
             $this->groups->first()->title,
             ($this->company) ? $this->company->name : '',
             ($this->company) ? $this->company->vat : '',
-            ($this->company) ? $this->company->name : '',
             ($this->company) ? $this->company->phone : '',
             ($this->company) ? $this->company->extNumber : '',
             ($this->company) ? $this->company->email : '',
