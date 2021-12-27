@@ -31,7 +31,13 @@ class CompanyAdminController extends BaseController
     public function export(CompanyAdminExportPost $request)
     {
         $this->service->setUser($request->user('api'));
-        return $this->service->export($request->validated());
+        try {
+            $this->service->export($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, [], CompanyAdminListResourceCollection::class);
     }
 
 
