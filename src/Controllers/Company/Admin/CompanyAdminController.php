@@ -102,4 +102,16 @@ class CompanyAdminController extends BaseController
 
         return $this->response($this->service->status, $this->service->response, [], CompanyAdminListResourceCollection::class);
     }
+
+    public function importCompany(Request $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->importCompany($request);
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
 }

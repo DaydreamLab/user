@@ -137,6 +137,8 @@ Route::post('api/admin/company/search', [CompanyAdminController::class, 'search'
     ->middleware(['expired', 'admin']);
 Route::get('api/admin/company/{id}', [CompanyAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin']);
+Route::post('api/admin/company/importCompany', [CompanyAdminController::class, 'importCompany'])
+    ->middleware(['expired', 'admin']);
 
 
 # User
