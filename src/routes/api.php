@@ -144,6 +144,8 @@ Route::post('api/admin/company/importCompany', [CompanyAdminController::class, '
 
 
 # User
+Route::post('api/admin/user/export', [UserAdminController::class, 'export'])
+    ->middleware(['expired', 'admin']);
 Route::post('api/admin/user/block', [UserAdminController::class, 'block'])
     ->middleware(['expired', 'admin']);
 Route::post('api/admin/user/search', [UserAdminController::class, 'search'])

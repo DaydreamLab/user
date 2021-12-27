@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\Company\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminExportResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminListResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminResource;
 use DaydreamLab\User\Services\Company\Admin\CompanyAdminService;
@@ -37,7 +38,7 @@ class CompanyAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response, [], CompanyAdminListResourceCollection::class);
+        return $this->response($this->service->status, $this->service->response, [], CompanyAdminExportResourceCollection::class);
     }
 
 
