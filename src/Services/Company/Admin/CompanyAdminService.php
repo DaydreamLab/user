@@ -29,6 +29,56 @@ class CompanyAdminService extends CompanyService
     }
 
 
+    public function export(Collection $input)
+    {
+        $input->put('limit', 0);
+        $input->put('paginate', 0);
+        $companies = $this->search($input);
+
+        $spreedsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreedsheet->getActiveSheet();
+
+        $headers = ['公司名稱', '公司統編', '公司網址', '身份類別'];
+        $h = 1;
+        foreach ($headers as $header) {
+            $sheet->setCellValueByColumnAndRow($h, 1, $header);
+            $h+=1;
+        }
+
+        $r = 2;
+        foreach ($companies as $company) {
+            for ($i =1; $i<=count($headers); $i+=1) {
+                switch ($i) {
+                    case 1:
+                        $v = $company->name;
+                        break;
+                    case 2:
+                        $v = $company->vat;
+                        break;
+                    case 3:
+                        $v = $company->domain;
+                        break;
+                    case 4:
+                        $v = ($company->category) ? $company->category->title : '';
+                        break;
+                    default:
+                        $v = '';
+                        break;
+                }
+                $sheet->setCellValueExplicitByColumnAndRow($i, $r, $v, 's');
+            }
+            $r+=1;
+        }
+
+        $filename = 'company_export.xlsx';
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreedsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="'. urlencode($filename).'"');
+        ob_clean();
+        $writer->save('php://output');
+    }
+
+
     public function add(Collection $input)
     {
         $this->checkCategoryId($input->get('category_id'));

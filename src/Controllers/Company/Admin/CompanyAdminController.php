@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminListResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminResource;
 use DaydreamLab\User\Services\Company\Admin\CompanyAdminService;
+use DaydreamLab\User\Requests\Company\Admin\CompanyAdminExportPost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminRemovePost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminRestorePost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminStorePost;
@@ -24,6 +25,13 @@ class CompanyAdminController extends BaseController
     {
         parent::__construct($service);
         $this->service = $service;
+    }
+
+
+    public function export(CompanyAdminExportPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        return $this->service->export($request->validated());
     }
 
 

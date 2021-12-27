@@ -125,6 +125,8 @@ Route::get('api/admin/asset/group/{id}', [AssetGroupAdminController::class, 'get
 
 
 # Company
+Route::post('api/admin/company/export', [CompanyAdminController::class, 'export'])
+    ->middleware(['expired', 'admin']);
 Route::post('api/admin/company/restore', [CompanyAdminController::class, 'restore'])
     ->middleware(['expired', 'admin']);
 Route::post('api/admin/company/ordering', [CompanyAdminController::class, 'remove'])
