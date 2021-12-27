@@ -25,6 +25,7 @@ return [
     'sms' => [
         'channel' => 'mitake',
         'log' => 1,
+        'debug' => 0,
         'cooldown' => 60, # 冷卻時間
         'expiredMinutes' => 15,  # 驗證碼過期分鐘數
         'env'       => 'local',

@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Notifications\Channels;
 
+use DaydreamLab\Dsth\Notifications\DeveloperNotification;
 use DaydreamLab\JJAJ\Helpers\ArrayToXml;
 use DaydreamLab\User\Models\SmsHistory\SmsHistory;
 use GuzzleHttp\Client;
@@ -72,6 +73,14 @@ class XsmsChannel
             ]);
 
             $response = $response->getBody()->getContents();
+
+            if (config('daydreamlab.user.sms.debug')) {
+                \Illuminate\Support\Facades\Notification::route('mail', 'technique@daydream-lab.com')
+                    ->notify(new DeveloperNotification('簡訊Debug', '', [
+                        'post' => $this->params,
+                        'response' => $response
+                    ]));
+            }
 
             $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
             $statusCode = $arrayResponse->Code;
