@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\Company\Admin;
 
+use DaydreamLab\User\Jobs\ImportCompany;
 use DaydreamLab\Cms\Repositories\Category\Admin\CategoryAdminRepository;
 use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
@@ -25,6 +26,12 @@ class CompanyAdminService extends CompanyService
         parent::__construct($repo);
         $this->repo = $repo;
         $this->categoryAdminRepository = $categoryAdminRepository;
+    }
+
+
+    public function export(Collection $input)
+    {
+        return $this->search($input);
     }
 
 
@@ -83,5 +90,18 @@ class CompanyAdminService extends CompanyService
         $this->response = $result;
 
         return $this->response;
+    }
+
+
+    public function importCompany($input)
+    {
+        $file = $input->file('file');
+        $temp = $file->move('tmp', $file->hashName());
+        $filePath = $temp->getRealPath();
+        $job = new ImportCompany($filePath);
+
+        dispatch($job);
+
+        $this->status = 'ImportSuccess';
     }
 }

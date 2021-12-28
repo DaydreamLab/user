@@ -3,9 +3,11 @@
 namespace DaydreamLab\User\Controllers\Company\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminExportResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminListResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminResource;
 use DaydreamLab\User\Services\Company\Admin\CompanyAdminService;
+use DaydreamLab\User\Requests\Company\Admin\CompanyAdminExportPost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminRemovePost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminRestorePost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminStorePost;
@@ -24,6 +26,19 @@ class CompanyAdminController extends BaseController
     {
         parent::__construct($service);
         $this->service = $service;
+    }
+
+
+    public function export(CompanyAdminExportPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->export($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, [], CompanyAdminExportResourceCollection::class);
     }
 
 
@@ -101,5 +116,17 @@ class CompanyAdminController extends BaseController
         }
 
         return $this->response($this->service->status, $this->service->response, [], CompanyAdminListResourceCollection::class);
+    }
+
+    public function importCompany(Request $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->importCompany($request);
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
     }
 }

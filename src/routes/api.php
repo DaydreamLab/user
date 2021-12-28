@@ -125,6 +125,8 @@ Route::get('api/admin/asset/group/{id}', [AssetGroupAdminController::class, 'get
 
 
 # Company
+Route::post('api/admin/company/export', [CompanyAdminController::class, 'export'])
+    ->middleware(['expired', 'admin']);
 Route::post('api/admin/company/restore', [CompanyAdminController::class, 'restore'])
     ->middleware(['expired', 'admin']);
 Route::post('api/admin/company/ordering', [CompanyAdminController::class, 'remove'])
@@ -137,9 +139,13 @@ Route::post('api/admin/company/search', [CompanyAdminController::class, 'search'
     ->middleware(['expired', 'admin']);
 Route::get('api/admin/company/{id}', [CompanyAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin']);
+Route::post('api/admin/company/importCompany', [CompanyAdminController::class, 'importCompany'])
+    ->middleware(['expired', 'admin']);
 
 
 # User
+Route::post('api/admin/user/export', [UserAdminController::class, 'export'])
+    ->middleware(['expired', 'admin']);
 Route::post('api/admin/user/block', [UserAdminController::class, 'block'])
     ->middleware(['expired', 'admin']);
 Route::post('api/admin/user/search', [UserAdminController::class, 'search'])

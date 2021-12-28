@@ -3,8 +3,10 @@
 namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Requests\User\Admin\UserAdminExportPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminGetItem;
+use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminExportResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminListResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Models\UserAdminResource;
 use DaydreamLab\User\Services\User\Admin\UserAdminService;
@@ -26,6 +28,19 @@ class UserAdminController extends BaseController
     {
         parent::__construct($service);
         $this->service = $service;
+    }
+
+
+    public function export(UserAdminExportPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->export($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, [], UserAdminExportResourceCollection::class);
     }
 
 

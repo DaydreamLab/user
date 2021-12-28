@@ -36,6 +36,12 @@ class UserAdminService extends UserService
     }
 
 
+    public function export(Collection $input)
+    {
+        return $this->search($input);
+    }
+
+
     public function addMapping($item, $input)
     {
         if (count($input->get('groupIds') ?: [])) {
