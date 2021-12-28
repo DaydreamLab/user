@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Notifications\Channels;
 
+use DaydreamLab\Dsth\Notifications\DeveloperNotification;
 use DaydreamLab\User\Models\SmsHistory\SmsHistory;
 use GuzzleHttp\Client;
 use Illuminate\Notifications\Notification;
@@ -59,6 +60,14 @@ class MitakeChannel
             ]);
 
             $content = $response->getBody()->getContents();
+
+            if (config('daydreamlab.user.sms.debug')) {
+                \Illuminate\Support\Facades\Notification::route('mail', 'technique@daydream-lab.com')
+                    ->notify(new DeveloperNotification('簡訊Debug', '', [
+                        'post' => $this->params,
+                        'response' => $content
+                    ]));
+            }
 
             $contentExplode = explode('%0D%0A', urlencode($content));
 

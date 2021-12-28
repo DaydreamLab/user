@@ -56,7 +56,8 @@ class XsmsChannel
                 [
                     'MSISDN' => $to,
                 ]
-            ]
+            ],
+            'AutoSplit' => 'L'
         ];
 
         $xml = ArrayToXml::convertWithoutDeclaration($content, 'Request');
