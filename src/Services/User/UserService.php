@@ -102,6 +102,9 @@ class UserService extends BaseService
                 throw new ForbiddenException('EmailOrPasswordIncorrect');
             }
             $user = Auth::user();
+            if ($user->block) {
+                throw new ForbiddenException('IsBlocked');
+            }
         } else {
             $user = $this->findBy('mobilePhone', '=', $input->get('mobilePhone'))->first();
             if (!$user) {
