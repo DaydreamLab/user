@@ -248,18 +248,14 @@ class UserFrontService extends UserService
         }
 
         $companyData = $input->get('company');
-        # 如果有統編，帶入公司id，公司不存在則新增
-        if ($companyData['vat']) {
-            $cpy = Company::where('vat', $companyData['vat'])->first();
-            if (!$cpy) {
-                $cpy = Company::create([
-                    'name' => $companyData['name'],
-                    'vat' => $companyData['vat'],
-                    'phone' => $companyData['phone']
-                ]);
-            }
+        # 如果有統編，取出公司資料，公司不存在則新增
+        $cpy = $this->firstOrCreateCompany($companyData);
+        if ($cpy) {
             $companyData['company_id'] = $cpy->id;
         }
+        # 根據公司的身份決定使用者的群組
+        $this->decideUserGroup($user, $cpy, $companyData);
+
         $userCompany = $user->company;
         if ($userCompany) {
             $userCompany->update($companyData);
@@ -267,7 +263,6 @@ class UserFrontService extends UserService
             $companyData['user_id'] = $user->id;
             $user->company()->create($companyData);
         }
-
 
         $nsfs = app(NewsletterSubscriptionFrontService::class);
         $nsfs->store(collect(['newsletterCategoriesAlias' => $input->get('newsletterCategoriesAlias')]));
@@ -293,20 +288,14 @@ class UserFrontService extends UserService
         }
 
         $companyData = $input->get('company');
-        # 如果有統編，帶入公司id，公司不存在則新增
-        if ($companyData['vat']) {
-            $cpy = Company::where('vat', $companyData['vat'])->first();
-            if (!$cpy) {
-                $normalCategory = CompanyCategory::where('title', '一般會員')->first();
-                $cpy = Company::create([
-                    'name' => $companyData['name'],
-                    'vat' => $companyData['vat'],
-                    'phone' => $companyData['phone'],
-                    'category_id' => $normalCategory->id
-                ]);
-            }
+        # 如果有統編，取出公司資料，公司不存在則新增
+        $cpy = $this->firstOrCreateCompany($companyData);
+        if ($cpy) {
             $companyData['company_id'] = $cpy->id;
         }
+        # 根據公司的身份決定使用者的群組
+        $this->decideUserGroup($user, $cpy, $companyData);
+
         $userCompany = $user->company;
         if ($userCompany) {
             $userCompany->update($companyData);
@@ -388,7 +377,28 @@ class UserFrontService extends UserService
         }
 
         $companyData = $input->get('company');
-        # 如果有統編，帶入公司id，公司不存在則新增
+        # 如果有統編，取出公司資料，公司不存在則新增
+        $cpy = $this->firstOrCreateCompany($companyData);
+        if ($cpy) {
+            $companyData['company_id'] = $cpy->id;
+        }
+        # 根據公司的身份決定使用者的群組
+        $this->decideUserGroup($user, $cpy, $companyData);
+
+        $companyData['user_id'] = $user->id;
+        $userCompany = UserCompany::create($companyData);
+        if (!$userCompany) {
+            throw new InternalServerErrorException('RegisterFail');
+        }
+
+        # 通知
+        $this->sendNotification('mail', $user->email, new RegisteredNotification($user));
+        $this->status = 'RegisterSuccess';
+    }
+
+
+    public function firstOrCreateCompany($companyData)
+    {
         if ($companyData['vat']) {
             $cpy = Company::where('vat', $companyData['vat'])->first();
             if (!$cpy) {
@@ -400,28 +410,44 @@ class UserFrontService extends UserService
                     'category_id' => $normalCategory->id
                 ]);
             }
-            $companyData['company_id'] = $cpy->id;
-            # 根據公司的身份決定註冊使用者的群組 ex.經銷會員 -> 經銷會員
-            if ($cpy->category != null) {
-                if ($cpy->category->title == '經銷會員') {
-                    $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
-                    if ($dealerUserGroup) {
-                        $user->groups()->sync([$dealerUserGroup->id]);
-                    }
+        } else {
+            $cpy = null;
+        }
+        return $cpy;
+    }
+
+
+    public function decideUserGroup($user, $company, $input_company_data)
+    {
+        if ( !$company ) { // 沒有公司
+            $user->groups()->sync(config('daydreamlab.user.register.groups'));
+            return;
+        }
+
+        if ($company->category != null) { // 公司有分類
+            if ($company->category->title == '經銷會員') { // 經銷公司
+                // 檢查 email 的 domain 跟公司 domain 是否相同
+                $input_email = explode('@', $input_company_data['email']);
+                if ( isset($input_email[1]) && $company->domain == $input_email[1] ) {
+                    $isDealer = true; // domain 符合，使用者經銷會員
+                } else {
+                    $isDealer = false; // domain 不符合，使用者一般會員
                 }
+            } else {
+                $isDealer = false; // 一般公司
             }
+        } else {
+            $isDealer = false; // 公司沒有分類，使用者歸類到一般會員
         }
 
-        $companyData['user_id'] = $user->id;
-        $userCompany = UserCompany::create($companyData);
-        if (!$userCompany) {
-            throw new InternalServerErrorException('RegisterFail');
+        if ( $isDealer ) {
+            $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
+            if ($dealerUserGroup) {
+                $user->groups()->sync([$dealerUserGroup->id]);
+            }
+        } else {
+            $user->groups()->sync(config('daydreamlab.user.register.groups'));
         }
-
-        # 通知
-        $this->sendNotification('mail', $user->email, new RegisteredNotification($user));
-
-        $this->status = 'RegisterSuccess';
     }
 
 
@@ -496,13 +522,13 @@ class UserFrontService extends UserService
             throw new ForbiddenException('InvalidVerificationCode');
         }
     }
-    
+
 
     public function lineBind(Collection $input)
     {
         $liffUserId = $input->get('lineId');
         $userId = auth()->guard("api")->user()->id;
-        
+
         $isBinded = $this->lineRepo->getModel()::where("user_id", "=", $userId)->exists();
         if ($isBinded) {
             // 公司會員已綁定過 line
