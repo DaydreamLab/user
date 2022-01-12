@@ -23,7 +23,7 @@ class CompanyFrontService extends CompanyService
 
         $this->status = $company
             ? 'GetItemSuccess'
-            : 'VatNotExist';
+            : 'ItemNotExist';
         $this->response = $company;
         return $this->response;
     }

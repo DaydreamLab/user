@@ -15,6 +15,7 @@ class CompanyFront extends Company
     protected $hidden = [
         'id',
         'category_id',
+        'category',
         'locked_by',
         'locked_at',
         'ordering',

@@ -67,6 +67,7 @@ class Company extends BaseModel
      * @var array
      */
     protected $appends = [
+        'category_name'
     ];
 
 
@@ -96,5 +97,11 @@ class Company extends BaseModel
     public function userCompanies()
     {
         return $this->hasMany(UserCompany::class, 'company_id', 'id');
+    }
+
+
+    public function getCategoryNameAttribute()
+    {
+        return $this->category ? $this->category->title : '';
     }
 }
