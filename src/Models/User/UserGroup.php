@@ -141,10 +141,10 @@ class UserGroup extends BaseModel
                 $tempAsset['visible'] = (in_array($asset->id, $assetIds)) ? 1 : 0;
 
                 $assetApis = $asset->apis->map(function ($assetApi) use ($assetGroup, $asset) {
-
                     $targetApi = $this->apis()->wherePivot('asset_group_id', $assetGroup->id)
                         ->wherePivot('asset_id', $asset->id)
-                        ->wherePivot('api_id', $assetApi->id)->first();
+                        ->wherePivot('api_id', $assetApi->id)
+                        ->first();
 
                     return [
                         'id'        => $assetApi->id,
@@ -155,11 +155,14 @@ class UserGroup extends BaseModel
                         'checked'   => $targetApi ? 1 : $assetApi->pivot->checked,
                     ];
                 })->values();
-                $tempAsset['apis'] = $assetApis->filter(function ($a) {
-                    return !$a['hidden'];
-                });
+
+                $tempAsset['apis'] = $assetApis;
+//                $tempAsset['apis'] = $assetApis->filter(function ($a) {
+//                    return !$a['hidden'];
+//                })->values();
                 $tempAssetGroup['assets'][] = collect($tempAsset);
             });
+
             if (!isset($tempAssetGroup['assets'])) {
                 $tempAssetGroup['assets'] = [];
             }
