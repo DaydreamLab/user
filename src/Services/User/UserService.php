@@ -13,6 +13,7 @@ use DaydreamLab\User\Helpers\UserHelper;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
+use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -93,10 +94,22 @@ class UserService extends BaseService
     public function login(Collection $input)
     {
         if ($input->get('email')) {
-            $auth = Auth::attempt([
-                'email'     => Str::lower($input->get('email')),
-                'password'  => $input->get('password')
-            ]);
+            $v_users = User::where('email', $input->get('email'))->get();
+            $auth = false;
+            $provider = Auth::createUserProvider('users');
+            foreach ($v_users as $v_user) {
+                $auth = $provider->validateCredentials($v_user, [
+                    'password'  => $input->get('password')
+                ]);
+                if ($auth) {
+                    Auth::login($v_user);
+                    break;
+                }
+            }
+//            $auth = Auth::attempt([
+//                'email'     => Str::lower($input->get('email')),
+//                'password'  => $input->get('password')
+//            ]);
 
             if (!$auth) {
                 throw new ForbiddenException('EmailOrPasswordIncorrect');
