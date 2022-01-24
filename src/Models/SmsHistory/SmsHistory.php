@@ -82,15 +82,19 @@ class SmsHistory extends BaseModel
     }
 
 
-    public function getSenderAtrribute()
+    public function getSenderAttribute()
     {
-        $user = ($this->notification) ? $this->notification->creator : User::query()->where('name', '=', '零壹管理者')->first();
+        $user = ($this->notification)
+            ? $this->notification->creator
+            : null;
+            //: User::query()->where('name', '=', '零壹管理者')->first();
+
         return $user;
     }
 
 
     public function getSenderNameAttribute()
     {
-        return ($this->sender) ? $this->sender->name : '';
+        return ($this->sender) ? $this->sender->name : '系統通知';
     }
 }

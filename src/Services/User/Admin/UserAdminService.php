@@ -139,7 +139,7 @@ class UserAdminService extends UserService
 
     public function modifyMapping($item, $input)
     {
-        $changes = $item->groups()->sync($input->get('groupIds'), true);
+        $changes = $item->groups()->sync($input->get('groupIds') ?: [], true);
         if (count($attached = $changes['attached'])) {
 # 根據會員群組的變動更新電子報訂閱
             if (in_array(7, $attached)) {
@@ -211,9 +211,9 @@ class UserAdminService extends UserService
             }
         }
 
-        if (count($input->get('brandIds') ?: [])) {
-            $item->brands()->sync($input->get('brandIds'));
-        }
+       // if (count($input->get('brandIds') ?: [])) {
+            $item->brands()->sync($input->get('brandIds') ?: []);
+       //}
     }
 
 

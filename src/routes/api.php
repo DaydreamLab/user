@@ -11,6 +11,25 @@ use DaydreamLab\User\Controllers\Company\Front\CompanyFrontController;
 use DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController;
 use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
 
+Route::get('fix/01', function () {
+    $eventAddUsers = \DaydreamLab\User\Models\User\User::whereIn('activateToken', ['eventAddUser', null])
+        ->get();
+
+    foreach ($eventAddUsers as $eventAddUser) {
+        if ($eventAddUser->orders->count()) {
+            $order = $eventAddUser->orders->first();
+            $eventAddUser->mobilePhone = $order->phoneNumber;
+            $eventAddUser->save();
+        }
+    }
+
+    $orders = \DaydreamLab\Dsth\Models\Order\Order::where('note', '邀約來源:')->get();
+    $orders->each(function ($order) {
+        $order->note = null;
+        $order->save();
+    });
+});
+
 /************************************  前台 API  ************************************/
 // 啟用帳號
 //Route::get('/api/user/activate/{token}', [UserFrontController::class, 'activate']);
