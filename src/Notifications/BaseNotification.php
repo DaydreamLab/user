@@ -154,7 +154,6 @@ class BaseNotification extends Notification implements ShouldQueue
             $this->content = $this->handleReplacement($this->defaultSmsContent('sms'));
         }
 
-
         return new MitakeMessage(
             $this->category,
             $this->type,

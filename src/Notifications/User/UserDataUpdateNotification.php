@@ -2,9 +2,12 @@
 
 namespace DaydreamLab\User\Notifications\User;
 
+use DaydreamLab\Dsth\Notifications\DeveloperNotification;
+use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\User\Notifications\BaseNotification;
+use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
-use Psy\Command\ShowCommand;
+use Illuminate\Support\Facades\Notification;
 
 class UserDataUpdateNotification extends BaseNotification
 {
@@ -44,11 +47,62 @@ class UserDataUpdateNotification extends BaseNotification
 
     public function defaultSmsContent($channelType)
     {
-        $str = '';
+        $str = '零壹官網會員回娘家，立即點擊連結：';
+
+        $fullUrl = config('app.url').'/member/update/'.$this->member->uuid;
+
+        $client = new Client();
+        $uri = config('app.env') == 'production'
+            ? 'https://dsth.me/shortcode.php'
+            : 'https://demo.dsth.me/shortcode.php';
+        $response = $client->request('POST', $uri, [
+            'form_params' => [
+                'url' =>$fullUrl,
+            ]
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            $data = json_decode($response->getBody()->getContents());
+            $shortCode = $data->code;
+        } elseif ($response->getStatusCode() == 303) {
+            $uri = config('app.env') == 'production'
+                ? 'https://dsth.me/shorten.php'
+                : 'https://demo.dsth.me/shorten.php';
+
+            $response = $client->request('POST', $uri, [
+                'form_params' => [
+                    'url' => $fullUrl,
+                ]
+            ]);
+
+            if ($response->getStatusCode() == 200) {
+                $data = json_decode($response->getBody()->getContents());
+                $shortCode = $data->code;
+            } else {
+                Notification::route('mail', 'technique@daydream-lab.com')
+                    ->notify(new DeveloperNotification('[零壹官網] 處理自動短網址發生例外',
+                        '短網址：' . $fullUrl,
+                        $response->getBody()->getContents()
+                    ));
+                throw new InternalServerErrorException('GetShortCodeError', null);
+            }
+        } else {
+            Notification::route('mail', 'technique@daydream-lab.com')
+                ->notify(new DeveloperNotification('[零壹官網] 處理自動短網址發生例外',
+                    '短網址：' . $fullUrl,
+                    $response->getBody()->getContents()
+                ));
+            throw new InternalServerErrorException('GetShortCodeError', null);
+        }
+
+        $shortUrl = config('app.env') == 'production'
+            ? 'dsth.me/' . $shortCode
+            : 'demo.dsth.me/' . $shortCode;
+
+        $str .= $shortUrl;
 
         return $str;
     }
-
 
 
     public function getMailParams()

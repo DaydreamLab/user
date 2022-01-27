@@ -227,7 +227,7 @@ class UserFrontService extends UserService
             throw new NotFoundException('ItemNotExist');
         }
 
-        if ($tokenUser->id != $user->id) {
+        if ($tokenUser && $tokenUser->id != $user->id) {
             throw new UnauthorizedException('Unauthorized');
         }
 //        if ($user->activation) {
