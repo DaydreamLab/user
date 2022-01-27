@@ -333,7 +333,7 @@ class UserFrontService extends UserService
         $this->response = $user;
 
         $this->status = 'UpdateSuccess';
-        $this->sendNotification('mail', $user->email, new RegisteredNotification($user));
+        //$this->sendNotification('mail', $user->email, new RegisteredNotification($user));
     }
 
     /**
