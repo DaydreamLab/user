@@ -130,10 +130,10 @@ class UserFrontController extends BaseController
     }
 
 
-    public function getByUUID($uuid)
+    public function getByUUID(Request $request, $uuid)
     {
         try {
-            $this->service->getByUUID($uuid);
+            $this->service->getByUUID($uuid, $request->user('api'));
         } catch (Throwable $t) {
             $this->handleException($t);
         }

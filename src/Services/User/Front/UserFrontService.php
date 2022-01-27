@@ -7,6 +7,7 @@ use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
+use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Models\Company\Company;
@@ -219,15 +220,19 @@ class UserFrontService extends UserService
     }
 
 
-    public function getByUUID($uuid)
+    public function getByUUID($uuid, $tokenUser)
     {
         $user = $this->findBy('uuid', '=', $uuid)->first();
         if (!$user) {
             throw new NotFoundException('ItemNotExist');
         }
-        if ($user->activation) {
-            throw new ForbiddenException('HasBeenActivated');
+
+        if ($tokenUser->id != $user->id) {
+            throw new UnauthorizedException('Unauthorized');
         }
+//        if ($user->activation) {
+//            throw new ForbiddenException('HasBeenActivated');
+//        }
         $this->status = 'GetItemSuccess';
         $this->response = $user;
         return $this->response;
