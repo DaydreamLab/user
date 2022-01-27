@@ -47,7 +47,7 @@ class UserDataUpdateNotification extends BaseNotification
 
     public function defaultSmsContent($channelType)
     {
-        $str = '零壹官網會員回娘家，立即點擊連結：';
+        $str = '您好, 零壹官網全新上線, 因會員機制更新, 我們邀請您回娘家更新資料，以便能即時收到最新產品與活動課程資訊。若有疑問，請洽詢02-26560777或marketing@zerone.com.tw，謝謝。立即前往：';
 
         $fullUrl = config('app.url').'/member/update/'.$this->member->uuid;
 

@@ -27,6 +27,7 @@ return [
     'IS_BLOCKED'                        => 403,
     'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> 403,
     'INVALID_VERIFICATION_CODE'         => 403,
+    'IP_REJECTED'                       => 403,
 
     'LOGIN_SUCCESS'                     => 200,
     'LOGIN_FAIL'                        => 500,

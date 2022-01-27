@@ -3,6 +3,7 @@
 namespace DaydreamLab\User;
 
 use DaydreamLab\JJAJ\Middlewares\Cors;
+use DaydreamLab\JJAJ\Middlewares\RestrictIP;
 use DaydreamLab\User\Middlewares\Admin;
 use DaydreamLab\User\Middlewares\Expired;
 use DaydreamLab\User\Middlewares\SuperUser;
@@ -51,6 +52,7 @@ class UserServiceProvider extends ServiceProvider
         $this->app['router']->aliasMiddleware('superuser', SuperUser::class);
         $this->app['router']->aliasMiddleware('expired', Expired::class);
         $this->app['router']->aliasMiddleware('CORS', Cors::class);
+        $this->app['router']->aliasMiddleware('restrict-ip', RestrictIP::class);
 
         Notification::resolved(function (ChannelManager $service) {
             $service->extend('mitake', function ($app) {

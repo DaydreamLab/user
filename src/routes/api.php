@@ -11,25 +11,6 @@ use DaydreamLab\User\Controllers\Company\Front\CompanyFrontController;
 use DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController;
 use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
 
-Route::get('fix/01', function () {
-    $eventAddUsers = \DaydreamLab\User\Models\User\User::whereIn('activateToken', ['eventAddUser', null])
-        ->get();
-
-    foreach ($eventAddUsers as $eventAddUser) {
-        if ($eventAddUser->orders->count()) {
-            $order = $eventAddUser->orders->first();
-            $eventAddUser->mobilePhone = $order->phoneNumber;
-            $eventAddUser->save();
-        }
-    }
-
-    $orders = \DaydreamLab\Dsth\Models\Order\Order::where('note', '邀約來源:')->get();
-    $orders->each(function ($order) {
-        $order->note = null;
-        $order->save();
-    });
-});
-
 /************************************  前台 API  ************************************/
 // 啟用帳號
 //Route::get('/api/user/activate/{token}', [UserFrontController::class, 'activate']);
@@ -97,110 +78,110 @@ Route::get('api/linebot/linkAccount/{lineId}', [UserFrontController::class, 'lin
 
 # Api
 Route::post('api/admin/api/ordering', [ApiAdminController::class, 'ordering'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/api/remove', [ApiAdminController::class, 'remove'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/api/state', [ApiAdminController::class, 'state'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/api/store', [ApiAdminController::class, 'store'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/api/search', [ApiAdminController::class, 'search'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/api/{id}', [ApiAdminController::class, 'getItem'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 
 # Asset
 Route::post('api/admin/asset/ordering',  [AssetAdminController::class, 'ordering'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/asset/remove', [AssetAdminController::class, 'remove'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/asset/state',  [AssetAdminController::class, 'state'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/asset/store',  [AssetAdminController::class, 'store'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/asset/search',  [AssetAdminController::class, 'search'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/asset/{id}',  [AssetAdminController::class, 'getItem'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 
 
 # Asset Group
 Route::get('api/admin/asset/group/page', [AssetGroupAdminController::class, 'page'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/asset/group/ordering', [AssetGroupAdminController::class, 'ordering'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/asset/group/remove', [AssetGroupAdminController::class, 'remove'])
- ->middleware(['expired', 'admin']);
+ ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/asset/group/state', [AssetGroupAdminController::class, 'state'])
- ->middleware(['expired', 'admin']);
+ ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/asset/group/store', [AssetGroupAdminController::class, 'store'])
- ->middleware(['expired', 'admin']);
+ ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/asset/group/search', [AssetGroupAdminController::class, 'search'])
- ->middleware(['expired', 'admin']);
+ ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/asset/group/{id}', [AssetGroupAdminController::class, 'getItem'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 
 # Company
 Route::post('api/admin/company/export', [CompanyAdminController::class, 'export'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/restore', [CompanyAdminController::class, 'restore'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/ordering', [CompanyAdminController::class, 'remove'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/remove', [CompanyAdminController::class, 'remove'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/store', [CompanyAdminController::class, 'store'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/search', [CompanyAdminController::class, 'search'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/company/{id}', [CompanyAdminController::class, 'getItem'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/importCompany', [CompanyAdminController::class, 'importCompany'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 
 # User
 Route::post('api/admin/user/export', [UserAdminController::class, 'export'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/user/block', [UserAdminController::class, 'block'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/user/search', [UserAdminController::class, 'search'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/user/page', [UserAdminController::class, 'getSelfPage'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/user/remove', [UserAdminController::class, 'remove'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/user/store', [UserAdminController::class, 'store'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/user/{id}', [UserAdminController::class, 'getItem'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 
 
 Route::post('api/admin/user/group/search', [UserGroupAdminController::class, 'search'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/user/group/remove', [UserGroupAdminController::class, 'remove'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/user/group/store', [UserGroupAdminController::class, 'store'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/user/group/tree', [UserGroupAdminController::class, 'tree'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/user/group/{id}', [UserGroupAdminController::class, 'getItem'])
     ->where('id', '[0-9]+')
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 
 Route::post('api/admin/viewlevel/remove', [ViewlevelAdminController::class, 'remove'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/viewlevel/store', [ViewlevelAdminController::class, 'store'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/viewlevel/search', [ViewlevelAdminController::class, 'search'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/viewlevel/ordering', [ViewlevelAdminController::class, 'ordering'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/viewlevel/{id}', [ViewlevelAdminController::class, 'getItem'])
-    ->middleware(['expired', 'admin']);
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 

@@ -27,6 +27,7 @@ return [
     'IS_BLOCKED'                        => '{$ModelName} is blocked',
     'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> '{$ModelName} insufficient permission assign group',
     'INVALID_VERIFICATION_CODE'         => 'Invalid verification code',
+    'IP_REJECTED'                       => 'IP address rejected',
 
     'LOGIN_SUCCESS'                     => '{$ModelName} login success',
     'LOGIN_FAIL'                        => '{$ModelName} login fail',
