@@ -6,7 +6,6 @@ use DaydreamLab\Cms\Models\Item\Item;
 use DaydreamLab\Cms\Services\NewsletterSubscription\Admin\NewsletterSubscriptionAdminService;
 use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
-use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
@@ -19,7 +18,6 @@ use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 
 class UserAdminService extends UserService
 {
@@ -121,7 +119,7 @@ class UserAdminService extends UserService
     }
 
 
-    public function getSelfPage(Request $request)
+    public function getSelfPage($site_id)
     {
         $user   = $this->getUser();
         $groups = $user->groups;
@@ -131,7 +129,6 @@ class UserAdminService extends UserService
             $pages = $pages->merge($group->page);
         });
 
-        $site_id = $request->get('site_id') ? :1;
         $pages = $pages->filter(function ($p) use ($site_id) {
             return $p['site_id'] == $site_id;
         })->values();
