@@ -25,6 +25,7 @@ class AssetGroup extends BaseModel
      * @var array
      */
     protected $fillable = [
+        'site_id',
         'title',
         'state',
         'description',

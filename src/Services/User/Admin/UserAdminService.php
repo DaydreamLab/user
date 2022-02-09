@@ -19,6 +19,7 @@ use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class UserAdminService extends UserService
 {
@@ -120,7 +121,7 @@ class UserAdminService extends UserService
     }
 
 
-    public function getSelfPage()
+    public function getSelfPage(Request $request)
     {
         $user   = $this->getUser();
         $groups = $user->groups;
@@ -129,6 +130,11 @@ class UserAdminService extends UserService
         $groups->each(function ($group) use (&$pages) {
             $pages = $pages->merge($group->page);
         });
+
+        $site_id = $request->get('site_id') ? :1;
+        $pages = $pages->filter(function ($p) use ($site_id) {
+            return $p['site_id'] == $site_id;
+        })->values();
 
         $this->status = 'GetSelfPageSuccess';
         $this->response = $pages;

@@ -74,7 +74,7 @@ class UserAdminController extends BaseController
     {
         $this->service->setUser($request->user('api'));
         try {
-            $this->service->getSelfPage();
+            $this->service->getSelfPage($request);
         } catch (Throwable $t) {
            $this->handleException($t);
         }

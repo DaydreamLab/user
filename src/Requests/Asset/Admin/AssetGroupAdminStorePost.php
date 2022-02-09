@@ -29,6 +29,7 @@ class AssetGroupAdminStorePost extends AdminRequest
     {
         $rules = [
             'id'                => 'nullable|integer',
+            'site_id'           => 'nullable|integer',
             'title'             => 'required|string',
             'state'             => ['required', Rule::in([0,1,-2])],
             'params'            => 'nullable|string',
