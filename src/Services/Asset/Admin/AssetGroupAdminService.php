@@ -53,7 +53,7 @@ class AssetGroupAdminService extends AssetGroupService
         $assetGroups = $this->all()->sortBy('ordering');
         $page = [];
         foreach ($assetGroups as $assetGroup) {
-            $tempAssetGroup = $assetGroup->only(['id', 'title']);
+            $tempAssetGroup = $assetGroup->only(['id', 'site_id', 'title']);
             $tempAssetGroup['path'] = isset($assetGroup->params['path']) ? $assetGroup->params['path'] : '';
             $tempAssetGroup['type'] = isset($assetGroup->params['type']) ? $assetGroup->params['type'] : '';
             $tempAssetGroup['component'] = isset($assetGroup->params['component']) ? $assetGroup->params['component'] : '';
