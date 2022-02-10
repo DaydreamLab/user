@@ -63,6 +63,11 @@ class UserFrontGetLoginResource extends JsonResource
 
         if ($this->isAdmin()) {
             $data['redirect'] = $this->groups->sortBy('id')->last()->redirect;
+            $assetGroups = collect([]);
+            $this->groups->each(function ($g) use (&$assetGroups) {
+                $assetGroups = $assetGroups->merge($g->assetGroups);
+            });
+            $data['site'] = $assetGroups->pluck(['site_id'])->unique()->values()->toArray();
         }
 
         return $data;

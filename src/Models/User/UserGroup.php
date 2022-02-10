@@ -157,9 +157,6 @@ class UserGroup extends BaseModel
                 })->values();
 
                 $tempAsset['apis'] = $assetApis;
-//                $tempAsset['apis'] = $assetApis->filter(function ($a) {
-//                    return !$a['hidden'];
-//                })->values();
                 $tempAssetGroup['assets'][] = collect($tempAsset);
             });
 
