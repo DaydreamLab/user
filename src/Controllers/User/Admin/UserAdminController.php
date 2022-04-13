@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\User\Requests\User\Admin\UserAdminExportPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminGetItem;
+use DaydreamLab\User\Requests\User\Admin\UserAdminSendTotpPost;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminExportResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminListResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Models\UserAdminResource;
@@ -119,5 +120,18 @@ class UserAdminController extends BaseController
         }
 
         return $this->response($this->service->status, $this->service->response, [], UserAdminResource::class);
+    }
+
+
+    public function sendTotp(UserAdminSendTotpPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->sendTotp($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, []);
     }
 }

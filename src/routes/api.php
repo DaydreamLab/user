@@ -75,6 +75,9 @@ Route::get('api/linebot/linkAccount/{lineId}', [UserFrontController::class, 'lin
 
 /************************************  後台 API  ************************************/
 
+# 發送 totp mail
+Route::post('api/admin/user/sendTotp', [UserAdminController::class, 'sendTotp'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 # Api
 Route::post('api/admin/api/ordering', [ApiAdminController::class, 'ordering'])

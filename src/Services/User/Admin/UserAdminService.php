@@ -10,8 +10,10 @@ use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
+use DaydreamLab\User\Helpers\OtpHelper;
 use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\Company\CompanyCategory;
+use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
@@ -257,5 +259,22 @@ class UserAdminService extends UserService
         $this->response = $result;
 
         return $result;
+    }
+
+
+    public function sendTotp($input)
+    {
+        $ids = $input->get('ids') ?? [];
+
+        if (empty($ids)) {
+            return;
+        } else {
+            $users = User::whereIn('id', $ids)->get()->each(function ($user) {
+                OtpHelper::createTotp($user);
+            });
+        }
+
+        $this->status = 'SendTotpSecretSuccess';
+        $this->response = null;
     }
 }
