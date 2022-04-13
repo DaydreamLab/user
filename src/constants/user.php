@@ -70,4 +70,11 @@ return [
 
     'LINE_BIND_SUCCESS' => 200,
     'LINE_BIND_DUPLICATE' => 403,
+
+    // 二階段驗證
+    'SEND_TOTP_SECRET_SUCCESS' => 200,
+    'SEND_OTP_SUCCESS'    => 200,
+    'TOTP_CODE_INCORRECT' => 403,
+    'OTP_CODE_INCORRECT' => 403,
+
 ];

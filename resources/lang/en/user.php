@@ -68,4 +68,9 @@ return [
 
     'LINE_BIND_SUCCESS' => 'Line bind successfully',
     'LINE_BIND_DUPLICATE' => 'This account is already bind with line',
+
+    'SEND_TOTP_SECRET_SUCCESS' => 'send totp secret success',
+    'TOTP_CODE_INCORRECT' => 'totp code incorrect',
+    'SEND_OTP_SUCCESS' => 'send otp success',
+    'OTP_CODE_INCORRECT' => 'otp code incorrect'
 ];

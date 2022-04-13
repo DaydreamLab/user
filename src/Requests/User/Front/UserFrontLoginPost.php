@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\User\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
 class UserFrontLoginPost extends AdminRequest
 {
@@ -34,7 +35,10 @@ class UserFrontLoginPost extends AdminRequest
             'mobilePhoneCode'   => 'nullable|string',
             'mobilePhone'       => 'nullable|string',
             'verificationCode'  => 'required_with:mobilePhone|string',
-            'lineLinkToken'     => 'nullable|string'
+            'lineLinkToken'     => 'nullable|string',
+            'verifyMethod'      => ['required_with:email', 'nullable', Rule::in("TOTP", "OTP")],
+            'code'              => 'nullable|string',
+            'forceSend'         => 'nullable|boolean',
         ];
     }
 

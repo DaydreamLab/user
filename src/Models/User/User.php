@@ -86,6 +86,7 @@ class User extends BaseModel implements
         'activation',
         'activateToken',
         'verificationCode',
+        'twofactor',
         'block',
         'canDelete',
         'resetPassword',
@@ -112,8 +113,10 @@ class User extends BaseModel implements
     protected $appends = [
     ];
 
-
-
+    protected $casts = [
+        'twofactor' => 'array'
+    ];
+    
     public static function boot()
     {
         parent::boot();
@@ -187,7 +190,7 @@ class User extends BaseModel implements
             ->withTimestamps();
     }
 
- 
+
     public function line()
     {
         return $this->hasOne(Line::class, 'user_id', 'id');

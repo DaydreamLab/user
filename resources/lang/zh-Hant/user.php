@@ -69,4 +69,10 @@ return [
 
     'LINE_BIND_SUCCESS' => 'Line 綁定成功',
     'LINE_BIND_DUPLICATE' => '此帳號已綁定過 Line',
+
+    // 二階段驗證
+    'SEND_TOTP_SECRET_SUCCESS' => '發送 TOTP 密鑰成功',
+    'TOTP_CODE_INCORRECT' => 'TOTP 驗證碼錯誤',
+    'SEND_OTP_SUCCESS' => '發送 OTP 成功',
+    'OTP_CODE_INCORRECT' => 'OTP 驗證碼錯誤'
 ];

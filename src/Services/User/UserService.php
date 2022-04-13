@@ -5,19 +5,26 @@ namespace DaydreamLab\User\Services\User;
 use Carbon\Carbon;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
+use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\User\Events\Add;
 use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Events\Remove;
 use DaydreamLab\User\Events\Login;
+use DaydreamLab\User\Helpers\OtpHelper;
 use DaydreamLab\User\Helpers\UserHelper;
 use DaydreamLab\User\Models\User\User;
+use DaydreamLab\User\Notifications\Channels\XsmsChannel;
+use DaydreamLab\User\Notifications\User\UserGetOtpCodeNotification;
+use DaydreamLab\User\Notifications\User\UserGetTotpQrCodeNotification;
 use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
+use ParagonIE\ConstantTime\Base32;
 
 class UserService extends BaseService
 {
@@ -117,6 +124,21 @@ class UserService extends BaseService
             $user = Auth::user();
             if ($user->block) {
                 throw new ForbiddenException('IsBlocked');
+            }
+
+            // 兩階段驗證流程
+            $verifyMethod = $input->get('verifyMethod');
+            $code = $input->get('code');
+            $forceSend = $input->get('forceSend');
+
+            // 是否要發信 如果有發出信會是 true 沒發出信就是 false
+
+            if (! $this->checkToSendCodeEmail($verifyMethod, $user, $forceSend)) {
+                if (! OtpHelper::verify($verifyMethod, $code, $user)) {
+                    throw new ForbiddenException(Str::studly(Str::lower($verifyMethod)) . 'CodeIncorrect');
+                }
+            } else {
+                return;
             }
         } else {
             $user = $this->findBy('mobilePhone', '=', $input->get('mobilePhone'))->first();
@@ -234,5 +256,26 @@ class UserService extends BaseService
             $return .= chr(mt_rand(0, 255));
         }
         return base64_encode($return);
+    }
+
+    public function checkToSendCodeEmail($verifyMethod, $user, $forceSend = false)
+    {
+        if ($verifyMethod == 'TOTP' && OtpHelper::isExpired($verifyMethod, $user))
+        {
+            OtpHelper::createTotp($user);
+            $this->status = 'SendTotpSecretSuccess';
+            $this->response = null;
+
+            return true;
+        } else if ($verifyMethod == 'OTP' && $forceSend) {
+            OtpHelper::createOtp($user);
+
+            $this->status = 'SendOtpSuccess';
+            $this->response = null;
+
+            return true;
+        }
+
+        return false;
     }
 }
