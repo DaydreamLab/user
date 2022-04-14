@@ -131,6 +131,7 @@ class UserService extends BaseService
             $code = $input->get('code');
             $forceSend = $input->get('forceSend');
             if ($verifyMethod == 'CHECK') {
+                $this->status = 'CheckSuccess';
                 return;
             }
             // 是否要發信 如果有發出信會是 true 沒發出信就是 false

@@ -72,5 +72,6 @@ return [
     'SEND_TOTP_SECRET_SUCCESS' => 'send totp secret success',
     'TOTP_CODE_INCORRECT' => 'totp code incorrect',
     'SEND_OTP_SUCCESS' => 'send otp success',
-    'OTP_CODE_INCORRECT' => 'otp code incorrect'
+    'OTP_CODE_INCORRECT' => 'otp code incorrect',
+    'CHECK_SUCCESS' => 'check success',
 ];
