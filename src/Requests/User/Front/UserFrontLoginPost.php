@@ -36,7 +36,7 @@ class UserFrontLoginPost extends AdminRequest
             'mobilePhone'       => 'nullable|string',
             'verificationCode'  => 'required_with:mobilePhone|string',
             'lineLinkToken'     => 'nullable|string',
-            'verifyMethod'      => ['required_with:email', 'nullable', Rule::in("TOTP", "OTP")],
+            'verifyMethod'      => ['required_with:email', 'nullable', Rule::in("TOTP", "OTP", "CHECK")],
             'code'              => 'nullable|string',
             'forceSend'         => 'nullable|boolean',
         ];

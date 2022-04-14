@@ -130,9 +130,10 @@ class UserService extends BaseService
             $verifyMethod = $input->get('verifyMethod');
             $code = $input->get('code');
             $forceSend = $input->get('forceSend');
-
+            if ($verifyMethod == 'CHECK') {
+                return;
+            }
             // 是否要發信 如果有發出信會是 true 沒發出信就是 false
-
             if (! $this->checkToSendCodeEmail($verifyMethod, $user, $forceSend)) {
                 if (! OtpHelper::verify($verifyMethod, $code, $user)) {
                     throw new ForbiddenException(Str::studly(Str::lower($verifyMethod)) . 'CodeIncorrect');
