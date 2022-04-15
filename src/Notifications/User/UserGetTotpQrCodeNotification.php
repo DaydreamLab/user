@@ -45,7 +45,7 @@ class UserGetTotpQrCodeNotification extends BaseNotification
         $expireDyas = $this->user->twofactor['totp']['expiredSecond'] / 60 / 60 / 24;
         \Illuminate\Support\Facades\File::ensureDirectoryExists(storage_path("app/public/qrcode"));
         $qrCodeFileName = Str::uuid() . '.png';
-        QrCode::format('png')->size(200)->generate("aaa", storage_path("app/public/qrcode/$qrCodeFileName"));
+        QrCode::format('png')->size(200)->generate($this->user->twofactor['totp']['url'], storage_path("app/public/qrcode/$qrCodeFileName"));
         $qrcodeAccessUrl = asset("storage/qrcode/$qrCodeFileName");
 
         $img = "<img width='200' height='200' src=$qrcodeAccessUrl />";
