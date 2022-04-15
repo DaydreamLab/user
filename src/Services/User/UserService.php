@@ -273,7 +273,12 @@ class UserService extends BaseService
             OtpHelper::createOtp($user);
 
             $this->status = 'SendOtpSuccess';
-            $this->response = null;
+            if (config('app.env') != 'production') {
+                $this->response =
+                $this->response = ['code' => $user->twofactor['otp']['code']];
+            } else {
+                $this->response = null;
+            }
 
             return true;
         }
