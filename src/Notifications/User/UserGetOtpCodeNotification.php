@@ -33,7 +33,7 @@ class UserGetOtpCodeNotification extends BaseNotification
 
     public function defaultSubject()
     {
-        return config('app.name').'登入保護驗證';
+        return '[零壹科技官方網站] 登入保護驗證';
     }
 
 

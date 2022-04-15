@@ -35,7 +35,7 @@ class UserGetTotpQrCodeNotification extends BaseNotification
 
     public function defaultSubject()
     {
-        return config('app.name').'管理後台TOTP驗證資訊';
+        return '[零壹科技官方網站] 管理後台TOTP驗證資訊';
     }
 
 
