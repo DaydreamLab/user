@@ -73,7 +73,7 @@ return [
     // 二階段驗證
     'SEND_TOTP_SECRET_SUCCESS' => '發送 TOTP 密鑰成功',
     'TOTP_CODE_INCORRECT' => 'TOTP 驗證碼錯誤',
-    'SEND_OTP_SUCCESS' => '發送 OTP 成功',
+    'SEND_OTP_SUCCESS' => '系統中您的TOTP驗證資訊無效（從未登入/逾期），已重新發送驗證資料至您的信箱，謝謝。',
     'OTP_CODE_INCORRECT' => 'OTP 驗證碼錯誤',
     'CHECK_SUCCESS' => '檢查成功',
 ];
