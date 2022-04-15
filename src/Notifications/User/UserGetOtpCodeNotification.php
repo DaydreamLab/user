@@ -12,7 +12,7 @@ class UserGetOtpCodeNotification extends BaseNotification
 {
     use Queueable;
 
-    protected $view = 'emails.user.GetOtp';
+    protected $view = 'emails.User.GetOtp';
 
     protected $type = "OTP";
 
@@ -52,7 +52,7 @@ class UserGetOtpCodeNotification extends BaseNotification
                             <table width='194'>
                                 <tbody>
                                     <tr>
-                                        <td 
+                                        <td
                                             align='center'
                                             style='
                                                 font-size: 44px;
