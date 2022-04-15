@@ -77,4 +77,5 @@ return [
     'TOTP_CODE_INCORRECT' => 403,
     'OTP_CODE_INCORRECT' => 403,
     'CHECK_SUCCESS' => 200,
+    'TOTP_SECRET_EXPIRED' => 400,
 ];

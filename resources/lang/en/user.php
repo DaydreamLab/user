@@ -74,4 +74,5 @@ return [
     'SEND_OTP_SUCCESS' => 'send otp success',
     'OTP_CODE_INCORRECT' => 'otp code incorrect',
     'CHECK_SUCCESS' => 'check success',
+    'TOTP_SECRET_EXPIRED' => 'totp secret expired'
 ];

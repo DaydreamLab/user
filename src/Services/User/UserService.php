@@ -265,7 +265,7 @@ class UserService extends BaseService
         if ($verifyMethod == 'TOTP' && OtpHelper::isExpired($verifyMethod, $user))
         {
             OtpHelper::createTotp($user);
-            $this->status = 'SendTotpSecretSuccess';
+            $this->status = 'TotpSecretExpired';
             $this->response = null;
 
             return true;
