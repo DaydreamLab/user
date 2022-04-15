@@ -23,7 +23,11 @@ class OtpHelper
         $twoFactor['otp']['created_at'] = $now->format('Y-m-d H:i:s');
         $twoFactor['otp']['expiredSecond'] = $expiredSecond;
         $twoFactor['otp']['expiredDate'] = $now->addSeconds($expiredSecond)->format('Y-m-d H:i:s');
-        $twoFactor['otp']['code'] = str_pad(strval(rand(0, $maxCodeNum)), $digits, '0', STR_PAD_LEFT);
+        if (config('app.env') != 'production') {
+            $twoFactor['otp']['code'] = "000000";
+        } else {
+            $twoFactor['otp']['code'] = str_pad(strval(rand(0, $maxCodeNum)), $digits, '0', STR_PAD_LEFT);
+        }
         $user->twofactor = $twoFactor;
         $user->save();
 
