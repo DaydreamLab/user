@@ -15,6 +15,10 @@ class UserGetTotpQrCodeNotification extends BaseNotification
     use Queueable;
 
     protected $view = 'emails.user.GetOtp';
+    
+    protected $type = "TOTP";
+
+    protected $category = "User";
 
     protected $user;
     /**
