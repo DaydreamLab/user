@@ -42,7 +42,35 @@ class UserGetOtpCodeNotification extends BaseNotification
         $expiredMin = $this->user->twofactor['otp']['expiredSecond'] / 60;
 
         $str = "親愛的零壹網站管理員：<br><br>";
-        $str .= "您好，您的帳號（{$this->user->email}）正在進行後台登入驗證，本次產生的驗證碼為：『{$this->user->twofactor['otp']['code']}』 <br><br>";
+        // $str .= "您好，您的帳號（{$this->user->email}）正在進行後台登入驗證，本次產生的驗證碼為：『{$this->user->twofactor['otp']['code']}』 <br><br>";
+        $str .= "您好，您的帳號（<font style='display: none'>@</font>{$this->user->email}）正在進行後台登入驗證，本次產生的驗證碼為：";
+        $str .= "
+            <table width='100%'>
+                <tbody>
+                    <tr>
+                        <td align='center' style='padding-top: 60px;padding-bottom: 60px;'>
+                            <table width='194'>
+                                <tbody>
+                                    <tr>
+                                        <td 
+                                            align='center'
+                                            style='
+                                                font-size: 44px;
+                                                padding: 20px 30px;
+                                                background-color: #eef5cc;
+                                                line-height: 1;
+                                                color: #abcd02;
+                                            '
+                                        >
+                                            {$this->user->twofactor['otp']['code']}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>";
         $str .= "為了保障您帳號的安全性，請在15分鐘內完成驗證，請勿外流。 <br><br>";
         $str .= "同時，若您近期沒有執行登入零壹官方網站後台，請儘速與網站管理團隊聯繫以保障帳號安全。<br><br>";
 

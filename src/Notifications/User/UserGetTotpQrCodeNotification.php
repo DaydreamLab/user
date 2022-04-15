@@ -40,12 +40,23 @@ class UserGetTotpQrCodeNotification extends BaseNotification
         $expireDyas = $this->user->twofactor['totp']['expiredSecond'] / 60 / 60 / 24;
 
         $qrCodeBase64 = 'data:image/png;base64,' . base64_encode(QrCode::format('png')->size(200)->generate($this->user->twofactor['totp']['url']));
+        $img = "<img width='200' height='200' src='$qrCodeBase64' />";
 
         $str = "親愛的零壹網站管理員：<br><br>";
-        $str .= "您好，您的帳號 {$this->user->email} 後台TOTP驗證機制QRcode如下 <br><br>";
-        $str .= "<img src='$qrCodeBase64' /><br><br>";
+        $str .= "您好，您的帳號 <font style='display: none'>@</font>{$this->user->email} 後台TOTP驗證機制QRcode如下";
+        $str .= "
+            <table width='100%'>
+                <tbody>
+                    <tr>
+                        <td align='center' style='padding-top: 60px;padding-bottom: 60px;'>
+                            {$img}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>";
+        // $str .= "<img src='$qrCodeBase64' /><br><br>";
         $str .= "使用期限：{$expireDyas}天，至{$expiredDate} <br><br>";
-        $str .= "請以手機安裝Microsoft Authenticator（https://www.microsoft.com/zh-tw/security/mobile-authenticator-app）掃描此QRcode以產生30秒有效的網站後台驗證碼TOTP。 <br><br>";
+        $str .= "請以手機安裝 Microsoft Authenticator（<a target='blank' href='https://www.microsoft.com/zh-tw/security/mobile-authenticator-app'>https://www.microsoft.com/zh-tw/security/mobile-authenticator-app</a>）掃描此QRcode以產生30秒有效的網站後台驗證碼TOTP。 <br><br>";
         $str .= "若驗證碼帳號於APP已經存在，請直接點選「覆寫您帳戶現有的安全性資訊」以更新最新的TOTP資訊。<br><br>";
         $str .= "此為機敏資訊，請務必妥善保存避免外流。<br><br>";
         $str .= "零壹科技官方網站";
