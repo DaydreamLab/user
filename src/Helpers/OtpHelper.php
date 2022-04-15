@@ -47,7 +47,7 @@ class OtpHelper
         $twoFactor['totp']['created_at'] = $now->format('Y-m-d H:i:s');
         $twoFactor['totp']['expiredSecond'] = $expiredSecond;
         $twoFactor['totp']['expiredDate'] = $now->addSeconds($expiredSecond)->format('Y-m-d H:i:s');
-        $twoFactor['totp']['issure'] = config('app.name');
+        $twoFactor['totp']['issure'] = "Zerone.com.tw";
         $twoFactor['totp']['label'] = $user->email;
         $twoFactor['totp']['url'] = "otpauth://totp/{$twoFactor['totp']['label']}?secret={$twoFactor['totp']['secret']}&issuer={$twoFactor['totp']['issure']}&algorithm={$twoFactor['totp']['algorithm']}&digits={$twoFactor['totp']['digits']}&period={$twoFactor['totp']['period']}";
         $user->twofactor = $twoFactor;
