@@ -39,16 +39,12 @@ class UserGetTotpQrCodeNotification extends BaseNotification
     {
         $expiredDate = Carbon::parse($this->user->twofactor['totp']['expiredDate'], 'UTC')->tz($this->user->timezone)->format("Y-m-d H:i:s");
         $expireDyas = $this->user->twofactor['totp']['expiredSecond'] / 60 / 60 / 24;
-
-
-        if (! \Illuminate\Support\Facades\File::ensureDirectoryExists(storage_path("app/public/qrcode"))) {
-            mkdir(storage_path('app/public/qrcode'), '777',  true);
-        }
-        $qrCodeFileName = Str::uuid() . 'png';
+        \Illuminate\Support\Facades\File::ensureDirectoryExists(storage_path("app/public/qrcode"));
+        $qrCodeFileName = Str::uuid() . '.png';
         QrCode::format('png')->size(200)->generate("aaa", storage_path("app/public/qrcode/$qrCodeFileName"));
         $qrcodeAccessUrl = asset("storage/qrcode/$qrCodeFileName");
 
-        $img = "<img width='200' height='200' src=$qrcodeAccessUrl' />";
+        $img = "<img width='200' height='200' src=$qrcodeAccessUrl />";
 
         $str = "親愛的零壹網站管理員：<br><br>";
         $str .= "您好，您的帳號 <font style='display: none'>@</font>{$this->user->email} 後台TOTP驗證機制QRcode如下";
@@ -62,7 +58,6 @@ class UserGetTotpQrCodeNotification extends BaseNotification
                     </tr>
                 </tbody>
             </table>";
-        // $str .= "<img src='$qrCodeBase64' /><br><br>";
         $str .= "使用期限：{$expireDyas}天，至{$expiredDate} <br><br>";
         $str .= "請以手機安裝 Microsoft Authenticator（<a target='blank' href='https://www.microsoft.com/zh-tw/security/mobile-authenticator-app'>https://www.microsoft.com/zh-tw/security/mobile-authenticator-app</a>）掃描此QRcode以產生30秒有效的網站後台驗證碼TOTP。 <br><br>";
         $str .= "若驗證碼帳號於APP已經存在，請直接點選「覆寫您帳戶現有的安全性資訊」以更新最新的TOTP資訊。<br><br>";
