@@ -234,9 +234,9 @@ class UserAdminService extends UserService
         if (InputHelper::null($input, 'id')) {
 //            $this->checkEmail($input->get('email'));
             //$this->checkMobilePhone($input->get('mobilePhone'));
-            if (!$input->get('mobilePhone')) {
-                $input->put('mobilePhone', Str::random(10));
-            }
+//            if (!$input->get('mobilePhone')) {
+//                $input->put('mobilePhone', Str::random(10));
+//            }
         }
 
         // 確保使用者所指派的群組，具有該權限
