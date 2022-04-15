@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use DaydreamLab\User\Notifications\BaseNotification;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Str;
 use Psy\Command\ShowCommand;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -39,8 +40,15 @@ class UserGetTotpQrCodeNotification extends BaseNotification
         $expiredDate = Carbon::parse($this->user->twofactor['totp']['expiredDate'], 'UTC')->tz($this->user->timezone)->format("Y-m-d H:i:s");
         $expireDyas = $this->user->twofactor['totp']['expiredSecond'] / 60 / 60 / 24;
 
-        $qrCodeBase64 = 'data:image/png;base64,' . base64_encode(QrCode::format('png')->size(200)->generate($this->user->twofactor['totp']['url']));
-        $img = "<img width='200' height='200' src='$qrCodeBase64' />";
+
+        if (! \Illuminate\Support\Facades\File::ensureDirectoryExists(storage_path("app/public/qrcode"))) {
+            mkdir(storage_path('app/public/qrcode'), '777',  true);
+        }
+        $qrCodeFileName = Str::uuid() . 'png';
+        QrCode::format('png')->size(200)->generate("aaa", storage_path("app/public/qrcode/$qrCodeFileName"));
+        $qrcodeAccessUrl = asset("storage/qrcode/$qrCodeFileName");
+
+        $img = "<img width='200' height='200' src=$qrcodeAccessUrl' />";
 
         $str = "親愛的零壹網站管理員：<br><br>";
         $str .= "您好，您的帳號 <font style='display: none'>@</font>{$this->user->email} 後台TOTP驗證機制QRcode如下";
