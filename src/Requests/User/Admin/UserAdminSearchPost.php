@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Requests\User\Admin;
 
 use DaydreamLab\JJAJ\Requests\ListRequest;
 use DaydreamLab\User\Models\User\UserGroup;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class UserAdminSearchPost extends ListRequest
@@ -54,28 +55,25 @@ class UserAdminSearchPost extends ListRequest
     {
         $validated = parent::validated();
 
+        $mapQuery = DB::table('users_groups_maps');
         if ($parent = $validated->get('parent_group')) {
             $g = UserGroup::where('id', $parent)->first();
             $c = $g->descendants->pluck(['id'])->toArray();
             $ids = array_merge($c, [$g->id]);
-            $validated['q'] = $this->q->whereHas('groups', function ($q) use ($ids) {
-                $q->whereIn('users_groups_maps.group_id', $ids);
-            });
+            $mapQuery = $mapQuery->whereIn('group_id', $ids);
         }
         $validated->forget('parent_group');
 
-        $q = $validated->get('q');
         if ($groups = $validated->get('user_group')) {
-            if (is_array($groups)) {
-                $q->whereHas('groups', function ($q) use ($groups) {
-                    $q->whereIn('users_groups_maps.group_id', $groups);
-                });
-            } else {
-                $q->whereHas('groups', function ($q) use ($groups) {
-                    $q->where('users_groups_maps.group_id', $groups);
-                });
-            }
+            $mapQuery = is_array($groups)
+                ? $mapQuery->whereIn('group_id', $groups)
+                : $mapQuery->where('id', $groups);
         }
+
+        $mapResult = $mapQuery->get()->unique('user_id');
+
+        $q = $validated->get('q');
+        $q->whereIn('id', $mapResult->pluck('user_id')->all());
         $validated->put('q', $q);
         $validated->forget(['user_group']);
 
