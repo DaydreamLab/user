@@ -2,8 +2,10 @@
 
 namespace DaydreamLab\User\Requests\User\Front;
 
+use DaydreamLab\Dsth\Helpers\EnumHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
+use Illuminate\Validation\Rule;
 
 class UserFrontRegisterMobilePhonePost extends AdminRequest
 {
@@ -51,7 +53,8 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
             'company.interestedIssue.*' => 'nullable|string',
             'company.issueOther'    => 'nullable|string',
             'newsletterCategoriesAlias'     => 'nullable|array',
-            'newsletterCategoriesAlias.*'   => 'nullable|string'
+            'newsletterCategoriesAlias.*'   => 'nullable|string',
+            'subscribeNewsletter'       => ['nullable', Rule::in(EnumHelper::BOOLEAN)]
         ];
     }
 

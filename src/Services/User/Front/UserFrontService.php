@@ -259,7 +259,14 @@ class UserFrontService extends UserService
             $companyData['company_id'] = $cpy->id;
         }
         # 根據公司的身份決定使用者的群組
-        $this->decideUserGroup($user, $cpy, $companyData);
+        $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
+        if ($input->get('subscribeNewsletter')) {
+            $nsfs = app(NewsletterSubscriptionFrontService::class);
+            $nsfs->store(collect([
+                'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_dealer_newsletter' : '01_newsletter'],
+                'email' => $input->get('email')
+            ]));
+        }
 
         $userCompany = $user->company;
         if ($userCompany) {
@@ -268,9 +275,6 @@ class UserFrontService extends UserService
             $companyData['user_id'] = $user->id;
             $user->company()->create($companyData);
         }
-
-        $nsfs = app(NewsletterSubscriptionFrontService::class);
-        $nsfs->store(collect(['newsletterCategoriesAlias' => $input->get('newsletterCategoriesAlias')]));
 
         $this->response = $user->refresh();
         $this->status = 'UpdateSuccess';
@@ -299,7 +303,14 @@ class UserFrontService extends UserService
             $companyData['company_id'] = $cpy->id;
         }
         # 根據公司的身份決定使用者的群組
-        $this->decideUserGroup($user, $cpy, $companyData);
+        $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
+        if ($input->get('subscribeNewsletter')) {
+            $nsfs = app(NewsletterSubscriptionFrontService::class);
+            $nsfs->store(collect([
+                'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_dealer_newsletter' : '01_newsletter'],
+                'email' => $input->get('email')
+            ]));
+        }
 
         $userCompany = $user->company;
         if ($userCompany) {
@@ -313,9 +324,6 @@ class UserFrontService extends UserService
         if ($input->get('lineId')) {
             $this->lineBind($input);
         }
-
-        $nsfs = app(NewsletterSubscriptionFrontService::class);
-        $nsfs->store(collect(['newsletterCategoriesAlias' =>  $input->get('newsletterCategoriesAlias'), 'email' => $input->get('email')]));
 
         $tokens = $user->tokens()->get();
         if(!config('daydreamlab.user.multiple_login')) {
@@ -344,6 +352,7 @@ class UserFrontService extends UserService
     {
         $this->checkEmail($input->get('email'));
         $user = $this->add($input);
+        show($user->toArray());
 
         $user->notify(new RegisteredNotification($user));
 
@@ -388,7 +397,14 @@ class UserFrontService extends UserService
             $companyData['company_id'] = $cpy->id;
         }
         # 根據公司的身份決定使用者的群組
-        $this->decideUserGroup($user, $cpy, $companyData);
+        $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
+        if ($input->get('subscribeNewsletter')) {
+            $nsfs = app(NewsletterSubscriptionFrontService::class);
+            $nsfs->store(collect([
+                'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_dealer_newsletter' : '01_newsletter'],
+                'email' => $input->get('email')
+            ]));
+        }
 
         $companyData['user_id'] = $user->id;
         $userCompany = UserCompany::create($companyData);
@@ -426,7 +442,7 @@ class UserFrontService extends UserService
     {
         if ( !$company ) { // 沒有公司
             $user->groups()->sync(config('daydreamlab.user.register.groups'));
-            return;
+            return 'normal';
         }
 
         if ($company->category != null) { // 公司有分類
@@ -450,8 +466,11 @@ class UserFrontService extends UserService
             if ($dealerUserGroup) {
                 $user->groups()->sync([$dealerUserGroup->id]);
             }
+
+            return 'dealer';
         } else {
             $user->groups()->sync(config('daydreamlab.user.register.groups'));
+            return 'normal';
         }
     }
 

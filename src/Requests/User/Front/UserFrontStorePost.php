@@ -2,8 +2,10 @@
 
 namespace DaydreamLab\User\Requests\User\Front;
 
+use DaydreamLab\Dsth\Helpers\EnumHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
+use Illuminate\Validation\Rule;
 
 class UserFrontStorePost extends AdminRequest
 {
@@ -51,9 +53,7 @@ class UserFrontStorePost extends AdminRequest
             'company.interestedIssue'   => 'nullable|array',
             'company.interestedIssue.*' => 'nullable|string',
             'company.issueOther'    => 'nullable|string',
-            #todo: 電子報
-            'newsletterCategoriesAlias'     => 'nullable|array',
-            'newsletterCategoriesAlias.*'   => 'nullable|string',
+            'subscribeNewsletter'   => ['nullable', Rule::in(EnumHelper::BOOLEAN)],
             'lineId'                => 'nullable|string'
         ];
     }
