@@ -26,7 +26,7 @@ class AddTwofactorFeatureToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('towfactor');
+            $table->dropColumn('twofactor');
         });
     }
 }
