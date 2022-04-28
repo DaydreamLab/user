@@ -263,7 +263,8 @@ class UserFrontService extends UserService
         if ($input->get('subscribeNewsletter')) {
             $nsfs = app(NewsletterSubscriptionFrontService::class);
             $nsfs->store(collect([
-                'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_dealer_newsletter' : '01_newsletter'],
+                'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_deal_newsletter' : '01_newsletter'],
+                'user' => $user->refresh(),
                 'email' => $input->get('email')
             ]));
         }
@@ -307,7 +308,8 @@ class UserFrontService extends UserService
         if ($input->get('subscribeNewsletter')) {
             $nsfs = app(NewsletterSubscriptionFrontService::class);
             $nsfs->store(collect([
-                'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_dealer_newsletter' : '01_newsletter'],
+                'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_deal_newsletter' : '01_newsletter'],
+                'user'  => $user->refresh(),
                 'email' => $input->get('email')
             ]));
         }
@@ -400,7 +402,8 @@ class UserFrontService extends UserService
         if ($input->get('subscribeNewsletter')) {
             $nsfs = app(NewsletterSubscriptionFrontService::class);
             $nsfs->store(collect([
-                'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_dealer_newsletter' : '01_newsletter'],
+                'subscribeNewsletter' => $input->get('subscribeNewsletter'),
+                'user'  => $user->refresh(),
                 'email' => $input->get('email')
             ]));
         }
