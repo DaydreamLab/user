@@ -23,7 +23,8 @@ class UserFrontResource extends JsonResource
             'name'          => $this->name,
             'group'         => $this->groups->first() ? $this->groups->first()->title : '',
             'groupId'       => $this->groups->first() ? $this->groups->first()->id : null,
-            'newsletterSubscriptions' => $this->newsletterSubscriptions
+            'newsletterSubscriptions' => $this->newsletterSubscriptions,
+            'subscribeNewsletter'   => count($this->newsletterSubscriptions) ? 1 : 0
         ];
 
         $data['company'] = [
