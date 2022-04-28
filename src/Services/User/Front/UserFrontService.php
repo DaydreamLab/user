@@ -352,7 +352,6 @@ class UserFrontService extends UserService
     {
         $this->checkEmail($input->get('email'));
         $user = $this->add($input);
-        show($user->toArray());
 
         $user->notify(new RegisteredNotification($user));
 
