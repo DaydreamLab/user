@@ -56,32 +56,6 @@ class UserAdminExportPost extends ListRequest
     {
         $validated = parent::validated();
 
-        $q = $validated->get('q');
-        if ($parent = $validated->get('parent_group')) {
-            $g = UserGroup::where('id', $parent)->first();
-            $c = $g->descendants->pluck(['id'])->toArray();
-            $ids = array_merge($c, [$g->id]);
-            $q->whereHas('groups', function ($q) use ($ids) {
-                $q->whereIn('users_groups_maps.group_id', $ids);
-            });
-        }
-        $validated->forget('parent_group');
-
-
-        if ($groups = $validated->get('user_group')) {
-            if (is_array($groups)) {
-                $q->whereHas('groups', function ($q) use ($groups) {
-                    $q->whereIn('users_groups_maps.group_id', $groups);
-                });
-            } else {
-                $q->whereHas('groups', function ($q) use ($groups) {
-                    $q->where('users_groups_maps.group_id', $groups);
-                });
-            }
-        }
-        $validated->forget(['user_group']);
-        $validated->put('q', $q);
-
         return $validated;
     }
 }

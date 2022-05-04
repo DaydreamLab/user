@@ -35,12 +35,15 @@ class UserAdminController extends BaseController
 
     public function export(UserAdminExportPost $request)
     {
+        startLog();
         $this->service->setUser($request->user('api'));
         try {
-            $this->service->export($request);
+            $this->service->export($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
+showLogTime();
+        exit();
 
         return $this->response($this->service->status, $this->service->response, [], UserAdminExportResourceCollection::class);
     }

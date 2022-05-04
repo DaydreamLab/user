@@ -39,20 +39,38 @@ class UserAdminService extends UserService
     }
 
 
-    public function export($request)
+    public function export(Collection $input)
     {
-        $q = $request->validated()->get('q');
-        $q->select('id', 'name', 'email', 'mobilePhone', 'block', 'blockReason');
-        $q->with('company');
+        $ids = [];
+        if ($parent = $input->get('parent_group')) {
+            $g = UserGroup::where('id', $parent)->first();
+            $c = $g->descendants->pluck(['id'])->all();
+            $ids = array_merge($c, [$g->id]);
+        }
 
-        $users = $this->search($request->validated());
 
+        if ($groups = $input->get('user_group')) {
+            if (is_array($groups)) {
+                $ids = collect($ids)->intersect($groups)->all();
+            } else {
+                $ids = collect($ids)->intersect([$groups])->all();
+            }
+        }
+
+        $maps = DB::table('users_groups_maps')->whereIn('group_id', $ids)->select('id', 'user_id', 'group_id')->get();
+        $q = new QueryCapsule();
+        $q->select('id', 'name', 'email', 'mobilePhone', 'block', 'blockReason')
+            ->whereIn('id', $maps->pluck('user_id')->all());
+        $input->forget(['parent_group', 'user_group']);
+        $input->put('q', $q);
+
+        $users = $this->search($input);
         $groups = UserGroup::all();
-        $map = DB::table('users_groups_maps')->get();
 
-        $users = $users->map(function ($user) use ($groups, $map) {
-            $targetMaps = $map->whereIn('user_id', $user->id);
-            $user->custom_groups = $groups->whereIn('id', $targetMaps->pluck('group_id')->all())->values();
+        $users = $users->map(function ($user) use ($groups, $maps) {
+            $targetMaps = $maps->whereIn('user_id', $user->id);
+            $targetGroups = $groups->whereIn('id', $targetMaps->pluck('group_id')->all());
+            $user->groupTitle = $targetGroups->count() ? $targetGroups->first()->title : '';
             return $user;
         });
 
