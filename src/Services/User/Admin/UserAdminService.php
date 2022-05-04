@@ -43,6 +43,7 @@ class UserAdminService extends UserService
     {
         $q = $request->validated()->get('q');
         $q->select('id', 'name', 'email', 'mobilePhone', 'block', 'blockReason');
+        $q->with('company');
 
         $users = $this->search($request->validated());
 
