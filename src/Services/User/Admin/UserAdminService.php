@@ -65,12 +65,14 @@ class UserAdminService extends UserService
         $input->put('q', $q);
 
         $users = $this->search($input);
+        $userCompanies = Company::all();
         $groups = UserGroup::all();
 
-        $users = $users->map(function ($user) use ($groups, $maps) {
+        $users = $users->map(function ($user) use ($groups, $maps, $userCompanies) {
             $targetMaps = $maps->whereIn('user_id', $user->id);
             $targetGroups = $groups->whereIn('id', $targetMaps->pluck('group_id')->all());
             $user->groupTitle = $targetGroups->count() ? $targetGroups->first()->title : '';
+            $user->company = $userCompanies->where('user_id', $user->id)->first();
             return $user;
         });
 
