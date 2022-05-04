@@ -48,7 +48,6 @@ class UserAdminService extends UserService
             $ids = array_merge($c, [$g->id]);
         }
 
-
         if ($groups = $input->get('user_group')) {
             if (is_array($groups)) {
                 $ids = collect($ids)->intersect($groups)->all();
