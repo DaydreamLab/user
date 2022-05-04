@@ -15,10 +15,12 @@ use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\Company\CompanyCategory;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserCompany;
+use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class UserAdminService extends UserService
@@ -37,9 +39,20 @@ class UserAdminService extends UserService
     }
 
 
-    public function export(Collection $input)
+    public function export($request)
     {
-        return $this->search($input);
+        $users = $this->search($request->validated());
+
+        $groups = UserGroup::all();
+        $map = DB::table('users_groups_maps')->get();
+
+        $users = $users->map(function ($user) use ($groups, $map) {
+            $targetMaps = $map->where('user_id', $user->id);
+            $user->custom_groups = $groups->whereIn('id', $targetMaps->pluck('group_id')->all());
+            return $user;
+        });
+
+        return $users;
     }
 
 

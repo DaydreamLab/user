@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Requests\User\Admin\UserAdminExportPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminGetItem;
@@ -36,7 +37,7 @@ class UserAdminController extends BaseController
     {
         $this->service->setUser($request->user('api'));
         try {
-            $this->service->export($request->validated());
+            $this->service->export($request);
         } catch (Throwable $t) {
             $this->handleException($t);
         }

@@ -56,17 +56,18 @@ class UserAdminExportPost extends ListRequest
     {
         $validated = parent::validated();
 
+        $q = $validated->get('q');
         if ($parent = $validated->get('parent_group')) {
             $g = UserGroup::where('id', $parent)->first();
             $c = $g->descendants->pluck(['id'])->toArray();
             $ids = array_merge($c, [$g->id]);
-            $validated['q'] = $this->q->whereHas('groups', function ($q) use ($ids) {
+            $q->whereHas('groups', function ($q) use ($ids) {
                 $q->whereIn('users_groups_maps.group_id', $ids);
             });
         }
         $validated->forget('parent_group');
 
-        $q = $validated->get('q');
+
         if ($groups = $validated->get('user_group')) {
             if (is_array($groups)) {
                 $q->whereHas('groups', function ($q) use ($groups) {
@@ -78,8 +79,11 @@ class UserAdminExportPost extends ListRequest
                 });
             }
         }
-        $validated->put('q', $q);
         $validated->forget(['user_group']);
+
+        $q->with('company', 'groups');
+        $q->load('groups');
+        $validated->put('q', $q);
 
         return $validated;
     }
