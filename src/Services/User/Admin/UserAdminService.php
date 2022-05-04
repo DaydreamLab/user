@@ -41,14 +41,17 @@ class UserAdminService extends UserService
 
     public function export($request)
     {
+        $q = $request->validated()->get('q');
+        $q->select('id', 'name', 'email', 'mobilePhone', 'block', 'blockReason');
+
         $users = $this->search($request->validated());
 
         $groups = UserGroup::all();
         $map = DB::table('users_groups_maps')->get();
 
         $users = $users->map(function ($user) use ($groups, $map) {
-            $targetMaps = $map->where('user_id', $user->id);
-            $user->custom_groups = $groups->whereIn('id', $targetMaps->pluck('group_id')->all());
+            $targetMaps = $map->whereIn('user_id', $user->id);
+            $user->custom_groups = $groups->whereIn('id', $targetMaps->pluck('group_id')->all())->values();
             return $user;
         });
 

@@ -80,9 +80,6 @@ class UserAdminExportPost extends ListRequest
             }
         }
         $validated->forget(['user_group']);
-
-        $q->with('company', 'groups');
-        $q->load('groups');
         $validated->put('q', $q);
 
         return $validated;
