@@ -311,7 +311,7 @@ class UserFrontService extends UserService
 
         # 根據公司的身份決定使用者的群組
         $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
-        $this->handleUserNewsletterSubscription($input, $userGroupType, $companyData);
+        $this->handleUserNewsletterSubscription($input, $userGroupType, $user);
 
         # 創建或更新 userCompany
         $this->updateOrCreateUserCompany($user, $companyData);

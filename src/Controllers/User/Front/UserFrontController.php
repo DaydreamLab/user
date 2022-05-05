@@ -32,6 +32,8 @@ class UserFrontController extends BaseController
 
     protected $modelName = 'User';
 
+    protected $localeModelName = '會員';
+
     protected $modelType = 'Front';
 
     public function __construct(UserFrontService $service)
