@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Controllers\User\Front;
 
+use Illuminate\Support\Facades\DB;
 use Throwable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -225,7 +226,9 @@ class UserFrontController extends BaseController
     public function register(UserFrontRegisterMobilePhonePost $request)
     {
         try {
-            $this->service->registerMobilePhone($request->validated());
+            DB::transaction(function () use ($request) {
+                $this->service->registerMobilePhone($request->validated());
+            });
         } catch (Throwable $t) {
             $this->handleException($t);
         }

@@ -238,6 +238,20 @@ class UserFrontService extends UserService
         return $this->response;
     }
 
+
+    public function handleUserNewsletterSubscription(Collection $input, $userGroupType, $user)
+    {
+        $nsfs = app(NewsletterSubscriptionFrontService::class);
+
+        return $nsfs->store(collect([
+            'subscribeNewsletter'       => $input->get('subscribeNewsletter'),
+            'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_deal_newsletter' : '01_newsletter'],
+            'user'                      => $user->refresh(),
+            'email'                     => $input->get('email')
+        ]));
+    }
+
+
     /**
      * 編輯會員資訊
      * @param Collection $input
@@ -258,24 +272,15 @@ class UserFrontService extends UserService
         if ($cpy) {
             $companyData['company_id'] = $cpy->id;
         }
+
         # 根據公司的身份決定使用者的群組
         $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
-        if ($input->get('subscribeNewsletter')) {
-            $nsfs = app(NewsletterSubscriptionFrontService::class);
-            $nsfs->store(collect([
-                'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_deal_newsletter' : '01_newsletter'],
-                'user' => $user->refresh(),
-                'email' => $input->get('email')
-            ]));
-        }
 
-        $userCompany = $user->company;
-        if ($userCompany) {
-            $userCompany->update($companyData);
-        } else {
-            $companyData['user_id'] = $user->id;
-            $user->company()->create($companyData);
-        }
+        # 更新電子報訂閱
+        $this->handleUserNewsletterSubscription($input, $userGroupType, $user);
+
+        # 新增或更新 userCompany
+        $this->updateOrCreateUserCompany($user, $companyData);
 
         $this->response = $user->refresh();
         $this->status = 'UpdateSuccess';
@@ -297,30 +302,19 @@ class UserFrontService extends UserService
             throw new InternalServerErrorException('UpdateFail');
         }
 
-        $companyData = $input->get('company');
         # 如果有統編，取出公司資料，公司不存在則新增
+        $companyData = $input->get('company');
         $cpy = $this->firstOrCreateCompany($companyData);
         if ($cpy) {
             $companyData['company_id'] = $cpy->id;
         }
+
         # 根據公司的身份決定使用者的群組
         $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
-        if ($input->get('subscribeNewsletter')) {
-            $nsfs = app(NewsletterSubscriptionFrontService::class);
-            $nsfs->store(collect([
-                'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_deal_newsletter' : '01_newsletter'],
-                'user'  => $user->refresh(),
-                'email' => $input->get('email')
-            ]));
-        }
+        $this->handleUserNewsletterSubscription($input, $userGroupType, $companyData);
 
-        $userCompany = $user->company;
-        if ($userCompany) {
-            $userCompany->update($companyData);
-        } else {
-            $companyData['user_id'] = $user->id;
-            $user->company()->create($companyData);
-        }
+        # 創建或更新 userCompany
+        $this->updateOrCreateUserCompany($user, $companyData);
 
         # 處理line綁定
         if ($input->get('lineId')) {
@@ -345,6 +339,19 @@ class UserFrontService extends UserService
         $this->status = 'UpdateSuccess';
         //$this->sendNotification('mail', $user->email, new RegisteredNotification($user));
     }
+
+
+    public function updateOrCreateUserCompany($user, $companyData)
+    {
+        $userCompany = $user->company;
+        if ($userCompany) {
+            $userCompany->update($companyData);
+        } else {
+            $companyData['user_id'] = $user->id;
+            $user->company()->create($companyData);
+        }
+    }
+
 
     /**
      * 註冊帳號
@@ -391,22 +398,18 @@ class UserFrontService extends UserService
             throw new InternalServerErrorException('RegisterFail');
         }
 
-        $companyData = $input->get('company');
         # 如果有統編，取出公司資料，公司不存在則新增
+        $companyData = $input->get('company');
         $cpy = $this->firstOrCreateCompany($companyData);
         if ($cpy) {
             $companyData['company_id'] = $cpy->id;
         }
+
         # 根據公司的身份決定使用者的群組
         $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
-        if ($input->get('subscribeNewsletter')) {
-            $nsfs = app(NewsletterSubscriptionFrontService::class);
-            $nsfs->store(collect([
-                'subscribeNewsletter' => $input->get('subscribeNewsletter'),
-                'user'  => $user->refresh(),
-                'email' => $input->get('email')
-            ]));
-        }
+
+        # 更新電子報訂閱
+        $this->handleUserNewsletterSubscription($input, $userGroupType, $user);
 
         $companyData['user_id'] = $user->id;
         $userCompany = UserCompany::create($companyData);
