@@ -440,10 +440,10 @@ class UserFrontService extends UserService
         }
 
         if ($company->category != null) { // 公司有分類
-            if ($company->category->title == '經銷會員') { // 經銷公司
+            if (in_array($company->category->title, ['經銷會員', '零壹員工'])) { // 經銷公司
                 // 檢查 email 的 domain 跟公司 domain 是否相同
                 $input_email = explode('@', $input_company_data['email']);
-                if (isset($input_email[1]) && $company->domain == $input_email[1]) {
+                if (isset($input_email[1]) && in_array($input_email[1], $company->mailDomains)) {
                     $isDealer = true; // domain 符合，使用者經銷會員
                 } else {
                     $isDealer = false; // domain 不符合，使用者一般會員
