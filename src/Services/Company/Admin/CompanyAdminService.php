@@ -74,6 +74,7 @@ class CompanyAdminService extends CompanyService
             $oldIndex = array_search($item->domain, $mailDomains);
             if ($oldIndex !== false) {
                 unset($mailDomains[$oldIndex]);
+                $item->save();
             }
         }
     }
