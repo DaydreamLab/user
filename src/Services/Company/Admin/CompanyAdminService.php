@@ -47,9 +47,8 @@ class CompanyAdminService extends CompanyService
     {
         # 根據公司的身份改變公司成員的群組 ex.經銷會員 -> 經銷會員
         if ($item->category != null) {
-            if ($item->category->title == '經銷會員') {
+            if (in_array($item->category->title, ['經銷會員', '零壹員工'])) {
                 $userGroup = UserGroup::where('title', '經銷會員')->first();
-
             } else {
                 $userGroup = UserGroup::where('title', '一般會員')->first();
             }
@@ -62,6 +61,19 @@ class CompanyAdminService extends CompanyService
                 if ($user = $userCompany->user) {
                     $user->groups()->sync([$userGroup->id]);
                 }
+            }
+        }
+    }
+
+
+    public function beforeModify(Collection $input, &$item)
+    {
+        # 更換 domain 時，將舊的 domain 刪除，未來實作 mailDomains 要拔除
+        if ($item->domain != $input->get('domain')) {
+            $mailDomains = $item->mainDomains;
+            $oldIndex = array_search($item->domain, $mailDomains);
+            if ($oldIndex !== false) {
+                unset($mailDomains[$oldIndex]);
             }
         }
     }

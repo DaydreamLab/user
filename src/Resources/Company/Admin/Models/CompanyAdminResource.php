@@ -22,6 +22,7 @@ class CompanyAdminResource extends BaseJsonResource
             'name'              => $this->name,
             'vat'               => $this->vat,
             'domain'            => $this->domain,
+            'mainDomains'       => $this->mailDomains,
             'logo'              => $this->logo,
             'country'           => $this->country,
             'state'             => $this->state_,

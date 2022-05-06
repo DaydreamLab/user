@@ -33,6 +33,7 @@ class CompanyAdminStorePost extends AdminRequest
             'name'          => 'required|string',
             'vat'           => 'nullable|string',
             'domain'        => 'required|string',
+            'mailDomains'   => 'nullable|array',
             'logo'          => 'nullable|string',
             'country'       => 'nullable|string',
             'state'         => 'nullable|string',
@@ -52,6 +53,9 @@ class CompanyAdminStorePost extends AdminRequest
     {
         $validated = parent::validated();
 
+        if (!$validated->get('id')) {
+            $validated->put('mailDomains', [$validated->get('domain')]);
+        }
         $validated->put('state_', $validated->get('state'));
         $validated->put('category_id', $validated->get('categoryId'));
         $validated->forget(['state', 'categoryId']);
