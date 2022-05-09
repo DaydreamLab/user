@@ -461,7 +461,13 @@ class UserFrontService extends UserService
         if ($isDealer) {
             $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
             if ($dealerUserGroup) {
-                $user->groups()->sync([$dealerUserGroup->id]);
+                if ($user->isAdmin()) {
+                    if (!in_array($dealerUserGroup->id, $user->groups->map(function ($g) { return $g->id; })->toArray())) {
+                        $user->groups()->attach([$dealerUserGroup->id]);
+                    }
+                } else {
+                    $user->groups()->sync([$dealerUserGroup->id]);
+                }
             }
             return 'dealer';
         } else {
