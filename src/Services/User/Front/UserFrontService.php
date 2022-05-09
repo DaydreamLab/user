@@ -261,6 +261,9 @@ class UserFrontService extends UserService
     {
         $user = $this->getUser();
         $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
+        if ($user->isAdmin()) {
+            unset($userData['email']);
+        }
         $update = $this->repo->update($user, $userData);
         if (!$update) {
             throw new InternalServerErrorException('UpdateFail');
@@ -295,6 +298,9 @@ class UserFrontService extends UserService
         }
 
         $userData = $input->only(['uuid', 'mobilePhoneCode', 'mobilePhone', 'name', 'email', 'backupEmail'])->all();
+        if ($user->isAdmin()) {
+            unset($userData['email']);
+        }
         $userData['verificationCode'] = bcrypt(Str::random());
         $userData['activation'] = 1;
         $update = $this->repo->update($user, $userData);
