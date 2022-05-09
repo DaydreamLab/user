@@ -62,14 +62,14 @@ class UserAdminSearchPost extends ListRequest
             $ids = array_merge($c, [$g->id]);
             $mapQuery = $mapQuery->whereIn('group_id', $ids);
         }
+
         $validated->forget('parent_group');
 
         if ($groups = $validated->get('user_group')) {
             $mapQuery = is_array($groups)
                 ? $mapQuery->whereIn('group_id', $groups)
-                : $mapQuery->where('id', $groups);
+                : $mapQuery->where('group_id', $groups);
         }
-
         $mapResult = $mapQuery->get()->unique('user_id');
 
         $q = $validated->get('q');

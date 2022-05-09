@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Repositories\Company\Admin;
 
+use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\User\Repositories\Company\CompanyRepository;
 use DaydreamLab\User\Models\Company\Admin\CompanyAdmin;
 
@@ -16,7 +17,6 @@ class CompanyAdminRepository extends CompanyRepository
     }
 
 
-
     public function getCompanyByEmailDomain($email, $companyData)
     {
         $companies = $this->model
@@ -28,5 +28,13 @@ class CompanyAdminRepository extends CompanyRepository
         })->values()->first();
 
         return $targetCompany;
+    }
+
+
+    public function getCompanyByCompanyData($companyData)
+    {
+        return $this->model
+                ->where('vat', $companyData['vat'])
+                ->first();
     }
 }

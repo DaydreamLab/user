@@ -225,7 +225,7 @@ class UserAdminService extends UserService
                 } else {
                     # 統編資料不存在但是有填寫統編，則建立統編資料並歸戶同公司名稱的所有人員
                     if (isset($inputUserCompany['vat'])) {
-                        $normalCategory = CompanyCategory::where('title', '一般會員')->first();
+                        $normalCategory = CompanyCategory::where('title', '一般')->first();
                         $company = $this->companyAdminRepo->create([
                             'name' => $inputUserCompany['name'],
                             'vat' => $inputUserCompany['vat'],

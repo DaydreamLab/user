@@ -40,7 +40,6 @@ use LINE\LINEBot\RichMenuBuilder\RichMenuAreaBoundsBuilder;
 use LINE\LINEBot\RichMenuBuilder\RichMenuAreaBuilder;
 use LINE\LINEBot\RichMenuBuilder\RichMenuSizeBuilder;
 
-
 class UserFrontService extends UserService
 {
     use LoggedIn, CanSendNotification;
@@ -239,6 +238,37 @@ class UserFrontService extends UserService
     }
 
 
+    public function handleUserDataUpdate(Collection $input, $user)
+    {
+        $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
+        if ($user->isAdmin()) {
+            unset($userData['email']);
+        }
+        $update = $this->repo->update($user, $userData);
+        if (!$update) {
+            throw new InternalServerErrorException('UpdateFail');
+        }
+
+        $companyData = $input->get('company');
+        # 如果有統編，取出公司資料，公司不存在則新增
+        $cpy = $this->firstOrCreateCompany($companyData);
+        if ($cpy) {
+            $companyData['name'] = $cpy->name;
+            $companyData['company_id'] = $cpy->id;
+        }
+
+        # 根據公司的身份決定使用者的群組
+        $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
+
+        # 更新電子報訂閱
+        $this->handleUserNewsletterSubscription($input, $userGroupType, $user);
+
+        # 新增或更新 userCompany
+        $this->updateOrCreateUserCompany($user, $companyData);
+    }
+
+
+
     public function handleUserNewsletterSubscription(Collection $input, $userGroupType, $user)
     {
         $nsfs = app(NewsletterSubscriptionFrontService::class);
@@ -260,30 +290,8 @@ class UserFrontService extends UserService
     public function modify(Collection $input)
     {
         $user = $this->getUser();
-        $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
-        if ($user->isAdmin()) {
-            unset($userData['email']);
-        }
-        $update = $this->repo->update($user, $userData);
-        if (!$update) {
-            throw new InternalServerErrorException('UpdateFail');
-        }
 
-        $companyData = $input->get('company');
-        # 如果有統編，取出公司資料，公司不存在則新增
-        $cpy = $this->firstOrCreateCompany($companyData);
-        if ($cpy) {
-            $companyData['company_id'] = $cpy->id;
-        }
-
-        # 根據公司的身份決定使用者的群組
-        $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
-
-        # 更新電子報訂閱
-        $this->handleUserNewsletterSubscription($input, $userGroupType, $user);
-
-        # 新增或更新 userCompany
-        $this->updateOrCreateUserCompany($user, $companyData);
+        $this->handleUserDataUpdate($input, $user);
 
         $this->response = $user->refresh();
         $this->status = 'UpdateSuccess';
@@ -297,30 +305,7 @@ class UserFrontService extends UserService
             throw new NotFoundException('ItemNotExist');
         }
 
-        $userData = $input->only(['uuid', 'mobilePhoneCode', 'mobilePhone', 'name', 'email', 'backupEmail'])->all();
-        if ($user->isAdmin()) {
-            unset($userData['email']);
-        }
-        $userData['verificationCode'] = bcrypt(Str::random());
-        $userData['activation'] = 1;
-        $update = $this->repo->update($user, $userData);
-        if (!$update) {
-            throw new InternalServerErrorException('UpdateFail');
-        }
-
-        # 如果有統編，取出公司資料，公司不存在則新增
-        $companyData = $input->get('company');
-        $cpy = $this->firstOrCreateCompany($companyData);
-        if ($cpy) {
-            $companyData['company_id'] = $cpy->id;
-        }
-
-        # 根據公司的身份決定使用者的群組
-        $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
-        $this->handleUserNewsletterSubscription($input, $userGroupType, $user);
-
-        # 創建或更新 userCompany
-        $this->updateOrCreateUserCompany($user, $companyData);
+        $this->handleUserDataUpdate($input, $user);
 
         # 處理line綁定
         if ($input->get('lineId')) {
@@ -408,6 +393,7 @@ class UserFrontService extends UserService
         $companyData = $input->get('company');
         $cpy = $this->firstOrCreateCompany($companyData);
         if ($cpy) {
+            $companyData['name'] = $cpy->name;
             $companyData['company_id'] = $cpy->id;
         }
 
@@ -434,7 +420,7 @@ class UserFrontService extends UserService
         if ($companyData['vat']) {
             $cpy = Company::where('vat', $companyData['vat'])->first();
             if (!$cpy) {
-                $normalCategory = CompanyCategory::where('title', '一般會員')->first();
+                $normalCategory = CompanyCategory::where('title', '一般')->first();
                 $cpy = Company::create([
                     'name' => $companyData['name'],
                     'vat' => $companyData['vat'],
@@ -451,16 +437,16 @@ class UserFrontService extends UserService
 
     public function decideUserGroup($user, $company, $input_company_data)
     {
-        if ( !$company ) { // 沒有公司
+        if (!$company) { // 沒有公司
             $user->groups()->sync(config('daydreamlab.user.register.groups'));
             return 'normal';
         }
 
         if ($company->category != null) { // 公司有分類
-            if ($company->category->title == '經銷會員') { // 經銷公司
+            if (in_array($company->category->title, ['經銷會員', '零壹員工'])) { // 經銷公司
                 // 檢查 email 的 domain 跟公司 domain 是否相同
                 $input_email = explode('@', $input_company_data['email']);
-                if ( isset($input_email[1]) && $company->domain == $input_email[1] ) {
+                if (isset($input_email[1]) && in_array($input_email[1], $company->mailDomains)) {
                     $isDealer = true; // domain 符合，使用者經銷會員
                 } else {
                     $isDealer = false; // domain 不符合，使用者一般會員
@@ -472,12 +458,11 @@ class UserFrontService extends UserService
             $isDealer = false; // 公司沒有分類，使用者歸類到一般會員
         }
 
-        if ( $isDealer ) {
+        if ($isDealer) {
             $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
             if ($dealerUserGroup) {
                 $user->groups()->sync([$dealerUserGroup->id]);
             }
-
             return 'dealer';
         } else {
             $user->groups()->sync(config('daydreamlab.user.register.groups'));

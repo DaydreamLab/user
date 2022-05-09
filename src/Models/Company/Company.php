@@ -33,6 +33,7 @@ class Company extends BaseModel
         'category_id',
         'vat',
         'domain',
+        'mailDomains',
         'logo',
         'phoneCode',
         'phone',
@@ -72,8 +73,9 @@ class Company extends BaseModel
 
 
     protected $casts = [
-        'category_id' => 'integer',
-        'locked_at' => 'datetime:Y-m-d H:i:s',
+        'mailDomains'   => 'array',
+        'category_id'   => 'integer',
+        'locked_at'     => 'datetime:Y-m-d H:i:s',
     ];
 
 
