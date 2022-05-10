@@ -424,8 +424,8 @@ class UserFrontService extends UserService
                 $cpy = Company::create([
                     'name' => $companyData['name'],
                     'vat' => $companyData['vat'],
-                    'phone' => $companyData['phone'],
-                    'category_id' => $normalCategory->id
+                    'category_id' => $normalCategory->id,
+                    'mailDomains' => []
                 ]);
             }
         } else {
