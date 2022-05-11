@@ -241,6 +241,9 @@ class UserFrontService extends UserService
     public function handleUserDataUpdate(Collection $input, $user)
     {
         $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
+        if ($input->has('activation')) {
+            $userData['activation'] = $input->get('activation');
+        }
         if ($user->isAdmin()) {
             unset($userData['email']);
         }
@@ -305,6 +308,7 @@ class UserFrontService extends UserService
             throw new NotFoundException('ItemNotExist');
         }
 
+        $input->put('activation', 1);
         $this->handleUserDataUpdate($input, $user);
 
         # 處理line綁定
