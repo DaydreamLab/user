@@ -61,6 +61,9 @@ class UserAdminSearchPost extends ListRequest
             $c = $g->descendants->pluck(['id'])->toArray();
             $ids = array_merge($c, [$g->id]);
             $mapQuery = $mapQuery->whereIn('group_id', $ids);
+            if ($parent == 3) {
+                $mapQuery->whereNotIn('group_id', [4,5,8,9,10,11,12,13]);
+            }
         }
 
         $validated->forget('parent_group');

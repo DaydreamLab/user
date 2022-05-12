@@ -87,6 +87,25 @@ class UserFrontService extends UserService
     }
 
 
+    public function checkBlacklist($user, $userCompany)
+    {
+        $file = fopen(__DIR__.'/../blocklist.csv', 'r');
+        $datasets = [];
+        while (($line = fgetcsv($file)) !== FALSE) {
+            $datasets[] = $line[0];
+        }
+
+        if (in_array($user->mobilePhone, $datasets) || in_array($user->email, $datasets) || in_array($userCompany->email, $datasets)) {
+            $this->repo->update($user, [
+                'block' => 1,
+                'blockReason'   => '符合會蟲名單'
+            ]);
+        }
+
+        return;
+    }
+
+
 
     public function checkMobilePhone(Collection $input)
     {
@@ -412,6 +431,9 @@ class UserFrontService extends UserService
         if (!$userCompany) {
             throw new InternalServerErrorException('RegisterFail');
         }
+
+        # 檢查會蟲
+        $this->checkBlacklist($user, $userCompany);
 
         # 通知
         $this->sendNotification('mail', $user->email, new RegisteredNotification($user));
