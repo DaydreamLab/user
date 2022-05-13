@@ -103,7 +103,7 @@ class UserAdminService extends UserService
         $item->company()->create($inputUserCompany);
 
         # 檢查會蟲
-        $this->checkBlacklist($item, $item->company->refresh());
+        $this->checkBlacklist($item, $item->refresh()->company);
     }
 
 
