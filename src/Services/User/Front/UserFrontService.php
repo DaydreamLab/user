@@ -267,6 +267,9 @@ class UserFrontService extends UserService
 
         # 新增或更新 userCompany
         $this->updateOrCreateUserCompany($user, $companyData);
+
+        # 檢查會蟲
+        $this->checkBlacklist($user, $user->refresh()->company);
     }
 
 

@@ -17,17 +17,14 @@ class CompanyAdminRepository extends CompanyRepository
     }
 
 
-    public function getCompanyByEmailDomain($email, $companyData)
+    public function getCompanyByEmailDomain($email)
     {
+        $domain = explode('@', $email)[1];
         $companies = $this->model
-            ->where('domain', explode('@', $email)[1])
+            ->where('mailDomains', 'like', '%' .$domain.'%')
             ->get();
 
-        $targetCompany = $companies->filter(function ($company) use ($companyData) {
-            return $companyData['name'] == $company->name;
-        })->values()->first();
-
-        return $targetCompany;
+        return $companies;
     }
 
 
