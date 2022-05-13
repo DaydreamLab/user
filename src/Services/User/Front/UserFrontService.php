@@ -87,26 +87,6 @@ class UserFrontService extends UserService
     }
 
 
-    public function checkBlacklist($user, $userCompany)
-    {
-        $file = fopen(__DIR__.'/../blocklist.csv', 'r');
-        $datasets = [];
-        while (($line = fgetcsv($file)) !== FALSE) {
-            $datasets[] = $line[0];
-        }
-
-        if (in_array($user->mobilePhone, $datasets) || in_array($user->email, $datasets) || in_array($userCompany->email, $datasets)) {
-            $this->repo->update($user, [
-                'block' => 1,
-                'blockReason'   => '符合會蟲名單'
-            ]);
-        }
-
-        return;
-    }
-
-
-
     public function checkMobilePhone(Collection $input)
     {
         $mobilePhone = $input->get('mobilePhone');

@@ -101,6 +101,9 @@ class UserAdminService extends UserService
         }
         $inputUserCompany['user_id'] = $item->id;
         $item->company()->create($inputUserCompany);
+
+        # 檢查會蟲
+        $this->checkBlacklist($item, $item->company->refresh());
     }
 
 
