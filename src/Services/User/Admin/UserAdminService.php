@@ -191,7 +191,7 @@ class UserAdminService extends UserService
                     $q->where('content_type', 'newsletter_category');
                 })->get()->pluck('id')->all();
             } elseif (in_array(6, $attached)) {
-                $categories = Item::whereIn('alias', ['01_newsletter', '01_deal_newsletter'])->whereHas('category', function ($q) {
+                $categories = Item::whereIn('alias', ['01_deal_newsletter'])->whereHas('category', function ($q) {
                     $q->where('content_type', 'newsletter_category');
                 })->get()->pluck('id')->all();
             } else {

@@ -46,7 +46,7 @@ class UserAdminResource extends BaseJsonResource
             'updatedAt'             => $this->getDateTimeString($this->updatedAt, $timezone),
             'createdBy'             => $this->creatorName,
             'updatedBy'             => $this->updaterName,
-            'groupIds'              => $this->groups->pluck('id'),
+            'groupIds'              => $this->groups->pluck('id')->sortDesc()->values(),
             'accessIds'             => $this->accessIds,
             'brandIds'              => $this->brands->pluck('id'),
             'tags'                  => $this->tags->map(function ($tag) {
