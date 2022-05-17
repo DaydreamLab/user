@@ -183,6 +183,8 @@ class UserAdminService extends UserService
 
     public function modifyMapping($item, $input)
     {
+        $item->brands()->sync($input->get('brandIds') ?: []);
+
         $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
         $userGroup = UserGroup::where('title', '一般會員')->first();
 
@@ -249,9 +251,6 @@ class UserAdminService extends UserService
             $item->groups()->sync($admin_group_ids, false);
         }
 
-       // if (count($input->get('brandIds') ?: [])) {
-            $item->brands()->sync($input->get('brandIds') ?: []);
-       //}
     }
 
 
