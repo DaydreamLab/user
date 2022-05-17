@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\Company\Admin;
 
 use DaydreamLab\JJAJ\Requests\ListRequest;
+use DaydreamLab\User\Models\Company\CompanyCategory;
 use Illuminate\Validation\Rule;
 
 class CompanyAdminSearchPost extends ListRequest
@@ -46,6 +47,10 @@ class CompanyAdminSearchPost extends ListRequest
         if ( $validated->get('company_category') ) {
             $validated->put('category_id', $validated->get('company_category'));
             $validated->forget('company_category');
+        } else {
+            $category_ids = CompanyCategory::query()->where('title', '!=', '一般')->get()->pluck('id');
+            $q = $validated->get('q');
+            $q->whereIn('category_id', $category_ids);
         }
 
         return $validated;

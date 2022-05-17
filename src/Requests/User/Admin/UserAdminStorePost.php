@@ -134,7 +134,10 @@ class UserAdminStorePost extends AdminRequest
                 $validated->forget('password');
             }
         }
-
+        $pageGroupId = $this->get('pageGroupId');
+        if ($pageGroupId === 16) {
+            $validated->put('editAdmin', 1);
+        }
         $validated->put('groupIds', $validated->get('groupIds') ?: []);
         $validated->put('company', $this->handleCompany($validated->get('company')));
 

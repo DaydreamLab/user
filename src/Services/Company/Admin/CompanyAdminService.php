@@ -72,7 +72,7 @@ class CompanyAdminService extends CompanyService
     {
         # 更換 domain 時，將舊的 domain 刪除，未來實作 mailDomains 要拔除
         if ($item->domain != $input->get('domain')) {
-            $mailDomains = $item->mainDomains;
+            $mailDomains = $item->mainDomains ?: [];
             $oldIndex = array_search($item->domain, $mailDomains);
             if ($oldIndex !== false) {
                 unset($mailDomains[$oldIndex]);
