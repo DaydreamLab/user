@@ -191,9 +191,11 @@ class UserAdminService extends UserService
         if ($input->get('editAdmin')) {
 
             if ( in_array($dealerUserGroup->id, $item->groups->pluck('id')->toArray() ) ) {
-                $groups = $input->get('groupIds');
-                $groups[] = $dealerUserGroup->id;
-                $item->groups()->sync($groups);
+                $admin_group_ids = $item->groups->pluck('id')->filter(function ($g) use ($dealerUserGroup, $userGroup) {
+                    return $g != $dealerUserGroup->id && $g != $userGroup->id;
+                })->toArray();
+                $admin_group_ids[] = $dealerUserGroup->id;
+                $item->groups()->sync($admin_group_ids);
             }
             return;
         }

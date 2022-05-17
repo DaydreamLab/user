@@ -46,7 +46,7 @@ class UserAdminResource extends BaseJsonResource
             'updatedAt'             => $this->getDateTimeString($this->updatedAt, $timezone),
             'createdBy'             => $this->creatorName,
             'updatedBy'             => $this->updaterName,
-            'groupIds'              => $request->get('pageGroupId') === 16 ? $this->groups->pluck('id')->sortDesc()->values() : $this->groups->pluck('id')->sort()->values(),
+            'groupIds'              => ($request->get('pageGroupId') == 16) ? $this->groups->pluck('id')->sortDesc()->values() : $this->groups->pluck('id')->sort()->values(),
             'accessIds'             => $this->accessIds,
             'brandIds'              => $this->brands->pluck('id'),
             'tags'                  => $this->tags->map(function ($tag) {
