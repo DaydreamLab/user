@@ -54,12 +54,14 @@ class CompanyAdminService extends CompanyService
             }
 
             foreach ($item->userCompanies as $userCompany) {
-//                $userCompany::update([
-//                    'name' => $item->name,
-//                    'vat' => $item->vat
-//                ]);
                 if ($user = $userCompany->user) {
-                    $user->groups()->sync([$userGroup->id]);
+                    # 這邊要考慮管理員同時擁有經銷商資格
+                    $original = $user->groups->pluck('id');
+                    $adminGroupIds = $original->reject(function ($o) {
+                       return in_array($o, [6,7]);
+                    })->values()->all();
+                    $adminGroupIds[] = $userGroup->id;
+                    $user->groups()->sync($adminGroupIds);
                 }
             }
         }
