@@ -73,20 +73,38 @@ class UserAdminSearchPost extends ListRequest
                 ? $mapQuery->whereIn('group_id', $groups)
                 : $mapQuery->where('group_id', $groups);
         }
-        $mapResult = $mapQuery->get()->unique('user_id');
+        $groupFilterResult = $mapQuery->get()->unique('user_id') ?: collect();
+        $groupFilterUserIds = $groupFilterResult->pluck('user_id');
 
         $q = $validated->get('q');
-        $q->whereIn('id', $mapResult->pluck('user_id')->all());
 
-//        if ($search = $this->get('search')) {
-//            $searchKeys = $validated->get('searchKeys') ?: [];
-//            $searchKeys[] = function ($q) use ($search) {
-//                $q->whereHas('company', function ($q) use ($search) {
-//                    $q->where('name', 'like', "%%$search%%");
-//                });
-//            };
-//            $validated->put('searchKeys', $searchKeys);
-//        }
+        $searchFilterUserIds = collect();
+        if ($search = $this->get('search')) {
+            $searchFilterUserIds = DB::table('users_companies')
+                ->select('user_id')
+                ->where('name', 'like', "%$search%")
+                ->get()
+                ->pluck('user_id')
+                ->values()
+                ?: collect();
+        }
+
+        if ($groupFilterUserIds->count()) {
+            if ($searchFilterUserIds->count()) {
+                $searchKeys = $validated->get('searchKeys');
+                $intersect = $groupFilterUserIds->intersect($searchFilterUserIds)->all();
+                $searchKeys[] = function ($q) use ($intersect){
+                    $q->whereIn('id', $intersect);
+                };
+                $validated->put('searchKeys', $searchKeys);
+            } else {
+                $q->whereIn('id', $groupFilterUserIds->all());
+            }
+        } else {
+            if ($searchFilterUserIds->count()) {
+                $q->whereIn('id', $searchFilterUserIds->all());
+            }
+        }
 
         $validated->put('q', $q);
         $validated->forget(['user_group']);
