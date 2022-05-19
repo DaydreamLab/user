@@ -78,15 +78,15 @@ class UserAdminSearchPost extends ListRequest
         $q = $validated->get('q');
         $q->whereIn('id', $mapResult->pluck('user_id')->all());
 
-        if ($search = $this->get('search')) {
-            $searchKeys = $validated->get('searchKeys') ?: [];
-            $searchKeys[] = function ($q) use ($search) {
-                $q->whereHas('company', function ($q) use ($search) {
-                    $q->where('name', 'like', "%%$search%%");
-                });
-            };
-            $validated->put('searchKeys', $searchKeys);
-        }
+//        if ($search = $this->get('search')) {
+//            $searchKeys = $validated->get('searchKeys') ?: [];
+//            $searchKeys[] = function ($q) use ($search) {
+//                $q->whereHas('company', function ($q) use ($search) {
+//                    $q->where('name', 'like', "%%$search%%");
+//                });
+//            };
+//            $validated->put('searchKeys', $searchKeys);
+//        }
 
         $validated->put('q', $q);
         $validated->forget(['user_group']);
