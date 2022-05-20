@@ -32,7 +32,7 @@ class UserAdminListResource extends BaseJsonResource
             'lastLoginIp'   => $this->lastLoginIp,
             'groups'        => ($request->get('pageGroupId') == 16) ?
                 $this->groups->sortByDesc('id')->pluck('title')->take(1) :
-                $this->groups->sortBy('id')->pluck('title')->take(1),
+                 $this->groups->pluck('title')->all(),
         ];
     }
 }
