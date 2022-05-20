@@ -191,7 +191,6 @@ class UserAdminService extends UserService
         $userGroup = UserGroup::where('title', '一般會員')->first();
 
         if ($input->get('editAdmin')) {
-
             if ( in_array($dealerUserGroup->id, $item->groups->pluck('id')->toArray() ) ) {
                 $admin_group_ids = $item->groups->pluck('id')->filter(function ($g) use ($dealerUserGroup, $userGroup) {
                     return $g != $dealerUserGroup->id && $g != $userGroup->id;
@@ -199,62 +198,56 @@ class UserAdminService extends UserService
                 $admin_group_ids[] = $dealerUserGroup->id;
                 $item->groups()->sync($admin_group_ids);
             }
+            # 編輯權限帳號只做到這邊就 return
             return;
         }
 
-        if ($item->isAdmin()) {
-            $admin_group_ids = $item->groups->pluck('id')->filter(function ($g) use ($dealerUserGroup, $userGroup) {
-                return $g != $dealerUserGroup->id && $g != $userGroup->id;
-            })->toArray();
-        } else {
-            $admin_group_ids = [];
-        }
-
-        if ($item->company) {
+        $userCompany = $item->refresh()->company;
+        if ($userCompany) {
             $inputUserCompany = $input->get('company') ?: [];
-            if (isset($inputUserCompany['name'])) {
-                $company = $this->companyAdminRepo->findBy('name', '=', $inputUserCompany['name'])->first();
-                if ($company) {
-                    $inputUserCompany['vat'] = $company->vat;
-                    $inputUserCompany['company_id'] = $company->id;
-                    $item->company->update($inputUserCompany);
-                    $changes = $item->groups()->sync([$company->category->userGroupId]);
-                    $this->decideNewsletterSubscription($changes, $item);
-                } else {
-                    # 統編資料不存在但是有填寫統編，則建立統編資料並歸戶同公司名稱的所有人員
-                    if (isset($inputUserCompany['vat'])) {
-                        $normalCategory = CompanyCategory::where('title', '一般')->first();
-                        $company = $this->companyAdminRepo->create([
-                            'name' => $inputUserCompany['name'],
-                            'vat' => $inputUserCompany['vat'],
-                            'phone' => $inputUserCompany['phone'],
-                            'category_id' => $normalCategory->id
-                        ]);
-
-                        $q = new QueryCapsule();
-                        $q->whereHas('company', function ($q) use ($inputUserCompany) {
-                            $q->where('users_companies.name', $inputUserCompany['name']);
-                        });
-                        $companyUsers = $this->search(collect(['q' => $q]));
-                        $companyUsers->each(function ($companyUser) use ($company) {
-                            $companyUser->company()->update([
-                                'company_id'    => $company->id,
-                                'vat'           => $company->vat
-                            ]);
-                            $changes = $companyUser->groups()->sync([$company->category->userGroupId]);
-                            $this->decideNewsletterSubscription($changes, $companyUser);
-                        });
-                    } else {
-                        $item->company->update($inputUserCompany);
-                    }
+            if (isset($inputUserCompany['vat']) && $inputUserCompany['vat']) {
+                $company = $this->companyAdminRepo->findBy('vat', '=', $inputUserCompany['vat'])->first();
+                if (!$company) {
+                    $company = $this->companyAdminRepo->add(collect([
+                        'vat'   => $inputUserCompany['vat'],
+                        'name'  => $inputUserCompany['name']
+                    ]));
                 }
+
+                # 更新 userCompany
+                $userCompany->update([
+                    'name'          => $company->name,
+                    'vat'           => $company->vat,
+                    'company_id'    => $company->id
+                ]);
+
+                # 取出管理者權限（如果有）
+                $groupIds = $item->groups->pluck('id')->reject(function ($value) {
+                     return in_array($value, [6,7]);
+                })->values();
+
+                if (in_array($company->category->title, ['經銷會員', '零壹員工'])) {
+                    $groupIds->push(6);
+                } else {
+                    $groupIds->push(7);
+                }
+
+                $changes = $item->groups()->sync($groupIds->all());
+                $this->decideNewsletterSubscription($changes, $item);
+            } else {
+                $userCompany->update([
+                    'name'          => @$inputUserCompany['name'],
+                    'vat'           => @$inputUserCompany['vat'],
+                    'company_id'    => null
+                ]);
             }
+        } else {
+            $inputUserCompany = $input->get('company') ?: [];
+            UserCompany::create([
+                'name'          => @$inputUserCompany['name'],
+                'vat'           => @$inputUserCompany['vat'],
+            ]);
         }
-
-        if (count($admin_group_ids)) {
-            $item->groups()->sync($admin_group_ids, false);
-        }
-
     }
 
 
