@@ -218,7 +218,8 @@ class UserAdminService extends UserService
                 $userCompany->update([
                     'name'          => $company->name,
                     'vat'           => $company->vat,
-                    'company_id'    => $company->id
+                    'company_id'    => $company->id,
+                    'email'         => $inputUserCompany['email']
                 ]);
 
                 # 取出管理者權限（如果有）
@@ -227,7 +228,12 @@ class UserAdminService extends UserService
                 })->values();
 
                 if (in_array($company->category->title, ['經銷會員', '零壹員工'])) {
-                    $groupIds->push(6);
+                    $emailArray = explode('@', $inputUserCompany['email']);
+                    if (count($emailArray) == 2 && in_array($emailArray[1], $company->mailDomains)) {
+                        $groupIds->push(6);
+                    } else {
+                        $groupIds->push(7);
+                    }
                 } else {
                     $groupIds->push(7);
                 }
