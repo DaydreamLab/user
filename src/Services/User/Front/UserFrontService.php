@@ -310,6 +310,7 @@ class UserFrontService extends UserService
             throw new NotFoundException('ItemNotExist');
         }
 
+        $input->put('activateToken', $user->activateToken . '-' . 'activate');
         $input->put('activation', 1);
         $this->handleUserDataUpdate($input, $user);
 
