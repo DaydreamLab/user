@@ -3,7 +3,7 @@
 namespace DaydreamLab\User\Resources\User\Admin\Models;
 
 use DaydreamLab\JJAJ\Resources\BaseJsonResource;
-use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminResource;
+use DaydreamLab\User\Models\User\UserGroup;
 
 class UserAdminListResource extends BaseJsonResource
 {
@@ -16,6 +16,8 @@ class UserAdminListResource extends BaseJsonResource
     public function toArray($request)
     {
         $tz = $request->user('api')->timezone;
+        $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
+        $userGroup = UserGroup::where('title', '一般會員')->first();
 
         return [
             'id'            => $this->id,
@@ -31,7 +33,10 @@ class UserAdminListResource extends BaseJsonResource
             'lastLoginAt'   => $this->getDateTimeString($this->lastLoginAt, $tz),
             'lastLoginIp'   => $this->lastLoginIp,
             'groups'        => ($request->get('pageGroupId') == 16) ?
-                $this->groups->sortByDesc('id')->pluck('title')->take(1) :
+                // 排除掉管理員以外的群組
+                $this->groups->filter(function ($g) use ($dealerUserGroup, $userGroup) {
+                    return $g->id != $dealerUserGroup->id && $g->id != $userGroup->id;
+                })->sortByDesc('id')->pluck('title')->take(1) :
                  $this->groups->pluck('title')->all(),
         ];
     }
