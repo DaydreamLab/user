@@ -167,8 +167,12 @@ class UserAdminService extends UserService
         $user   = $this->getUser();
         $groups = $user->groups;
 
+        $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
+        $userGroup = UserGroup::where('title', '一般會員')->first();
         $pages = collect();
-        $groups->each(function ($group) use (&$pages) {
+        $groups->filter(function ($g) use ($dealerUserGroup, $userGroup) {
+            return $g->id != $dealerUserGroup->id && $g->id != $userGroup->id;
+        })->each(function ($group) use (&$pages) {
             $pages = $pages->merge($group->page);
         });
 
