@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\User\Resources\User\Front\Models;
 
-use DaydreamLab\User\Models\User\UserGroup;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserFrontLoginResource extends JsonResource
@@ -41,14 +40,9 @@ class UserFrontLoginResource extends JsonResource
 //        }
 
         if ($this->isAdmin()) {
-            // 排除掉管理員以外的群組
-            $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
-            $userGroup = UserGroup::where('title', '一般會員')->first();
-            $data['redirect'] = $this->groups->filter(function ($g) use ($dealerUserGroup, $userGroup) {
-                return $g != $dealerUserGroup->id && $g != $userGroup->id;
-            })->sortBy('id')->last()->redirect;
+            $data['redirect'] = $this->groups->sortBy('id')->last()->redirect;
         }
 
-        return  $data;
+        return $data;
     }
 }
