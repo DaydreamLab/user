@@ -67,7 +67,7 @@ class UserFrontGetLoginResource extends JsonResource
             $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
             $userGroup = UserGroup::where('title', '一般會員')->first();
             $data['redirect'] = $this->groups->filter(function ($g) use ($dealerUserGroup, $userGroup) {
-                return $g != $dealerUserGroup->id && $g != $userGroup->id;
+                return $g->id != $dealerUserGroup->id && $g->id != $userGroup->id;
             })->sortBy('id')->last()->redirect;
             $assetGroups = collect([]);
             $this->groups->each(function ($g) use (&$assetGroups) {
