@@ -214,17 +214,34 @@ class UserAdminService extends UserService
                 if (!$company) {
                     $company = $this->companyAdminRepo->add(collect([
                         'vat'   => $inputUserCompany['vat'],
-                        'name'  => $inputUserCompany['name']
+                        'name'  => $inputUserCompany['name'],
+                        'category_id'   => 5,
                     ]));
                 }
 
-                # 更新 userCompany
-                $userCompany->update([
+                $updateData = [
                     'name'          => $company->name,
                     'vat'           => $company->vat,
                     'company_id'    => $company->id,
                     'email'         => $inputUserCompany['email']
-                ]);
+                ];
+
+                # 處理是否有更換公司 + 沒填部門、職稱就不變
+
+                if ($userCompany->company_id != $company->id) {
+                    $updateData['department'] = $inputUserCompany['department'];
+                    $updateData['jobTitle'] = $inputUserCompany['jobTitle'];
+                } else {
+                    if ($inputUserCompany['department'] != '') {
+                        $updateData['department'] = $inputUserCompany['department'];
+                    }
+                    if ($inputUserCompany['jobTitle'] != '') {
+                        $updateData['jobTitle'] = $inputUserCompany['jobTitle'];
+                    }
+                }
+
+                # 更新 userCompany
+                $userCompany->update($updateData);
 
                 # 取出管理者權限（如果有）
                 $groupIds = $item->groups->pluck('id')->reject(function ($value) {
@@ -248,14 +265,19 @@ class UserAdminService extends UserService
                 $userCompany->update([
                     'name'          => @$inputUserCompany['name'],
                     'vat'           => @$inputUserCompany['vat'],
+                    'department'    => @$inputUserCompany['department'],
+                    'jobTitle'      => @$inputUserCompany['jobTitle'],
                     'company_id'    => null
                 ]);
             }
         } else {
             $inputUserCompany = $input->get('company') ?: [];
             UserCompany::create([
+                'user_id'       => $item->id,
                 'name'          => @$inputUserCompany['name'],
                 'vat'           => @$inputUserCompany['vat'],
+                'department'    => @$inputUserCompany['department'],
+                'jobTitle'      => @$inputUserCompany['jobTitle'],
             ]);
         }
     }
@@ -264,7 +286,7 @@ class UserAdminService extends UserService
     protected function decideNewsletterSubscription($changes, $item)
     {
         if (count($attached = $changes['attached'])) {
-# 根據會員群組的變動更新電子報訂閱
+            # 根據會員群組的變動更新電子報訂閱
             if (in_array(7, $attached)) {
                 $categories = Item::whereIn('alias', ['01_newsletter'])->whereHas('category', function ($q) {
                     $q->where('content_type', 'newsletter_category');
