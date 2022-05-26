@@ -34,6 +34,8 @@ class UserCompany extends BaseModel
         'extNumber',
         'email',
         'department',
+        'jobType',
+        'jobCategory',
         'jobTitle',
         'industry',
         'scale',

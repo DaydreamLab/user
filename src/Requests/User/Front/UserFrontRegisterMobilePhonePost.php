@@ -46,6 +46,8 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
             'company.extNumber' => 'nullable|numeric',
             'company.department'=> 'nullable|string',
             'company.jobTitle'  => 'nullable|string',
+            'company.jobCategory'    => 'nullable|string',
+            'company.jobType'      => 'nullable|string',
             'company.industry'      => 'nullable|string',
             'company.scale'         => 'nullable|string',
             'company.purchaseRole'  => 'nullable|string',
