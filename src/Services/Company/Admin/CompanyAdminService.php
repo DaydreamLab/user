@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\Company\Admin;
 
+use DaydreamLab\User\Events\UpdateCompanyUsersUserGroupAndEdmEvent;
 use DaydreamLab\User\Jobs\ImportCompany;
 use DaydreamLab\Cms\Repositories\Category\Admin\CategoryAdminRepository;
 use DaydreamLab\JJAJ\Database\QueryCapsule;
@@ -53,17 +54,18 @@ class CompanyAdminService extends CompanyService
                 $userGroup = UserGroup::where('title', '一般會員')->first();
             }
 
-            foreach ($item->userCompanies as $userCompany) {
-                if ($user = $userCompany->user) {
-                    # 這邊要考慮管理員同時擁有經銷商資格
-                    $original = $user->groups->pluck('id');
-                    $adminGroupIds = $original->reject(function ($o) {
-                       return in_array($o, [6,7]);
-                    })->values()->all();
-                    $adminGroupIds[] = $userGroup->id;
-                    $user->groups()->sync($adminGroupIds);
-                }
-            }
+            event(new UpdateCompanyUsersUserGroupAndEdmEvent($item, $userGroup));
+//            foreach ($item->userCompanies as $userCompany) {
+//                if ($user = $userCompany->user) {
+//                    # 這邊要考慮管理員同時擁有經銷商資格
+//                    $original = $user->groups->pluck('id');
+//                    $adminGroupIds = $original->reject(function ($o) {
+//                       return in_array($o, [6,7]);
+//                    })->values()->all();
+//                    $adminGroupIds[] = $userGroup->id;
+//                    $user->groups()->sync($adminGroupIds);
+//                }
+//            }
         }
     }
 

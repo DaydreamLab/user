@@ -345,6 +345,7 @@ class UserAdminService extends UserService
         }
 
         $result = parent::store($input);
+
         if ($input->has('id')) {
             $result = $this->find($input->get('id'));
         }
