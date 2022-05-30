@@ -14,6 +14,12 @@ class UserFrontResource extends JsonResource
      */
     public function toArray($request)
     {
+        # 看事前台還是後台登入給對應的群組
+        $groups = $this->groups;
+        $group = $request->get('code')
+            ? $groups->reject(function ($g) {return in_array($g->id, [6, 7]);})->values()->first()
+            : $groups->reject(function ($g) {return !in_array($g->id, [6, 7]);})->values()->first();
+
         $data = [
             'uuid'          => $this->uuid,
             'mobilePhoneCode' => $this->mobilePhoneCode,
@@ -21,8 +27,8 @@ class UserFrontResource extends JsonResource
             'email'         => $this->email,
             'backupEmail'   => $this->backupEmail,
             'name'          => $this->name,
-            'group'         => $this->groups->first() ? $this->groups->first()->title : '',
-            'groupId'       => $this->groups->first() ? $this->groups->first()->id : null,
+            'group'         => $group ? $group->title : '',
+            'groupId'       => $group ? $group->id : null,
             'newsletterSubscriptions' => $this->newsletterSubscriptions,
             'subscribeNewsletter'   => count($this->newsletterSubscriptions) ? 1 : 0
         ];

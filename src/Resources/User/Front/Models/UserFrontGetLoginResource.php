@@ -15,7 +15,10 @@ class UserFrontGetLoginResource extends JsonResource
      */
     public function toArray($request)
     {
-        $userGroup = $this->groups->first();
+        $groups = $this->groups;
+        $group = $request->get('code')
+            ? $groups->reject(function ($g) {return in_array($g->id, [6, 7]);})->values()->first()
+            : $groups->reject(function ($g) {return !in_array($g->id, [6, 7]);})->values()->first();
 
         $data = [
             'uuid'                  => $this->uuid,
@@ -23,12 +26,12 @@ class UserFrontGetLoginResource extends JsonResource
             'backupEmail'           => $this->backupEmail,
             'name'                  => $this->name,
             'mobilePhoneCode'       => $this->mobilePhoneCode,
-            'mobilePhoneNumber'     => $this->mobilePhoneNumber,
-            'groupId'               => $userGroup
-                ? $userGroup->id
+            'mobilePhoneNumber'     => $this->mobilePhone,
+            'groupId'               => $group
+                ? $group->id
                 : null,
-            'group'                 => $userGroup
-                ? $userGroup->title
+            'group'                 => $group
+                ? $group->title
                 : ''
         ];
 
