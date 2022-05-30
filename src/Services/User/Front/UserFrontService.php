@@ -282,7 +282,9 @@ class UserFrontService extends UserService
         $q->where('email', $user->email)
             ->whereNull('user_id');
         $noUserSub = $nsfs->search(collect(['q' => $q]))->first();
-        $nsfs->update($noUserSub, ['user_id' => $user->id]);
+        if ($noUserSub) {
+            $nsfs->update($noUserSub, ['user_id' => $user->id]);
+        }
 
         return $nsfs->store(collect([
             'subscribeNewsletter'       => $input->get('subscribeNewsletter'),
