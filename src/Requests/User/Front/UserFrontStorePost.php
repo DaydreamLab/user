@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Requests\User\Front;
 use DaydreamLab\Dsth\Helpers\EnumHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class UserFrontStorePost extends AdminRequest
@@ -64,6 +65,14 @@ class UserFrontStorePost extends AdminRequest
     public function validated()
     {
         $validated = parent::validated();
+
+        $validated->put('email', Str::lower($validated->get('email')));
+
+        $company = $validated->get('company') ?: [];
+        if (isset($company['email'])) {
+            $company['email'] = Str::lower($company['email']);
+        }
+        $validated->put('company', $company);
 
         return $validated;
     }
