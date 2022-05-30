@@ -263,7 +263,7 @@ class UserFrontService extends UserService
         $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
 
         # 更新電子報訂閱
-        $this->handleUserNewsletterSubscription($input, $userGroupType, $user);
+        $this->handleUserNewsletterSubscription($input, $user);
 
         # 新增或更新 userCompany
         $this->updateOrCreateUserCompany($user, $companyData);
@@ -274,15 +274,19 @@ class UserFrontService extends UserService
 
 
 
-    public function handleUserNewsletterSubscription(Collection $input, $userGroupType, $user)
+    public function handleUserNewsletterSubscription(Collection $input, $user)
     {
         $nsfs = app(NewsletterSubscriptionFrontService::class);
+        # 檢查有沒有相同 email 但是沒有 user_id
+        $q = new QueryCapsule();
+        $q->where('email', $user->email)
+            ->whereNull('user_id');
+        $noUserSub = $nsfs->search(collect(['q' => $q]))->first();
+        $nsfs->update($noUserSub, ['user_id' => $user->id]);
 
         return $nsfs->store(collect([
             'subscribeNewsletter'       => $input->get('subscribeNewsletter'),
-            'newsletterCategoriesAlias' => [$userGroupType == 'dealer' ? '01_deal_newsletter' : '01_newsletter'],
             'user'                      => $user->refresh(),
-            'email'                     => $input->get('email')
         ]));
     }
 
@@ -408,7 +412,7 @@ class UserFrontService extends UserService
         $userGroupType = $this->decideUserGroup($user, $cpy, $companyData);
 
         # 更新電子報訂閱
-        $this->handleUserNewsletterSubscription($input, $userGroupType, $user);
+        $this->handleUserNewsletterSubscription($input, $user);
 
         $companyData['user_id'] = $user->id;
         $userCompany = UserCompany::create($companyData);
