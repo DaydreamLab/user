@@ -433,7 +433,7 @@ class UserFrontService extends UserService
 
     public function firstOrCreateCompany($companyData)
     {
-        if ($companyData['vat']) {
+        if (isset($companyData['vat']) && $companyData['vat']) {
             $cpy = Company::where('vat', $companyData['vat'])->first();
             if (!$cpy) {
                 $normalCategory = CompanyCategory::where('title', '一般')->first();
