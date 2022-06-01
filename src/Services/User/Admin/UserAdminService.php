@@ -207,8 +207,8 @@ class UserAdminService extends UserService
         }
 
         $userCompany = $item->refresh()->company;
+        $inputUserCompany = $input->get('company') ?: [];
         if ($userCompany) {
-            $inputUserCompany = $input->get('company') ?: [];
             if (isset($inputUserCompany['vat']) && $inputUserCompany['vat']) {
                 $company = $this->companyAdminRepo->findBy('vat', '=', $inputUserCompany['vat'])->first();
                 if (!$company) {
@@ -227,7 +227,6 @@ class UserAdminService extends UserService
                 ];
 
                 # 處理是否有更換公司 + 沒填部門、職稱就不變
-
                 if ($userCompany->company_id != $company->id) {
                     $updateData['department'] = $inputUserCompany['department'];
                     $updateData['jobTitle'] = $inputUserCompany['jobTitle'];
@@ -241,7 +240,7 @@ class UserAdminService extends UserService
                 }
 
                 # 更新 userCompany
-                $userCompany->update($updateData);
+                $userCompany->update(array_merge($inputUserCompany, $updateData));
 
                 # 取出管理者權限（如果有）
                 $groupIds = $item->groups->pluck('id')->reject(function ($value) {
@@ -262,23 +261,22 @@ class UserAdminService extends UserService
                 $changes = $item->groups()->sync($groupIds->all());
                 $this->decideNewsletterSubscription($changes, $item);
             } else {
-                $userCompany->update([
+                $userCompany->update(array_merge($inputUserCompany, [
                     'name'          => @$inputUserCompany['name'],
                     'vat'           => @$inputUserCompany['vat'],
                     'department'    => @$inputUserCompany['department'],
                     'jobTitle'      => @$inputUserCompany['jobTitle'],
                     'company_id'    => null
-                ]);
+                ]));
             }
         } else {
-            $inputUserCompany = $input->get('company') ?: [];
-            UserCompany::create([
+            UserCompany::create(array_merge($inputUserCompany, [
                 'user_id'       => $item->id,
                 'name'          => @$inputUserCompany['name'],
                 'vat'           => @$inputUserCompany['vat'],
                 'department'    => @$inputUserCompany['department'],
                 'jobTitle'      => @$inputUserCompany['jobTitle'],
-            ]);
+            ]));
         }
     }
 
