@@ -43,15 +43,19 @@ class CompanyAdminSearchPost extends ListRequest
     public function validated()
     {
         $validated = parent::validated();
+        $q = $validated->get('q');
 
         if ( $validated->get('company_category') ) {
             $validated->put('category_id', $validated->get('company_category'));
             $validated->forget('company_category');
         } else {
-            $category_ids = CompanyCategory::query()->where('title', '!=', '一般')->get()->pluck('id');
-            $q = $validated->get('q');
-            $q->whereIn('category_id', $category_ids);
+            if (!$validated->get('search')) {
+                $category_ids = CompanyCategory::query()->where('title', '!=', '一般')->get()->pluck('id');
+                $q->whereIn('category_id', $category_ids);
+            }
         }
+
+        $validated->put('q', $q);
 
         return $validated;
     }

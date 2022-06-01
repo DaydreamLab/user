@@ -31,7 +31,7 @@ class CompanyAdminStorePost extends AdminRequest
             'id'            => 'nullable|integer',
             'categoryId'    => 'nullable|integer',
             'name'          => 'required|string',
-            'vat'           => 'nullable|string',
+            'vat'           => 'required|string',
             'domain'        => 'required|string',
             'mailDomains'   => 'nullable|array',
             'logo'          => 'nullable|string',
