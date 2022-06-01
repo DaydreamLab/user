@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'VAT_NOT_EXIST'     => '{$ModelName} vat not exist'
+    'VAT_NOT_EXIST'     => 'vat not exist',
+    'VAT_EXISTS'     => 'vat exist'
 ];

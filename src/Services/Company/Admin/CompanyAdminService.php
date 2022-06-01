@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\Company\Admin;
 
+use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\User\Events\UpdateCompanyUsersUserGroupAndEdmEvent;
 use DaydreamLab\User\Jobs\ImportCompany;
 use DaydreamLab\Cms\Repositories\Category\Admin\CategoryAdminRepository;
@@ -103,6 +104,12 @@ class CompanyAdminService extends CompanyService
 
     public function store(Collection $input)
     {
+        $company = $this->findBy('vat', '=', $input->get('vat'))->first();
+        if ($company) {
+            $this->status = 'VatExists';
+            $this->response = [];
+            return $this->response;
+        }
         $result = parent::store($input);
         if ($input->has('id')) {
             $result = $this->find($input->get('id'));
