@@ -18,6 +18,8 @@ use Throwable;
 
 class CompanyAdminController extends BaseController
 {
+    protected $package = 'User';
+
     protected $modelName = 'Company';
 
     protected $modelType = 'Admin';
