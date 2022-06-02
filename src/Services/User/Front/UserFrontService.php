@@ -385,7 +385,7 @@ class UserFrontService extends UserService
         $verify = Hash::check($input->get('verificationCode'), $user->verificationCode);
         if ($verify) {
             if (config('app.env') == 'production') {
-                if (now() > Carbon::parse($user->lastSendAt)->addMinutes(config('daydreamlab.user.sms.expiredMinutes'))) {
+                if ($user->lastSendAt && now()->diffInMinutes($user->lastSendAt) > config('daydreamlab.user.sms.expiredMinutes')) {
                     throw new ForbiddenException('VerificationCodeExpired');
                 }
             }
