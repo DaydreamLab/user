@@ -10,6 +10,7 @@ use DaydreamLab\User\Controllers\Company\Admin\CompanyAdminController;
 use DaydreamLab\User\Controllers\Company\Front\CompanyFrontController;
 use DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController;
 use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
+use DaydreamLab\User\Controllers\Xsms\XsmsController;
 
 /************************************  前台 API  ************************************/
 // 啟用帳號
@@ -23,6 +24,8 @@ use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
 
 // 重設密碼
 //Route::post('/api/password/reset', [UserFrontController::class, 'resetPassword']);
+
+Route::post('api/xsms/querySms', [XsmsController::class, 'querySms']);
 
 # 取得公司資訊
 Route::get('api/company/{vat}', [CompanyFrontController::class, 'getInfo']);
