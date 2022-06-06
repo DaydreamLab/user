@@ -86,7 +86,7 @@ class XsmsChannel
             $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
             $statusCode = $arrayResponse->Code;
             $sendResult = $arrayResponse->Code == 0 ? 1 : 0;
-            $msgId = $arrayResponse->TaskId;
+            $msgId = $arrayResponse->TaskID;
         }
 
         if (config('daydreamlab.user.sms.log')) {
