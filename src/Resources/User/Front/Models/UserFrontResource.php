@@ -45,6 +45,8 @@ class UserFrontResource extends JsonResource
             'address'       => ($this->company) ? $this->company->address: null,
             'zipcode'       => ($this->company) ? $this->company->zipcode: null,
             'department'    => ($this->company) ? $this->company->department: null,
+            'jobCategory'   => ($this->company) ? $this->company->jobCategory: null,
+            'jobType'       => ($this->company) ? $this->company->jobType: null,
             'jobTitle'      => ($this->company) ? $this->company->jobTitle: null,
             'industry'      => ($this->company) ? $this->company->industry: null,
             'scale'         => ($this->company) ? $this->company->scale: null,
