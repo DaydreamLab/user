@@ -43,6 +43,8 @@ class XsmsController
             'form_params' => $params
         ]);
 
-        show($response->getBody()->getContents());
+        $arrayResponse = simplexml_load_string($response->getBody()->getContents(), "SimpleXMLElement", LIBXML_NOCDATA);
+
+        show($arrayResponse);
     }
 }
