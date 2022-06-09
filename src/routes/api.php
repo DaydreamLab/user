@@ -49,7 +49,7 @@ Route::post('/api/user/getCode', [UserFrontController::class, 'getVerificationCo
 Route::post('/api/user/verifyCode', [UserFrontController::class, 'verifyVerificationCode']);
 
 # 登入
-Route::post('/api/user/login', [UserFrontController::class, 'login'])->name('login');
+Route::post('/api/user/login', [UserFrontController::class, 'login'])->name('login')->middleware(['throttle:15,5']);
 
 # 註冊
 Route::post('/api/user/register', [UserFrontController::class, 'register']);
