@@ -90,6 +90,7 @@ class UserAdminSearchPost extends ListRequest
         }
 
         if ($groupFilterUserIds->count()) {
+            $q->whereIn('id', $groupFilterUserIds->all());
             if ($searchFilterUserIds->count()) {
                 $searchKeys = $validated->get('searchKeys');
                 $intersect = $groupFilterUserIds->intersect($searchFilterUserIds)->all();
