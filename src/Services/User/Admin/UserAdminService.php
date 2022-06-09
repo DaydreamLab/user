@@ -56,11 +56,35 @@ class UserAdminService extends UserService
             }
         }
 
+        $input->forget(['parent_group', 'user_group']);
         $maps = DB::table('users_groups_maps')->whereIn('group_id', $ids)->select('id', 'user_id', 'group_id')->get();
         $q = new QueryCapsule();
-        $q->select('id', 'name', 'email', 'mobilePhone', 'block', 'blockReason')
-            ->whereIn('id', $maps->pluck('user_id')->all());
-        $input->forget(['parent_group', 'user_group']);
+        $q->whereIn('id', $maps->pluck('user_id'));
+
+        $searchFilterUserIds = collect();
+        if ($search = $input->get('search')) {
+            $searchFilterUserIds = DB::table('users_companies')
+                ->select('user_id')
+                ->where('name', 'like', "%$search%")
+                ->get()
+                ->pluck('user_id')
+                ->values()
+                ?: collect();
+        }
+
+        if ($searchFilterUserIds->count()) {
+            $searchKeys = $input->get('searchKeys');
+            $intersect = $maps->pluck('user_id')->intersect($searchFilterUserIds)->all();
+            $searchKeys[] = function ($q) use ($intersect){
+                $q->whereIn('id', $intersect);
+            };
+            $input->put('searchKeys', $searchKeys);
+            $q->select('id', 'name', 'email', 'mobilePhone', 'block', 'blockReason');
+        } else {
+            $intersect = $maps->pluck('user_id')->all();
+            $q->select('id', 'name', 'email', 'mobilePhone', 'block', 'blockReason')
+                ->whereIn('id', $intersect);
+        }
         $input->put('q', $q);
 
         $users = $this->search($input);
