@@ -32,7 +32,9 @@ class OtpHelper
         $user->save();
 
         Notification::route('mail', $user->email)->notify(new UserGetOtpCodeNotification($user));
-        Notification::route(config('daydreamlab.user.sms.channel'), $user->fullMobilePhone)->notify(new UserGetOtpCodeNotification($user));
+        if (preg_match("/^09[0-9]{8}$/", $user->mobilePhone)) {
+            Notification::route(config('daydreamlab.user.sms.channel'), $user->fullMobilePhone)->notify(new UserGetOtpCodeNotification($user));
+        }
     }
 
     public static function createTotp($user, $digits = 6, $period = 30, $expiredSecond = 15552000, $algorithm = 'SHA1')
