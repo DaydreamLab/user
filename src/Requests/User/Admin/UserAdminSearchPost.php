@@ -59,25 +59,22 @@ class UserAdminSearchPost extends ListRequest
 
         $parent_group = $validated->get('parent_group');
         $child_group = $validated->get('user_group');
-        $q->whereHas('groups', function ($q) use ($parent_group, $child_group){
-            if ($parent_group) {
-                $g = UserGroup::where('id', $parent_group)->first();
-                $c = $g->descendants->pluck(['id'])->toArray();
-                $ids = array_merge($c, [$g->id]);
-                $q->whereIn('users_groups.id', $ids);
+        if ($parent_group || $child_group) {
+            $q->whereIn('id', function ($q) use ($parent_group, $child_group){
+                $q->select('group_id')->from('users_groups_maps');
+                if ($parent_group) {
+                    $g = UserGroup::where('id', $parent_group)->first();
+                    $c = $g->descendants->pluck(['id'])->toArray();
+                    $ids = array_merge($c, [$g->id]);
+                    $q->whereIn('users_groups_maps.group_id', $ids);
+                }
                 if ($child_group) {
                     is_array($child_group)
-                        ? $q->whereIn('users_groups.id', $child_group)
-                        : $q->where('users_groups.id', $child_group);
+                        ? $q->whereIn('users_groups_maps.id', $child_group)
+                        : $q->where('users_groups_maps.id', $child_group);
                 }
-            } else {
-                if ($child_group) {
-                    is_array($child_group)
-                        ? $q->whereIn('users_groups.id', $child_group)
-                        : $q->where('users_groups.id', $child_group);
-                }
-            }
-        });
+            });
+        }
 
         $searchFilterUserIds = collect();
         if ($search = $this->get('search')) {
