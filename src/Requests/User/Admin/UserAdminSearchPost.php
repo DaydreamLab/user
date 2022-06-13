@@ -61,7 +61,7 @@ class UserAdminSearchPost extends ListRequest
         $child_group = $validated->get('user_group');
         if ($parent_group || $child_group) {
             $q->whereIn('id', function ($q) use ($parent_group, $child_group){
-                $q->select('group_id')->from('users_groups_maps');
+                $q->select('user_id')->from('users_groups_maps');
                 if ($parent_group) {
                     $g = UserGroup::where('id', $parent_group)->first();
                     $c = $g->descendants->pluck(['id'])->toArray();
@@ -70,8 +70,8 @@ class UserAdminSearchPost extends ListRequest
                 }
                 if ($child_group) {
                     is_array($child_group)
-                        ? $q->whereIn('users_groups_maps.id', $child_group)
-                        : $q->where('users_groups_maps.id', $child_group);
+                        ? $q->whereIn('users_groups_maps.group_id', $child_group)
+                        : $q->where('users_groups_maps.group_id', $child_group);
                 }
             });
         }
