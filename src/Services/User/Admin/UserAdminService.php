@@ -41,65 +41,37 @@ class UserAdminService extends UserService
 
     public function export(Collection $input)
     {
-        $ids = [];
-        if ($parent = $input->get('parent_group')) {
-            $g = UserGroup::where('id', $parent)->first();
-            $c = $g->descendants->pluck(['id'])->all();
-            $ids = array_merge($c, [$g->id]);
-        }
+        $q = $input->get('q');
 
-        if ($groups = $input->get('user_group')) {
-            if (is_array($groups)) {
-                $ids = collect($ids)->intersect($groups)->all();
-            } else {
-                $ids = collect($ids)->intersect([$groups])->all();
+        $parent_group = $input->get('parent_group');
+        $child_group = $input->get('user_group');
+        $q->whereHas('groups', function ($q) use ($parent_group, $child_group){
+            if ($parent_group) {
+                $g = UserGroup::where('id', $parent_group)->first();
+                $c = $g->descendants->pluck(['id'])->toArray();
+                $ids = array_merge($c, [$g->id]);
+                $q->whereIn('users_groups.id', $ids);
             }
-        }
+            if ($child_group) {
+                is_array($child_group)
+                    ? $q->whereIn('users_groups.id', $child_group)
+                    : $q->where('users_groups.id', $child_group);
+            }
+        });
 
-        $input->forget(['parent_group', 'user_group']);
-        $maps = DB::table('users_groups_maps')->whereIn('group_id', $ids)->select('id', 'user_id', 'group_id')->get();
-        $q = new QueryCapsule();
-        $q->whereIn('id', $maps->pluck('user_id'));
-
-        $searchFilterUserIds = collect();
         if ($search = $input->get('search')) {
-            $searchFilterUserIds = DB::table('users_companies')
-                ->select('user_id')
-                ->where('name', 'like', "%$search%")
-                ->get()
-                ->pluck('user_id')
-                ->values()
-                ?: collect();
+            $q->whereHas('users_companies', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            });
         }
 
-        if ($searchFilterUserIds->count()) {
-            $searchKeys = $input->get('searchKeys');
-            $intersect = $maps->pluck('user_id')->intersect($searchFilterUserIds)->all();
-            $searchKeys[] = function ($q) use ($intersect){
-                $q->whereIn('id', $intersect);
-            };
-            $input->put('searchKeys', $searchKeys);
-            $q->select('id', 'name', 'email', 'mobilePhone', 'block', 'blockReason');
-        } else {
-            $intersect = $maps->pluck('user_id')->all();
-            $q->select('id', 'name', 'email', 'mobilePhone', 'block', 'blockReason')
-                ->whereIn('id', $intersect);
-        }
+        $q->select('id', 'name', 'email', 'mobilePhone', 'block', 'blockReason');
+        $q->with('company');
+
         $input->put('q', $q);
+        $input->forget(['parent_group', 'user_group']);
 
         $users = $this->search($input);
-        $userCompanies = UserCompany::all();
-        $groups = UserGroup::all();
-
-        $users = $users->map(function ($user) use ($groups, $maps, $userCompanies) {
-            $targetMaps = $maps->whereIn('user_id', $user->id);
-            $targetGroups = $groups->whereIn('id', $targetMaps->pluck('group_id')->reject(function ($groupId) {
-                return !in_array($groupId, [6,7]);
-            } )->all());
-            $user->groupTitle = $targetGroups->count() ? $targetGroups->first()->title : '';
-            $user->company = $userCompanies->where('user_id', $user->id)->first();
-            return $user;
-        });
 
         return $users;
     }

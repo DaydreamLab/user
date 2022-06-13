@@ -55,28 +55,29 @@ class UserAdminSearchPost extends ListRequest
     {
         $validated = parent::validated();
 
-        $mapQuery = DB::table('users_groups_maps');
-        if ($parent = $validated->get('parent_group')) {
-            $g = UserGroup::where('id', $parent)->first();
-            $c = $g->descendants->pluck(['id'])->toArray();
-            $ids = array_merge($c, [$g->id]);
-            $mapQuery = $mapQuery->whereIn('group_id', $ids);
-            if ($parent == 3) {
-                $mapQuery->whereNotIn('group_id', [4,5,8,9,10,11,12,13]);
-            }
-        }
-
-        $validated->forget('parent_group');
-
-        if ($groups = $validated->get('user_group')) {
-            $mapQuery = is_array($groups)
-                ? $mapQuery->whereIn('group_id', $groups)
-                : $mapQuery->where('group_id', $groups);
-        }
-        $groupFilterResult = $mapQuery->get()->unique('user_id') ?: collect();
-        $groupFilterUserIds = $groupFilterResult->pluck('user_id');
-
         $q = $validated->get('q');
+
+        $parent_group = $validated->get('parent_group');
+        $child_group = $validated->get('user_group');
+        $q->whereHas('groups', function ($q) use ($parent_group, $child_group){
+            if ($parent_group) {
+                $g = UserGroup::where('id', $parent_group)->first();
+                $c = $g->descendants->pluck(['id'])->toArray();
+                $ids = array_merge($c, [$g->id]);
+                $q->whereIn('users_groups.id', $ids);
+                if ($child_group) {
+                    is_array($child_group)
+                        ? $q->whereIn('users_groups.id', $child_group)
+                        : $q->where('users_groups.id', $child_group);
+                }
+            } else {
+                if ($child_group) {
+                    is_array($child_group)
+                        ? $q->whereIn('users_groups.id', $child_group)
+                        : $q->where('users_groups.id', $child_group);
+                }
+            }
+        });
 
         $searchFilterUserIds = collect();
         if ($search = $this->get('search')) {
@@ -87,28 +88,13 @@ class UserAdminSearchPost extends ListRequest
                 ->pluck('user_id')
                 ->values()
                 ?: collect();
-        }
-
-        if ($groupFilterUserIds->count()) {
-            $q->whereIn('id', $groupFilterUserIds->all());
-            if ($searchFilterUserIds->count()) {
-                $searchKeys = $validated->get('searchKeys');
-                $intersect = $groupFilterUserIds->intersect($searchFilterUserIds)->all();
-                $searchKeys[] = function ($q) use ($intersect){
-                    $q->whereIn('id', $intersect);
-                };
-                $validated->put('searchKeys', $searchKeys);
-            } else {
-                $q->whereIn('id', $groupFilterUserIds->all());
-            }
-        } else {
             if ($searchFilterUserIds->count()) {
                 $q->whereIn('id', $searchFilterUserIds->all());
             }
         }
 
         $validated->put('q', $q);
-        $validated->forget(['user_group']);
+        $validated->forget(['parent_group', 'user_group']);
 
         return $validated;
     }

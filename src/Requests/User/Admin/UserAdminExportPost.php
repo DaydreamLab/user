@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Requests\User\Admin;
 
 use DaydreamLab\JJAJ\Requests\ListRequest;
 use DaydreamLab\User\Models\User\UserGroup;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class UserAdminExportPost extends ListRequest
