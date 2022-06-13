@@ -303,10 +303,10 @@ class User extends BaseModel implements
     }
 
 
-    public function getGroupsAttribute()
-    {
-        return $this->groups()->get();
-    }
+//    public function getGroupsAttribute()
+//    {
+//        return $this->groups()->get();
+//    }
 
 
     public function getNewsletterSubscriptionsAttribute()
