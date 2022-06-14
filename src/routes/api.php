@@ -25,7 +25,7 @@ use DaydreamLab\User\Controllers\Xsms\XsmsController;
 // 重設密碼
 //Route::post('/api/password/reset', [UserFrontController::class, 'resetPassword']);
 
-Route::post('api/xsms/querySms', [XsmsController::class, 'querySms'])->middleware(['superuser']);
+Route::post('api/xsms/querySms', [XsmsController::class, 'querySms'])->middleware(['admin']);
 
 # 取得公司資訊
 Route::get('api/company/{vat}', [CompanyFrontController::class, 'getInfo']);
