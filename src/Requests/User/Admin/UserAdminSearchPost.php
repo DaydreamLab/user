@@ -86,7 +86,9 @@ class UserAdminSearchPost extends ListRequest
                 ->values()
                 ?: collect();
             if ($searchFilterUserIds->count()) {
-                $q->whereIn('id', $searchFilterUserIds->all());
+                $q->extraSearch(function ($q) use ($searchFilterUserIds) {
+                    $q->whereIn('id', $searchFilterUserIds->all());
+                });
             }
         }
 
