@@ -332,13 +332,22 @@ class UserAdminService extends UserService
 //            }
         }
 
-        // 確保使用者所指派的群組，具有該權限
+        // 確保使用者所指派的群組，具有該權限 a\
         $inputGroupIds = collect($input->get('groupIds'));
         $userAccessGroupIds = $this->getUser()->accessGroupIds;
         if ($inputGroupIds->intersect($userAccessGroupIds)->count() != $inputGroupIds->count()) {
-            throw new UnauthorizedException('InsufficientPermissionAssignGroup', [
-                'groupIds' => $inputGroupIds->diff($userAccessGroupIds)
-            ]);
+            if (!$input->get('id')) {
+                throw new UnauthorizedException('InsufficientPermissionAssignGroup', [
+                    'groupIds' => $inputGroupIds->diff($userAccessGroupIds)
+                ]);
+            } else {
+                $user = $this->find($input->get('id'));
+                if ($inputGroupIds->intersect($user->groups->pluck('id')->all())->count() != $inputGroupIds->count()) {
+                    throw new UnauthorizedException('InsufficientPermissionAssignGroup', [
+                        'groupIds' => $inputGroupIds
+                    ]);
+                }
+            }
         }
 
         $result = parent::store($input);
