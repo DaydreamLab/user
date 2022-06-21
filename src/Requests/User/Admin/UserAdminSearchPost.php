@@ -81,6 +81,7 @@ class UserAdminSearchPost extends ListRequest
             $searchFilterUserIds = DB::table('users_companies')
                 ->select('user_id')
                 ->where('name', 'like', "%$search%")
+                ->orWhere('vat', 'like', "%$search%")
                 ->get()
                 ->pluck('user_id')
                 ->values()
