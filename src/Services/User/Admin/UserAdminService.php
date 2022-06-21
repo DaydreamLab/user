@@ -188,12 +188,11 @@ class UserAdminService extends UserService
 
     public function modifyMapping($item, $input)
     {
-        $item->brands()->sync($input->get('brandIds') ?: []);
-
         $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
         $userGroup = UserGroup::where('title', '一般會員')->first();
 
         if ($input->get('editAdmin')) {
+            $item->brands()->sync($input->get('brandIds') ?: []);
             if ( in_array($dealerUserGroup->id, $item->groups->pluck('id')->toArray() ) ) {
                 $admin_group_ids = $item->groups->pluck('id')->filter(function ($g) use ($dealerUserGroup, $userGroup) {
                     return $g != $dealerUserGroup->id && $g != $userGroup->id;
