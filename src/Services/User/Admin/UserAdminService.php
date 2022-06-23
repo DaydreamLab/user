@@ -266,6 +266,8 @@ class UserAdminService extends UserService
                     'jobTitle'      => @$inputUserCompany['jobTitle'],
                     'company_id'    => null
                 ]));
+                $changes = $item->groups()->sync([$userGroup->id]);
+                $this->decideNewsletterSubscription($changes, $item);
             }
         } else {
             UserCompany::create(array_merge($inputUserCompany, [
@@ -275,6 +277,8 @@ class UserAdminService extends UserService
                 'department'    => @$inputUserCompany['department'],
                 'jobTitle'      => @$inputUserCompany['jobTitle'],
             ]));
+            $changes = $item->groups()->sync([$userGroup->id]);
+            $this->decideNewsletterSubscription($changes, $item);
         }
     }
 
