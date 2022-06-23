@@ -274,9 +274,10 @@ class UserService extends BaseService
                 'block' => 1,
                 'blockReason'   => '符合會蟲名單'
             ]);
+            return true;
+        } else {
+            return false;
         }
-
-        return;
     }
 
 
