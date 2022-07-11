@@ -7,6 +7,7 @@ use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Models\Asset\Asset;
+use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -195,15 +196,39 @@ class UserAdminService extends UserService
 
         $input->forget('password_confirmation');
 
+        $storeIds = $input->pull('storeIds');
+        $storeGroup = UserGroup::where('title', '分店管理')->first();
+
         $result = parent::store($input);
         if (gettype($result) == 'boolean') {    //更新使用者
             $user = $this->find($input->get('id'));
             $user->groups()->detach();
-            $user->groups()->attach($input->get('group_ids'));
+            foreach ($input->get('group_ids') as $groupId) {
+                if ($groupId == $storeGroup->id) {
+                    $user->groups()->attach($groupId, [
+                        'stores' => json_encode($storeIds)
+                    ]);
+                } else {
+                    $user->groups()->attach([
+                        'group_id' => $groupId,
+                    ]);
+                }
+            }
+
             $result = $user;
         }
         else {//新增使用者
-            $result->groups()->attach($input->get('group_ids'));
+            foreach ($input->get('group_ids') as $groupId) {
+                if ($groupId == $storeGroup->id) {
+                    $result->groups()->attach($groupId, [
+                        'stores' => json_encode($storeIds)
+                    ]);
+                } else {
+                    $result->groups()->attach([
+                        'group_id' => $groupId,
+                    ]);
+                }
+            }
         }
 
         return $result;
