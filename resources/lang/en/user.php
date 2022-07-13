@@ -36,6 +36,7 @@ return [
 
     'MULTIPLE_LOGIN_SUCCESS'            => '{$ModelName} multiple login success',
     'MOBILE_PHONE_NOT_EXIST'            => '{$ModelName} mobile phone not exist',
+    'MOBILE_PHONE_EMAIL_NOT_MATCH'      => '{$ModelName} mobile phone email not match',
 
     'OLD_PASSWORD_INCORRECT'            => '{$ModelName} old password incorrect',
 

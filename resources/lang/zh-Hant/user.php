@@ -36,6 +36,7 @@ return [
     'MULTIPLE_LOGIN_SUCCESS'            => '使用者多重登入成功',
     'MOBILE_PHONE_EXIST'                => '手機號碼已經註冊過',
     'MOBILE_PHONE_NOT_EXIST'            => '手機號碼尚未註冊過',
+    'MOBILE_PHONE_EMAIL_NOT_MATCH'      => 'Email驗證失敗',
 
     'OLD_PASSWORD_INCORRECT'            => '輸入的舊密碼錯誤',
     'OLD_USER_NEED_TO_COMPLETE_DATA'    => '舊會員需要完善會員資料',

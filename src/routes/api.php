@@ -43,10 +43,10 @@ Route::post('api/user/oldUserUpdate', [UserFrontController::class, 'updateOldUse
 Route::post('/api/user/store', [UserFrontController::class, 'store'])->middleware(['expired']);
 
 # 取得手機驗證碼
-Route::post('/api/user/getCode', [UserFrontController::class, 'getVerificationCode']);
+Route::post('/api/user/getCode', [UserFrontController::class, 'getVerificationCode'])->middleware(['throttle:5,5']);
 
 # 驗證手機驗證碼
-Route::post('/api/user/verifyCode', [UserFrontController::class, 'verifyVerificationCode']);
+Route::post('/api/user/verifyCode', [UserFrontController::class, 'verifyVerificationCode'])->middleware(['throttle:15,5']);;
 
 # 登入
 Route::post('/api/user/login', [UserFrontController::class, 'login'])->name('login')->middleware(['throttle:15,5']);

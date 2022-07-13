@@ -2,7 +2,9 @@
 
 namespace DaydreamLab\User\Requests\User\Front;
 
+use DaydreamLab\Dsth\Helpers\EnumHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
 class UserFrontCheckMobilePhoneRequest extends AdminRequest
 {
@@ -29,8 +31,9 @@ class UserFrontCheckMobilePhoneRequest extends AdminRequest
     public function rules()
     {
         return [
-            'mobilePhoneCode'  => 'required|regex:/\+[0-9]+$/',
-            'mobilePhone'      => 'required|numeric',
+            'mobilePhoneCode'   => 'required|regex:/\+[0-9]+$/',
+            'mobilePhone'       => 'required|numeric',
+            'email'             => 'nullable|email'
         ];
     }
 

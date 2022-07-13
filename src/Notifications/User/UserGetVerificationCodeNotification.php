@@ -4,7 +4,6 @@ namespace DaydreamLab\User\Notifications\User;
 
 use DaydreamLab\User\Notifications\BaseNotification;
 use Illuminate\Bus\Queueable;
-use Psy\Command\ShowCommand;
 
 class UserGetVerificationCodeNotification extends BaseNotification
 {
@@ -14,25 +13,28 @@ class UserGetVerificationCodeNotification extends BaseNotification
 
     protected $type = 'getVerificationCode';
 
+    protected $user;
+
     protected $code = '0000';
 
-    protected $view = 'emails.user.GetVerificationCode';
+    protected $view = 'emails.User.GetVerificationCode';
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($code, $creatorId = null)
+    public function __construct($user, $code, $creatorId = null)
     {
         parent::__construct($creatorId);
         $this->code = $code;
+        $this->user = $user;
     }
 
 
     public function defaultSubject()
     {
-        return config('app.name').'帳戶安全性驗證碼';
+        return '[' . config('app.name') . ']'.'帳戶安全性驗證碼';
     }
 
 
@@ -56,7 +58,8 @@ class UserGetVerificationCodeNotification extends BaseNotification
     public function getMailParams()
     {
         return [
-            'content' => $this->content
+            'user'  => $this->user,
+            'code'  => $this->code
         ];
     }
 

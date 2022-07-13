@@ -200,11 +200,22 @@ class UserFrontService extends UserService
         }
 
         # 寄送簡訊
-        $this->sendNotification(
-            'sms',
-            $user->fullMobilePhone,
-            new UserGetVerificationCodeNotification($code)
-        );
+        if ($input->get('email')) {
+            if ($user->email != $input->get('email')) {
+                throw new ForbiddenException('MobilePhoneEmailNotMatch');
+            }
+            $this->sendNotification(
+                'mail',
+                $user->email,
+                new UserGetVerificationCodeNotification($user, $code)
+            );
+        } else {
+            $this->sendNotification(
+                'sms',
+                $user->fullMobilePhone,
+                new UserGetVerificationCodeNotification($user, $code)
+            );
+        }
 
         $this->repo->update($user, [
             'verificationCode' => bcrypt($code),

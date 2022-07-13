@@ -37,6 +37,7 @@ return [
     'MULTIPLE_LOGIN_SUCCESS'            => 200,
     'MOBILE_PHONE_EXIST'                => 403,
     'MOBILE_PHONE_NOT_EXIST'            => 200,
+    'MOBILE_PHONE_EMAIL_NOT_MATCH'      => 403,
 
     'OLD_PASSWORD_INCORRECT'            => 403,
     'OLD_USER_NEED_TO_COMPLETE_DATA'    => 403,
