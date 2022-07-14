@@ -222,8 +222,24 @@ class UserFrontService extends UserService
             'lastSendAt' => now()->toDateTimeString()
         ]);
 
+        $email = $user->email;
+        if ($email) {
+            $strs = explode('@', $email);
+            $account = $strs[0];
+            $domain = $strs[1];
+            if (strlen($account) >= 1 && strlen($account) <= 5) {
+                for ($i = 0; $i < strlen($account); $i++) {
+                    $email .= '********';
+                }
+            } else {
+                $email = substr($account, 0, 1);
+                $email .= '*********' .  substr($account, -1);
+            }
+            $email .= '@' . $domain;
+        }
+
         $this->status = 'SendVerificationCodeSuccess';
-        $this->response = ['uuid' => $user->uuid];
+        $this->response = ['uuid' => $user->uuid, 'email' => $email];
 
         return $this->response;
     }
