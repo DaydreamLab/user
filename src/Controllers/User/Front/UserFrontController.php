@@ -276,7 +276,10 @@ class UserFrontController extends BaseController
     public function updateOldUser(UserFrontStorePost $request)
     {
         try {
-            $this->service->updateOldUser($request->validated());
+            $validated = $request->validated();
+            $validated->put('lastLoginAt', now()->toDateTimeString());
+            $validated->put('lastLoginIp', $request->ip());
+            $this->service->updateOldUser($validated);
         } catch (Throwable $t) {
             $this->handleException($t);
         }

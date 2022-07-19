@@ -267,12 +267,22 @@ class UserFrontService extends UserService
     public function handleUserDataUpdate(Collection $input, $user)
     {
         $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
+
+        if ($input->has('lastLoginIp')) {
+            $userData['lastLoginIp'] = $input->get('lastLoginIp');
+        }
+
+        if ($input->has('lastLoginAt')) {
+            $userData['lastLoginAt'] = $input->get('lastLoginAt');
+        }
+
         if ($input->has('activation')) {
             $userData['activation'] = $input->get('activation');
         }
         if ($user->isAdmin()) {
             unset($userData['email']);
         }
+
         $update = $this->repo->update($user, $userData);
         if (!$update) {
             throw new InternalServerErrorException('UpdateFail');
