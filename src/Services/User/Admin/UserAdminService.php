@@ -62,10 +62,21 @@ class UserAdminService extends UserService
             });
         }
 
+
         if ($search = $input->get('search')) {
-            $q->whereHas('users_companies', function ($q) use ($search) {
-                $q->where('name', 'like', "%$search%");
-            });
+            $searchFilterUserIds = DB::table('users_companies')
+                ->select('user_id')
+                ->where('name', 'like', "%$search%")
+                ->orWhere('vat', 'like', "%$search%")
+                ->get()
+                ->pluck('user_id')
+                ->values()
+                ?: collect();
+            if ($searchFilterUserIds->count()) {
+                $q->extraSearch(function ($q) use ($searchFilterUserIds) {
+                    $q->whereIn('id', $searchFilterUserIds->all());
+                });
+            }
         }
 
         $q->select('id', 'name', 'email', 'mobilePhone', 'block', 'blockReason');
