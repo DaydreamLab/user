@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Requests\User\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class UserAdminStorePost extends AdminRequest
@@ -31,6 +32,8 @@ class UserAdminStorePost extends AdminRequest
             if ($key == 'company_id') {
                 $company->put('company_id', $company->get($key));
                 $company->forget('id');
+            } elseif ($key == 'email') {
+                $company->put('email', Str::lower($company->get('email')));
             } elseif ($key == 'state') {
                 $company->put('state_', $company->get($key));
                 $company->forget('state');
@@ -136,11 +139,13 @@ class UserAdminStorePost extends AdminRequest
                 $validated->forget('password');
             }
         }
+
         $pageGroupId = $this->get('pageGroupId');
         if ($pageGroupId === 16) {
             $validated->put('editAdmin', 1);
         }
         $validated->put('groupIds', $validated->get('groupIds') ?: []);
+        $validated->put('eamil', Str::lower($validated->get('email')));
         $validated->put('company', $this->handleCompany($validated->get('company')));
 
         return $validated;
