@@ -201,14 +201,17 @@ class UserFrontService extends UserService
 
         # 寄送簡訊
         if ($input->get('email')) {
-            if ($user->email != $input->get('email')) {
-                throw new ForbiddenException('MobilePhoneEmailNotMatch');
+            # 這邊不做比對提醒
+//            if ($user->email != $input->get('email')) {
+//                throw new ForbiddenException('MobilePhoneEmailNotMatch');
+//            }
+            if ($user->email == $input->get('email')) {
+                $this->sendNotification(
+                    'mail',
+                    $user->email,
+                    new UserGetVerificationCodeNotification($user, $code)
+                );
             }
-            $this->sendNotification(
-                'mail',
-                $user->email,
-                new UserGetVerificationCodeNotification($user, $code)
-            );
         } else {
             $this->sendNotification(
                 'sms',
