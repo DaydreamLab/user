@@ -145,7 +145,7 @@ class UserAdminStorePost extends AdminRequest
             $validated->put('editAdmin', 1);
         }
         $validated->put('groupIds', $validated->get('groupIds') ?: []);
-        $validated->put('eamil', Str::lower($validated->get('email')));
+        $validated->put('email', Str::lower($validated->get('email')));
         $validated->put('company', $this->handleCompany($validated->get('company')));
 
         return $validated;
