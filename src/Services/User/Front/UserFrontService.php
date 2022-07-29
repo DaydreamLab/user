@@ -230,14 +230,8 @@ class UserFrontService extends UserService
             $strs = explode('@', $email);
             $account = $strs[0];
             $domain = $strs[1];
-            if (strlen($account) >= 1 && strlen($account) <= 5) {
-                for ($i = 0; $i < strlen($account); $i++) {
-                    $email .= '********';
-                }
-            } else {
-                $email = substr($account, 0, 1);
-                $email .= '*********' .  substr($account, -1);
-            }
+            $email = substr($account, 0, 1);
+            $email .= '*********' .  substr($account, -1);
             $email .= '@' . $domain;
         }
 
