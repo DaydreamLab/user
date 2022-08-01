@@ -34,7 +34,7 @@ Route::get('api/company/{vat}', [CompanyFrontController::class, 'getInfo']);
 Route::post('/api/user/checkEmail', [UserFrontController::class, 'checkEmail'])->middleware(['CORS']);
 
 # 檢查手機是否已經註冊過
-//Route::post('/api/user/checkMobilePhone', [UserFrontController::class, 'checkMobilePhone']);
+Route::post('/api/user/checkMobilePhone', [UserFrontController::class, 'checkMobilePhone']);
 
 # 更新舊會員資料
 Route::post('api/user/oldUserUpdate', [UserFrontController::class, 'updateOldUser']);
