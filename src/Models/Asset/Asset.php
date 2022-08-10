@@ -109,7 +109,7 @@ class Asset extends BaseModel
 
     public function getApisAttribute()
     {
-        return $this->apis()->get();
+        return $this->apis()->where('state', 1)->get();
     }
 
 
