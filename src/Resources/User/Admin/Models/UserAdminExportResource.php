@@ -15,7 +15,8 @@ class UserAdminExportResource extends BaseJsonResource
     public function toArray($request)
     {
         return [
-            $this->groupTitle,
+            $this->groups()->first()->title,
+//            $this->groupTitle,
             ($this->company) ? $this->company->name : '',
             ($this->company) ? $this->company->vat : '',
             ($this->company) ? $this->company->phoneCode : '',
