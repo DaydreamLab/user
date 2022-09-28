@@ -97,6 +97,7 @@ class User extends BaseModel implements
         'lastLoginIp',
         'line_user_id',
         'line_nonce',
+        'backHome',
         'created_by',
         'updated_by'
     ];

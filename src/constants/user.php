@@ -70,7 +70,7 @@ return [
     'VERIFICATION_PENDING'              => 403,
 
     'LINE_BIND_SUCCESS' => 200,
-    'LINE_BIND_DUPLICATE' => 403,
+    'LINE_BIND_DUPLICATE' => 200,
 
     // 二階段驗證
     'SEND_TOTP_SECRET_SUCCESS' => 200,
