@@ -41,15 +41,17 @@ class UpdateCompanyUsersUserGroupAndEdm implements ShouldQueue
                 $adminGroupIds[] = $companyUserGroup->id;
                 $user->groups()->sync($adminGroupIds);
 
-                if ($company->category && $company->category->title != '零壹員工') {
-                    $subscription = $user->newsletterSubscription;
-                    if ($subscription && $subscription->newsletterCategories->count()) {
-                        $nsfs = app(NewsletterSubscriptionFrontService::class);
-                        $nsfs->store(collect([
-                            'subscribeNewsletter'       => 1,
-                            'user'                      => $user->refresh(),
-                        ]));
-                    }
+                # todo: 如果是經銷會員可能可以直接在這邊發送經銷會員驗證信件（只要符合domain or email規則）
+
+                $subscription = $user->newsletterSubscription;
+                if ($subscription && $subscription->newsletterCategories->count()) {
+                    $nsfs = app(NewsletterSubscriptionFrontService::class);
+                    $nsfs->store(
+                        collect([
+                            'subscribeNewsletter' => 1,
+                            'user' => $user->refresh(),
+                        ])
+                    );
                 }
             }
         }

@@ -35,12 +35,21 @@ class CompanyAdminStorePost extends AdminRequest
                 EnumHelper::COMPANY_NONE,
                 EnumHelper::COMPANY_NEW,
                 EnumHelper::COMPANY_PENDING,
-                EnumHelper::COMPANY_APPROVE,
-                EnumHelper::COMPANY_REJECT
+                EnumHelper::COMPANY_APPROVED,
+                EnumHelper::COMPANY_REJECTED
             ])],
             'categoryId'    => 'nullable|integer',
             'name'          => 'required|string',
             'vat'           => 'required|string',
+            'logo'          => 'nullable|string',
+//            'country'       => 'nullable|string',
+//            'state'         => 'nullable|string',
+            'city'          => 'nullable|string',
+            'district'      => 'nullable|string',
+            'address'       => 'nullable|string',
+//            'zipcode'       => 'nullable|string',
+//            'introtext'     => 'nullable|string',
+//            'description'   => 'nullable|string',
             'mailDomains' => 'required|array',
             'mailDomains.domain' => 'nullable|array',
             'mailDomains.domain.*' => 'required|string',
@@ -51,15 +60,6 @@ class CompanyAdminStorePost extends AdminRequest
             'phones.*.phoneCode'    => 'required|numeric',
             'phones.*.phone'    => 'required|numeric',
             'phones.*.ext'    => 'required|numeric',
-            'logo'          => 'nullable|string',
-//            'country'       => 'nullable|string',
-//            'state'         => 'nullable|string',
-            'city'          => 'nullable|string',
-            'district'      => 'nullable|string',
-            'address'       => 'nullable|string',
-//            'zipcode'       => 'nullable|string',
-//            'introtext'     => 'nullable|string',
-//            'description'   => 'nullable|string',
             'ordering'      => 'nullable|integer'
         ];
         return array_merge(parent::rules(), $rules);
@@ -70,8 +70,8 @@ class CompanyAdminStorePost extends AdminRequest
     {
         $validated = parent::validated();
 
-        $validated->put('mailDomains', CompanyRequestHelper::handleMailDomains($validated));
-        $validated->put('phones', CompanyRequestHelper::handlePhones($validated));
+        $validated->put('mailDomains', CompanyRequestHelper::handleMailDomains($validated->get('mailDomains')));
+        $validated->put('phones', CompanyRequestHelper::handlePhones($validated->get('phones')));
         $validated->put('state_', $validated->get('state'));
         $validated->put('category_id', $validated->get('categoryId'));
         $validated->forget(['state', 'categoryId']);

@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ACCESS_DENIED'                     => '使用者存取權限不足',
     'ACTIVATION_SUCCESS'                => '使用者啟用帳號成功',
@@ -10,6 +11,8 @@ return [
     'CHANGE_PASSWORD_SUCCESS'           => '使用者更換密碼成功',
     'CHANGE_PASSWORD_FAIL'              => '使用者更換密碼失敗',
     'COMPANY_VAT_EMPTY'                 => '會員資料未填入統編資訊',
+
+    'DEALER_VALIDATE_SUCCESS'           => '經銷商會員資格驗證成功',
 
     'EMAIL_IS_REGISTERED'               => 'Email 已被註冊',
     'EMAIL_IS_NOT_REGISTERED'           => 'Email 尚未被註冊',
@@ -24,8 +27,9 @@ return [
 
     'HAS_BEEN_ACTIVATED'                => '使用者帳號已被啟用過',
 
+    'INVALID_DEALER_TOKEN'              => '經銷商驗證權仗無法辨識',
     'IS_BLOCKED'                        => '使用者已被封鎖',
-    'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> '使用者不具有指派特定群組的權限',
+    'INSUFFICIENT_PERMISSION_ASSIGN_GROUP' => '使用者不具有指派特定群組的權限',
     'INVALID_VERIFICATION_CODE'         => '簡訊驗證碼錯誤',
     'IP_REJECTED'                       => '不被允許的訪問IP',
 

@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Notifications;
 
+use DaydreamLab\User\Helpers\CompanyHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -45,14 +46,29 @@ class RegisteredNotification extends Notification implements ShouldQueue
 
         $template = config('daydreamlab.user.register.mail.template');
 
-        return $template == 'default'?
-                (new MailMessage)
+        $dealerValidateUrl = null;
+        if (
+            $this->user->company
+            && $this->user->company->company
+            && $this->user->company->company->category
+            && in_array($this->user->company->company->category->title, ['經銷會員', '零壹員工'])
+            && CompanyHelper::checkEmailIsDealer($this->user->company->email, $this->user->company->company)
+        ) {
+            $dealerValidateUrl = config('app.url') . '/dealer/validate/' . $this->user->company->validateToken;
+        }
+
+        return $template == 'default' ?
+                (new MailMessage())
                     ->line('The introduction to the notification.')
-                    ->action('Activate your account',  url($path))
+                    ->action('Activate your account', url($path))
                     ->line('Thank you for using our application!')
-            :   (new MailMessage)
+            :   (new MailMessage())
                     ->subject('[零壹科技] 帳號已啟用')
-                    ->view($template, ['user'=> $this->user, 'subject' => '[零壹科技] 帳號已啟用']);
+                    ->view($template, [
+                        'user' => $this->user,
+                        'subject' => '[零壹科技] 帳號已啟用',
+                        'dealerValidateUrl' => $dealerValidateUrl
+                    ]);
     }
 
     /**

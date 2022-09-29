@@ -4,10 +4,12 @@ namespace DaydreamLab\User\Services\Company\Admin;
 
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\User\Events\UpdateCompanyUsersUserGroupAndEdmEvent;
+use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Jobs\ImportCompany;
 use DaydreamLab\Cms\Repositories\Category\Admin\CategoryAdminRepository;
 use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
+use DaydreamLab\User\Models\Company\CompanyCategory;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
 use DaydreamLab\User\Services\Company\CompanyService;
@@ -56,19 +58,19 @@ class CompanyAdminService extends CompanyService
 
     public function beforeModify(Collection $input, &$item)
     {
-        # 更換 domain 時，將舊的 domain 刪除，未來實作 mailDomains 要拔除
-        if ($item->domain != $input->get('domain')) {
-            $mailDomains = $item->mailDomains ?: [];
-            $oldIndex = array_search($item->domain, $mailDomains);
-            if ($oldIndex !== false) {
-                unset($mailDomains[$oldIndex]);
-                $mailDomains[] = $input->get('domain');
-                $item->mailDomains = array_values($mailDomains);
-                $item->save();
-            } else {
-                $item->mailDomains = [$input->get('domain')];
-                $item->save();
-            }
+        if ($input->get('status') == EnumHelper::COMPANY_APPROVED && $item->status != EnumHelper::COMPANY_APPROVED) {
+            $input->put('approvedAt', now()->toDateTimeString());
+            $input->put('rejectedAt', null);
+            $dealerCategory = CompanyCategory::where('title', '=', '經銷會員')->first();
+            $input->put('category_id', $dealerCategory->id);
+        }
+
+        if ($input->get('status') == EnumHelper::COMPANY_REJECTED && $item->status != EnumHelper::COMPANY_REJECTED) {
+            $input->put('rejectedAt', now()->toDateTimeString());
+            $input->put('approvedAt', null);
+            $input->put('expiredAt', null);
+            $normalCategory = CompanyCategory::where('title', '=', '一般會員')->first();
+            $input->put('category_id', $normalCategory->id);
         }
     }
 

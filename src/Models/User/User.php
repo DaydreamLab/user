@@ -32,16 +32,16 @@ class User extends BaseModel implements
     AuthorizableContract,
     CanResetPasswordContract
 {
-    use Authenticatable,
-        Authorizable,
-        CanResetPassword,
-        MustVerifyEmail,
-        Notifiable,
-        HasApiTokens,
-        RecordChanger,
-        HasFactory,
-        HasCustomRelation,
-        UserInfo;
+    use Authenticatable;
+    use Authorizable;
+    use CanResetPassword;
+    use MustVerifyEmail;
+    use Notifiable;
+    use HasApiTokens;
+    use RecordChanger;
+    use HasFactory;
+    use HasCustomRelation;
+    use UserInfo;
 
     protected $order_by = 'id';
 
@@ -117,12 +117,12 @@ class User extends BaseModel implements
     protected $casts = [
         'twofactor' => 'array'
     ];
-    
+
     public static function boot()
     {
         parent::boot();
 
-        static::creating(function ($item){
+        static::creating(function ($item) {
             $user = auth('api')->user();
             $item->uuid = Str::uuid();
             //$item->activateToken = Str::random(48);
@@ -300,7 +300,7 @@ class User extends BaseModel implements
 
     public function getFullNameAttribute()
     {
-        return $this->last_name . ' '. $this->first_name;
+        return $this->last_name . ' ' . $this->first_name;
     }
 
 
@@ -379,12 +379,12 @@ class User extends BaseModel implements
             ->groups()
             ->where(function ($q) use ($admins) {
                 foreach ($admins as $admin) {
-                    $q->orWhere(function ($q) use ($admin){
+                    $q->orWhere(function ($q) use ($admin) {
                         $q->where('_lft', '>=', $admin->_lft)
                             ->where('_rgt', '<=', $admin->_rgt);
                     });
                 }
-        })->count();
+            })->count();
     }
 
 
@@ -404,7 +404,7 @@ class User extends BaseModel implements
 
     public function setLimit($limit)
     {
-        if ($limit && $limit != ''){
+        if ($limit && $limit != '') {
             $this->limit = $limit;
         }
     }
@@ -412,7 +412,7 @@ class User extends BaseModel implements
 
     public function setOrder($order)
     {
-        if ($order && $order != ''){
+        if ($order && $order != '') {
             $this->order = $order;
         }
     }
@@ -420,7 +420,7 @@ class User extends BaseModel implements
 
     public function setOrderBy($order_by)
     {
-        if ($order_by && $order_by != ''){
+        if ($order_by && $order_by != '') {
             $this->order_by = $order_by;
         }
     }

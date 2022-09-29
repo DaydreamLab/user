@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Controllers\User\Front;
 
+use DaydreamLab\User\Requests\User\Front\UserFrontDealerValidateRequest;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use Carbon\Carbon;
@@ -58,6 +59,18 @@ class UserFrontController extends BaseController
     {
         try {
             $this->service->checkEmail($request->validated()->get('email'));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function dealerValidate(UserFrontDealerValidateRequest $request)
+    {
+        try {
+            $this->service->dealerValidate($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }

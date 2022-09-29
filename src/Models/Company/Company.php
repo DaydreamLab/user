@@ -100,6 +100,12 @@ class Company extends BaseModel
             if (!$item->status) {
                 $item->status = EnumHelper::COMPANY_NEW;
             }
+            if (!$item->mailDomains) {
+                $item->mailDomains = [
+                    'domain' => [],
+                    'email'  => []
+                ];
+            }
         });
     }
 

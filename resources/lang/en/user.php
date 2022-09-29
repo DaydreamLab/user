@@ -12,6 +12,8 @@ return [
     'CHANGE_PASSWORD_FAIL'              => '{$ModelName} change password fail',
     'COMPANY_VAT_EMPTY'                 => '{$ModelName} company vat empty',
 
+    'DEALER_VALIDATE_SUCCESS'           => '{$ModelName} dealer validate success',
+
     'EMAIL_IS_REGISTERED'               => '{$ModelName} email is registered',
     'EMAIL_IS_NOT_REGISTERED'           => '{$ModelName} email is not registered',
     'EMAIL_OR_PASSWORD_INCORRECT'       => '{$ModelName} email or password incorrect',
@@ -25,8 +27,9 @@ return [
 
     'HAS_BEEN_ACTIVATED'                => '{$ModelName} has been activated',
 
+    'INVALID_DEALER_TOKEN'              => '{$ModelName} invalid dealer token',
     'IS_BLOCKED'                        => '{$ModelName} is blocked',
-    'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> '{$ModelName} insufficient permission assign group',
+    'INSUFFICIENT_PERMISSION_ASSIGN_GROUP' => '{$ModelName} insufficient permission assign group',
     'INVALID_VERIFICATION_CODE'         => 'Invalid verification code',
     'IP_REJECTED'                       => 'IP address rejected',
 

@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\User\Models\Company\Company;
+use Illuminate\Support\Str;
 
 class UserCompany extends BaseModel
 {
@@ -42,6 +43,10 @@ class UserCompany extends BaseModel
         'purchaseRole',
         'interestedIssue',
         'issueOther',
+        'validated',
+        'validateToken',
+        'lastValidate',
+        'isExpired',
         'country',
         'state_',
         'city',
@@ -76,6 +81,15 @@ class UserCompany extends BaseModel
         'interestedIssue' => 'array'
     ];
 
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($item) {
+            $item->validateToken = Str::random(128);
+        });
+    }
 
     public function company()
     {

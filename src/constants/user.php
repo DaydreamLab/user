@@ -12,6 +12,8 @@ return [
     'CHANGE_PASSWORD_FAIL'              => 500,
     'COMPANY_VAT_EMPTY'                 => 403,
 
+    'DEALER_VALIDATE_SUCCESS'           => 200,
+
     'EMAIL_IS_REGISTERED'               => 403,
     'EMAIL_IS_NOT_REGISTERED'           => 200,
     'EMAIL_OR_PASSWORD_INCORRECT'       => 403,
@@ -25,8 +27,9 @@ return [
 
     'HAS_BEEN_ACTIVATED'                => 403,
 
+    'INVALID_DEALER_TOKEN'              => 403,
     'IS_BLOCKED'                        => 403,
-    'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> 403,
+    'INSUFFICIENT_PERMISSION_ASSIGN_GROUP' => 403,
     'INVALID_VERIFICATION_CODE'         => 403,
     'IP_REJECTED'                       => 403,
 

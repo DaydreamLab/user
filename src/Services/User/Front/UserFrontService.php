@@ -10,6 +10,7 @@ use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
+use DaydreamLab\User\Helpers\CompanyHelper;
 use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\Company\CompanyCategory;
 use DaydreamLab\User\Models\User\UserCompany;
@@ -105,6 +106,25 @@ class UserFrontService extends UserService
     public function addMapping($item, $input)
     {
         $item->groups()->attach(config('daydreamlab.user.register.groups'));
+    }
+
+
+    public function dealerValidate(Collection $input)
+    {
+        $userCompany = $input->get('user')->company;
+        if ($userCompany->validateToken == $input->get('token')) {
+
+            $this->repo->update($userCompany, [
+                'validated' => 1,
+                'validateToken' => Str::random(128),
+                'lastValidate' => now()->toDateTimeString()
+            ]);
+            $this->status = 'DealerValidateSuccess';
+        } else {
+            $this->status = 'InvalidDealerToken';
+        }
+
+        return $this->response;
     }
 
 
@@ -424,7 +444,10 @@ class UserFrontService extends UserService
         $verify = Hash::check($input->get('verificationCode'), $user->verificationCode);
         if ($verify) {
             if (config('app.env') == 'production') {
-                if ($user->lastSendAt && now()->diffInMinutes($user->lastSendAt) > config('daydreamlab.user.sms.expiredMinutes')) {
+                if (
+                    $user->lastSendAt
+                    && now()->diffInMinutes($user->lastSendAt) > config('daydreamlab.user.sms.expiredMinutes')
+                ) {
                     throw new ForbiddenException('VerificationCodeExpired');
                 }
             }
@@ -480,7 +503,7 @@ class UserFrontService extends UserService
                     'name' => $companyData['name'],
                     'vat' => $companyData['vat'],
                     'category_id' => $normalCategory->id,
-                    'mailDomains' => []
+                    'mailDomains' => ['domain' => [], 'email' => []]
                 ]);
             }
         } else {
@@ -499,13 +522,7 @@ class UserFrontService extends UserService
 
         if ($company->category != null) { // 公司有分類
             if (in_array($company->category->title, ['經銷會員', '零壹員工'])) { // 經銷公司
-                // 檢查 email 的 domain 跟公司 domain 是否相同
-                $input_email = explode('@', $input_company_data['email']);
-                if (isset($input_email[1]) && in_array($input_email[1], $company->mailDomains)) {
-                    $isDealer = true; // domain 符合，使用者經銷會員
-                } else {
-                    $isDealer = false; // domain 不符合，使用者一般會員
-                }
+                $isDealer = CompanyHelper::checkEmailIsDealer($input_company_data['email'], $company);
             } else {
                 $isDealer = false; // 一般公司
             }
