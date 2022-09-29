@@ -48,7 +48,7 @@ Route::post('/api/user/store', [UserFrontController::class, 'store'])->middlewar
 
 # 驗證經銷商資格
 Route::get('/api/user/dealer/validate/{token}', [UserFrontController::class, 'dealerValidate'])
-    ->middleware(['expired']);
+    ->middleware(['expired', 'throttle:15,15']);
 
 # 取得手機驗證碼
 Route::post('/api/user/getCode', [UserFrontController::class, 'getVerificationCode'])->middleware(['throttle:5,5']);

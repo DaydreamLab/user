@@ -113,7 +113,6 @@ class UserFrontService extends UserService
     {
         $userCompany = $input->get('user')->company;
         if ($userCompany->validateToken == $input->get('token')) {
-
             $this->repo->update($userCompany, [
                 'validated' => 1,
                 'validateToken' => Str::random(128),
