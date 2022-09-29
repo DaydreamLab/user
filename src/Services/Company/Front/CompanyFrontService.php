@@ -2,12 +2,10 @@
 
 namespace DaydreamLab\User\Services\Company\Front;
 
-use DaydreamLab\JJAJ\Exceptions\BadRequestException;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Repositories\Company\Front\CompanyFrontRepository;
 use DaydreamLab\User\Services\Company\CompanyService;
-use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use Illuminate\Support\Collection;
 
 class CompanyFrontService extends CompanyService
@@ -31,6 +29,7 @@ class CompanyFrontService extends CompanyService
         }
 
         $company = $this->findBy('vat', '=', $userCompany->vat)->first();
+        $input->put('status', EnumHelper::COMPANY_PENDING);
         if (!$company) {
             $input->put('category_id', 3); # 一般
             $result = $this->add($input);
@@ -39,9 +38,9 @@ class CompanyFrontService extends CompanyService
                 throw new ForbiddenException('StatusInvalid', ['status' => $company->status]);
             }
             $input->put('id', $company->id);
-            $input->put('status', EnumHelper::COMPANY_PENDING);
             $result = $this->update($company, $input);
         }
+        # todo: 加入推播通知
 
         $this->status = $result ? 'ApplySuccess' : 'ApplyFail';
 
@@ -53,10 +52,9 @@ class CompanyFrontService extends CompanyService
     {
         $company = $this->findBy('vat', '=', $vat)->first();
 
-        $this->status = $company
-            ? 'GetItemSuccess'
-            : 'ItemNotExist';
+        $this->status = $company ? 'GetItemSuccess' : 'ItemNotExist';
         $this->response = $company;
+
         return $this->response;
     }
 }

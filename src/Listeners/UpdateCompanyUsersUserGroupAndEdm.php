@@ -41,13 +41,15 @@ class UpdateCompanyUsersUserGroupAndEdm implements ShouldQueue
                 $adminGroupIds[] = $companyUserGroup->id;
                 $user->groups()->sync($adminGroupIds);
 
-                $subscription = $user->newsletterSubscription;
-                if ($subscription && $subscription->newsletterCategories->count()) {
-                    $nsfs = app(NewsletterSubscriptionFrontService::class);
-                    $nsfs->store(collect([
-                        'subscribeNewsletter'       => 1,
-                        'user'                      => $user->refresh(),
-                    ]));
+                if ($company->category && $company->category->title != '零壹員工') {
+                    $subscription = $user->newsletterSubscription;
+                    if ($subscription && $subscription->newsletterCategories->count()) {
+                        $nsfs = app(NewsletterSubscriptionFrontService::class);
+                        $nsfs->store(collect([
+                            'subscribeNewsletter'       => 1,
+                            'user'                      => $user->refresh(),
+                        ]));
+                    }
                 }
             }
         }

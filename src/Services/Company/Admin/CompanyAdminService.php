@@ -31,12 +31,6 @@ class CompanyAdminService extends CompanyService
     }
 
 
-    public function export(Collection $input)
-    {
-        return $this->search($input);
-    }
-
-
     public function add(Collection $input)
     {
         $this->checkCategoryId($input->get('category_id'));
@@ -56,17 +50,6 @@ class CompanyAdminService extends CompanyService
             }
 
             event(new UpdateCompanyUsersUserGroupAndEdmEvent($item, $userGroup));
-//            foreach ($item->userCompanies as $userCompany) {
-//                if ($user = $userCompany->user) {
-//                    # 這邊要考慮管理員同時擁有經銷商資格
-//                    $original = $user->groups->pluck('id');
-//                    $adminGroupIds = $original->reject(function ($o) {
-//                       return in_array($o, [6,7]);
-//                    })->values()->all();
-//                    $adminGroupIds[] = $userGroup->id;
-//                    $user->groups()->sync($adminGroupIds);
-//                }
-//            }
         }
     }
 
@@ -101,6 +84,12 @@ class CompanyAdminService extends CompanyService
         } else {
             return  true;
         }
+    }
+
+
+    public function export(Collection $input)
+    {
+        return $this->search($input);
     }
 
 

@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\Company\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\User\Helpers\CompanyRequestHelper;
 
 class CompanyFrontApplyPost extends AdminRequest
 {
@@ -54,48 +55,10 @@ class CompanyFrontApplyPost extends AdminRequest
     {
         $validated = parent::validated();
         $validated->put('user', $this->user());
-        $validated->put('phones', $this->handlePhones($validated->get('phones')));
+        $validated->put('phones', CompanyRequestHelper::handlePhones($validated->get('phones')));
 //        $validated->put('salesInfo', $this->handleSalesInfo($validated->get('salesInfo')));
-        $validated->put('mailsDomains', $this->handleMailDomains($validated->get('mailDomains')));
+        $validated->put('mailsDomains', CompanyRequestHelper::handleMailDomains($validated->get('mailDomains')));
 
         return $validated;
     }
-
-    public function handleMailDomains($input)
-    {
-        return  [
-            'domain' => $input['domains'] ?? [],
-            'email' => $input['email'] ?? []
-        ];
-    }
-
-
-    public function handlePhones($input)
-    {
-        $data = [];
-        foreach ($input ?? [] as $inputPhone) {
-            $data[] = [
-                'phoneCode' => $inputPhone['phoneCode'] ?? '',
-                'phone' => $inputPhone['phone'] ?? '',
-                'ext' => $inputPhone['ext'] ?? '',
-            ];
-        }
-
-        return $data;
-    }
-
-
-//    public function handleSalesInfo($input)
-//    {
-//        $data = [];
-//        foreach ($input ?? [] as $sales) {
-//            $data [] = [
-//                'name' => $sales['name'] ?? '',
-//                'mobilePhone' => $sales['mobilePhone'] ?? '',
-//                'email' => $sales['email'] ?? '',
-//            ];
-//        }
-//
-//        return $data;
-//    }
 }

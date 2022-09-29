@@ -3,6 +3,8 @@
 namespace DaydreamLab\User\Requests\Company\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\User\Helpers\CompanyRequestHelper;
+use DaydreamLab\User\Helpers\EnumHelper;
 use Illuminate\Validation\Rule;
 
 class CompanyAdminStorePost extends AdminRequest
@@ -29,20 +31,35 @@ class CompanyAdminStorePost extends AdminRequest
     {
         $rules = [
             'id'            => 'nullable|integer',
+            'status'        => ['required', Rule::in([
+                EnumHelper::COMPANY_NONE,
+                EnumHelper::COMPANY_NEW,
+                EnumHelper::COMPANY_PENDING,
+                EnumHelper::COMPANY_APPROVE,
+                EnumHelper::COMPANY_REJECT
+            ])],
             'categoryId'    => 'nullable|integer',
             'name'          => 'required|string',
             'vat'           => 'required|string',
-            'domain'        => 'required|string',
-            'mailDomains'   => 'nullable|array',
+            'mailDomains' => 'required|array',
+            'mailDomains.domain' => 'nullable|array',
+            'mailDomains.domain.*' => 'required|string',
+            'mailDomains.email' => 'nullable|array',
+            'mailDomains.email.*' => 'required|email',
+            'phones'    => 'required|array',
+            'phones.*'    => 'required|array',
+            'phones.*.phoneCode'    => 'required|numeric',
+            'phones.*.phone'    => 'required|numeric',
+            'phones.*.ext'    => 'required|numeric',
             'logo'          => 'nullable|string',
-            'country'       => 'nullable|string',
-            'state'         => 'nullable|string',
+//            'country'       => 'nullable|string',
+//            'state'         => 'nullable|string',
             'city'          => 'nullable|string',
             'district'      => 'nullable|string',
             'address'       => 'nullable|string',
-            'zipcode'       => 'nullable|string',
-            'introtext'     => 'nullable|string',
-            'description'   => 'nullable|string',
+//            'zipcode'       => 'nullable|string',
+//            'introtext'     => 'nullable|string',
+//            'description'   => 'nullable|string',
             'ordering'      => 'nullable|integer'
         ];
         return array_merge(parent::rules(), $rules);
@@ -53,9 +70,8 @@ class CompanyAdminStorePost extends AdminRequest
     {
         $validated = parent::validated();
 
-        if (!$validated->get('id')) {
-            $validated->put('mailDomains', [$validated->get('domain')]);
-        }
+        $validated->put('mailDomains', CompanyRequestHelper::handleMailDomains($validated));
+        $validated->put('phones', CompanyRequestHelper::handlePhones($validated));
         $validated->put('state_', $validated->get('state'));
         $validated->put('category_id', $validated->get('categoryId'));
         $validated->forget(['state', 'categoryId']);
