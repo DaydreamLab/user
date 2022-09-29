@@ -104,7 +104,8 @@ class UserFrontController extends BaseController
         } catch (Throwable $t) {
             $this->handleException($t);
         }
-        return $this->response($this->service->status,
+        return $this->response(
+            $this->service->status,
             gettype($this->service->response) == 'object'
             ? new UserFrontLoginResource($this->service->response)
             : $this->service->response
@@ -128,7 +129,7 @@ class UserFrontController extends BaseController
     {
         $this->service->status = 'GetItemSuccess';
 
-        return $this->response($this->service->status,  $request->user('api'), [], UserFrontResource::class);
+        return $this->response($this->service->status, $request->user('api'), [], UserFrontResource::class);
     }
 
 
@@ -139,7 +140,7 @@ class UserFrontController extends BaseController
         } catch (Throwable $t) {
             $this->handleException($t);
         }
-        return $this->response($this->service->status,  $this->service->response, [], UserFrontResource::class);
+        return $this->response($this->service->status, $this->service->response, [], UserFrontResource::class);
     }
 
 
@@ -160,7 +161,7 @@ class UserFrontController extends BaseController
             $response = null;
         }
 
-        return $this->response($status,  $response , [], UserFrontGetLoginResource::class);
+        return $this->response($status, $response, [], UserFrontGetLoginResource::class);
     }
 
 
@@ -178,7 +179,7 @@ class UserFrontController extends BaseController
 
     public function login(UserFrontLoginPost $request)
     {
-        if(config('daydreamlab.user.login.enable')) {
+        if (config('daydreamlab.user.login.enable')) {
             try {
                 $this->service->login($request->validated());
             } catch (Throwable $t) {
@@ -188,8 +189,8 @@ class UserFrontController extends BaseController
             $this->service->status = 'LoginIsBlocked';
             $this->service->response = null;
         }
-        
-        return $this->response($this->service->status,  $this->service->response , [], UserFrontGetLoginResource::class);
+
+        return $this->response($this->service->status, $this->service->response, [], UserFrontGetLoginResource::class);
     }
 
 

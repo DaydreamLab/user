@@ -10,6 +10,7 @@ return [
 
     'CHANGE_PASSWORD_SUCCESS'           => '{$ModelName} change password success. Please login again',
     'CHANGE_PASSWORD_FAIL'              => '{$ModelName} change password fail',
+    'COMPANY_VAT_EMPTY'                 => '{$ModelName} company vat empty',
 
     'EMAIL_IS_REGISTERED'               => '{$ModelName} email is registered',
     'EMAIL_IS_NOT_REGISTERED'           => '{$ModelName} email is not registered',

@@ -19,16 +19,20 @@ class CompanyAdminListResource extends BaseJsonResource
         return [
             'id'                => $this->id,
             'name'              => $this->name,
+            'status'            => $this->status,
             'vat'               => $this->vat,
-            'domain'            => $this->domain,
-            'categoryTitle'     => ($this->category) ? $this->category->title : '',
-            'created_at'        => $this->getDateTimeString($this->created_at, $tz),
-            'updated_at'        => $this->getDateTimeString($this->updated_at, $tz),
-            'locked_at'         => $this->getDateTimeString($this->locked_at, $tz),
-            'creatorName'       => $this->creatorName,
-            'updaterName'       => $this->updaterName,
-            'lockerName'        => $this->lockerName,
-            'locker'            => ($this->locker) ? $this->locker->only(['id', 'uuid', 'name']) : []
+            'industry'          => $this->industry,
+            'approvedAt'        => $this->getDateTimeString($this->approvedAt, $tz),
+            'expiredAt'         => $this->getDateTimeString($this->expiredAt, $tz),
+//            'domain'            => $this->domain,
+//            'categoryTitle'     => ($this->category) ? $this->category->title : '',
+//            'created_at'        => $this->getDateTimeString($this->created_at, $tz),
+//            'updated_at'        => $this->getDateTimeString($this->updated_at, $tz),
+//            'locked_at'         => $this->getDateTimeString($this->locked_at, $tz),
+//            'creatorName'       => $this->creatorName,
+//            'updaterName'       => $this->updaterName,
+//            'lockerName'        => $this->lockerName,
+//            'locker'            => ($this->locker) ? $this->locker->only(['id', 'uuid', 'name']) : []
         ];
     }
 }

@@ -10,6 +10,7 @@ return [
 
     'CHANGE_PASSWORD_SUCCESS'           => 200,
     'CHANGE_PASSWORD_FAIL'              => 500,
+    'COMPANY_VAT_EMPTY'                 => 403,
 
     'EMAIL_IS_REGISTERED'               => 403,
     'EMAIL_IS_NOT_REGISTERED'           => 200,

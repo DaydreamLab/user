@@ -9,6 +9,7 @@ return [
 
     'CHANGE_PASSWORD_SUCCESS'           => '使用者更換密碼成功',
     'CHANGE_PASSWORD_FAIL'              => '使用者更換密碼失敗',
+    'COMPANY_VAT_EMPTY'                 => '會員資料未填入統編資訊',
 
     'EMAIL_IS_REGISTERED'               => 'Email 已被註冊',
     'EMAIL_IS_NOT_REGISTERED'           => 'Email 尚未被註冊',

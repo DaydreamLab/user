@@ -20,6 +20,7 @@ class UserServiceProvider extends ServiceProvider
     protected $commands = [
         'DaydreamLab\User\Commands\InstallCommand',
         'DaydreamLab\User\Commands\SeedCommand',
+        'DaydreamLab\User\Commands\V2\TransformCommand',
     ];
 
 

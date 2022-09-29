@@ -13,6 +13,7 @@ use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
 use DaydreamLab\User\Controllers\Xsms\XsmsController;
 
 /************************************  前台 API  ************************************/
+
 // 啟用帳號
 //Route::get('/api/user/activate/{token}', [UserFrontController::class, 'activate']);
 
@@ -30,6 +31,9 @@ Route::post('api/xsms/querySms', [XsmsController::class, 'querySms'])->middlewar
 # 取得公司資訊
 Route::get('api/company/{vat}', [CompanyFrontController::class, 'getInfo']);
 
+# 申請成為經銷商
+Route::post('api/company/apply', [CompanyFrontController::class, 'apply'])->middleware(['expired']);
+
 # 檢查Email是否使用過
 Route::post('/api/user/checkEmail', [UserFrontController::class, 'checkEmail'])->middleware(['CORS']);
 
@@ -46,7 +50,10 @@ Route::post('/api/user/store', [UserFrontController::class, 'store'])->middlewar
 Route::post('/api/user/getCode', [UserFrontController::class, 'getVerificationCode'])->middleware(['throttle:5,5']);
 
 # 驗證手機驗證碼
-Route::post('/api/user/verifyCode', [UserFrontController::class, 'verifyVerificationCode'])->middleware(['throttle:15,5']);;
+Route::post(
+    '/api/user/verifyCode',
+    [UserFrontController::class, 'verifyVerificationCode']
+)->middleware(['throttle:15,5']);
 
 # 登入
 Route::post('/api/user/login', [UserFrontController::class, 'login'])->name('login')->middleware(['throttle:15,5']);
@@ -98,17 +105,17 @@ Route::get('api/admin/api/{id}', [ApiAdminController::class, 'getItem'])
 
 
 # Asset
-Route::post('api/admin/asset/ordering',  [AssetAdminController::class, 'ordering'])
+Route::post('api/admin/asset/ordering', [AssetAdminController::class, 'ordering'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/asset/remove', [AssetAdminController::class, 'remove'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
-Route::post('api/admin/asset/state',  [AssetAdminController::class, 'state'])
+Route::post('api/admin/asset/state', [AssetAdminController::class, 'state'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
-Route::post('api/admin/asset/store',  [AssetAdminController::class, 'store'])
+Route::post('api/admin/asset/store', [AssetAdminController::class, 'store'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
-Route::post('api/admin/asset/search',  [AssetAdminController::class, 'search'])
+Route::post('api/admin/asset/search', [AssetAdminController::class, 'search'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
-Route::get('api/admin/asset/{id}',  [AssetAdminController::class, 'getItem'])
+Route::get('api/admin/asset/{id}', [AssetAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 
@@ -190,4 +197,3 @@ Route::post('api/admin/viewlevel/ordering', [ViewlevelAdminController::class, 'o
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/viewlevel/{id}', [ViewlevelAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
-

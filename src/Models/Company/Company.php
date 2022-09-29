@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Models\Company;
 use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
+use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Models\User\UserCompany;
 
 class Company extends BaseModel
@@ -30,18 +31,26 @@ class Company extends BaseModel
      */
     protected $fillable = [
         'name',
+        'status',
         'category_id',
         'vat',
         'domain',
         'mailDomains',
+        'salesInfo',
         'logo',
         'phoneCode',
         'phone',
+        'phones',
+        'industry',
+        'scale',
         'country',
         'state_',
         'city',
         'district',
         'address',
+        'approveAt',
+        'expiredAt',
+        'rejectedAt',
         'zipcode',
         'introtext',
         'description',
@@ -74,6 +83,8 @@ class Company extends BaseModel
 
     protected $casts = [
         'mailDomains'   => 'array',
+        'salesInfo'     => 'array',
+        'phones'        => 'array',
         'category_id'   => 'integer',
         'locked_at'     => 'datetime:Y-m-d H:i:s',
     ];
@@ -86,6 +97,9 @@ class Company extends BaseModel
         static::creating(function ($item) {
             $item->phoneCode = '+886';
             $item->country = '臺灣';
+            if (!$item->status) {
+                $item->status = EnumHelper::COMPANY_NEW;
+            }
         });
     }
 

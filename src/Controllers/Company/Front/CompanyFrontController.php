@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\Company\Front;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Requests\Company\Front\CompanyFrontApplyPost;
 use DaydreamLab\User\Services\Company\Front\CompanyFrontService;
 use DaydreamLab\User\Requests\Company\Front\CompanyFrontRemovePost;
 use DaydreamLab\User\Requests\Company\Front\CompanyFrontStorePost;
@@ -24,6 +25,17 @@ class CompanyFrontController extends BaseController
         $this->service = $service;
     }
 
+
+    public function apply(CompanyFrontApplyPost $request)
+    {
+        try {
+            $this->service->apply($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
 
     public function getInfo($vat)
     {
