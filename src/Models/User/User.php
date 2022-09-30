@@ -293,21 +293,15 @@ class User extends BaseModel implements
     }
 
 
+    public function getCompanyEmailIsDealerAttribute()
+    {
+        return CompanyHelper::checkEmailIsDealer($this->company->email, $this->company->company);
+    }
+
+
     public function getDealerValidateUrlAttribute()
     {
         return config('app.url') . '/dealer/validate/' . $this->company->validateToken;
-    }
-
-
-    public function getFullMobilePhoneAttribute()
-    {
-        return $this->mobilePhoneCode . '-' . $this->mobilePhone;
-    }
-
-
-    public function getFullNameAttribute()
-    {
-        return $this->last_name . ' ' . $this->first_name;
     }
 
 
@@ -320,9 +314,15 @@ class User extends BaseModel implements
     }
 
 
-    public function getCompanyEmailIsDealerAttribute()
+    public function getFullMobilePhoneAttribute()
     {
-        return CompanyHelper::checkEmailIsDealer($this->company->email, $this->company->company);
+        return $this->mobilePhoneCode . '-' . $this->mobilePhone;
+    }
+
+
+    public function getFullNameAttribute()
+    {
+        return $this->last_name . ' ' . $this->first_name;
     }
 
 
