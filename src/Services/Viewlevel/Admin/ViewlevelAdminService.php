@@ -29,7 +29,7 @@ class ViewlevelAdminService extends ViewlevelService
     }
 
 
-    public function beforeRemove($input, $item)
+    public function beforeRemove(&$input, $item)
     {
         if ($item->canDelete == 0) {
             $this->throwResponse('ItemCanNotBeDeleted', ['id' => $item->id]);

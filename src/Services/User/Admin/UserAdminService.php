@@ -39,6 +39,89 @@ class UserAdminService extends UserService
     }
 
 
+    public function addMapping($item, $input)
+    {
+        if (count($input->get('groupIds') ?: [])) {
+            $item->groups()->attach($input->get('groupIds'));
+        }
+
+        if (count($input->get('brandIds') ?: [])) {
+            $item->brands()->attach($input->get('brandIds'));
+        }
+
+        # 會員新增時，先檢查公司統編，若存在則更新會員使用者群組（一般會員、經銷會員），同時必定創建一個 userCompany
+        $inputUserCompany = $input->get('company') ?: [];
+        if (isset($inputUserCompany['vat'])) {
+            $company = $this->companyAdminRepo->findBy('vat', '=', $inputUserCompany['vat'])->first();
+            if ($company) {
+                $inputUserCompany['name'] = $company->name;
+                $inputUserCompany['vat'] = $company->vat;
+                $inputUserCompany['company_id'] = $company->id;
+                $item->groups()->sync([$company->category->userGroupId]);
+            }
+        }
+        $inputUserCompany['user_id'] = $item->id;
+        $item->company()->create($inputUserCompany);
+
+        # 新增訂閱記錄
+        if (!$item->newletterSubscription) {
+            $item->newletterSubscription()->create([
+                'user_id' => $item->id,
+                'email' => $item->email
+            ]);
+        }
+
+        # 檢查會蟲
+        $this->checkBlacklist($item, $item->refresh()->company);
+    }
+
+
+    public function beforeRemove(Collection &$input, $item)
+    {
+        if (!$item->canDelete) {
+            throw new ForbiddenException('IsPreserved');
+        }
+    }
+
+
+    public function block(Collection $input)
+    {
+        $result = false;
+        foreach ($input->get('ids') as $key => $id) {
+            $user           = $this->find($id);
+            $result         = $this->repo->update($user, ['block' => $input->get('block')]);
+            if (!$result) {
+                break;
+            }
+        }
+
+        $block = $input->get('block');
+        if ($block == '1') {
+            $action = 'Block';
+        } elseif ($block == '0') {
+            $action = 'Unblock';
+        }
+
+        event(new Block($this->getServiceName(), $result, $input, $this->user));
+
+        $this->status = $result
+            ? $action . 'Success'
+            : $action . 'Fail';
+
+        return $result;
+    }
+
+
+    public function checkMobilePhone($mobilePhone)
+    {
+        $user = $this->findBy('mobilePhone', '=', $mobilePhone)->first();
+        if ($user) {
+            throw new ForbiddenException('MobilePhoneExist', ['mobilePhone' => $mobilePhone]);
+        }
+        return $user;
+    }
+
+
     public function export(Collection $input)
     {
         $q = $input->get('q');
@@ -46,7 +129,7 @@ class UserAdminService extends UserService
         $parent_group = $input->get('parent_group');
         $child_group = $input->get('user_group');
         if ($parent_group || $child_group) {
-            $q->whereIn('id', function ($q) use ($parent_group, $child_group){
+            $q->whereIn('id', function ($q) use ($parent_group, $child_group) {
                 $q->select('user_id')->from('users_groups_maps');
                 if ($parent_group) {
                     $g = UserGroup::where('id', $parent_group)->first();
@@ -91,87 +174,6 @@ class UserAdminService extends UserService
     }
 
 
-    public function addMapping($item, $input)
-    {
-        if (count($input->get('groupIds') ?: [])) {
-            $item->groups()->attach($input->get('groupIds'));
-        }
-
-        if (count($input->get('brandIds') ?:[])) {
-            $item->brands()->attach($input->get('brandIds'));
-        }
-
-        # 會員新增時，先檢查公司統編，若存在則更新會員使用者群組（一般會員、經銷會員），同時必定創建一個 userCompany
-        $inputUserCompany = $input->get('company') ?: [];
-        if (isset($inputUserCompany['name'])) {
-            $company = $this->companyAdminRepo->findBy('name', '=', $inputUserCompany['name'])->first();
-            if ($company) {
-                $inputUserCompany['vat'] = $company->vat;
-                $inputUserCompany['company_id'] = $company->id;
-                $item->groups()->sync([$company->category->userGroupId]);
-            }
-        }
-        $inputUserCompany['user_id'] = $item->id;
-        $item->company()->create($inputUserCompany);
-
-        # 檢查會蟲
-        $this->checkBlacklist($item, $item->refresh()->company);
-    }
-
-
-    public function beforeRemove(Collection $input, $item)
-    {
-        if (!$item->canDelete) {
-            throw new ForbiddenException('IsPreserved');
-        }
-    }
-
-
-    public function block(Collection $input)
-    {
-        $result = false;
-        foreach ($input->get('ids') as $key => $id) {
-            $user           = $this->find($id);
-            $result         = $this->repo->update($user, ['block' => $input->get('block')]);
-            if (!$result) {
-                break;
-            }
-        }
-
-        $block = $input->get('block');
-        if ($block == '1') {
-            $action = 'Block';
-        } elseif ($block == '0') {
-            $action = 'Unblock';
-        }
-
-        event(new Block($this->getServiceName(), $result, $input, $this->user));
-
-        $this->status = $result
-            ? $action. 'Success'
-            : $action . 'Fail';
-
-        return $result;
-    }
-
-
-    public function checkMobilePhone($mobilePhone)
-    {
-        $user = $this->findBy('mobilePhone', '=', $mobilePhone)->first();
-        if ($user) {
-            throw new ForbiddenException('MobilePhoneExist', ['mobilePhone' => $mobilePhone]);
-        }
-        return $user;
-    }
-    /**
-     * 處理批次匯入訂單的會員資料建立or更新問題
-     */
-    public function createOrUpdate(Collection $input)
-    {
-
-    }
-
-
     public function getSelfPage($site_id)
     {
         $user   = $this->getUser();
@@ -204,7 +206,7 @@ class UserAdminService extends UserService
 
         if ($input->get('editAdmin')) {
             $item->brands()->sync($input->get('brandIds') ?: []);
-            if ( in_array($dealerUserGroup->id, $item->groups->pluck('id')->all() ) ) {
+            if (in_array($dealerUserGroup->id, $item->groups->pluck('id')->all())) {
                 $admin_group_ids = $input->get('groupIds');
                 if (!collect($admin_group_ids)->intersect($item->groups->pluck('id')->all())->count()) {
                     $item->tokens()->each(function ($t) {
@@ -260,12 +262,14 @@ class UserAdminService extends UserService
                 })->values();
 
                 if (in_array($company->category->title, ['經銷會員', '零壹員工'])) {
-                    $emailArray = explode('@', $inputUserCompany['email']);
-                    if (count($emailArray) == 2 && in_array($emailArray[1], $company->mailDomains)) {
-                        $groupIds->push(6);
-                    } else {
-                        $groupIds->push(7);
-                    }
+                    $groupIds->push(6);
+                    # 舊的經銷商判斷
+//                    $emailArray = explode('@', $inputUserCompany['email']);
+//                    if (count($emailArray) == 2 && in_array($emailArray[1], $company->mailDomains)) {
+//
+//                    } else {
+//                        $groupIds->push(7);
+//                    }
                 } else {
                     $groupIds->push(7);
                 }
@@ -302,13 +306,21 @@ class UserAdminService extends UserService
         if (count($attached = $changes['attached'])) {
             # 根據會員群組的變動更新電子報訂閱
             if (in_array(7, $attached)) {
-                $categories = Item::whereIn('alias', ['01_newsletter'])->whereHas('category', function ($q) {
-                    $q->where('content_type', 'newsletter_category');
-                })->get()->pluck('id')->all();
+                if ($item->newletterSubscription && $item->newletterSubscription->newsletterCategories->count()) {
+                    $categories = Item::whereIn('alias', ['01_newsletter'])->whereHas('category', function ($q) {
+                        $q->where('content_type', 'newsletter_category');
+                    })->get()->pluck('id')->all();
+                } else {
+                    $categories = [];
+                }
             } elseif (in_array(6, $attached)) {
-                $categories = Item::whereIn('alias', ['01_deal_newsletter'])->whereHas('category', function ($q) {
-                    $q->where('content_type', 'newsletter_category');
-                })->get()->pluck('id')->all();
+                if ($item->newletterSubscription && $item->newletterSubscription->newsletterCategories->count()) {
+                    $categories = Item::whereIn('alias', ['01_deal_newsletter'])->whereHas('category', function ($q) {
+                        $q->where('content_type', 'newsletter_category');
+                    })->get()->pluck('id')->all();
+                } else {
+                    $categories = [];
+                }
             } else {
                 $categories = [];
             }
@@ -372,7 +384,7 @@ class UserAdminService extends UserService
         if ($input->has('id')) {
             $result = $this->find($input->get('id'));
         }
-        if ( $result->block == 1 && in_array(config('app.env'), ['production', 'staging']) ) {
+        if ($result->block == 1 && in_array(config('app.env'), ['production', 'staging'])) {
             $newsletterSSer = app(NewsletterSubscriptionAdminService::class);
             $newsletterSSer->edmAddBlackList($result->email);
         }

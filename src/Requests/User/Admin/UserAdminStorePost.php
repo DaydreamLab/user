@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Requests\User\Admin;
 
+use DaydreamLab\Dsth\Helpers\EnumHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
 use Illuminate\Support\Str;
@@ -27,7 +28,24 @@ class UserAdminStorePost extends AdminRequest
     public function handleCompany($company)
     {
         $company = $company ? collect($company) : collect();
-        $keys = ['company_id', 'quit', 'name', 'email', 'vat', 'phoneCode', 'phone', 'extNumber', 'country', 'state', 'city', 'district', 'address', 'zipcode', 'department', 'jobTitle'];
+        $keys = [
+            'company_id',
+            'quit',
+            'name',
+            'email',
+            'vat',
+            'phoneCode',
+            'phone',
+            'extNumber',
+            'country',
+            'state',
+            'city',
+            'district',
+            'address',
+            'zipcode',
+            'department',
+            'jobTitle'
+        ];
         foreach ($keys as $key) {
             if ($key == 'company_id') {
                 $company->put('company_id', $company->get($key));
@@ -111,15 +129,13 @@ class UserAdminStorePost extends AdminRequest
             'company.jobTitle'      => 'nullable|string',
             'company.jobCategory'    => 'nullable|string',
             'company.jobType'      => 'nullable|string',
-            'company.industry'      => 'nullable|string',
-            'company.scale'         => 'nullable|string',
+//            'company.industry'      => 'nullable|string',
+//            'company.scale'         => 'nullable|string',
             'company.purchaseRole'  => 'nullable|string',
             'company.interestedIssue'   => 'nullable|array',
             'company.interestedIssue.*' => 'nullable|string',
             'company.issueOther'    => 'nullable|string',
-
-            'newsletterCategoriesAlias'     => 'nullable|array',
-            'newsletterCategoriesAlias.*'   => 'nullable|string'
+            'subscribeNewsletter'       => ['nullable', Rule::in(EnumHelper::BOOLEAN)]
         ];
 
         return array_merge(parent::rules(), $rules);

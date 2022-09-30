@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Commands\V2;
 
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Models\Company\Company;
+use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserCompany;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
@@ -53,6 +54,11 @@ class TransformCommand extends Command
         $this->info('更新 UserCompany 資料中...');
         $this->transformUserCompany();
         $this->info('更新 UserCompany 資料完成');
+
+
+        $this->info('更新電子報訂閱資料中...');
+        $this->transformNewsletterSubscription();
+        $this->info('更新電子報訂閱資料完成');
     }
 
 
@@ -76,6 +82,20 @@ class TransformCommand extends Command
             }
 
             $company->save();
+        }
+    }
+
+
+    public function transformNewsletterSubscription()
+    {
+        $users = User::with('newsletterSubscription')->get();
+        foreach ($users as $user) {
+            if (!$user->newsletterSubscription) {
+                $user->newsletterSubscription()->create([
+                    'user_id' => $user->id,
+                    'email' => $user->email
+                ]);
+            }
         }
     }
 

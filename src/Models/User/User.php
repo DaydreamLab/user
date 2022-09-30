@@ -328,7 +328,7 @@ class User extends BaseModel implements
 
     public function getNewsletterSubscriptionsAttribute()
     {
-        $n = $this->newsletterSubscription()->first();
+        $n = $this->newsletterSubscription;
         return ($n) ? $n->newsletterCategories->map(function ($nc) {
             return $nc->only(['alias', 'title']);
         })->toArray() : [];

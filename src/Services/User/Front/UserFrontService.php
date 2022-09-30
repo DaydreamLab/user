@@ -113,8 +113,14 @@ class UserFrontService extends UserService
 
     public function dealerValidate(Collection $input)
     {
-        $userCompany = $input->get('user')->company;
+        $user = $input->get('user');
+        $userCompany = $user->company;
         if ($userCompany->validateToken == $input->get('token')) {
+            # 處理電子報訂閱類型 #todo:
+            if ($user->newsletterSubscription->categories->count()) {
+
+            }
+
             $this->repo->update($userCompany, [
                 'validated' => 1,
                 'validateToken' => Str::random(128),
