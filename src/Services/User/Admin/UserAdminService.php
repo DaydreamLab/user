@@ -361,7 +361,7 @@ class UserAdminService extends UserService
 //            }
         }
 
-        // 確保使用者所指派的群組，具有該權限 a\
+        // 確保使用者所指派的群組，具有該權限
         $inputGroupIds = collect($input->get('groupIds'));
         $userAccessGroupIds = $this->getUser()->accessGroupIds;
         if ($inputGroupIds->intersect($userAccessGroupIds)->count() != $inputGroupIds->count()) {

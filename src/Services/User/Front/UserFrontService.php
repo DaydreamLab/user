@@ -116,9 +116,10 @@ class UserFrontService extends UserService
         $user = $input->get('user');
         $userCompany = $user->company;
         if ($userCompany->validateToken == $input->get('token')) {
-            # 處理電子報訂閱類型 #todo:
+            # 處理電子報訂閱類型
             if ($user->newsletterSubscription->categories->count()) {
-
+                $nss = app(NewsletterSubscriptionFrontService::class);
+                $nss->subscribe($input);
             }
 
             $this->repo->update($userCompany, [
