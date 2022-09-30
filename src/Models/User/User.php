@@ -292,6 +292,21 @@ class User extends BaseModel implements
     }
 
 
+    public function getCompanyEmailIsDealerAttribute()
+    {
+        return CompanyHelper::checkEmailIsDealer($this->company->email, $this->company->company);
+    }
+
+
+    public function getIsDealerAttribute()
+    {
+        return $this->company
+            && $this->company->company
+            && $this->company->company->category
+            && in_array($this->company->company->category->title, ['經銷會員', '零壹員工']);
+    }
+
+
     public function getFullMobilePhoneAttribute()
     {
         return $this->mobilePhoneCode . '-' . $this->mobilePhone;
