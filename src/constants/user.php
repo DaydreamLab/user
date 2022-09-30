@@ -62,6 +62,8 @@ return [
 
     'SEND_VERIFICATION_CODE_SUCCESS'    => 200,
     'SEND_VERIFICATION_CODE_IN_COOL_DOWN' => 200,
+    'SEND_DEALER_VALIDATE_EMAIL_SUCCESS' => 200,
+    'SEND_DEALER_VALIDATE_EMAIL_FAIL' => 403,
 
     'TOKEN_EXPIRED'                     => 401,
     'TOKEN_REVOKED'                     => 403,

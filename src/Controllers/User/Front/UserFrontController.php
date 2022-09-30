@@ -67,10 +67,10 @@ class UserFrontController extends BaseController
     }
 
 
-    public function dealerValidate(UserFrontDealerValidateRequest $request)
+    public function checkMobilePhone(UserFrontCheckMobilePhoneRequest $request)
     {
         try {
-            $this->service->dealerValidate($request->validated());
+            $this->service->checkMobilePhone($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
@@ -79,10 +79,10 @@ class UserFrontController extends BaseController
     }
 
 
-    public function checkMobilePhone(UserFrontCheckMobilePhoneRequest $request)
+    public function dealerValidate(UserFrontDealerValidateRequest $request)
     {
         try {
-            $this->service->checkMobilePhone($request->validated());
+            $this->service->dealerValidate($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
@@ -267,6 +267,18 @@ class UserFrontController extends BaseController
     {
         try {
             $this->service->sendResetLinkEmail($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function sendValidateEmail(Request $request)
+    {
+        try {
+            $this->service->sendDealerValidateEmail($request->user('api'));
         } catch (Throwable $t) {
             $this->handleException($t);
         }

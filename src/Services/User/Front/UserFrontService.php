@@ -17,6 +17,7 @@ use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
+use DaydreamLab\User\Notifications\User\UserCompanyEmailVerificationNotification;
 use DaydreamLab\User\Notifications\User\UserGetVerificationCodeNotification;
 use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\User\Services\Social\SocialUserService;
@@ -28,6 +29,7 @@ use DaydreamLab\User\Traits\CanSendNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
@@ -599,6 +601,20 @@ class UserFrontService extends UserService
         } else {
             throw new NotFoundException('ItemNotExist', $input);
         }
+    }
+
+
+    public function sendDealerValidateEmail($user)
+    {
+        if ($user->isDealer && $user->companyEmailIsDealer) {
+            Notification::route('mail', $user->company->email)
+                ->notify(new UserCompanyEmailVerificationNotification($user));
+            $this->status = 'SendDealerValidateEmailSuccess';
+        } else {
+            $this->status = 'SendDealerValidateEmailFail';
+        }
+
+        return $this->response;
     }
 
 

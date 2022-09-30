@@ -60,6 +60,8 @@ return [
 
     'SEND_VERIFICATION_CODE_SUCCESS'    => 'Send verification code success',
     'SEND_VERIFICATION_CODE_IN_COOL_DOWN' => 'Send verification code in cool down',
+    'SEND_DEALER_VALIDATE_EMAIL_SUCCESS' => 'Send dealer validate email success',
+    'SEND_DEALER_VALIDATE_EMAIL_FAIL'   => 'Send dealer validate email fail',
 
     'TOKEN_EXPIRED'                     => '{$ModelName} Token expired. Please login again',
     'TOKEN_REVOKED'                     => '{$ModelName} Token revoked',

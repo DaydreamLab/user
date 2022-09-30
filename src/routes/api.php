@@ -46,6 +46,10 @@ Route::post('api/user/oldUserUpdate', [UserFrontController::class, 'updateOldUse
 # 編輯會員資料
 Route::post('/api/user/store', [UserFrontController::class, 'store'])->middleware(['expired']);
 
+# 寄送經銷商Email驗證信
+Route::get('/api/user/dealer/sendValidateEmail', [UserFrontController::class, 'sendValidateEmail'])
+    ->middleware(['expired', 'throttle:15,15']);
+
 # 驗證經銷商資格
 Route::get('/api/user/dealer/validate/{token}', [UserFrontController::class, 'dealerValidate'])
     ->middleware(['expired', 'throttle:15,15']);
