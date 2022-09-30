@@ -7,7 +7,7 @@ class CompanyRequestHelper
     public static function handleMailDomains($input)
     {
         return  [
-            'domain' => $input['domains'] ?? [],
+            'domain' => $input['domain'] ?? [],
             'email' => $input['email'] ?? []
         ];
     }

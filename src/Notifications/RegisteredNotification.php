@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\User\Notifications;
 
-use DaydreamLab\User\Helpers\CompanyHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -34,6 +33,17 @@ class RegisteredNotification extends Notification implements ShouldQueue
         return ['mail'];
     }
 
+
+    public function getContent()
+    {
+        $content = '感謝您加入零壹會員，您的帳號已正式啟用。';
+        if ($this->user->isDealer && $this->user->companyEmailIsDealer) {
+            $content .= '<br>因您的公司具有經銷商資格，請點擊下方連結進行驗證。';
+        }
+
+        return $content;
+    }
+
     /**
      * Get the mail representation of the notification.
      *
@@ -46,17 +56,6 @@ class RegisteredNotification extends Notification implements ShouldQueue
 
         $template = config('daydreamlab.user.register.mail.template');
 
-        $dealerValidateUrl = null;
-        if (
-            $this->user->company
-            && $this->user->company->company
-            && $this->user->company->company->category
-            && in_array($this->user->company->company->category->title, ['經銷會員', '零壹員工'])
-            && CompanyHelper::checkEmailIsDealer($this->user->company->email, $this->user->company->company)
-        ) {
-            $dealerValidateUrl = config('app.url') . '/dealer/validate/' . $this->user->company->validateToken;
-        }
-
         return $template == 'default' ?
                 (new MailMessage())
                     ->line('The introduction to the notification.')
@@ -67,7 +66,9 @@ class RegisteredNotification extends Notification implements ShouldQueue
                     ->view($template, [
                         'user' => $this->user,
                         'subject' => '[零壹科技] 帳號已啟用',
-                        'dealerValidateUrl' => $dealerValidateUrl
+                        'content' => $this->getContent(),
+                        'clickType' => 'dealerValidate',
+                        'clickUrl'  => $this->user->dealerValidateUrl
                     ]);
     }
 

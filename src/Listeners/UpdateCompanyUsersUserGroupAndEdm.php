@@ -4,7 +4,10 @@ namespace DaydreamLab\User\Listeners;
 
 use DaydreamLab\Cms\Services\NewsletterSubscription\Front\NewsletterSubscriptionFrontService;
 use DaydreamLab\User\Events\UpdateCompanyUsersUserGroupAndEdmEvent;
+use DaydreamLab\User\Notifications\User\UserCompanyEmailVerificationNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+
+use Illuminate\Support\Facades\Notification;
 
 use function Symfony\Component\String\s;
 
@@ -41,7 +44,20 @@ class UpdateCompanyUsersUserGroupAndEdm implements ShouldQueue
                 $adminGroupIds[] = $companyUserGroup->id;
                 $user->groups()->sync($adminGroupIds);
 
-                # todo: 如果是經銷會員可能可以直接在這邊發送經銷會員驗證信件（只要符合domain or email規則）
+                # 如果是經銷會員可能直接在這邊發送經銷會員驗證信件（只要符合domain or email規則）
+                $user = $user->refresh();
+                if ($user->isDealer) {
+                    if ($user->companyEmailIsDealer) {
+                        Notification::route('mail', $user->company->email)
+                            ->notify(new UserCompanyEmailVerificationNotification($user));
+                    }
+                } else {
+                    $userCompany = $user->company;
+                    $userCompany->lastValidate = null;
+                    $userCompany->isExpired = 0;
+                    $userCompany->validated = 0;
+                    $userCompany->save();
+                }
 
                 $subscription = $user->newsletterSubscription;
                 if ($subscription && $subscription->newsletterCategories->count()) {

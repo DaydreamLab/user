@@ -12,6 +12,7 @@ use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\User\Database\Factories\UserFactory;
+use DaydreamLab\User\Helpers\CompanyHelper;
 use DaydreamLab\User\Models\Line\Line;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Illuminate\Auth\Authenticatable;
@@ -292,6 +293,12 @@ class User extends BaseModel implements
     }
 
 
+    public function getDealerValidateUrlAttribute()
+    {
+        return config('app.url') . '/dealer/validate/' . $this->company->validateToken;
+    }
+
+
     public function getFullMobilePhoneAttribute()
     {
         return $this->mobilePhoneCode . '-' . $this->mobilePhone;
@@ -304,10 +311,19 @@ class User extends BaseModel implements
     }
 
 
-//    public function getGroupsAttribute()
-//    {
-//        return $this->groups()->get();
-//    }
+    public function getIsDealerAttribute()
+    {
+        return $this->company
+            && $this->company->company
+            && $this->company->company->category
+            && in_array($this->company->company->category->title, ['經銷會員', '零壹員工']);
+    }
+
+
+    public function getCompanyEmailIsDealerAttribute()
+    {
+        return CompanyHelper::checkEmailIsDealer($this->company->email, $this->company->company);
+    }
 
 
     public function getNewsletterSubscriptionsAttribute()

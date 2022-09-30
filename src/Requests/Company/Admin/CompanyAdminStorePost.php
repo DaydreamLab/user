@@ -38,7 +38,7 @@ class CompanyAdminStorePost extends AdminRequest
                 EnumHelper::COMPANY_APPROVED,
                 EnumHelper::COMPANY_REJECTED
             ])],
-            'categoryId'    => 'nullable|integer',
+            'categoryId'    => 'required|integer',
             'name'          => 'required|string',
             'vat'           => 'required|string',
             'logo'          => 'nullable|string',
@@ -60,6 +60,7 @@ class CompanyAdminStorePost extends AdminRequest
             'phones.*.phoneCode'    => 'required|numeric',
             'phones.*.phone'    => 'required|numeric',
             'phones.*.ext'    => 'required|numeric',
+            'expiredAt'     => 'nullable|date_format:Y-m-d H:i:s',
             'ordering'      => 'nullable|integer'
         ];
         return array_merge(parent::rules(), $rules);

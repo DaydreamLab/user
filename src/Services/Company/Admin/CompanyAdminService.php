@@ -2,16 +2,13 @@
 
 namespace DaydreamLab\User\Services\Company\Admin;
 
-use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\User\Events\UpdateCompanyUsersUserGroupAndEdmEvent;
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Jobs\ImportCompany;
-use DaydreamLab\Cms\Repositories\Category\Admin\CategoryAdminRepository;
-use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
-use DaydreamLab\User\Models\Company\CompanyCategory;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
+use DaydreamLab\User\Repositories\Company\CompanyCategoryRepository;
 use DaydreamLab\User\Services\Company\CompanyService;
 use Illuminate\Support\Collection;
 
@@ -21,23 +18,15 @@ class CompanyAdminService extends CompanyService
 
     protected $modelType = 'Admin';
 
-    protected $categoryAdminRepository;
+    protected $companyCategoryRepository;
 
     public function __construct(
         CompanyAdminRepository $repo,
-        CategoryAdminRepository $categoryAdminRepository
+        CompanyCategoryRepository $companyCategoryRepository
     ) {
         parent::__construct($repo);
         $this->repo = $repo;
-        $this->categoryAdminRepository = $categoryAdminRepository;
-    }
-
-
-    public function add(Collection $input)
-    {
-        $this->checkCategoryId($input->get('category_id'));
-
-        return parent::add($input);
+        $this->companyCategoryRepository = $companyCategoryRepository;
     }
 
 
@@ -56,35 +45,59 @@ class CompanyAdminService extends CompanyService
     }
 
 
-    public function beforeModify(Collection $input, &$item)
+    public function beforeAdd(Collection &$input)
     {
-        if ($input->get('status') == EnumHelper::COMPANY_APPROVED && $item->status != EnumHelper::COMPANY_APPROVED) {
+        $category = $this->companyCategoryRepository->find($input->get('category_id'));
+        if (in_array($category->title, ['經銷會員', '零壹員工'])) {
+            $input->put('status', EnumHelper::COMPANY_APPROVED);
             $input->put('approvedAt', now()->toDateTimeString());
-            $input->put('rejectedAt', null);
-            $dealerCategory = CompanyCategory::where('title', '=', '經銷會員')->first();
-            $input->put('category_id', $dealerCategory->id);
-        }
-
-        if ($input->get('status') == EnumHelper::COMPANY_REJECTED && $item->status != EnumHelper::COMPANY_REJECTED) {
-            $input->put('rejectedAt', now()->toDateTimeString());
-            $input->put('approvedAt', null);
-            $input->put('expiredAt', null);
-            $normalCategory = CompanyCategory::where('title', '=', '一般會員')->first();
-            $input->put('category_id', $normalCategory->id);
+        } elseif ($category->title == '一般') {
+            $input->put('status', EnumHelper::COMPANY_NEW);
+        } else {
+            $input->put('status', EnumHelper::COMPANY_NONE);
         }
     }
 
 
-    public function checkCategoryId($category_id)
+    public function beforeModify(Collection &$input, &$item)
     {
-        if ($category_id) {
-            $q = new QueryCapsule();
-            $q->where('extension', 'Company')
-                ->whereNotNull('parent_id');
-
-            return $this->categoryAdminRepository->find($category_id, $q);
+        $inputCategory = $this->companyCategoryRepository->find($input->get('category_id'));
+        if (in_array($item->category->title, ['經銷會員', '零壹員工', '競爭廠商', '原廠'])) {
+            if ($inputCategory->title == '一般') {
+                $input->put('status', EnumHelper::COMPANY_NEW);
+                $input->put('approvedAt', null);
+                $input->put('rejectedAt', null);
+                $input->put('expiredAt', null);
+            } elseif (in_array($inputCategory->title, ['原廠', '競爭廠商'])) {
+                $input->put('status', EnumHelper::COMPANY_NONE);
+                $input->put('approvedAt', null);
+                $input->put('rejectedAt', null);
+                $input->put('expiredAt', null);
+            } else {
+                $input->put('status', EnumHelper::COMPANY_APPROVED);
+                $input->put('approvedAt', $item->approvedAt ?? now()->toDateTimeString());
+                $input->put('rejectedAt', null);
+            }
         } else {
-            return  true;
+            if ($inputCategory->title == '經銷會員') {
+                $input->put('status', EnumHelper::COMPANY_APPROVED);
+                $input->put('approvedAt', now()->toDateTimeString());
+                $input->put('rejectedAt', null);
+            } elseif (in_array($inputCategory->title, ['原廠', '競爭廠商'])) {
+                $input->put('status', EnumHelper::COMPANY_NONE);
+                $input->put('approvedAt', null);
+                $input->put('rejectedAt', null);
+                $input->put('expiredAt', null);
+            } else {
+                if (
+                    $input->get('status') == EnumHelper::COMPANY_REJECTED
+                    && $item->status != EnumHelper::COMPANY_REJECTED
+                ) {
+                    $input->put('rejectedAt', now()->toDateTimeString());
+                    $input->put('approvedAt', null);
+                    $input->put('expiredAt', null);
+                }
+            }
         }
     }
 
