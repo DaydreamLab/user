@@ -42,8 +42,8 @@ class BackHomeCommand extends Command
     public function handle()
     {
         $hour = now()->tz('Asia/Taipei')->format('H') ;
-        if (in_array($hour, ['08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18'])) {
-            $users = User::whereNull('backHomeSendAt')->limit(3)->get();
+        if (in_array($hour, ['08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18','19'])) {
+            $users = User::whereNull('backHomeSendAt')->limit(11)->get();
             foreach ($users as $i => $user) {
                 $user->backHomeSendAt = now()->toDateTimeString();
                 $user->save();
