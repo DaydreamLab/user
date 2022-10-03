@@ -42,18 +42,12 @@ class BackHomeCommand extends Command
     public function handle()
     {
         $hour = now()->format('H') ;
-        if (
-//            in_array(
-//                $hour,
-//                ['00', '01', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21, 22, 23']
-//            )
-        1
-        ) {
-            $users = User::whereNull('backHomeSendAt')->limit(3)->get();
+        if (in_array($hour, ['08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18'])) {
+            $users = User::whereNull('backHomeSendAt')->limit(60)->get();
             foreach ($users as $i => $user) {
                 $user->backHomeSendAt = now()->toDateTimeString();
                 $user->save();
-                BackHomeNotify::dispatch($user)->delay(now()->addSeconds($i * 5));
+                BackHomeNotify::dispatch($user)->delay(now()->addSeconds($i));
             }
         }
     }
