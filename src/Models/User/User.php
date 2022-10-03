@@ -12,6 +12,7 @@ use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\User\Database\Factories\UserFactory;
+use DaydreamLab\User\Helpers\CompanyHelper;
 use DaydreamLab\User\Models\Line\Line;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Illuminate\Auth\Authenticatable;
@@ -97,6 +98,7 @@ class User extends BaseModel implements
         'lastLoginIp',
         'line_user_id',
         'line_nonce',
+        'backHome',
         'created_by',
         'updated_by'
     ];
@@ -288,6 +290,21 @@ class User extends BaseModel implements
         });
 
         return $accessGroupIds->all();
+    }
+
+
+    public function getCompanyEmailIsDealerAttribute()
+    {
+        return CompanyHelper::checkEmailIsDealer($this->company->email, $this->company->company);
+    }
+
+
+    public function getIsDealerAttribute()
+    {
+        return $this->company
+            && $this->company->company
+            && $this->company->company->category
+            && in_array($this->company->company->category->title, ['經銷會員', '零壹員工']);
     }
 
 

@@ -42,7 +42,8 @@ use LINE\LINEBot\RichMenuBuilder\RichMenuSizeBuilder;
 
 class UserFrontService extends UserService
 {
-    use LoggedIn, CanSendNotification;
+    use LoggedIn;
+    use CanSendNotification;
 
     protected $modelType = 'Front';
 
@@ -53,12 +54,11 @@ class UserFrontService extends UserService
     protected $lineRepo;
 
     public function __construct(
-        UserFrontRepository     $repo,
-        SocialUserService       $socialUserService,
-        PasswordResetService    $passwordResetService,
-        LineRepository          $lineRepo
-    )
-    {
+        UserFrontRepository $repo,
+        SocialUserService $socialUserService,
+        PasswordResetService $passwordResetService,
+        LineRepository $lineRepo
+    ) {
         parent::__construct($repo);
         $this->socialUserService    = $socialUserService;
         $this->passwordResetService = $passwordResetService;
@@ -76,13 +76,13 @@ class UserFrontService extends UserService
         $user = $this->findBy('activate_token', '=', $token)->first();
         if ($user) {
             if ($user->activation) {
-                throw new ForbiddenException('HasBeenActivated',  ['token' => $token]);
+                throw new ForbiddenException('HasBeenActivated', ['token' => $token]);
             } else {
                 $this->repo->modify($user, collect(['activation' => 1]));
                 $this->status = 'ActivationSuccess';
             }
         } else {
-            throw new ForbiddenException('ActivationTokenInvalid',  ['token' => $token]);
+            throw new ForbiddenException('ActivationTokenInvalid', ['token' => $token]);
         }
     }
 
@@ -191,7 +191,8 @@ class UserFrontService extends UserService
         }
 
         $code = config('app.env') == 'production' ? Helper::generateRandomIntegetString() : '0000';
-        if (config('app.env') == 'production'
+        if (
+            config('app.env') == 'production'
             && $user->lastSendAt
             && now()->diffInSeconds(Carbon::parse($user->lastSendAt)) < config('daydreamlab.user.sms.cooldown')
         ) {
@@ -264,6 +265,10 @@ class UserFrontService extends UserService
     public function handleUserDataUpdate(Collection $input, $user)
     {
         $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
+
+        if ($input->has('backHome')) {
+            $userData['backHome'] = $input->get('backHome');
+        }
 
         if ($input->has('lastLoginIp')) {
             $userData['lastLoginIp'] = $input->get('lastLoginIp');
@@ -360,7 +365,7 @@ class UserFrontService extends UserService
         }
 
         $tokens = $user->tokens()->get();
-        if(!config('daydreamlab.user.multiple_login')) {
+        if (!config('daydreamlab.user.multiple_login')) {
             $tokens->each(function ($token) {
                 $token->multipleLogin = 1;
                 $token->save();
@@ -512,7 +517,11 @@ class UserFrontService extends UserService
             $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
             if ($dealerUserGroup) {
                 if ($user->isAdmin()) {
-                    if (!in_array($dealerUserGroup->id, $user->groups->map(function ($g) { return $g->id; })->toArray())) {
+                    if (
+                        !in_array($dealerUserGroup->id, $user->groups->map(function ($g) {
+                            return $g->id;
+                        })->toArray())
+                    ) {
                         $user->groups()->attach([$dealerUserGroup->id]);
                     }
                 } else {
@@ -557,7 +566,6 @@ class UserFrontService extends UserService
     {
         $user = $this->findBy('email', '=', $input->get('email'))->first();
         if ($user) {
-
             $this->passwordResetService->findBy('email', '=', $input->get('email'))
                 ->each(function ($p) {
                     $p->delete();
@@ -648,8 +656,8 @@ class UserFrontService extends UserService
 
         if ($res->isSucceeded()) {
             $currentRichMenuID = $res->getJSONDecodedBody()['richMenuId'];
-            $path = base_path().'/vendor/daydreamlab/user/resources/line/richmenu.jpg';
-            if ( file_exists($path) ) {
+            $path = base_path() . '/vendor/daydreamlab/user/resources/line/richmenu.jpg';
+            if (file_exists($path)) {
                 $res = $bot->uploadRichMenuImage($currentRichMenuID, $path, 'image/jpeg');
                 if ($res->isSucceeded()) {
                     $res = $bot->linkRichMenu("all", $currentRichMenuID);
@@ -713,7 +721,7 @@ class UserFrontService extends UserService
                                             'action' => [
                                                 'type' => 'uri',
                                                 'label' => '開始綁定',
-                                                'uri' => url('api/linebot/linkAccount/'.$lineId)
+                                                'uri' => url('api/linebot/linkAccount/' . $lineId)
                                             ]
                                         ]
                                     ]
@@ -798,10 +806,9 @@ class UserFrontService extends UserService
 
         $res = $bot->createLinkToken($lineId);
         if ($res->isSucceeded()) {
-            $baseURL = url('login?lineLinkToken='. $res->getJSONDecodedBody()['linkToken']);
+            $baseURL = url('login?lineLinkToken=' . $res->getJSONDecodedBody()['linkToken']);
 
             return redirect($baseURL);
         }
     }
-
 }

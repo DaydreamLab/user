@@ -6,6 +6,8 @@ use DaydreamLab\Cms\Services\NewsletterSubscription\Front\NewsletterSubscription
 use DaydreamLab\User\Events\UpdateCompanyUsersUserGroupAndEdmEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+use function Symfony\Component\String\s;
+
 class UpdateCompanyUsersUserGroupAndEdm implements ShouldQueue
 {
     public $queue = 'batch-job';

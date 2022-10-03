@@ -30,6 +30,7 @@ class UserDataUpdateNotification extends BaseNotification
     {
         parent::__construct($creatorId);
         $this->member = $member;
+        $this->onQueue('update-userdata-job');
     }
 
 
@@ -49,7 +50,7 @@ class UserDataUpdateNotification extends BaseNotification
     {
         $str = '您好, 零壹官網全新上線, 因會員機制更新, 我們邀請您回娘家更新資料，以便能即時收到最新產品與活動課程資訊。若有疑問，請洽詢02-26560777或marketing@zerone.com.tw，謝謝。立即前往：';
 
-        $fullUrl = config('app.url').'/member/update/'.$this->member->uuid;
+        $fullUrl = config('app.url') . '/member/update/' . $this->member->uuid . '?back=1';
 
         $client = new Client();
         $uri = config('app.env') == 'production'
@@ -57,7 +58,7 @@ class UserDataUpdateNotification extends BaseNotification
             : 'https://demo.dsth.me/shortcode.php';
         $response = $client->request('POST', $uri, [
             'form_params' => [
-                'url' =>$fullUrl,
+                'url' => $fullUrl,
             ]
         ]);
 
@@ -80,7 +81,8 @@ class UserDataUpdateNotification extends BaseNotification
                 $shortCode = $data->code;
             } else {
                 Notification::route('mail', 'technique@daydream-lab.com')
-                    ->notify(new DeveloperNotification('[零壹官網] 處理自動短網址發生例外',
+                    ->notify(new DeveloperNotification(
+                        '[零壹官網] 處理自動短網址發生例外',
                         '短網址：' . $fullUrl,
                         $response->getBody()->getContents()
                     ));
@@ -88,7 +90,8 @@ class UserDataUpdateNotification extends BaseNotification
             }
         } else {
             Notification::route('mail', 'technique@daydream-lab.com')
-                ->notify(new DeveloperNotification('[零壹官網] 處理自動短網址發生例外',
+                ->notify(new DeveloperNotification(
+                    '[零壹官網] 處理自動短網址發生例外',
                     '短網址：' . $fullUrl,
                     $response->getBody()->getContents()
                 ));
@@ -109,7 +112,7 @@ class UserDataUpdateNotification extends BaseNotification
     {
         return [
             'userName' => $this->member->name,
-            'updateLink' => config('app.url').'/member/update/'.$this->member->uuid,
+            'updateLink' => config('app.url') . '/member/update/' . $this->member->uuid . '?backHome=1',
             'lineLink'  => 'https://line.me/R/ti/p/@zeronetech'
         ];
     }

@@ -57,7 +57,8 @@ class UserFrontStorePost extends AdminRequest
             'company.interestedIssue.*' => 'nullable|string',
             'company.issueOther'    => 'nullable|string',
             'subscribeNewsletter'   => ['nullable', Rule::in(EnumHelper::BOOLEAN)],
-            'lineId'                => 'nullable|string'
+            'lineId'                => 'nullable|string',
+            'backHome'              => ['nullable', Rule::in(EnumHelper::BOOLEAN)]
         ];
     }
 
