@@ -22,6 +22,7 @@ class CompanyAdminListResource extends BaseJsonResource
             'status'            => $this->status,
             'vat'               => $this->vat,
             'industry'          => $this->industry,
+            'usersCount'        => $this->userCompanies->count(),
             'approvedAt'        => $this->getDateTimeString($this->approvedAt, $tz),
             'expiredAt'         => $this->getDateTimeString($this->expiredAt, $tz),
 //            'domain'            => $this->domain,

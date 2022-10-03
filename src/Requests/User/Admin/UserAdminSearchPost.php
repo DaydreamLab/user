@@ -7,7 +7,8 @@ use DaydreamLab\User\Models\User\UserGroup;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
-class UserAdminSearchPost extends ListRequest
+class
+UserAdminSearchPost extends ListRequest
 {
     protected $modelName = 'User';
 

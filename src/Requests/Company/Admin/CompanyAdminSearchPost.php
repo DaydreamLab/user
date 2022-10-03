@@ -44,7 +44,7 @@ class CompanyAdminSearchPost extends ListRequest
     {
         $validated = parent::validated();
         $q = $validated->get('q');
-
+        $q->with('userCompanies');
         if ($validated->get('company_category')) {
             $validated->put('category_id', $validated->get('company_category'));
             $validated->forget('company_category');

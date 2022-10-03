@@ -89,7 +89,7 @@ class UserAdminController extends BaseController
     {
         $this->service->setUser($request->user('api'));
         try {
-            $this->service->remove($request->validated());
+            $this->service->remove($request->validated());＋
         } catch (Throwable $t) {
             $this->handleException($t);
         }
@@ -107,7 +107,12 @@ class UserAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response, [], UserAdminListResourceCollection::class);
+        return $this->response(
+            $this->service->status,
+            $this->service->response,
+            [],
+            UserAdminListResourceCollection::class
+        );
     }
 
 
