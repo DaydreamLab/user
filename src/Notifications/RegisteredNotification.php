@@ -45,14 +45,23 @@ class RegisteredNotification extends Notification implements ShouldQueue
 
         $template = config('daydreamlab.user.register.mail.template');
 
-        return $template == 'default'?
-                (new MailMessage)
+        return $template == 'default' ?
+                (new MailMessage())
                     ->line('The introduction to the notification.')
-                    ->action('Activate your account',  url($path))
+                    ->action('Activate your account', url($path))
                     ->line('Thank you for using our application!')
-            :   (new MailMessage)
+            :   (new MailMessage())
                     ->subject('[零壹科技] 帳號已啟用')
-                    ->view($template, ['user'=> $this->user, 'subject' => '[零壹科技] 帳號已啟用']);
+                    ->view(
+                        $template,
+                        [
+                            'user' => $this->user,
+                            'subject' => '[零壹科技] 帳號已啟用',
+                            'content' => '感謝您加入零壹會員，您的帳號已正式啟用。',
+                            'clickType' => null,
+                            'clickUrl'  => null
+                        ]
+                    );
     }
 
     /**
