@@ -25,6 +25,9 @@ class Expired
             if ($token->expires_at < now()) {
                 $token->delete();
                 return ResponseHelper::genResponse('USER_TOKEN_EXPIRED');
+            } else {
+                $token->expires_at = now()->addMinutes(30);
+                $token->save();
             }
 
             if ($user->block) {

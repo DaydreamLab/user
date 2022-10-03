@@ -14,7 +14,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function (){
         Route::get('logout', 'DaydreamLab\User\Controllers\User\UserController@logout');
         Route::get('login', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@getLogin')
             ->middleware(['expired']);
-        Route::post('login', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@login');
+        Route::post('login', 'DaydreamLab\User\Controllers\User\Front\UserFrontController@login')->middleware(['throttle:5,5']);
     });
 
     // 忘記密碼
