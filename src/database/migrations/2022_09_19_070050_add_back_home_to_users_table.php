@@ -14,8 +14,12 @@ class AddBackHomeToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
+            if (!Schema::hasColumn('users', 'backHomeSendAt')) {
+                $table->dateTime('backHomeSendAt')->after('line_nonce')->nullable();
+            }
+
             if (!Schema::hasColumn('users', 'backHome')) {
-                $table->unsignedTinyInteger('backHome')->after('line_nonce')->default(0);
+                $table->unsignedTinyInteger('backHome')->after('backHomeSendAt')->default(0);
             }
         });
     }
