@@ -71,7 +71,7 @@ class CompanyAdminService extends CompanyService
     }
 
 
-    public function beforeModify(Collection &$input, $item)
+    public function beforeModify(Collection &$input, &$item)
     {
         # 更換 domain 時，將舊的 domain 刪除，未來實作 mailDomains 要拔除
         if ($item->domain != $input->get('domain')) {
