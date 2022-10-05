@@ -21,10 +21,13 @@ class CompanyAdminRepository extends CompanyRepository
     {
         $domain = explode('@', $email)[1];
         $companies = $this->model
-            ->where('mailDomains', 'like', '%' .$domain.'%')
+            ->where('mailDomains', 'like', '%' . $domain . '%')
             ->get();
 
-        return $companies;
+        return $companies->filter(function ($company) use ($domain, $email) {
+            return in_array($domain, $company->mailDomains['domain'])
+                || array($email, $company->mailDomains['email']);
+        });
     }
 
 
