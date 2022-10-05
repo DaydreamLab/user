@@ -76,7 +76,7 @@ class UserAdminService extends UserService
     }
 
 
-    public function beforeRemove(Collection &$input, &$item)
+    public function beforeRemove(Collection &$input, $item)
     {
         if (!$item->canDelete) {
             throw new ForbiddenException('IsPreserved');
