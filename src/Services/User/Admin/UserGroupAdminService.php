@@ -80,7 +80,7 @@ class UserGroupAdminService extends UserGroupService
     }
 
 
-    public function beforeRemove(Collection &$input, $item)
+    public function beforeRemove(Collection &$input, &$item)
     {
         if (!$item->canDelete) {
             $pk = $this->repo->getModel()->getPrimaryKey();
