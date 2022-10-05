@@ -10,6 +10,9 @@ return [
 
     'CHANGE_PASSWORD_SUCCESS'           => 200,
     'CHANGE_PASSWORD_FAIL'              => 500,
+    'COMPANY_VAT_EMPTY'                 => 403,
+
+    'DEALER_VALIDATE_SUCCESS'           => 200,
 
     'EMAIL_IS_REGISTERED'               => 403,
     'EMAIL_IS_NOT_REGISTERED'           => 200,
@@ -24,8 +27,9 @@ return [
 
     'HAS_BEEN_ACTIVATED'                => 403,
 
+    'INVALID_DEALER_TOKEN'              => 403,
     'IS_BLOCKED'                        => 403,
-    'INSUFFICIENT_PERMISSION_ASSIGN_GROUP'=> 403,
+    'INSUFFICIENT_PERMISSION_ASSIGN_GROUP' => 403,
     'INVALID_VERIFICATION_CODE'         => 403,
     'IP_REJECTED'                       => 403,
 
@@ -58,6 +62,8 @@ return [
 
     'SEND_VERIFICATION_CODE_SUCCESS'    => 200,
     'SEND_VERIFICATION_CODE_IN_COOL_DOWN' => 200,
+    'SEND_DEALER_VALIDATE_EMAIL_SUCCESS' => 200,
+    'SEND_DEALER_VALIDATE_EMAIL_FAIL' => 403,
 
     'TOKEN_EXPIRED'                     => 401,
     'TOKEN_REVOKED'                     => 403,
