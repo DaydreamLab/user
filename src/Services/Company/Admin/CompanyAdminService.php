@@ -111,7 +111,7 @@ class CompanyAdminService extends CompanyService
     public function store(Collection $input)
     {
         $company = $this->findBy('vat', '=', $input->get('vat'))->first();
-        if ($company && ($input->get('id') && $input->get('id') != $company->id)) {
+        if ($company && !($input->get('id') && $input->get('id') == $company->id)) {
             $this->status = 'VatExists';
             $this->response = [];
             return $this->response;

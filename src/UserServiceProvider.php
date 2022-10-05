@@ -13,14 +13,13 @@ use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider;
 
-
-
 class UserServiceProvider extends ServiceProvider
 {
     protected $commands = [
         'DaydreamLab\User\Commands\InstallCommand',
         'DaydreamLab\User\Commands\SeedCommand',
         'DaydreamLab\User\Commands\V2\TransformCommand',
+        'DaydreamLab\User\Commands\BackHomeCommand',
     ];
 
 
@@ -37,7 +36,7 @@ class UserServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/../resources/views/emails' => resource_path('views/emails')], 'emails-template');
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'user');
-        $this->loadRoutesFrom(__DIR__.'/routes/api.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/api.php');
     }
 
 
