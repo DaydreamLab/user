@@ -89,7 +89,7 @@ class UserAdminController extends BaseController
     {
         $this->service->setUser($request->user('api'));
         try {
-            $this->service->remove($request->validated());＋
+            $this->service->remove($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
