@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\Company\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
 use DaydreamLab\User\Helpers\CompanyRequestHelper;
 
 class CompanyFrontApplyPost extends AdminRequest
@@ -28,6 +29,7 @@ class CompanyFrontApplyPost extends AdminRequest
     {
         return [
             'name' => 'required|string',
+            'vat'   => ['required', new TaiwanUnifiedBusinessNumber()],
             'city'  => 'required|string',
             'district'  => 'required|string',
             'address'   => 'required|string',

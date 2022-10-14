@@ -36,7 +36,7 @@ class UserFrontResource extends JsonResource
             'groupId'       => $group ? $group->id : null,
             'newsletterSubscriptions' => $this->newsletterSubscriptions,
             'subscribeNewsletter'   => count($this->newsletterSubscriptions) ? 1 : 0,
-            'canApplyDealer'    => (
+            'canApplyDealer'    => !$this->company || ($this->company && !$this->company->company) || (
                 $this->company
                 && $this->company->company
                 && $this->company->company->category->title == '一般'
@@ -44,26 +44,28 @@ class UserFrontResource extends JsonResource
             )  ? 1 : 0
         ];
 
+        $userCompany = $this->company;
+        $company = $this->company ? $this->company->company : null;
         $data['company'] = [
-            'name'          => ($this->company) ? $this->company->name : null,
-            'vat'           => ($this->company) ? $this->company->vat : null,
-            'email'         => ($this->company) ? $this->company->email : null,
-            'phoneCode'     => ($this->company) ? $this->company->phoneCode : null,
-            'phone'         => ($this->company) ? $this->company->phone : null,
-            'extNumber'     => ($this->company) ? $this->company->extNumber : null,
-            'city'          => ($this->company) ? $this->company->city : null,
-            'district'      => ($this->company) ? $this->company->district : null,
-            'address'       => ($this->company) ? $this->company->address : null,
-            'zipcode'       => ($this->company) ? $this->company->zipcode : null,
-            'department'    => ($this->company) ? $this->company->department : null,
-            'jobType'       => ($this->company) ? $this->company->jobType : null,
-            'jobCategory'   => ($this->company) ? $this->company->jobCategory : null,
-            'jobTitle'      => ($this->company) ? $this->company->jobTitle : null,
-            'industry'      => ($this->company) ? $this->company->industry : null,
-            'scale'         => ($this->company) ? $this->company->scale : null,
-            'purchaseRole'  => ($this->company) ? $this->company->purchaseRole : null,
-            'interestedIssue'   => ($this->company) ? $this->company->interestedIssue : [],
-            'issueOther'    => ($this->company) ? $this->company->issueOther : null
+            'name'          => $company ? $company->name : null,
+            'vat'           => $company ? $company->vat : null,
+            'email'         => $userCompany ? $userCompany->email : null,
+            'phoneCode'     => $userCompany ? $userCompany->phoneCode : null,
+            'phone'         => $userCompany ? $userCompany->phone : null,
+            'extNumber'     => $userCompany ? $userCompany->extNumber : null,
+            'city'          => $company ? $company->city : null,
+            'district'      => $company ? $company->district : null,
+            'address'       => $company ? $company->address : null,
+            'zipcode'       => $company ? $company->zipcode : null,
+            'department'    => $userCompany ? $userCompany->department : null,
+            'jobType'       => $userCompany ? $userCompany->jobType : null,
+            'jobCategory'   => $userCompany ? $userCompany->jobCategory : null,
+            'jobTitle'      => $userCompany ? $userCompany->jobTitle : null,
+            'industry'      => $company ? $company->industry : null,
+            'scale'         => $company ? $company->scale : null,
+            'purchaseRole'  => $userCompany ? $userCompany->purchaseRole : null,
+            'interestedIssue'   => $userCompany ? $userCompany->interestedIssue : [],
+            'issueOther'    => $userCompany ? $userCompany->issueOther : null
         ];
 
         return $data;

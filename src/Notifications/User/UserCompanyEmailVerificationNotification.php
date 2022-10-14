@@ -32,13 +32,13 @@ class UserCompanyEmailVerificationNotification extends BaseNotification
 
     public function defaultSubject()
     {
-        return '[' . config('app.name') . ']' . '經銷商資格郵件驗證';
+        return '[' . config('app.name') . ']' . '經銷會員升級驗證';
     }
 
 
     public function defaultMailContent()
     {
-        return "因您的公司具有經銷商資格，請點擊下方連結進行驗證。";
+        return "因您的公司具有經銷商資格，請點擊下方連結進行驗證。<br>感謝您的支持。";
     }
 
 

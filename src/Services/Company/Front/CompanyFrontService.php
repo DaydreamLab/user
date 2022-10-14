@@ -24,15 +24,18 @@ class CompanyFrontService extends CompanyService
         $user = $input->get('user');
         $input->put('applyUserId', $user->id);
         $userCompany = $user->company;
-        if (!$userCompany->vat) {
-            throw new ForbiddenException('CompanyVatEmpty', null, null, 'User');
+        if (!$userCompany) {
+            $user->company()->create();
+            $user = $user->refresh();
+            $userCompany = $user->company;
         }
 
-        $company = $this->findBy('vat', '=', $userCompany->vat)->first();
+        $company = $this->findBy('vat', '=', $input->get('vat'))->first();
         $input->put('status', EnumHelper::COMPANY_PENDING);
         if (!$company) {
             $input->put('category_id', 3); # 一般
             $result = $this->add($input);
+            $this->repo->update($userCompany, ['company_id' => $company->id]);
         } else {
             if ($company->status != EnumHelper::COMPANY_NEW) {
                 throw new ForbiddenException('StatusInvalid', ['status' => $company->status]);

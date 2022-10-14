@@ -105,9 +105,31 @@ class UserFrontService extends UserService
     }
 
 
+    public function checkVerificationCode($user, $verificationCode)
+    {
+        $verify = Hash::check($verificationCode, $user->verificationCode);
+        if ($verify) {
+            if (config('app.env') == 'production') {
+                if (
+                    $user->lastSendAt
+                    && now()->diffInMinutes($user->lastSendAt) > config('daydreamlab.user.sms.expiredMinutes')
+                ) {
+                    throw new ForbiddenException('VerificationCodeExpired');
+                }
+            }
+            $this->status = 'VerifyVerificationCodeSuccess';
+        } else {
+            throw new ForbiddenException('InvalidVerificationCode');
+        }
+
+        return true;
+    }
+
+
     public function addMapping($item, $input)
     {
         $item->groups()->attach(config('daydreamlab.user.register.groups'));
+        $item->company()->create([]);
     }
 
 
@@ -350,7 +372,7 @@ class UserFrontService extends UserService
             ->whereNull('user_id');
         $noUserSub = $nsfs->search(collect(['q' => $q]))->first();
         if ($noUserSub) {
-            $nsfs->update($noUserSub, ['user_id' => $user->id]);
+            $nsfs->update($noUserSub, collect(['user_id' => $user->id]));
         }
 
         return $nsfs->store(collect([
@@ -449,20 +471,7 @@ class UserFrontService extends UserService
             throw new NotFoundException('ItemNotExist');
         }
 
-        $verify = Hash::check($input->get('verificationCode'), $user->verificationCode);
-        if ($verify) {
-            if (config('app.env') == 'production') {
-                if (
-                    $user->lastSendAt
-                    && now()->diffInMinutes($user->lastSendAt) > config('daydreamlab.user.sms.expiredMinutes')
-                ) {
-                    throw new ForbiddenException('VerificationCodeExpired');
-                }
-            }
-            $this->status = 'VerifyVerificationCodeSuccess';
-        } else {
-            throw new ForbiddenException('InvalidVerificationCode');
-        }
+        $this->checkVerificationCode($user, $input->get('verificationCode'));
 
         $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
         $userData['verificationCode'] = bcrypt(Str::random());
@@ -478,6 +487,7 @@ class UserFrontService extends UserService
         if ($cpy) {
             $companyData['name'] = $cpy->name;
             $companyData['company_id'] = $cpy->id;
+            $this->repo->update($user->company, ['company_id' => $cpy->id]);
         }
 
         # 根據公司的身份決定使用者的群組
@@ -486,14 +496,8 @@ class UserFrontService extends UserService
         # 更新電子報訂閱
         $this->handleUserNewsletterSubscription($input, $user);
 
-        $companyData['user_id'] = $user->id;
-        $userCompany = UserCompany::create($companyData);
-        if (!$userCompany) {
-            throw new InternalServerErrorException('RegisterFail');
-        }
-
         # 檢查會蟲
-        $this->checkBlacklist($user, $userCompany);
+        $this->checkBlacklist($user, $user->company->refresh());
 
         # 通知
         $this->sendNotification('mail', $user->email, new RegisteredNotification($user));
@@ -614,6 +618,7 @@ class UserFrontService extends UserService
     public function sendDealerValidateEmail($user)
     {
         if ($user->isDealer && $user->companyEmailIsDealer) {
+            $this->repo->update($user->company, ['validateToken' => Str::random(128)]);
             Notification::route('mail', $user->company->email)
                 ->notify(new UserCompanyEmailVerificationNotification($user));
             $this->status = 'SendDealerValidateEmailSuccess';
@@ -632,18 +637,7 @@ class UserFrontService extends UserService
             throw new NotFoundException('ItemNotExist', ['mobilePhone' => $input->get('mobilePhone')]);
         }
 
-        $verify = Hash::check($input->get('verificationCode'), $user->verificationCode);
-        if ($verify) {
-            if (config('app.env') == 'production') {
-                if ($user->lastSendAt && now()->diffInMinutes($user->lastSendAt) > config('daydreamlab.user.sms.expiredMinutes')) {
-                    throw new ForbiddenException('VerificationCodeExpired');
-                }
-            }
-
-            $this->status = 'VerifyVerificationCodeSuccess';
-        } else {
-            throw new ForbiddenException('InvalidVerificationCode');
-        }
+        return $this->checkVerificationCode($user, $input->get('verificationCode'));
     }
 
 
