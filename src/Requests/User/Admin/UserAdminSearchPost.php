@@ -7,8 +7,7 @@ use DaydreamLab\User\Models\User\UserGroup;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
-class
-UserAdminSearchPost extends ListRequest
+class UserAdminSearchPost extends ListRequest
 {
     protected $modelName = 'User';
 
@@ -47,6 +46,7 @@ UserAdminSearchPost extends ListRequest
             'search'        => 'nullable|string',
             'user_group'    => 'nullable|integer',
             'parent_group'  => 'nullable|integer'
+            # CRM
         ];
         return array_merge(parent::rules(), $rules);
     }
@@ -61,7 +61,7 @@ UserAdminSearchPost extends ListRequest
         $parent_group = $validated->get('parent_group');
         $child_group = $validated->get('user_group');
         if ($parent_group || $child_group) {
-            $q->whereIn('id', function ($q) use ($parent_group, $child_group){
+            $q->whereIn('id', function ($q) use ($parent_group, $child_group) {
                 $q->select('user_id')->from('users_groups_maps');
                 if ($parent_group) {
                     $g = UserGroup::where('id', $parent_group)->first();

@@ -64,7 +64,7 @@ class TransformCommand extends Command
 
     public function transformCompanies()
     {
-        $companies = Company::with('category')->get();
+        $companies = Company::with(['category', 'userCompanies'])->get();
         foreach ($companies as $company) {
             if (in_array($company->category->title, ['經銷會員', '零壹員工'])) {
                 $company->status = EnumHelper::COMPANY_APPROVED;
@@ -81,6 +81,9 @@ class TransformCommand extends Command
                 $company->mailDomains = $data;
             }
 
+            $company->industry = $company->userCompanies->filter(function ($userCompany) {
+                return !in_array($userCompany->industry, ['', null]);
+            })->pluck('industry')->unique()->values()->except(['', null])->all() ?: [];
             $company->save();
         }
     }

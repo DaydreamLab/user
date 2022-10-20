@@ -10,9 +10,11 @@ use DaydreamLab\User\Models\User\UserCompany;
 
 class Company extends BaseModel
 {
-    use UserInfo, RecordChanger {
+    use UserInfo;
+    use RecordChanger {
         RecordChanger::boot as traitBoot;
     }
+
     /**
      * The table associated with the model.
      *
@@ -82,6 +84,7 @@ class Company extends BaseModel
 
 
     protected $casts = [
+        'industry'      => 'array',
         'mailDomains'   => 'array',
         'salesInfo'     => 'array',
         'phones'        => 'array',

@@ -46,6 +46,7 @@ class UserCompany extends BaseModel
         'validated',
         'validateToken',
         'lastValidate',
+        'lastUpdate',
         'isExpired',
         'country',
         'state_',

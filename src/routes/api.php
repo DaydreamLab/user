@@ -11,7 +11,8 @@ use DaydreamLab\User\Controllers\Company\Front\CompanyFrontController;
 use DaydreamLab\User\Controllers\Asset\Admin\AssetGroupAdminController;
 use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
 use DaydreamLab\User\Controllers\Xsms\XsmsController;
-
+use DaydreamLab\User\Controllers\CompanyOrder\Admin\CompanyOrderAdminController;
+use DaydreamLab\User\Controllers\CompanyOrderItem\Admin\CompanyOrderItemAdminController;
 /************************************  前台 API  ************************************/
 
 // 啟用帳號
@@ -144,6 +145,17 @@ Route::post('api/admin/asset/group/search', [AssetGroupAdminController::class, '
 Route::get('api/admin/asset/group/{id}', [AssetGroupAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
+# CompanyOrder
+Route::get('api/admin/company/{companyId}/order/{orderId}', [CompanyOrderAdminController::class, 'getItem'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('api/admin/company/{companyId}/order/store', [CompanyOrderAdminController::class, 'store'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('api/admin/company/{companyId}/order/search', [CompanyOrderAdminController::class, 'search'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('api/admin/company/{companyId}/order/remove', [CompanyOrderAdminController::class, 'remove'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('api/admin/company/{companyId}/order/import', [CompanyOrderAdminController::class, 'import'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 # Company
 Route::post('api/admin/company/export', [CompanyAdminController::class, 'export'])

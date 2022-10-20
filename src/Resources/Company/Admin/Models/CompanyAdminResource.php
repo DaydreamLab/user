@@ -37,7 +37,7 @@ class CompanyAdminResource extends BaseJsonResource
 //            'introtext'         => $this->introtext,
 //            'description'       => $this->description,
 //            'created_at'        => $this->getDateTimeString($this->created_at, $tz),
-//            'updated_at'        => $this->getDateTimeString($this->updated_at, $tz),
+//            'updated_at'        => $this->getDaㄑˋteTimeString($this->updated_at, $tz),
 //            'locked_at'         => $this->getDateTimeString($this->locked_at, $tz),
             'approvedAt'        => $this->getDateTimeString($this->approvedAt, $tz),
             'rejectedAt'        => $this->getDateTimeString($this->rejectedAt, $tz),

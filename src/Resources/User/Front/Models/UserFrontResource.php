@@ -2,11 +2,13 @@
 
 namespace DaydreamLab\User\Resources\User\Front\Models;
 
+use DaydreamLab\JJAJ\Traits\FormatDateTime;
 use DaydreamLab\User\Helpers\EnumHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserFrontResource extends JsonResource
 {
+    use FormatDateTime;
     /**
      * Transform the resource into an array.
      *
@@ -41,7 +43,13 @@ class UserFrontResource extends JsonResource
                 && $this->company->company
                 && $this->company->company->category->title == '一般'
                 && $this->company->company->status == EnumHelper::COMPANY_NEW
-            )  ? 1 : 0
+            )  ? 1 : 0,
+            'dealerExpired' => $this->isDealer && ($this->company && $this->company->isExpired),
+            'lastValidate'  => $this->getDateTimeString(
+                $this->company && $this->company->lastValidate
+                    ? $this->company->lastValidate
+                    : null
+            )
         ];
 
         $userCompany = $this->company;
@@ -61,7 +69,7 @@ class UserFrontResource extends JsonResource
             'jobType'       => $userCompany ? $userCompany->jobType : null,
             'jobCategory'   => $userCompany ? $userCompany->jobCategory : null,
             'jobTitle'      => $userCompany ? $userCompany->jobTitle : null,
-            'industry'      => $company ? $company->industry : null,
+            'industry'      => $company ? $company->industry : [],
             'scale'         => $company ? $company->scale : null,
             'purchaseRole'  => $userCompany ? $userCompany->purchaseRole : null,
             'interestedIssue'   => $userCompany ? $userCompany->interestedIssue : [],

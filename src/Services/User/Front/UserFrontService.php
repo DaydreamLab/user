@@ -146,6 +146,7 @@ class UserFrontService extends UserService
 
             $this->repo->update($userCompany, [
                 'validated' => 1,
+                'isExpired' => 0,
                 'validateToken' => Str::random(128),
                 'lastValidate' => now()->toDateTimeString()
             ]);
@@ -246,7 +247,8 @@ class UserFrontService extends UserService
             && $user->lastSendAt
             && now()->diffInSeconds(Carbon::parse($user->lastSendAt)) < config('daydreamlab.user.sms.cooldown')
         ) {
-            $diff = config('daydreamlab.user.sms.cooldown') - now()->tz('UTC')->diffInSeconds(Carbon::parse($user->lastSendAt, 'UTC'));
+            $diff = config('daydreamlab.user.sms.cooldown')
+                - now()->tz('UTC')->diffInSeconds(Carbon::parse($user->lastSendAt, 'UTC'));
             throw new ForbiddenException('SendVerificationCodeInCoolDown', ['seconds' => $diff]);
         }
 
@@ -437,6 +439,7 @@ class UserFrontService extends UserService
     public function updateOrCreateUserCompany($user, $companyData)
     {
         $userCompany = $user->company;
+        $companyData['lastUpdate'] = now()->toDateTimeString();
         if ($userCompany) {
             $userCompany->update($companyData);
         } else {
