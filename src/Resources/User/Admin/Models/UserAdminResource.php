@@ -15,6 +15,15 @@ class UserAdminResource extends BaseJsonResource
     public function toArray($request)
     {
         $timezone = $request->user('api')->timezone;
+        if ($request->get('pageGroupId') == 16) {
+            $group_ids = $this->groups->pluck('id')->reject(function ($value) {
+                return in_array($value, [6,7]);
+            })->values();
+        } else {
+            $group_ids = $this->groups->pluck('id')->reject(function ($value) {
+                return !in_array($value, [6,7]);
+            })->values();
+        }
 
         return [
             'id'                    => $this->id,
@@ -46,9 +55,7 @@ class UserAdminResource extends BaseJsonResource
             'updatedAt'             => $this->getDateTimeString($this->updatedAt, $timezone),
             'createdBy'             => $this->creatorName,
             'updatedBy'             => $this->updaterName,
-            'groupIds'              => ($request->get('pageGroupId') == 16) ?
-                $this->groups->pluck('id')->sortDesc()->values() :
-                $this->groups->pluck('id')->sort()->values(),
+            'groupIds'              => $group_ids,
             'accessIds'             => $this->accessIds,
             'brandIds'              => $this->brands->pluck('id'),
             'tags'                  => $this->tags->map(function ($tag) {
