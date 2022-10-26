@@ -456,9 +456,9 @@ class UserFrontService extends UserService
         $this->handleUserNewsletterSubscription($input, $user);
 
         $companyData['user_id'] = $user->id;
-        $userCompany = UserCompany::create($companyData);
-        if (!$userCompany) {
-            throw new InternalServerErrorException('RegisterFail');
+        $userCompany = $user->company;
+        if (!$user->company) {
+            $userCompany = UserCompany::create($companyData);
         }
 
         # 檢查會蟲
