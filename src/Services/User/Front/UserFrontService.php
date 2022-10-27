@@ -322,7 +322,7 @@ class UserFrontService extends UserService
             ->whereNull('user_id');
         $noUserSub = $nsfs->search(collect(['q' => $q]))->first();
         if ($noUserSub) {
-            $nsfs->update($noUserSub, ['user_id' => $user->id]);
+            $nsfs->update($noUserSub, collect(['user_id' => $user->id]));
         }
 
         return $nsfs->store(collect([
