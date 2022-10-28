@@ -457,12 +457,12 @@ class UserFrontService extends UserService
 
         $companyData['user_id'] = $user->id;
         $userCompany = $user->company;
-        if (!$user->company) {
+        if (!$userCompany) {
             $userCompany = UserCompany::create($companyData);
         }
 
         # 檢查會蟲
-        $this->checkBlacklist($user, $userCompany);
+        $this->checkBlacklist($user, $userCompany->refresh());
 
         # 通知
         $this->sendNotification('mail', $user->email, new RegisteredNotification($user));
