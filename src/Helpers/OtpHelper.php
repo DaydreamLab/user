@@ -26,9 +26,10 @@ class OtpHelper
         if (config('app.env') != 'production') {
             $twoFactor['otp']['code'] = "000000";
         } else {
-            $twoFactor['otp']['code'] = $user->email == 'marketing@zerone.com.tw'
-                ? '000000'
-                : str_pad(strval(rand(0, $maxCodeNum)), $digits, '0', STR_PAD_LEFT);
+//            $twoFactor['otp']['code'] = $user->email == 'marketing@zerone.com.tw'
+//                ? '000000'
+//                : str_pad(strval(rand(0, $maxCodeNum)), $digits, '0', STR_PAD_LEFT);
+             $twoFactor['otp']['code'] = str_pad(strval(rand(0, $maxCodeNum)), $digits, '0', STR_PAD_LEFT);
         }
         $user->twofactor = $twoFactor;
         $user->save();

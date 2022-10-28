@@ -499,8 +499,14 @@ class UserFrontService extends UserService
         # 更新電子報訂閱
         $this->handleUserNewsletterSubscription($input, $user);
 
+        $companyData['user_id'] = $user->id;
+        $userCompany = $user->company;
+        if (!$userCompany) {
+            $userCompany = UserCompany::create($companyData);
+        }
+
         # 檢查會蟲
-        $this->checkBlacklist($user, $user->company->refresh());
+        $this->checkBlacklist($user, $userCompany->refresh());
 
         # 通知
         $this->sendNotification('mail', $user->email, new RegisteredNotification($user));
