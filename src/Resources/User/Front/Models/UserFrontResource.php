@@ -43,8 +43,9 @@ class UserFrontResource extends JsonResource
                 && $this->company->company
                 && $this->company->company->category->title == '一般'
                 && $this->company->company->status == EnumHelper::COMPANY_NEW
-            )  ? 1 : 0,
+            ),
             'dealerExpired' => $this->isDealer && ($this->company && $this->company->isExpired),
+            'dealerValidate' => $this->isDealer && ($this->company && $this->company->validated),
             'lastValidate'  => $this->getDateTimeString(
                 $this->company && $this->company->lastValidate
                     ? $this->company->lastValidate
