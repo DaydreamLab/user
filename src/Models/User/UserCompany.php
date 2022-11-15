@@ -30,6 +30,7 @@ class UserCompany extends BaseModel
         'company_id',
         'name',
         'vat',
+        'phones',
         'phoneCode',
         'phone',
         'extNumber',
@@ -79,6 +80,7 @@ class UserCompany extends BaseModel
 
 
     protected $casts = [
+        'phones' => 'array',
         'interestedIssue' => 'array'
     ];
 

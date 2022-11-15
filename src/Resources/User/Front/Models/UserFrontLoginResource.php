@@ -23,9 +23,10 @@ class UserFrontLoginResource extends JsonResource
             'company'       => [
                 'name'          => $this->company->name,
                 'email'         => $this->company->email,
-                'phoneCode'     => $this->company->phoneCode,
-                'phone'         => $this->company->phone,
-                'extNumber'     => $this->company->extNumber,
+                'phones'        => $this->company->phones,
+//                'phoneCode'     => $this->company->phoneCode,
+//                'phone'         => $this->company->phone,
+//                'extNumber'     => $this->company->extNumber,
                 'city'          => $this->company->city,
                 'district'      => $this->company->district,
                 'address'       => $this->company->address,

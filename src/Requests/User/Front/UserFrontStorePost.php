@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Requests\User\Front;
 use DaydreamLab\Dsth\Helpers\EnumHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
+use DaydreamLab\User\Helpers\CompanyRequestHelper;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -42,9 +43,14 @@ class UserFrontStorePost extends AdminRequest
             'company'               => 'required|array',
             'company.name'          => 'required|string',
             'company.vat'           => ['nullable', 'numeric', new TaiwanUnifiedBusinessNumber()],
-            'company.phoneCode'     => 'nullable|numeric',
-            'company.phone'         => 'required|numeric',
-            'company.extNumber'     => 'nullable|numeric',
+            'company.phones'        => 'nullable|array',
+            'company.phones.*'      => 'required|array',
+            'company.phones.*.phoneCode' => 'required|numeric',
+            'company.phones.*.phone' => 'required|numeric',
+            'company.phones.*.ext'  => 'required|numeric',
+//            'company.phoneCode'     => 'nullable|numeric',
+//            'company.phone'         => 'required|numeric',
+//            'company.extNumber'     => 'nullable|numeric',
             'company.email'         => 'required|email',
             'company.department'    => 'nullable|string',
             'company.jobTitle'      => 'nullable|string',
@@ -68,6 +74,9 @@ class UserFrontStorePost extends AdminRequest
         $validated = parent::validated();
 
         $validated->put('email', Str::lower($validated->get('email')));
+
+        $companyData = $validated->get('company');
+        $validated->put('phones', CompanyRequestHelper::handlePhones($companyData['phones']) ?? []);
 
         $company = $validated->get('company') ?: [];
         if (isset($company['email'])) {

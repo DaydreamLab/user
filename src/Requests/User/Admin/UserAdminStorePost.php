@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Requests\User\Admin;
 use DaydreamLab\Dsth\Helpers\EnumHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
+use DaydreamLab\User\Helpers\CompanyRequestHelper;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -34,9 +35,9 @@ class UserAdminStorePost extends AdminRequest
             'name',
             'email',
             'vat',
-            'phoneCode',
-            'phone',
-            'extNumber',
+//            'phoneCode',
+//            'phone',
+//            'extNumber',
             'country',
             'state',
             'city',
@@ -59,6 +60,7 @@ class UserAdminStorePost extends AdminRequest
                 $company->put($key, $company->get($key));
             }
         }
+        $company->put('phones', CompanyRequestHelper::handlePhones(isset($companyData['phones']) ?? []));
 
         return $company->all();
     }
@@ -116,9 +118,12 @@ class UserAdminStorePost extends AdminRequest
             'company.id'            => 'nullable|integer',
             'company.vat'          => ['nullable', new TaiwanUnifiedBusinessNumber()],
             'company.quit'          => ['nullable', Rule::in([0,1])],
-            'company.phoneCode'     => 'nullable|string',
-            'company.phone'         => 'nullable|string',
-            'company.extNumber'     => 'nullable|string',
+            'company.phones.*.phoneCode' => 'required|numeric',
+            'company.phones.*.phone' => 'required|numeric',
+            'company.phones.*.ext'  => 'required|numeric',
+//            'company.phoneCode'     => 'nullable|string',
+//            'company.phone'         => 'nullable|string',
+//            'company.extNumber'     => 'nullable|string',
             'company.country'       => 'nullable|string',
             'company.state'         => 'nullable|string',
             'company.city'          => 'nullable|string',

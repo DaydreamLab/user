@@ -109,6 +109,17 @@ class TransformCommand extends Command
         foreach ($userCompanies as $userCompany) {
             if (!$userCompany->validateToken) {
                 $userCompany->validateToken = Str::random(128);
+                if ($userCompany->phone) {
+                    $userCompany->phones = [
+                        [
+                            'phoneCode' => $userCompany->phoneCode,
+                            'phone' => $userCompany->phone,
+                            'ext' => $userCompany->extNumber,
+                        ]
+                    ];
+                } else {
+                    $userCompany->phones = [];
+                }
                 $userCompany->save();
             }
         }

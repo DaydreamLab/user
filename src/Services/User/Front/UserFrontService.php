@@ -396,6 +396,7 @@ class UserFrontService extends UserService
         $this->handleUserDataUpdate($input, $user);
 
         $this->response = $user->refresh();
+
         $this->status = 'UpdateSuccess';
     }
 
@@ -490,7 +491,6 @@ class UserFrontService extends UserService
         if ($cpy) {
             $companyData['name'] = $cpy->name;
             $companyData['company_id'] = $cpy->id;
-            $this->repo->update($user->company, ['company_id' => $cpy->id]);
         }
 
         # 根據公司的身份決定使用者的群組
@@ -500,9 +500,17 @@ class UserFrontService extends UserService
         $this->handleUserNewsletterSubscription($input, $user);
 
         $companyData['user_id'] = $user->id;
+        $companyData['company_id'] = $cpy ? $cpy->id : null;
         $userCompany = $user->company;
         if (!$userCompany) {
             $userCompany = UserCompany::create($companyData);
+        } else {
+            if (isset($companyData['industry']) && !in_array($companyData['industry'], $cpy['industry'])) {
+                $industry = $cpy['industry'];
+                $industry[] = $companyData['industry'];
+                $this->repo->update($cpy, ['industry' => $industry]);
+            }
+            $this->repo->update($userCompany, $companyData);
         }
 
         # 檢查會蟲

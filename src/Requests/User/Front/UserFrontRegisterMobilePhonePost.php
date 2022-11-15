@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Requests\User\Front;
 use DaydreamLab\Dsth\Helpers\EnumHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
+use DaydreamLab\User\Helpers\CompanyRequestHelper;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -42,15 +43,15 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
             'company.name'      => 'nullable|string',
             'company.email'     => 'nullable|email',
             'company.vat'       => ['nullable', 'numeric', new TaiwanUnifiedBusinessNumber()],
-            'company.phoneCode' => 'nullable|numeric',
-            'company.phone'     => 'nullable|numeric',
-            'company.extNumber' => 'nullable|numeric',
+            'company.phones.*.phoneCode' => 'required|numeric',
+            'company.phones.*.phone' => 'required|numeric',
+            'company.phones.*.ext'  => 'required|numeric',
             'company.department' => 'nullable|string',
             'company.jobTitle'  => 'nullable|string',
             'company.jobCategory'    => 'nullable|string',
             'company.jobType'      => 'nullable|string',
-//            'company.industry'      => 'nullable|string',
-//            'company.scale'         => 'nullable|string',
+            'company.industry'      => 'nullable|string',
+            'company.scale'         => 'nullable|string',
             'company.purchaseRole'  => 'nullable|string',
             'company.interestedIssue'   => 'nullable|array',
             'company.interestedIssue.*' => 'nullable|string',
@@ -67,12 +68,13 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
         $validated = parent::validated();
 
         $validated->put('email', Str::lower($validated->get('email')));
-
-        $company = $validated->get('company') ?: [];
-        if (isset($company['email'])) {
-            $company['email'] = Str::lower($company['email']);
+        $companyData = $validated->get('company') ?: [];
+        if (isset($companyData['email'])) {
+            $companyData['email'] = Str::lower($companyData['email']);
         }
-        $validated->put('company', $company);
+
+        $companyData['phones'] = CompanyRequestHelper::handlePhones($companyData['phones'] ?? []);
+        $validated->put('company', $companyData);
 
         return $validated;
     }
