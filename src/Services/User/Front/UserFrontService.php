@@ -505,7 +505,7 @@ class UserFrontService extends UserService
         if (!$userCompany) {
             $userCompany = UserCompany::create($companyData);
         } else {
-            if (isset($companyData['industry']) && !in_array($companyData['industry'], $cpy['industry'])) {
+            if (isset($companyData['industry']) && $cpy && !in_array($companyData['industry'], $cpy['industry'])) {
                 $industry = $cpy['industry'];
                 $industry[] = $companyData['industry'];
                 $this->repo->update($cpy, ['industry' => $industry]);
