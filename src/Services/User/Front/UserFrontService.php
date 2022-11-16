@@ -139,7 +139,7 @@ class UserFrontService extends UserService
         $userCompany = $user->company;
         if ($userCompany->validateToken == $input->get('token')) {
             # 處理電子報訂閱類型
-            if ($user->newsletterSubscription && $user->newsletterSubscription->categories->count()) {
+            if ($user->newsletterSubscription->newsletterCategories->count()) {
                 $nss = app(NewsletterSubscriptionFrontService::class);
                 $nss->subscribe($input);
             }
