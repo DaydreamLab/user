@@ -139,7 +139,7 @@ class UserFrontService extends UserService
         $userCompany = $user->company;
         if ($userCompany->validateToken == $input->get('token')) {
             # 處理電子報訂閱類型
-            if ($user->newsletterSubscription->categories->count()) {
+            if ($user->newsletterSubscription && $user->newsletterSubscription->categories->count()) {
                 $nss = app(NewsletterSubscriptionFrontService::class);
                 $nss->subscribe($input);
             }
@@ -634,6 +634,7 @@ class UserFrontService extends UserService
 
     public function sendDealerValidateEmail($user)
     {
+        show($user->isDealer, $user->company->email);
         if ($user->isDealer && $user->companyEmailIsDealer) {
             $this->repo->update($user->company, ['validateToken' => Str::random(128)]);
             Notification::route('mail', $user->company->email)
