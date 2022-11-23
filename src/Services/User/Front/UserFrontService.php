@@ -135,12 +135,19 @@ class UserFrontService extends UserService
 
     public function dealerValidate(Collection $input)
     {
-        $user = $input->get('user');
+        $user = $input->get('user') ?: $this->repo->findDealerTokenUser($input->get('token'));
+        if (!$user) {
+            $this->status = 'InvalidDealerToken';
+            return false;
+        }
+
         $userCompany = $user->company;
         if ($userCompany->validateToken == $input->get('token')) {
             # 處理電子報訂閱類型
             if ($user->newsletterSubscription->newsletterCategories->count()) {
                 $nss = app(NewsletterSubscriptionFrontService::class);
+                # 沒登入的會員缺少 mail subscribe 會噴錯
+                $input->put('email', $user->email);
                 $nss->subscribe($input);
             }
 

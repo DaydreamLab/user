@@ -11,4 +11,12 @@ class UserFrontRepository extends UserRepository
     {
         parent::__construct($model);
     }
+
+
+    public function findDealerTokenUser($token)
+    {
+        return $this->model->whereHas('company', function ($q) use ($token) {
+            $q->where('users_companies.validateToken', $token);
+        })->first();
+    }
 }
