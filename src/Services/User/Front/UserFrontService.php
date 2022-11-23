@@ -323,7 +323,7 @@ class UserFrontService extends UserService
 
     public function handleUserDataUpdate(Collection $input, $user)
     {
-        $userData = $input->only(['uuid', 'name', 'email', 'backupEmail'])->all();
+        $userData = $input->only(['uuid', 'name', 'email', 'backupEmail', 'backupMobilePhone'])->all();
 
         if ($input->has('backHome')) {
             $userData['backHome'] = $input->get('backHome');
