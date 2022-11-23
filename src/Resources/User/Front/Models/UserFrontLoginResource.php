@@ -20,6 +20,7 @@ class UserFrontLoginResource extends JsonResource
             'group'         => $this->groups->first() ? $this->groups->first()->title : '',
             'email'         => $this->email,
             'backupEmail'   => $this->backupEmail,
+            'backupMobilePhone' => $this->backupMobilePhone,
             'company'       => [
                 'name'          => $this->company->name,
                 'email'         => $this->company->email,

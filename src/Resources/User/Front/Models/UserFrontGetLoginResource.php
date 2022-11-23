@@ -24,6 +24,7 @@ class UserFrontGetLoginResource extends JsonResource
             'uuid'                  => $this->uuid,
             'email'                 => $this->email,
             'backupEmail'           => $this->backupEmail,
+            'backupMobilePhone'     => $this->backupMobilePhone,
             'name'                  => $this->name,
             'mobilePhoneCode'       => $this->mobilePhoneCode,
             'mobilePhoneNumber'     => $this->mobilePhone,

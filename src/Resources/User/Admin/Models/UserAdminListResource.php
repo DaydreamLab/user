@@ -28,16 +28,17 @@ class UserAdminListResource extends BaseJsonResource
             'company'       => $this->company ? $this->company->name : '',
             'mobilePhoneCode' => $this->moiblePhoneCode,
             'mobilePhone'   => $this->mobilePhone,
+            'backupMobilePhone'   => $this->backupMobilePhone,
             'block'         => $this->block,
             'activation'    => $this->activation,
             'lastLoginAt'   => $this->getDateTimeString($this->lastLoginAt, $tz),
             'lastLoginIp'   => $this->lastLoginIp,
-            'groups'        => ($request->get('pageGroupId') == 16) ?
-                // 排除掉管理員以外的群組
-                $this->groups->filter(function ($g) use ($dealerUserGroup, $userGroup) {
-                    return $g->id != $dealerUserGroup->id && $g->id != $userGroup->id;
-                })->sortByDesc('id')->pluck('title')->take(1) :
-                 $this->groups->pluck('title')->all(),
+            'groups'        => ($request->get('pageGroupId') == 16)
+                ? // 排除掉管理員以外的群組
+                    $this->groups->filter(function ($g) use ($dealerUserGroup, $userGroup) {
+                        return $g->id != $dealerUserGroup->id && $g->id != $userGroup->id;
+                    })->sortByDesc('id')->pluck('title')->take(1)
+                : $this->groups->pluck('title')->all(),
         ];
     }
 }

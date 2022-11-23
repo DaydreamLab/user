@@ -33,6 +33,7 @@ class UserFrontResource extends JsonResource
             'mobilePhone'   => $this->mobilePhone,
             'email'         => $this->email,
             'backupEmail'   => $this->backupEmail,
+            'backupMobilePhone' => $this->backupMobilePhone,
             'name'          => $this->name,
             'group'         => $group ? $group->title : '',
             'groupId'       => $group ? $group->id : null,

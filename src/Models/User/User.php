@@ -73,6 +73,7 @@ class User extends BaseModel implements
         'phone',
         'mobilePhoneCode',
         'mobilePhone',
+        'backupMobilePhone',
         'birthday',
         'timezone',
         'locale',
