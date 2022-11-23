@@ -634,7 +634,6 @@ class UserFrontService extends UserService
 
     public function sendDealerValidateEmail($user)
     {
-        show($user->isDealer, $user->company->email);
         if ($user->isDealer && $user->companyEmailIsDealer) {
             $this->repo->update($user->company, ['validateToken' => Str::random(128)]);
             Notification::route('mail', $user->company->email)
