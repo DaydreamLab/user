@@ -61,7 +61,7 @@ class TransformCommand extends Command
         $this->info('更新電子報訂閱資料完成');
 
         $this->info('更新會員註記...');
-        $this->transformUserCategoryNote();
+        $this->call('user:category-note-transform');
         $this->info('更新會員註記完成');
     }
 
@@ -103,15 +103,6 @@ class TransformCommand extends Command
                     'email' => $user->email
                 ]);
             }
-        }
-    }
-
-
-    public function transformUserCategoryNote()
-    {
-        $users = User::with('company.company.category')->get();
-        foreach ($users as $user) {
-
         }
     }
 

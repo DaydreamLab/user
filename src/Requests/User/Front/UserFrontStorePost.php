@@ -42,7 +42,7 @@ class UserFrontStorePost extends AdminRequest
             'backupEmail'           => 'nullable|email',
             'backupMobilePhone'     => 'nullable|numeric',
             'company'               => 'required|array',
-            'company.name'          => 'required|string',
+            'company.name'          => 'nullable|string',
             'company.vat'           => ['nullable', 'numeric', new TaiwanUnifiedBusinessNumber()],
             'company.phones'        => 'nullable|array',
             'company.phones.*'      => 'required|array',
@@ -52,7 +52,7 @@ class UserFrontStorePost extends AdminRequest
 //            'company.phoneCode'     => 'nullable|numeric',
 //            'company.phone'         => 'required|numeric',
 //            'company.extNumber'     => 'nullable|numeric',
-            'company.email'         => 'required|email',
+            'company.email'         => 'nullable|email',
             'company.department'    => 'nullable|string',
             'company.jobTitle'      => 'nullable|string',
             'company.jobCategory'   => 'nullable|string',
@@ -77,7 +77,7 @@ class UserFrontStorePost extends AdminRequest
         $validated->put('email', Str::lower($validated->get('email')));
 
         $companyData = $validated->get('company');
-        $validated->put('phones', CompanyRequestHelper::handlePhones($companyData['phones']) ?? []);
+        $validated->put('phones', CompanyRequestHelper::handlePhones($companyData['phones'] ?? []));
 
         $company = $validated->get('company') ?: [];
         if (isset($company['email'])) {
