@@ -34,12 +34,9 @@ class CompanyAdminService extends CompanyService
     {
         # 根據公司的身份改變公司成員的群組 ex.經銷會員 -> 經銷會員
         if ($item->category != null) {
-            if (in_array($item->category->title, ['經銷會員', '零壹員工'])) {
-                $userGroup = UserGroup::where('title', '經銷會員')->first();
-            } else {
-                $userGroup = UserGroup::where('title', '一般會員')->first();
-            }
-
+            $userGroup = $item->category->title == '一般'
+                ? UserGroup::where('title', '一般會員')->first()
+                : UserGroup::where('title', '經銷會員')->first();
             event(new UpdateCompanyUsersUserGroupAndEdmEvent($item, $userGroup));
         }
     }
@@ -48,13 +45,11 @@ class CompanyAdminService extends CompanyService
     public function beforeAdd(Collection &$input)
     {
         $category = $this->companyCategoryRepository->find($input->get('category_id'));
-        if (in_array($category->title, ['經銷會員', '零壹員工'])) {
+        if ($category->title == '經銷會員') {
             $input->put('status', EnumHelper::COMPANY_APPROVED);
             $input->put('approvedAt', now()->toDateTimeString());
         } elseif ($category->title == '一般') {
             $input->put('status', EnumHelper::COMPANY_NEW);
-        } else {
-            $input->put('status', EnumHelper::COMPANY_NONE);
         }
     }
 
@@ -62,42 +57,35 @@ class CompanyAdminService extends CompanyService
     public function beforeModify(Collection &$input, &$item)
     {
         $inputCategory = $this->companyCategoryRepository->find($input->get('category_id'));
-        if (in_array($item->category->title, ['經銷會員', '零壹員工', '競爭廠商', '原廠'])) {
-            if ($inputCategory->title == '一般') {
-                $input->put('status', EnumHelper::COMPANY_NEW);
-                $input->put('approvedAt', null);
-                $input->put('rejectedAt', null);
-                $input->put('expiredAt', null);
-            } elseif (in_array($inputCategory->title, ['原廠', '競爭廠商'])) {
-                $input->put('status', EnumHelper::COMPANY_NONE);
-                $input->put('approvedAt', null);
-                $input->put('rejectedAt', null);
-                $input->put('expiredAt', null);
-            } else {
-                $input->put('status', EnumHelper::COMPANY_APPROVED);
-                $input->put('approvedAt', $item->approvedAt ?? now()->toDateTimeString());
-                $input->put('rejectedAt', null);
-            }
-        } else {
+
+        if ($item->category->title != $inputCategory->title) {
             if ($inputCategory->title == '經銷會員') {
                 $input->put('status', EnumHelper::COMPANY_APPROVED);
                 $input->put('approvedAt', now()->toDateTimeString());
                 $input->put('rejectedAt', null);
-            } elseif (in_array($inputCategory->title, ['原廠', '競爭廠商'])) {
-                $input->put('status', EnumHelper::COMPANY_NONE);
+            }
+
+            if ($inputCategory->title == '一般') {
+                $input->put('status', EnumHelper::COMPANY_NEW);
                 $input->put('approvedAt', null);
                 $input->put('rejectedAt', null);
-                $input->put('expiredAt', null);
-            } else {
-                if (
-                    $input->get('status') == EnumHelper::COMPANY_REJECTED
-                    && $item->status != EnumHelper::COMPANY_REJECTED
-                ) {
-                    $input->put('rejectedAt', now()->toDateTimeString());
-                    $input->put('approvedAt', null);
-                    $input->put('expiredAt', null);
-                }
             }
+        }
+
+        if (in_array($item->categoryNote, ['原廠', '競業'])) {
+            $input->put('status', EnumHelper::COMPANY_NONE);
+            $input->put('approvedAt', null);
+            $input->put('rejectedAt', null);
+            $input->put('expiredAt', null);
+        }
+
+        if (
+            $input->get('status') == EnumHelper::COMPANY_REJECTED
+            && $item->status != EnumHelper::COMPANY_REJECTED
+        ) {
+            $input->put('rejectedAt', now()->toDateTimeString());
+            $input->put('approvedAt', null);
+            $input->put('expiredAt', null);
         }
     }
 

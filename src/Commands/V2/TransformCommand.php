@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Commands\V2;
 
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Models\Company\Company;
+use DaydreamLab\User\Models\Company\CompanyCategory;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserCompany;
 use Illuminate\Console\Command;
@@ -45,11 +46,9 @@ class TransformCommand extends Command
     public function handle()
     {
         $this->call('migrate');
-
-        $this->info('更新統編資料中...');
-        $this->transformCompanies();
-        $this->info('更新統編資料完成');
-
+        $this->call('user:company-category-handle');
+        $this->call('user:company-category-note-transform');
+        $this->call('user:company-transform');
 
         $this->info('更新 UserCompany 資料中...');
         $this->transformUserCompany();
@@ -59,37 +58,6 @@ class TransformCommand extends Command
         $this->info('更新電子報訂閱資料中...');
         $this->transformNewsletterSubscription();
         $this->info('更新電子報訂閱資料完成');
-
-        $this->info('更新會員註記...');
-        $this->call('user:category-note-transform');
-        $this->info('更新會員註記完成');
-    }
-
-
-    public function transformCompanies()
-    {
-        $companies = Company::with(['category', 'userCompanies'])->get();
-        foreach ($companies as $company) {
-            if (in_array($company->category->title, ['經銷會員', '零壹員工'])) {
-                $company->status = EnumHelper::COMPANY_APPROVED;
-                $company->approvedAt = $company->created_at;
-            } elseif (in_array($company->category->title, ['原廠', '競爭廠商'])) {
-                $company->status = EnumHelper::COMPANY_NONE;
-                $company->rejectedAt = null;
-            } else {
-                $company->status = EnumHelper::COMPANY_NEW;
-            }
-
-            if (!isset($company->mailDomains['domain'])) {
-                $data = ['domain' => $company->mailDomains, 'email' => []];
-                $company->mailDomains = $data;
-            }
-
-            $company->industry = $company->userCompanies->filter(function ($userCompany) {
-                return !in_array($userCompany->industry, ['', null]);
-            })->pluck('industry')->unique()->values()->except(['', null])->all() ?: [];
-            $company->save();
-        }
     }
 
 

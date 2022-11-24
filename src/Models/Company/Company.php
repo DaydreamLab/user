@@ -45,6 +45,7 @@ class Company extends BaseModel
         'phones',
         'industry',
         'scale',
+        'categoryNote',
         'country',
         'state_',
         'city',

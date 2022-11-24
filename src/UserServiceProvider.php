@@ -20,6 +20,9 @@ class UserServiceProvider extends ServiceProvider
         'DaydreamLab\User\Commands\SeedCommand',
         'DaydreamLab\User\Commands\V2\TransformCommand',
         'DaydreamLab\User\Commands\BackHomeCommand',
+        'DaydreamLab\User\Commands\V2\TransformCompanyCategoryNoteCommand',
+        'DaydreamLab\User\Commands\V2\HandleCompanyCategoryCommand',
+        'DaydreamLab\User\Commands\V2\TransformCompanyCommand',
     ];
 
 
