@@ -15,7 +15,7 @@ class AddArchivedToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             if (!Schema::hasColumn('users', 'archived')) {
-                $table->unsignedTinyInteger('archived')->default(1)->after('zipcode');
+                $table->unsignedTinyInteger('archived')->default(0)->after('zipcode');
             }
         });
     }
