@@ -19,7 +19,7 @@ class UserHelper
         $data['tokenResult'] = $tokenResult;
         if ($user->isAdmin())
         {
-            $sort_groups         = $user->groups->sortBy('id');
+            $sort_groups         = $user->groups->sortBy('_lft');
             $data['id']          = $user->id;
             $data['redirect']    = $sort_groups->first()->redirect;
             $data['groups']      = $sort_groups;
