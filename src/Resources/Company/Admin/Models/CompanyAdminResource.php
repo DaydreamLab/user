@@ -32,6 +32,8 @@ class CompanyAdminResource extends BaseJsonResource
             'phones'            => $this->phones,
             'industry'          => $this->industry,
             'scale'             => $this->scale,
+            'categoryNote'      => $this->categoryNote,
+            'reason'            => $this->reason,
 //            'zipcode'           => $this->zipcode,
 //            'introtext'         => $this->introtext,
 //            'description'       => $this->description,
