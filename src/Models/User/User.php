@@ -2,12 +2,14 @@
 
 namespace DaydreamLab\User\Models\User;
 
+use Carbon\Carbon;
 use DaydreamLab\Cms\Models\Brand\Brand;
 use DaydreamLab\Cms\Models\Newsletter\Newsletter;
 use DaydreamLab\Cms\Models\NewsletterSubscription\NewsletterSubscription;
 use DaydreamLab\Cms\Models\Tag\Tag;
 use DaydreamLab\Dsth\Models\Order\Order;
 use DaydreamLab\JJAJ\Models\BaseModel;
+use DaydreamLab\JJAJ\Traits\FormatDateTime;
 use DaydreamLab\JJAJ\Traits\HasCustomRelation;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
@@ -43,6 +45,7 @@ class User extends BaseModel implements
     use HasFactory;
     use HasCustomRelation;
     use UserInfo;
+    use FormatDateTime;
 
     protected $order_by = 'id';
 
@@ -345,6 +348,25 @@ class User extends BaseModel implements
     public function getIsSuperUserAttribute()
     {
         return $this->isSuperUser();
+    }
+
+
+    public function getSubscriptionStatusAttribute()
+    {
+        return $this->newsletterSubscription->newsletterCategories->count()
+            ? '已訂閱'
+            : ($this->newsletterSubscription->cancelAt
+                ? '取消訂閱'
+                : '未訂閱'
+            );
+    }
+
+
+    public function getUpdateStatusAttribute()
+    {
+        return $this->lastUpdate
+            ? (now()->diffInDays($this->lastUpdate) > 90 ? '待更新狀態' : '已更新狀態')
+            : '待更新狀態';
     }
 
 

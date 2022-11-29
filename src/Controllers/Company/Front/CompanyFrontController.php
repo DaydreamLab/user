@@ -26,17 +26,6 @@ class CompanyFrontController extends BaseController
     }
 
 
-    public function apply(CompanyFrontApplyPost $request)
-    {
-        try {
-            $this->service->apply($request->validated());
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
-
-        return $this->response($this->service->status, $this->service->response);
-    }
-
     public function getInfo($vat)
     {
         try {

@@ -9,6 +9,7 @@ use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
 use DaydreamLab\User\Repositories\Company\CompanyCategoryRepository;
+use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\Company\CompanyService;
 use Illuminate\Support\Collection;
 
@@ -20,13 +21,17 @@ class CompanyAdminService extends CompanyService
 
     protected $companyCategoryRepository;
 
+    protected $userAdminRepository;
+
     public function __construct(
         CompanyAdminRepository $repo,
-        CompanyCategoryRepository $companyCategoryRepository
+        CompanyCategoryRepository $companyCategoryRepository,
+        UserAdminRepository $userAdminRepository
     ) {
         parent::__construct($repo);
         $this->repo = $repo;
         $this->companyCategoryRepository = $companyCategoryRepository;
+        $this->userAdminRepository = $userAdminRepository;
     }
 
 
@@ -34,7 +39,7 @@ class CompanyAdminService extends CompanyService
     {
         # 根據公司的身份改變公司成員的群組 ex.經銷會員 -> 經銷會員
         if ($item->category != null) {
-            $userGroup = $item->category->title == '一般'
+            $userGroup = $item->category->title == EnumHelper::COMPANY_CATEGORY_NORMAL
                 ? UserGroup::where('title', '一般會員')->first()
                 : UserGroup::where('title', '經銷會員')->first();
             event(new UpdateCompanyUsersUserGroupAndEdmEvent($item, $userGroup));
@@ -45,11 +50,10 @@ class CompanyAdminService extends CompanyService
     public function beforeAdd(Collection &$input)
     {
         $category = $this->companyCategoryRepository->find($input->get('category_id'));
-        if ($category->title == '經銷會員') {
-            $input->put('status', EnumHelper::COMPANY_APPROVED);
-            $input->put('approvedAt', now()->toDateTimeString());
-        } elseif ($category->title == '一般') {
-            $input->put('status', EnumHelper::COMPANY_NEW);
+        if ($category->title == EnumHelper::COMPANY_CATEGORY_DEALER) {
+            if (!$input->get('approvedAt')) {
+                $input->put('approvedAt', now()->toDateTimeString());
+            }
         }
     }
 
@@ -59,33 +63,16 @@ class CompanyAdminService extends CompanyService
         $inputCategory = $this->companyCategoryRepository->find($input->get('category_id'));
 
         if ($item->category->title != $inputCategory->title) {
-            if ($inputCategory->title == '經銷會員') {
-                $input->put('status', EnumHelper::COMPANY_APPROVED);
-                $input->put('approvedAt', now()->toDateTimeString());
-                $input->put('rejectedAt', null);
+            if ($inputCategory->title == EnumHelper::COMPANY_CATEGORY_DEALER) {
+                if (!$input->get('approvedAt')) {
+                    $input->put('approvedAt', now()->toDateTimeString());
+                }
             }
 
-            if ($inputCategory->title == '一般') {
-                $input->put('status', EnumHelper::COMPANY_NEW);
+            if ($inputCategory->title == EnumHelper::COMPANY_CATEGORY_NORMAL) {
                 $input->put('approvedAt', null);
-                $input->put('rejectedAt', null);
+                $input->put('expiredAt', now()->toDateTimeString());
             }
-        }
-
-        if (in_array($item->categoryNote, ['原廠', '競業'])) {
-            $input->put('status', EnumHelper::COMPANY_NONE);
-            $input->put('approvedAt', null);
-            $input->put('rejectedAt', null);
-            $input->put('expiredAt', null);
-        }
-
-        if (
-            $input->get('status') == EnumHelper::COMPANY_REJECTED
-            && $item->status != EnumHelper::COMPANY_REJECTED
-        ) {
-            $input->put('rejectedAt', now()->toDateTimeString());
-            $input->put('approvedAt', null);
-            $input->put('expiredAt', null);
         }
     }
 
@@ -109,6 +96,17 @@ class CompanyAdminService extends CompanyService
             $result = $this->find($input->get('id'));
         }
         $this->response = $result;
+
+        return $this->response;
+    }
+
+
+    public function searchUsers(Collection $input)
+    {
+        $users = $this->userAdminRepository->search($input);
+
+        $this->status = 'SearchUserSuccess';
+        $this->response = $users;
 
         return $this->response;
     }

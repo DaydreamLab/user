@@ -19,38 +19,6 @@ class CompanyFrontService extends CompanyService
     }
 
 
-    public function apply(Collection $input)
-    {
-        $user = $input->get('user');
-        $input->put('applyUserId', $user->id);
-        $userCompany = $user->company;
-        if (!$userCompany) {
-            $user->company()->create();
-            $user = $user->refresh();
-            $userCompany = $user->company;
-        }
-
-        $company = $this->findBy('vat', '=', $input->get('vat'))->first();
-        $input->put('status', EnumHelper::COMPANY_PENDING);
-        if (!$company) {
-            $input->put('category_id', 3); # 一般
-            $result = $this->add($input);
-            $this->repo->update($userCompany, ['company_id' => $company->id]);
-        } else {
-            if ($company->status != EnumHelper::COMPANY_NEW) {
-                throw new ForbiddenException('StatusInvalid', ['status' => $company->status]);
-            }
-            $input->put('id', $company->id);
-            $result = $this->update($company, $input);
-        }
-        # todo: 加入推播通知
-
-        $this->status = $result ? 'ApplySuccess' : 'ApplyFail';
-
-        return $this->response;
-    }
-
-
     public function getInfo($vat)
     {
         $company = $this->findBy('vat', '=', $vat)->first();

@@ -33,7 +33,6 @@ class Company extends BaseModel
      */
     protected $fillable = [
         'name',
-        'status',
         'category_id',
         'vat',
         'domain',
@@ -46,6 +45,7 @@ class Company extends BaseModel
         'industry',
         'scale',
         'categoryNote',
+        'reason',
         'country',
         'state_',
         'city',
@@ -53,7 +53,6 @@ class Company extends BaseModel
         'address',
         'approveAt',
         'expiredAt',
-        'rejectedAt',
         'zipcode',
         'introtext',
         'description',
@@ -101,9 +100,6 @@ class Company extends BaseModel
         static::creating(function ($item) {
             $item->phoneCode = '+886';
             $item->country = '臺灣';
-            if (!$item->status) {
-                $item->status = EnumHelper::COMPANY_NEW;
-            }
             if (!$item->mailDomains) {
                 $item->mailDomains = [
                     'domain' => [],

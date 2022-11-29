@@ -19,7 +19,6 @@ class CompanyAdminResource extends BaseJsonResource
         return [
             'id'                => $this->id,
             'category_id'       => $this->category_id,
-            'status'            => $this->status,
             'name'              => $this->name,
             'vat'               => $this->vat,
 //            'domain'            => $this->domain,
@@ -40,7 +39,6 @@ class CompanyAdminResource extends BaseJsonResource
 //            'updated_at'        => $this->getDaㄑˋteTimeString($this->updated_at, $tz),
 //            'locked_at'         => $this->getDateTimeString($this->locked_at, $tz),
             'approvedAt'        => $this->getDateTimeString($this->approvedAt, $tz),
-            'rejectedAt'        => $this->getDateTimeString($this->rejectedAt, $tz),
             'expiredAt'         => $this->getDateTimeString($this->expiredAt, $tz),
 //            'creatorName'       => $this->creatorName,
 //            'updaterName'       => $this->updaterName,

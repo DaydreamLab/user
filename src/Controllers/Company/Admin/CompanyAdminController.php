@@ -3,8 +3,10 @@
 namespace DaydreamLab\User\Controllers\Company\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Requests\Company\Admin\CompanyAdminSearchUsersRequest;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminExportResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminListResourceCollection;
+use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminSearchUsersResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminResource;
 use DaydreamLab\User\Services\Company\Admin\CompanyAdminService;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminExportPost;
@@ -127,6 +129,24 @@ class CompanyAdminController extends BaseController
             $this->service->response,
             [],
             CompanyAdminListResourceCollection::class
+        );
+    }
+
+
+    public function searchUsers(CompanyAdminSearchUsersRequest $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->searchUsers($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response(
+            $this->service->status,
+            $this->service->response,
+            [],
+            CompanyAdminSearchUsersResourceCollection::class
         );
     }
 

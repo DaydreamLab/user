@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCompanyOrdersTable extends Migration
+class CreateUserTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateCompanyOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('company_orders', function (Blueprint $table) {
+        Schema::create('user_tags', function (Blueprint $table) {
             $table->bigIncrements('id');
-//            $table->unsignedBigInteger('userId');
-            $table->uuid('uuid');
-            $table->string('orderNum');
-            $table->string('companyName');
-            $table->string('company');
-            $table->timestamp('date')->nullable();
-            $table->bigInteger('total')->default(0);
+            $table->string('title');
+            $table->string('alias');
+            $table->tinyInteger('state')->default(1);
+            $table->string('type');
+            $table->text('description')->nullable();
+            $table->text('rules')->nullable();
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();
@@ -35,6 +34,6 @@ class CreateCompanyOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('company_orders');
+        Schema::dropIfExists('user_tags');
     }
 }

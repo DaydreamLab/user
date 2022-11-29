@@ -39,12 +39,12 @@ class UserFrontResource extends JsonResource
             'groupId'       => $group ? $group->id : null,
             'newsletterSubscriptions' => $this->newsletterSubscriptions,
             'subscribeNewsletter'   => count($this->newsletterSubscriptions) ? 1 : 0,
-            'canApplyDealer'    => !$this->company || ($this->company && !$this->company->company) || (
-                $this->company
-                && $this->company->company
-                && $this->company->company->category->title == '一般'
-                && $this->company->company->status == EnumHelper::COMPANY_NEW
-            ),
+//            'canApplyDealer'    => !$this->company || ($this->company && !$this->company->company) || (
+//                $this->company
+//                && $this->company->company
+//                && $this->company->company->category->title == '一般'
+//                && $this->company->company->status == EnumHelper::COMPANY_NEW
+//            ),
             'dealerExpired' => $this->isDealer && ($this->company && $this->company->isExpired),
             'dealerValidate' => $this->isDealer && ($this->company && $this->company->validated),
             'lastValidate'  => $this->getDateTimeString(

@@ -31,13 +31,6 @@ class CompanyAdminStorePost extends AdminRequest
     {
         $rules = [
             'id'            => 'nullable|integer',
-            'status'        => ['required', Rule::in([
-                EnumHelper::COMPANY_NONE,
-                EnumHelper::COMPANY_NEW,
-                EnumHelper::COMPANY_PENDING,
-                EnumHelper::COMPANY_APPROVED,
-                EnumHelper::COMPANY_REJECTED
-            ])],
             'categoryId'    => 'required|integer',
             'name'          => 'required|string',
             'vat'           => 'required|string',
@@ -50,6 +43,13 @@ class CompanyAdminStorePost extends AdminRequest
 //            'zipcode'       => 'nullable|string',
 //            'introtext'     => 'nullable|string',
 //            'description'   => 'nullable|string',
+            'categoryNote' => ['nullable', Rule::in([
+                EnumHelper::COMPANY_NOTE_NONE,
+                EnumHelper::COMPANY_NOTE_COMPETITION,
+                EnumHelper::COMPANY_NOTE_STAFF,
+                EnumHelper::COMPANY_NOTE_BLACKLIST
+            ])],
+            'reason'       => 'nullable|string',
             'industry'      => 'required|array',
             'industry.*'    => 'required|string',
             'scale'         => 'required|string',
@@ -63,6 +63,7 @@ class CompanyAdminStorePost extends AdminRequest
             'phones.*.phoneCode'    => 'required|numeric',
             'phones.*.phone'    => 'required|numeric',
             'phones.*.ext'    => 'required|numeric',
+            'approvedAt'    => 'nullable|date_format:Y-m-d H:i:s',
             'expiredAt'     => 'nullable|date_format:Y-m-d H:i:s',
             'ordering'      => 'nullable|integer'
         ];

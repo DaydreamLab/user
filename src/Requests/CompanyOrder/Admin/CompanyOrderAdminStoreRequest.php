@@ -31,14 +31,14 @@ class CompanyOrderAdminStoreRequest extends UserStoreRequest
             'userId' =>  'required|integer',
             'orderNum'  => 'required|string',
             'date'  => 'required|date_format:Y-m-d H:i:s',
-            'items' => 'nullable|array',
-            'items.*'   => 'required|array',
-            'items.*.id'   => 'nullable|integer',
-            'items.*.title'   => 'required|string',
-            'items.*.unitPrice'     => 'required|integer',
-            'items.*.qty'   => 'required|integer',
-            'deleteItems' => 'nullable|array',
-            'deleteItems.*' => 'required|integer',
+//            'items' => 'nullable|array',
+//            'items.*'   => 'required|array',
+//            'items.*.id'   => 'nullable|integer',
+//            'items.*.title'   => 'required|string',
+//            'items.*.unitPrice'     => 'required|integer',
+//            'items.*.qty'   => 'required|integer',
+//            'deleteItems' => 'nullable|array',
+//            'deleteItems.*' => 'required|integer',
         ];
 
         return array_merge(parent::rules(), $rules);

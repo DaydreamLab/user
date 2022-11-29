@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Listeners;
 
 use DaydreamLab\Cms\Services\NewsletterSubscription\Front\NewsletterSubscriptionFrontService;
 use DaydreamLab\User\Events\UpdateCompanyUsersUserGroupAndEdmEvent;
+use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Notifications\User\UserCompanyEmailVerificationNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -44,10 +45,16 @@ class UpdateCompanyUsersUserGroupAndEdm implements ShouldQueue
                 $adminGroupIds[] = $companyUserGroup->id;
                 $user->groups()->sync($adminGroupIds);
 
+                if ($company->categoryNote == EnumHelper::COMPANY_NOTE_BLACKLIST) {
+                    $user->block = 1;
+                    $user->blockReason .= '公司標記為黑名單';
+                    $user->save();
+                }
+
                 # 如果是經銷會員可能直接在這邊發送經銷會員驗證信件（只要符合domain or email規則）
                 $user = $user->refresh();
                 if ($user->isDealer) {
-                    if ($user->companyEmailIsDealer) {
+                    if ($user->companyEmailIsDealer && (!$user->company->validated)) {
                         Notification::route('mail', $user->company->email)
                             ->notify(new UserCompanyEmailVerificationNotification($user));
                     }

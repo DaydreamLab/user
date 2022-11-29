@@ -13,6 +13,8 @@ use DaydreamLab\User\Controllers\Viewlevel\Admin\ViewlevelAdminController;
 use DaydreamLab\User\Controllers\Xsms\XsmsController;
 use DaydreamLab\User\Controllers\CompanyOrder\Admin\CompanyOrderAdminController;
 use DaydreamLab\User\Controllers\CompanyOrderItem\Admin\CompanyOrderItemAdminController;
+use DaydreamLab\User\Controllers\UserTag\Admin\UserTagAdminController;
+
 /************************************  前台 API  ************************************/
 
 // 啟用帳號
@@ -31,9 +33,6 @@ Route::post('api/xsms/querySms', [XsmsController::class, 'querySms'])->middlewar
 
 # 取得公司資訊
 Route::get('api/company/{vat}', [CompanyFrontController::class, 'getInfo']);
-
-# 申請成為經銷商
-Route::post('api/company/apply', [CompanyFrontController::class, 'apply'])->middleware(['expired']);
 
 # 檢查Email是否使用過
 Route::post('/api/user/checkEmail', [UserFrontController::class, 'checkEmail'])->middleware(['CORS']);
@@ -158,6 +157,8 @@ Route::post('api/admin/company/{companyId}/order/import', [CompanyOrderAdminCont
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 # Company
+Route::post('api/admin/company/{id}/user/search', [CompanyAdminController::class, 'searchUsers'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/export', [CompanyAdminController::class, 'export'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/restore', [CompanyAdminController::class, 'restore'])
@@ -192,6 +193,17 @@ Route::post('api/admin/user/store', [UserAdminController::class, 'store'])
 Route::get('api/admin/user/{id}', [UserAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
+
+
+# 會員標籤(UserTag)
+Route::post('/api/admin/user/tag/store', [UserTagAdminController::class, 'store'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('/api/admin/user/tag/search', [UserTagAdminController::class], 'search')
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('/api/admin/user/tag/state', [UserTagAdminController::class], 'state')
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::get('/api/admin/user/tag/{id}', [UserTagAdminController::class, 'getItem'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 
 Route::post('api/admin/user/group/search', [UserGroupAdminController::class, 'search'])

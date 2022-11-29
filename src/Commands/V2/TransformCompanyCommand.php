@@ -51,14 +51,8 @@ class TransformCompanyCommand extends Command
     {
         $companies = Company::with(['category', 'userCompanies'])->get();
         foreach ($companies as $company) {
-            if ($company->category->title == '經銷會員') {
-                $company->status = EnumHelper::COMPANY_APPROVED;
+            if ($company->category->title == EnumHelper::COMPANY_CATEGORY_DEALER) {
                 $company->approvedAt = $company->created_at;
-            } elseif (in_array($company->categoryNote, ['原廠', '競業'])) {
-                $company->status = EnumHelper::COMPANY_NONE;
-                $company->rejectedAt = null;
-            } else {
-                $company->status = EnumHelper::COMPANY_NEW;
             }
 
             if (!isset($company->mailDomains['domain'])) {
