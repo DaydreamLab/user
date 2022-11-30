@@ -1,6 +1,6 @@
 <?php
 
-namespace  DaydreamLab\User\Middlewares;
+namespace DaydreamLab\User\Middlewares;
 
 use Closure;
 use DaydreamLab\JJAJ\Helpers\Helper;
@@ -12,8 +12,8 @@ class Admin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)

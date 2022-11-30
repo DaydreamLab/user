@@ -52,6 +52,7 @@ class User extends Authenticatable
         'zipcode',
         'created_by',
         'updated_by',
+        'archived',
         'activation',
         'activate_token',
         //'redirect',
@@ -77,9 +78,9 @@ class User extends Authenticatable
     protected $appends = [
         'full_name',
         //'roles',
-        'groups',
-        'viewlevels',
-        'access_ids',
+//        'groups',
+//        'viewlevels',
+//        'access_ids',
     ];
 
 
@@ -89,11 +90,10 @@ class User extends Authenticatable
 
         $user = Auth::guard('api')->user();
 
-        static::creating(function ($item) use($user) {
+        static::creating(function ($item) use ($user) {
             if ($user) {
                 $item->created_by = $user->id;
-            }
-            else{
+            } else {
                 $item->created_by = 1;
             }
         });
@@ -112,10 +112,8 @@ class User extends Authenticatable
 
         $user_viewlevels = $this->viewlevels;
         $all = Viewlevel::all();
-        foreach ($all as $viewlevel)
-        {
-            if (count(array_intersect($viewlevel->rules, $user_viewlevels)) === count($viewlevel->rules))
-            {
+        foreach ($all as $viewlevel) {
+            if (count(array_intersect($viewlevel->rules, $user_viewlevels)) === count($viewlevel->rules)) {
                 $access_ids[] = $viewlevel->id;
             }
         }
@@ -126,7 +124,7 @@ class User extends Authenticatable
 
     public function getFullNameAttribute()
     {
-        return $this->last_name . ' '. $this->first_name;
+        return $this->last_name . ' ' . $this->first_name;
     }
 
 
@@ -135,29 +133,51 @@ class User extends Authenticatable
         return $this->groups()->get();
     }
 
+    public function groups()
+    {
+        return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id');
+    }
+
     public function getLimit()
     {
         return $this->limit;
     }
 
+    public function setLimit($limit)
+    {
+        if ($limit && $limit != '') {
+            $this->limit = $limit;
+        }
+    }
 
     public function getOrder()
     {
         return $this->order;
     }
 
+    public function setOrder($order)
+    {
+        if ($order && $order != '') {
+            $this->order = $order;
+        }
+    }
 
     public function getOrderBy()
     {
         return $this->order_by;
     }
 
+    public function setOrderBy($order_by)
+    {
+        if ($order_by && $order_by != '') {
+            $this->order_by = $order_by;
+        }
+    }
 
     public function getViewlevelsAttribute()
     {
         $access_groups = [];
-        foreach ($this->groups as $group)
-        {
+        foreach ($this->groups as $group) {
             $viewlevel = Viewlevel::where('title', '=', $group->description)->first();
             $access_groups = array_merge($access_groups, $viewlevel->rules);
         }
@@ -165,41 +185,38 @@ class User extends Authenticatable
         return $access_groups;
     }
 
-
     public function hasAttribute($attribute)
     {
         return in_array($attribute, $this->fillable);
     }
 
-
     public function higherPermissionThan($user_id)
     {
         $compared_user = self::find($user_id);
 
-        return count(array_intersect($compared_user->viewlevels, $this->viewlevels)) === count($compared_user->viewlevels) ;
+        return count(array_intersect($compared_user->viewlevels, $this->viewlevels)) === count(
+                $compared_user->viewlevels
+            );
     }
-
 
     public function isAdmin()
     {
-        $super_user  = UserGroup::where('title', 'Super User')->first();
-        $admin       = UserGroup::where('title', 'Administrator')->first();
+        $super_user = UserGroup::where('title', 'Super User')->first();
+        $admin = UserGroup::where('title', 'Administrator')->first();
 
         foreach ($this->groups as $group) {
             if ($group->_lft >= $super_user->_lft && $group->_rgt <= $super_user->_rgt) {
                 return true;
-            }
-            elseif ($group->_lft >= $admin->_lft && $group->_rgt <= $admin->_rgt) {
+            } elseif ($group->_lft >= $admin->_lft && $group->_rgt <= $admin->_rgt) {
                 return true;
             }
         }
         return false;
     }
-
 
     public function isSuperUser()
     {
-        $super_user  = UserGroup::where('title', 'Super User')->first();
+        $super_user = UserGroup::where('title', 'Super User')->first();
 
         foreach ($this->groups as $group) {
             if ($group->_lft >= $super_user->_lft && $group->_rgt <= $super_user->_rgt) {
@@ -209,34 +226,4 @@ class User extends Authenticatable
         return false;
     }
 
-
-    public function setLimit($limit)
-    {
-        if ($limit && $limit != ''){
-            $this->limit = $limit;
-        }
-    }
-
-
-    public function setOrder($order)
-    {
-        if ($order && $order != ''){
-            $this->order = $order;
-        }
-    }
-
-
-    public function setOrderBy($order_by)
-    {
-        if ($order_by && $order_by != ''){
-            $this->order_by = $order_by;
-        }
-    }
-
-
-    public function groups()
-    {
-        return $this->belongsToMany(UserGroup::class, 'users_groups_maps', 'user_id', 'group_id');
-    }
-    
 }
