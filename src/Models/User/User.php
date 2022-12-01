@@ -353,6 +353,9 @@ class User extends BaseModel implements
 
     public function getSubscriptionStatusAttribute()
     {
+        if (!$this->newsletterSubscription) {
+            return '未訂閱';
+        }
         return $this->newsletterSubscription->newsletterCategories->count()
             ? '已訂閱'
             : ($this->newsletterSubscription->cancelAt
