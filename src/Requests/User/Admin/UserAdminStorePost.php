@@ -60,7 +60,8 @@ class UserAdminStorePost extends AdminRequest
                 $company->put($key, $company->get($key));
             }
         }
-        $company->put('phones', CompanyRequestHelper::handlePhones(isset($companyData['phones']) ?? []));
+
+        $company->put('phones', CompanyRequestHelper::handlePhones($company['phones']));
 
         return $company->all();
     }
