@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Commands\V2;
 
 use DaydreamLab\User\Models\Asset\AssetGroup;
+use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Services\Api\Admin\ApiAdminService;
 use DaydreamLab\User\Services\Asset\Admin\AssetAdminService;
 use Illuminate\Console\Command;
@@ -83,5 +84,11 @@ class AssetInstallCommand extends Command
 
         $api = app(ApiAdminService::class)->store(collect($apiData));
         $asset->apis()->attach($api->id, ['asset_group_id' => $assetGroup->id]);
+
+        $userGroups = UserGroup::whereIn('id', [4,5,8,9])->get();
+        foreach ($userGroups as $userGroup) {
+            $userGroup->assets()->attach($asset->id);
+            $userGroups->apis()->attach($api->id, ['asset_group_id' => $assetGroup->id, 'asset_id' => $asset->id]);
+        }
     }
 }

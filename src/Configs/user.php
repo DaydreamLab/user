@@ -44,5 +44,7 @@ return [
     'linebot' => [
         'accessToken' => env('LINE_ACCESS_TOKEN'),
         'channelSecret' => env('LINE_CHANNEL_SECRET')
-    ]
+    ],
+
+    'userCompanyUpdateInterval' => 90
 ];

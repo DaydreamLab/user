@@ -11,6 +11,7 @@ use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Helpers\CompanyHelper;
+use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\Company\CompanyCategory;
 use DaydreamLab\User\Models\User\UserCompany;

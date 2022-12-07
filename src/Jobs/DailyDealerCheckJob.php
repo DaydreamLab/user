@@ -39,7 +39,7 @@ class DailyDealerCheckJob implements ShouldQueue
     public function handle()
     {
         $userCompanies = UserCompany::whereHas('company.category', function ($q) {
-            $q->whereIn('companies_categories.title', ['零壹員工', '經銷會員']);
+            $q->whereIn('companies_categories.title', ['經銷會員']);
         })->where(function ($q) {
             $q->where('validated', 1)
                 ->where(function ($q) {

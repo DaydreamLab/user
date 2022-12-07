@@ -252,6 +252,21 @@ class UserAdminService extends UserService
                         $updateData['jobTitle'] = $inputUserCompany['jobTitle'];
                     }
                 }
+                $inputCompany = $input->get('company');
+                if ($userCompany->company && $userCompany->company->category->title == '經銷會員') {
+                    # 原本沒過期強制變成已過期
+                    if (
+                        $userCompany->isExpired == 1
+                        && (isset($inputCompany['isExpired']) && $inputCompany['isExpired'] === '0')
+                    ) {
+                        $updateData['lastValidate'] = now()->toDateTimeString();
+                    }
+                } else {
+                    $updateData['validated'] = 0;
+                    $updateData['lastValidate'] = null;
+                }
+
+                $updateData['lastUpdate'] = now()->toDateTimeString();
 
                 # 更新 userCompany
                 $userCompany->update(array_merge($inputUserCompany, $updateData));
@@ -263,29 +278,25 @@ class UserAdminService extends UserService
 
                 if (in_array($company->category->title, ['經銷會員', '零壹員工'])) {
                     $groupIds->push(6);
-                    # 舊的經銷商判斷
-//                    $emailArray = explode('@', $inputUserCompany['email']);
-//                    if (count($emailArray) == 2 && in_array($emailArray[1], $company->mailDomains)) {
-//
-//                    } else {
-//                        $groupIds->push(7);
-//                    }
                 } else {
                     $groupIds->push(7);
                 }
 
                 $changes = $item->groups()->sync($groupIds->all());
-                $this->decideNewsletterSubscription($changes, $item);
+                $this->decideNewsletterSubscription($changes, $item, $input);
             } else {
                 $userCompany->update(array_merge($inputUserCompany, [
                     'name'          => @$inputUserCompany['name'],
                     'vat'           => @$inputUserCompany['vat'],
                     'department'    => @$inputUserCompany['department'],
                     'jobTitle'      => @$inputUserCompany['jobTitle'],
-                    'company_id'    => null
+                    'company_id'    => null,
+                    'validated'     => 0,
+                    'lastValidate'  => null,
+                    'lastUpdate'    => now()->toDateTimeString()
                 ]));
                 $changes = $item->groups()->sync([$userGroup->id]);
-                $this->decideNewsletterSubscription($changes, $item);
+                $this->decideNewsletterSubscription($changes, $item, $input);
             }
         } else {
             UserCompany::create(array_merge($inputUserCompany, [
@@ -294,14 +305,17 @@ class UserAdminService extends UserService
                 'vat'           => @$inputUserCompany['vat'],
                 'department'    => @$inputUserCompany['department'],
                 'jobTitle'      => @$inputUserCompany['jobTitle'],
+                'validated'     => 0,
+                'lastValidate'  => null,
+                'lastUpdate'    => now()->toDateTimeString()
             ]));
             $changes = $item->groups()->sync([$userGroup->id]);
-            $this->decideNewsletterSubscription($changes, $item);
+            $this->decideNewsletterSubscription($changes, $item, $input);
         }
     }
 
 
-    protected function decideNewsletterSubscription($changes, $item)
+    protected function decideNewsletterSubscription($changes, $item, $input = null)
     {
         if (count($attached = $changes['attached'])) {
             # 根據會員群組的變動更新電子報訂閱
@@ -325,6 +339,15 @@ class UserAdminService extends UserService
                 $categories = [];
             }
 
+            # 處理訂閱設定的部份
+            if ($input->get('subscribeNewsletter') === '0') {
+                $categories = [];
+            } elseif ($input->get('subscribeNewsletter') === '1' && !count($categories)) {
+                $categories[] = $item->company->company
+                    ? ($item->company->company->category->title == '一般會員' ? 35 : 36)
+                    : 35;
+            }
+
             $data = [
                 'user_id' => $item->id,
                 'email' => $item->email,
@@ -340,6 +363,29 @@ class UserAdminService extends UserService
                 $sub = $newsletterSSer->add(collect($data));
             }
             $newsletterSSer->edmProcessSubscription($item->email, $sub); # 串接edm訂閱管理
+        } else {
+            $sub = $item->newsletterSubscription;
+            $newsletterSSer = app(NewsletterSubscriptionAdminService::class);
+            $subscribeNewsletter = $input->get('subscribeNewsletter');
+            if ($subscribeNewsletter === '1' && !$sub->newsletterCategories->count()) {
+                $categoryId = $item->company->company
+                    ? ($item->company->company->category->title == '一般會員' ? 35 : 36)
+                    : 35;
+                $sub->newsletterCategories()->attach($categoryId);
+                $sub->cancelReason = null;
+                $sub->cancelAt = null;
+                $sub->save();
+                $newsletterSSer->edmAddSubscription($sub->email, ($categoryId == 35 ? 6 : 7));
+            } elseif ($subscribeNewsletter === '0' && $sub->newsletterCategories->count()) {
+                $categoryId = $item->company->company
+                    ? ($item->company->company->category->title == '一般會員' ? 35 : 36)
+                    : 35;
+                $sub->cancelReason = $input->get('cancelReason');
+                $sub->cancelAt = now()->toDateTimeString();
+                $sub->save();
+                $sub->newsletterCategories()->detach();
+                $newsletterSSer->edmRemoveSubscription($sub->email, ($categoryId == 35 ? 6 : 7));
+            }
         }
     }
 

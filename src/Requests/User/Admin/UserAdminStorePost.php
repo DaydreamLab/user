@@ -8,6 +8,7 @@ use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
 use DaydreamLab\User\Helpers\CompanyRequestHelper;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use DaydreamLab\User\Helpers\EnumHelper as UserEnumHelper;
 
 class UserAdminStorePost extends AdminRequest
 {
@@ -122,7 +123,7 @@ class UserAdminStorePost extends AdminRequest
             'company.quit'          => ['nullable', Rule::in([0,1])],
             'company.phones.*.phoneCode' => 'required|numeric',
             'company.phones.*.phone' => 'required|numeric',
-            'company.phones.*.ext'  => 'required|numeric',
+            'company.phones.*.ext'  => 'nullable|numeric',
 //            'company.phoneCode'     => 'nullable|string',
 //            'company.phone'         => 'nullable|string',
 //            'company.extNumber'     => 'nullable|string',
@@ -142,7 +143,13 @@ class UserAdminStorePost extends AdminRequest
             'company.interestedIssue'   => 'nullable|array',
             'company.interestedIssue.*' => 'nullable|string',
             'company.issueOther'    => 'nullable|string',
-            'subscribeNewsletter'       => ['nullable', Rule::in(EnumHelper::BOOLEAN)]
+            'subscribeNewsletter'       => ['nullable', Rule::in(EnumHelper::BOOLEAN)],
+            'cancelReason'       => ['nullable', Rule::in([
+                UserEnumHelper::SUBSCRIBE_SELF_CANCEL,
+                UserEnumHelper::SUBSCRIBE_EMAIL_CANCEL,
+                UserEnumHelper::SUBSCRIBE_PHONE_CANCEL,
+                UserEnumHelper::SUBSCRIBE_SALES_CANCEL,
+            ])]
         ];
 
         return array_merge(parent::rules(), $rules);

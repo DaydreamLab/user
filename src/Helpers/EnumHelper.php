@@ -21,4 +21,9 @@ class EnumHelper
 
     public const WAIT_UPDATE = '待更新狀態';
     public const ALREADY_UPDATE = '已更新狀態';
+
+    public const SUBSCRIBE_SELF_CANCEL = '自行取消';
+    public const SUBSCRIBE_EMAIL_CANCEL = 'Email通知';
+    public const SUBSCRIBE_PHONE_CANCEL = '電話通知';
+    public const SUBSCRIBE_SALES_CANCEL = '業務通知';
 }

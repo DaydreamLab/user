@@ -370,7 +370,11 @@ class User extends BaseModel implements
     public function getUpdateStatusAttribute()
     {
         return $this->lastUpdate
-            ? (now()->diffInDays($this->lastUpdate) > 90 ? EnumHelper::WAIT_UPDATE : EnumHelper::ALREADY_UPDATE)
+            ? (
+                now()->diffInDays($this->lastUpdate) > config('daydreamlab.user.userCompanyUpdateInterval', 90)
+                    ? EnumHelper::WAIT_UPDATE
+                    : EnumHelper::ALREADY_UPDATE
+            )
             : EnumHelper::WAIT_UPDATE;
     }
 

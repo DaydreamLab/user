@@ -61,9 +61,14 @@ class UserAdminResource extends BaseJsonResource
             'tags'                  => $this->tags->map(function ($tag) {
                 return $tag->only(['id', 'title']);
             }),
-            'company'               => ($this->company) ? $this->company->makeHidden(['created_at', 'updated_at', 'created_by', 'updated_by']) : [],
+            'company'               => new UserCompanyAdminResource($this->company),
             'blockReason'           => $this->blockReason,
-            'upgradeReason'         => $this->upgradeReason
+            'upgradeReason'         => $this->upgradeReason,
+            'backupMobilePhone'     => $this->backupMobilePhone,
+            'updateStatus'          => $this->updateStatus,
+            'subscribeNewsletter'   => $this->newsletterSubscription->newsletterCategories->count() ? 1 : 0,
+            'cancelAt'   => $this->getDateTimeString($this->newsletterSubscription->cancelAt),
+            'cancelReason'   => $this->newsletterSubscription->cancelReason,
         ];
     }
 }
