@@ -10,7 +10,7 @@ use DaydreamLab\User\Models\User\UserCompany;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
-class TransformCommand extends Command
+class  TransformCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -68,7 +68,7 @@ class TransformCommand extends Command
             if (!$user->newsletterSubscription) {
                 $user->newsletterSubscription()->create([
                     'user_id' => $user->id,
-                    'email' => $user->email
+                    'email' => $user->email,
                 ]);
             }
         }
