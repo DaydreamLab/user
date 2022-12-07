@@ -394,6 +394,11 @@ class UserAdminService extends UserService
     }
 
 
+    public function crmSearch(Collection $input)
+    {
+        return $this->search($input->only(['q', 'limit', 'paginate']));
+    }
+
     public function sendTotp($input)
     {
         $ids = $input->get('ids') ?? [];

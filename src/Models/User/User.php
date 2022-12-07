@@ -15,6 +15,7 @@ use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\User\Database\Factories\UserFactory;
 use DaydreamLab\User\Helpers\CompanyHelper;
+use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Models\Line\Line;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Illuminate\Auth\Authenticatable;
@@ -29,6 +30,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Kalnoy\Nestedset\Collection;
 use Laravel\Passport\HasApiTokens;
+use DaydreamLab\Cms\Helpers\EnumHelper as CmsEnumHelper;
 
 class User extends BaseModel implements
     AuthenticatableContract,
@@ -354,10 +356,10 @@ class User extends BaseModel implements
     public function getSubscriptionStatusAttribute()
     {
         return $this->newsletterSubscription->newsletterCategories->count()
-            ? '已訂閱'
+            ? CmsEnumHelper::NEWSLETTER_SUBSCRIBE
             : ($this->newsletterSubscription->cancelAt
-                ? '取消訂閱'
-                : '未訂閱'
+                ? CmsEnumHelper::NEWSLETTER_UNSUBSCRIBE
+                : CmsEnumHelper::NEWSLETTER_NONESUBSCRIBE
             );
     }
 
@@ -365,8 +367,8 @@ class User extends BaseModel implements
     public function getUpdateStatusAttribute()
     {
         return $this->lastUpdate
-            ? (now()->diffInDays($this->lastUpdate) > 90 ? '待更新狀態' : '已更新狀態')
-            : '待更新狀態';
+            ? (now()->diffInDays($this->lastUpdate) > 90 ? EnumHelper::WAIT_UPDATE : EnumHelper::ALREADY_UPDATE)
+            : EnumHelper::WAIT_UPDATE;
     }
 
 

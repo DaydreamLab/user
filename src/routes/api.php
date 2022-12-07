@@ -184,6 +184,8 @@ Route::post('api/admin/user/block', [UserAdminController::class, 'block'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/user/search', [UserAdminController::class, 'search'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('api/admin/user/crmSearch', [UserAdminController::class, 'crmSearch'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/user/page', [UserAdminController::class, 'getSelfPage'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/user/remove', [UserAdminController::class, 'remove'])

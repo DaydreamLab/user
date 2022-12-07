@@ -14,6 +14,7 @@ class EnumHelper
     public const COMPANY_NOTE_COMPETITION = '競業';
     public const COMPANY_NOTE_BLACKLIST = '黑名單';
     public const COMPANY_NOTE_STAFF = '員工';
+    public const COMPANY_NOTE_OBM = '原廠';
 
     public const COMPANY_CATEGORY_NORMAL = '一般';
     public const COMPANY_CATEGORY_DEALER = '經銷會員';

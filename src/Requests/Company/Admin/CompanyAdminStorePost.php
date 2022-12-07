@@ -47,7 +47,8 @@ class CompanyAdminStorePost extends AdminRequest
                 EnumHelper::COMPANY_NOTE_NONE,
                 EnumHelper::COMPANY_NOTE_COMPETITION,
                 EnumHelper::COMPANY_NOTE_STAFF,
-                EnumHelper::COMPANY_NOTE_BLACKLIST
+                EnumHelper::COMPANY_NOTE_BLACKLIST,
+                EnumHelper::COMPANY_NOTE_OBM
             ])],
             'reason'       => 'nullable|string',
             'industry'      => 'required|array',

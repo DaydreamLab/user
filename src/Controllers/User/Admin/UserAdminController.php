@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Requests\User\Admin\UserAdminCrmSearchPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminExportPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminGetItem;
@@ -114,6 +115,25 @@ class UserAdminController extends BaseController
             UserAdminListResourceCollection::class
         );
     }
+
+
+    public function crmSearch(UserAdminCrmSearchPost $request)
+    {
+        $this->service->setUser($request->user());
+        try {
+            $this->service->crmSearch($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response(
+            $this->service->status,
+            $this->service->response,
+            [],
+            UserAdminListResourceCollection::class
+        );
+    }
+
 
 
     public function store(UserAdminStorePost $request)
