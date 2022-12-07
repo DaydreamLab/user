@@ -11,7 +11,7 @@ class CompanyAdminSearchUsersRequest extends ListRequest
 {
     protected $modelName = 'Company';
 
-    protected $apiMethod = 'searchCompanyUsers';
+    protected $apiMethod = 'searchCompanyMembers';
 
     protected $needAuth = true;
 

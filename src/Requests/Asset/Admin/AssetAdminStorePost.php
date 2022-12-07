@@ -5,7 +5,8 @@ namespace DaydreamLab\User\Requests\Asset\Admin;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use Illuminate\Validation\Rule;
 
-class AssetAdminStorePost extends AdminRequest
+class
+AssetAdminStorePost extends AdminRequest
 {
     protected $modelName = 'Asset';
 

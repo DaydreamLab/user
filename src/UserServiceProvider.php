@@ -23,6 +23,7 @@ class UserServiceProvider extends ServiceProvider
         'DaydreamLab\User\Commands\V2\TransformCompanyCategoryNoteCommand',
         'DaydreamLab\User\Commands\V2\HandleCompanyCategoryCommand',
         'DaydreamLab\User\Commands\V2\TransformCompanyCommand',
+        'DaydreamLab\User\Commands\V2\AssetInstallCommand',
     ];
 
 
