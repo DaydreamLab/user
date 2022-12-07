@@ -56,7 +56,8 @@ class UserCompanyEmailVerificationNotification extends BaseNotification
             'content'   => $this->defaultMailContent(),
             'user'      => $this->user,
             'clickType' => 'dealerValidate',
-            'clickUrl'  => $this->user->dealerValidateUrl
+            'clickUrl'  => $this->user->dealerValidateUrl,
+            'order'     => null
         ];
     }
 

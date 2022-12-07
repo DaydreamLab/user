@@ -68,7 +68,8 @@ class RegisteredNotification extends Notification implements ShouldQueue
                         'subject' => '[零壹科技] 帳號已啟用',
                         'content' => $this->getContent(),
                         'clickType' => 'dealerValidate',
-                        'clickUrl'  => $this->user->dealerValidateUrl
+                        'clickUrl'  => $this->user->dealerValidateUrl,
+                        'order' => null
                     ]);
     }
 
