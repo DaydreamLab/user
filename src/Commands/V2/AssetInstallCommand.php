@@ -90,7 +90,7 @@ class AssetInstallCommand extends Command
             $userGroups = UserGroup::whereIn('id', [4,5,8,9])->get();
             foreach ($userGroups as $userGroup) {
                 $userGroup->assets()->attach($asset->id);
-                $userGroups->apis()->attach($api->id, ['asset_group_id' => $assetGroup->id, 'asset_id' => $asset->id]);
+                $userGroup->apis()->attach($api->id, ['asset_group_id' => $assetGroup->id, 'asset_id' => $asset->id]);
             }
         }
     }
