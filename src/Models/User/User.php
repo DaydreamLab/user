@@ -32,6 +32,8 @@ use Kalnoy\Nestedset\Collection;
 use Laravel\Passport\HasApiTokens;
 use DaydreamLab\Cms\Helpers\EnumHelper as CmsEnumHelper;
 
+use function Symfony\Component\String\s;
+
 class User extends BaseModel implements
     AuthenticatableContract,
     AuthorizableContract,
@@ -369,7 +371,7 @@ class User extends BaseModel implements
 
     public function getUpdateStatusAttribute()
     {
-        return $this->lastUpdate
+        return $this->company->lastUpdate
             ? (
                 now()->diffInDays($this->company->lastUpdate) > config('daydreamlab.user.userCompanyUpdateInterval', 90)
                     ? EnumHelper::WAIT_UPDATE
