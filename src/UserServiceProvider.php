@@ -35,7 +35,7 @@ class UserServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([__DIR__ . '/constants' => config_path('constants/user')], 'user-configs');
+        $this->publishes([__DIR__ . '/constants' => config_path('constants/user')], 'user-constants');
         $this->publishes([__DIR__ . '/Configs' => config_path('daydreamlab')], 'user-configs');
         $this->publishes([__DIR__ . '/Configs' => config_path('daydreamlab')], 'user-configs');
         $this->publishes([__DIR__ . '/../resources/views/emails' => resource_path('views/emails')], 'emails-template');
