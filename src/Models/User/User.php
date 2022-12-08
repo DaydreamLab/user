@@ -371,7 +371,7 @@ class User extends BaseModel implements
     {
         return $this->lastUpdate
             ? (
-                now()->diffInDays($this->lastUpdate) > config('daydreamlab.user.userCompanyUpdateInterval', 90)
+                now()->diffInDays($this->company->lastUpdate) > config('daydreamlab.user.userCompanyUpdateInterval', 90)
                     ? EnumHelper::WAIT_UPDATE
                     : EnumHelper::ALREADY_UPDATE
             )
