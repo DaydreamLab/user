@@ -64,8 +64,8 @@ class UserAdminService extends UserService
         $item->company()->create($inputUserCompany);
 
         # 新增訂閱記錄
-        if (!$item->newletterSubscription) {
-            $item->newletterSubscription()->create([
+        if (!$item->newsletterSubscription) {
+            $item->newsletterSubscription()->create([
                 'user_id' => $item->id,
                 'email' => $item->email
             ]);
@@ -320,7 +320,7 @@ class UserAdminService extends UserService
         if (count($attached = $changes['attached'])) {
             # 根據會員群組的變動更新電子報訂閱
             if (in_array(7, $attached)) {
-                if ($item->newletterSubscription && $item->newletterSubscription->newsletterCategories->count()) {
+                if ($item->newsletterSubscription && $item->newsletterSubscription->newsletterCategories->count()) {
                     $categories = Item::whereIn('alias', ['01_newsletter'])->whereHas('category', function ($q) {
                         $q->where('content_type', 'newsletter_category');
                     })->get()->pluck('id')->all();
@@ -328,7 +328,7 @@ class UserAdminService extends UserService
                     $categories = [];
                 }
             } elseif (in_array(6, $attached)) {
-                if ($item->newletterSubscription && $item->newletterSubscription->newsletterCategories->count()) {
+                if ($item->newsletterSubscription && $item->newsletterSubscription->newsletterCategories->count()) {
                     $categories = Item::whereIn('alias', ['01_deal_newsletter'])->whereHas('category', function ($q) {
                         $q->where('content_type', 'newsletter_category');
                     })->get()->pluck('id')->all();

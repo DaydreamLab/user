@@ -69,7 +69,19 @@ class AssetInstallCommand extends Command
                     "getOption" => [
                         "checked",
                         "hidden"
-                    ]
+                    ],
+                    'getUser' => [
+                        'checked',
+                        'hidden'
+                    ],
+                    'addUser' => [
+                        'checked',
+                        'hidden'
+                    ],
+                    'editUser' => [
+                        'checked',
+                        'hidden'
+                    ],
                 ]
         ];
 
@@ -77,11 +89,13 @@ class AssetInstallCommand extends Command
         if (!$asset) {
             $asset = app(AssetAdminService::class)->store(collect($assetData));
             $assetGroup->assets()->attach($asset->id);
-            $apiData = [
-                'name'  => '搜尋公司成員',
-                'state' => 1,
-                'method' => 'searchCompanyMember',
-                'url' => '/admin/company/{id}/user/search',
+            $apisData = [
+                [
+                    'name'  => '搜尋公司成員',
+                    'state' => 1,
+                    'method' => 'searchCompanyMembers',
+                    'url' => '/admin/company/{id}/user/search',
+                ],
             ];
 
             $api = app(ApiAdminService::class)->store(collect($apiData));
