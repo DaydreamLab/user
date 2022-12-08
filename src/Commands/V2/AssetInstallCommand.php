@@ -83,6 +83,10 @@ class AssetInstallCommand extends Command
                         'checked',
                         'hidden'
                     ],
+                    'restoreUser' => [
+                        'checked',
+                        'hidden'
+                    ],
                 ]
         ];
 
