@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Commands\V2;
 
+use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Asset\AssetGroup;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Services\Api\Admin\ApiAdminService;
@@ -72,23 +73,25 @@ class AssetInstallCommand extends Command
                 ]
         ];
 
-        $asset = app(AssetAdminService::class)->store(collect($assetData));
-        $assetGroup->assets()->attach($asset->id);
+        $asset = Asset::where('title', 'COM_MEMBERS_PEOPLE_MANAGER_TITLE')->first();
+        if (!$asset) {
+            $asset = app(AssetAdminService::class)->store(collect($assetData));
+            $assetGroup->assets()->attach($asset->id);
+            $apiData = [
+                'name'  => '搜尋公司成員',
+                'state' => 1,
+                'method' => 'searchCompanyMember',
+                'url' => '/admin/company/{id}/user/search',
+            ];
 
-        $apiData = [
-            'name'  => '搜尋公司成員',
-            'state' => 1,
-            'method' => 'searchCompanyMember',
-            'url' => '/admin/company/{id}/user/search',
-        ];
+            $api = app(ApiAdminService::class)->store(collect($apiData));
+            $asset->apis()->attach($api->id, ['asset_group_id' => $assetGroup->id]);
 
-        $api = app(ApiAdminService::class)->store(collect($apiData));
-        $asset->apis()->attach($api->id, ['asset_group_id' => $assetGroup->id]);
-
-        $userGroups = UserGroup::whereIn('id', [4,5,8,9])->get();
-        foreach ($userGroups as $userGroup) {
-            $userGroup->assets()->attach($asset->id);
-            $userGroups->apis()->attach($api->id, ['asset_group_id' => $assetGroup->id, 'asset_id' => $asset->id]);
+            $userGroups = UserGroup::whereIn('id', [4,5,8,9])->get();
+            foreach ($userGroups as $userGroup) {
+                $userGroup->assets()->attach($asset->id);
+                $userGroups->apis()->attach($api->id, ['asset_group_id' => $assetGroup->id, 'asset_id' => $asset->id]);
+            }
         }
     }
 }

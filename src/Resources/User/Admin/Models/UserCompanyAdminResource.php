@@ -26,7 +26,7 @@ class UserCompanyAdminResource extends BaseJsonResource
             'industry' => $this->industry,
             'scale' => $this->company ? $this->company->scale : null,
             'purchaseRole' => $this->purchaseRole,
-            'interestIssue' => $this->interestIssue,
+            'interestedIssue' => $this->interestedIssue,
             'issueOther'    => $this->issueOther,
             'validated' => $this->validated,
             'lastValidate'  => $this->getDateTimeString($this->lastValidate),
