@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Commands\V2;
 
+use DaydreamLab\User\Models\Api\Api;
 use DaydreamLab\User\Models\Asset\Asset;
 use DaydreamLab\User\Models\Asset\AssetGroup;
 use DaydreamLab\User\Models\User\UserGroup;
@@ -89,6 +90,23 @@ class AssetInstallCommand extends Command
         if (!$asset) {
             $asset = app(AssetAdminService::class)->store(collect($assetData));
             $assetGroup->assets()->attach($asset->id);
+
+            $inputDefaultApis = $assetData['defaultApis'];
+            foreach ($inputDefaultApis as $key => $rules) {
+                $api = Api::where('method', $key)->first();
+                $data = ['asset_group_id' => $assetGroup->id];
+                foreach ($rules as $rule) {
+                    $data[$rule] = 1;
+                }
+                if ($api) {
+                    $asset->apis()->attach($api->id, $data);
+                    $api->userGroups()->attach([4,5,8,9], [
+                        'asset_group_id' => $assetGroup->id,
+                        'asset_id' => $asset->id
+                    ]);
+                }
+            }
+
             $apiData = [
                 'name'  => '搜尋公司成員',
                 'state' => 1,
