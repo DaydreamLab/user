@@ -89,13 +89,11 @@ class AssetInstallCommand extends Command
         if (!$asset) {
             $asset = app(AssetAdminService::class)->store(collect($assetData));
             $assetGroup->assets()->attach($asset->id);
-            $apisData = [
-                [
-                    'name'  => '搜尋公司成員',
-                    'state' => 1,
-                    'method' => 'searchCompanyMembers',
-                    'url' => '/admin/company/{id}/user/search',
-                ],
+            $apiData = [
+                'name'  => '搜尋公司成員',
+                'state' => 1,
+                'method' => 'searchCompanyMembers',
+                'url' => '/admin/company/{id}/user/search',
             ];
 
             $api = app(ApiAdminService::class)->store(collect($apiData));
