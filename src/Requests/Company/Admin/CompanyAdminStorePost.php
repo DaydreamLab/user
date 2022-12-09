@@ -63,7 +63,7 @@ class CompanyAdminStorePost extends AdminRequest
             'phones.*'    => 'required|array',
             'phones.*.phoneCode'    => 'required|numeric',
             'phones.*.phone'    => 'required|numeric',
-            'phones.*.ext'    => 'required|numeric',
+            'phones.*.ext'    => 'nullable|numeric',
             'approvedAt'    => 'nullable|date_format:Y-m-d H:i:s',
             'expiredAt'     => 'nullable|date_format:Y-m-d H:i:s',
             'ordering'      => 'nullable|integer'
