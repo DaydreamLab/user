@@ -138,7 +138,7 @@ class UserAdminStorePost extends AdminRequest
             'company.jobCategory'    => 'nullable|string',
             'company.jobType'      => 'nullable|string',
 //            'company.industry'      => 'nullable|string',
-//            'company.scale'         => 'nullable|string',
+            'company.scale'         => 'nullable|string',
             'company.purchaseRole'  => 'nullable|string',
             'company.interestedIssue'   => 'nullable|array',
             'company.interestedIssue.*' => 'nullable|string',

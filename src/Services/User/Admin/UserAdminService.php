@@ -63,12 +63,13 @@ class UserAdminService extends UserService
         $inputUserCompany['user_id'] = $item->id;
         $item->company()->create($inputUserCompany);
 
-        # 新增訂閱記錄
-        if (!$item->newsletterSubscription) {
-            $item->newsletterSubscription()->create([
-                'user_id' => $item->id,
-                'email' => $item->email
-            ]);
+        $data = [
+            'user_id' => $item->id,
+            'email' => $item->email
+        ];
+        $sub = app(NewsletterSubscriptionAdminService::class)->add(collect($data));
+        if ($input->get('subscribeNewsletter')) {
+            $this->decideNewsletterSubscription(['attached' => []], $item, $input);
         }
 
         # 檢查會蟲
