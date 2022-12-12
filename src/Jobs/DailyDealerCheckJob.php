@@ -43,9 +43,11 @@ class DailyDealerCheckJob implements ShouldQueue
         })->where(function ($q) {
             $q->where('validated', 1)
                 ->where(function ($q) {
-                    $threeMonthAgo = now()->subMonths(3)->toDateTimeString();
+                    $fourMonthAgo = now()
+                        ->subMonths(config('daydreamlab.user.userCompanyUpdateInterval', 120))
+                        ->toDateTimeString();
                     $q->whereNull('lastValidate')
-                        ->orWhere('lastValidate', '<', $threeMonthAgo);
+                        ->orWhere('lastValidate', '<', $fourMonthAgo);
                 });
         })->get();
 
