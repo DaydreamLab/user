@@ -14,7 +14,7 @@ use DaydreamLab\User\Controllers\Xsms\XsmsController;
 use DaydreamLab\User\Controllers\CompanyOrder\Admin\CompanyOrderAdminController;
 use DaydreamLab\User\Controllers\CompanyOrderItem\Admin\CompanyOrderItemAdminController;
 use DaydreamLab\User\Controllers\UserTag\Admin\UserTagAdminController;
-
+use DaydreamLab\User\Controllers\NotificationTemplate\NotificationTemplateController;
 /************************************  前台 API  ************************************/
 
 // 啟用帳號
@@ -230,4 +230,10 @@ Route::post('api/admin/viewlevel/search', [ViewlevelAdminController::class, 'sea
 Route::post('api/admin/viewlevel/ordering', [ViewlevelAdminController::class, 'ordering'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/viewlevel/{id}', [ViewlevelAdminController::class, 'getItem'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+
+
+Route::post('api/admin/notification/template/store', [NotificationTemplateController::class, 'store'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('api/admin/notification/template/search', [NotificationTemplateController::class, 'search'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);

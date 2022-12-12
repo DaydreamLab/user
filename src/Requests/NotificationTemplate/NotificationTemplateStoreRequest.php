@@ -27,7 +27,11 @@ class NotificationTemplateStoreRequest extends UserStoreRequest
     public function rules()
     {
         $rules = [
-            //
+            'id'    => 'nullable|integer',
+            'type' => 'required|string',
+            'subject'   => 'required|string',
+            'content'   => 'required|string',
+            'contentHtml'   => 'required|string'
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -37,6 +41,8 @@ class NotificationTemplateStoreRequest extends UserStoreRequest
     public function validated()
     {
         $validated = parent::validated();
+        $validated->put('channelType', 'default');
+        $validated->put('category', 'message');
 
         return $validated;
     }

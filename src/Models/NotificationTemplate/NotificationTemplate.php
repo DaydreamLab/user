@@ -3,9 +3,14 @@
 namespace DaydreamLab\User\Models\NotificationTemplate;
 
 use DaydreamLab\JJAJ\Models\BaseModel;
+use DaydreamLab\JJAJ\Traits\RecordChanger;
+use DaydreamLab\JJAJ\Traits\UserInfo;
 
 class NotificationTemplate extends BaseModel
 {
+    use UserInfo;
+    use RecordChanger;
+
     /**
      * The table associated with the model.
      *
@@ -50,4 +55,7 @@ class NotificationTemplate extends BaseModel
     ];
 
 
+    protected $casts = [
+        'params' => 'array'
+    ];
 }

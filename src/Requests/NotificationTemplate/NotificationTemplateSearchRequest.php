@@ -9,6 +9,8 @@ class NotificationTemplateSearchRequest extends UserSearchRequest
     protected $modelName = 'NotificationTemplate';
 
     protected $apiMethod = 'searchNotificationTemplate';
+
+    protected $searchKeys = ['type', 'subject', 'content'];
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -37,6 +39,7 @@ class NotificationTemplateSearchRequest extends UserSearchRequest
     public function validated()
     {
         $validated = parent::validated();
+        $validated->put('q', $validated->get('q')->where('category', 'message'));
 
         return $validated;
     }
