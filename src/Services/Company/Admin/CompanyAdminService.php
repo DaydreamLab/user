@@ -66,7 +66,7 @@ class CompanyAdminService extends CompanyService
             if ($inputCategory->title == EnumHelper::COMPANY_CATEGORY_DEALER) {
                 if (!$input->get('approvedAt')) {
                     $input->put('approvedAt', now()->toDateTimeString());
-                    $input->put('cancelAt', null);
+                    $input->put('expiredAt', null);
                 }
             }
 
