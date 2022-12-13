@@ -256,7 +256,7 @@ class UserAdminService extends UserService
                 $inputCompany = $input->get('company');
                 if ($userCompany->company && $userCompany->company->category->title == '經銷會員') {
                     # 原本沒過期強制變成已過期
-                    if (isset($inputCompany['isExpired']) && $inputCompany['isExpired'] === '0')) {
+                    if (isset($inputCompany['isExpired']) && $inputCompany['isExpired'] === '0') {
                         $updateData['lastValidate'] = now()->toDateTimeString();
                     }
                 } else {
