@@ -83,7 +83,7 @@ class CompanyAdminStorePost extends AdminRequest
         $validated->put('state_', $validated->get('state'));
         $validated->put('category_id', $validated->get('categoryId'));
         $validated->forget(['state', 'categoryId']);
-        exit();
+
         return $validated;
     }
 }
