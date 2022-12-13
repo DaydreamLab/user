@@ -32,7 +32,7 @@ class UserCompanyEmailVerificationNotification extends BaseNotification
 
     public function defaultSubject()
     {
-        return '[' . config('app.name') . ']' . '經銷會員升級驗證';
+        return '[零壹官網] 經銷會員帳號驗證';
     }
 
 
