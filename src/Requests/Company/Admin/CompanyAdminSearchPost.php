@@ -49,10 +49,10 @@ class CompanyAdminSearchPost extends ListRequest
             $validated->put('category_id', $validated->get('company_category'));
             $validated->forget('company_category');
         } else {
-            if (!$validated->get('search')) {
-                $category_ids = CompanyCategory::query()->where('title', '!=', '一般')->get()->pluck('id');
-                $q->whereIn('category_id', $category_ids);
-            }
+//            if (!$validated->get('search')) {
+//                $category_ids = CompanyCategory::query()->where('title', '!=', '一般')->get()->pluck('id');
+//                $q->whereIn('category_id', $category_ids);
+//            }
         }
 
         $validated->put('q', $q);
