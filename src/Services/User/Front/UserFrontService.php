@@ -154,7 +154,6 @@ class UserFrontService extends UserService
 
             $this->repo->update($userCompany, [
                 'validated' => 1,
-                'isExpired' => 0,
                 'validateToken' => Str::random(128),
                 'lastValidate' => now()->toDateTimeString()
             ]);
