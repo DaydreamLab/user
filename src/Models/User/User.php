@@ -307,6 +307,17 @@ class User extends BaseModel implements
     }
 
 
+    public function getDealerExpiredAttribute()
+    {
+        return $this->isDealer
+            && (
+                $this->company->lastValidate
+                && now()->diffInDays($this->company->lastValidate)
+                    > config('daydreamlab.user.userCompanyUpdateInterval', 120)
+            );
+    }
+
+
     public function getDealerValidateUrlAttribute()
     {
         return config('app.url') . '/dealer/validate/' . $this->company->validateToken;
@@ -372,13 +383,18 @@ class User extends BaseModel implements
 
     public function getUpdateStatusAttribute()
     {
-        return $this->company->lastUpdate
-            ? (
-                now()->diffInDays($this->company->lastUpdate) > config('daydreamlab.user.userCompanyUpdateInterval', 120)
-                    ? EnumHelper::WAIT_UPDATE
-                    : EnumHelper::ALREADY_UPDATE
-            )
-            : EnumHelper::WAIT_UPDATE;
+        if ($this->isDealer) {
+            return $this->company->lastUpdate
+                ? (
+                    now()->diffInDays($this->company->lastUpdate)
+                    > config('daydreamlab.user.userCompanyUpdateInterval', 120)
+                        ? EnumHelper::WAIT_UPDATE
+                        : EnumHelper::ALREADY_UPDATE
+                )
+                : EnumHelper::WAIT_UPDATE;
+        } else {
+            return EnumHelper::ALREADY_UPDATE;
+        }
     }
 
 

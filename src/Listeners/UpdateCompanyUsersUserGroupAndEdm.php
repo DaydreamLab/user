@@ -61,7 +61,6 @@ class UpdateCompanyUsersUserGroupAndEdm implements ShouldQueue
                 } else {
                     $userCompany = $user->company;
                     $userCompany->lastValidate = null;
-                    $userCompany->isExpired = 0;
                     $userCompany->validated = 0;
                     $userCompany->save();
                 }

@@ -509,6 +509,7 @@ class UserFrontService extends UserService
 
         $companyData['user_id'] = $user->id;
         $companyData['company_id'] = $cpy ? $cpy->id : null;
+        $companyData['lastUpdate'] = now()->toDateTimeString();
         $userCompany = $user->company;
         if (!$userCompany) {
             $userCompany = UserCompany::create($companyData);
