@@ -12,6 +12,8 @@ class RegisteredNotification extends Notification implements ShouldQueue
     use Queueable;
 
     protected $user;
+
+    protected $subject = '';
     /**
      * Create a new notification instance.
      *
@@ -39,6 +41,9 @@ class RegisteredNotification extends Notification implements ShouldQueue
         $content = '感謝您加入零壹會員，您的帳號已正式啟用。';
         if ($this->user->isDealer && $this->user->companyEmailIsDealer) {
             $content .= '<br>因您的公司具有經銷商資格，請點擊下方連結進行驗證。';
+            $this->subject = '[零壹科技] 帳號啟用驗證';
+        } else {
+            $this->subject = '[零壹科技] 帳號已啟用';
         }
 
         return $content;
@@ -62,10 +67,10 @@ class RegisteredNotification extends Notification implements ShouldQueue
                     ->action('Activate your account', url($path))
                     ->line('Thank you for using our application!')
             :   (new MailMessage())
-                    ->subject('[零壹科技] 帳號已啟用')
+                    ->subject($this->subject)
                     ->view($template, [
                         'user' => $this->user,
-                        'subject' => '[零壹科技] 帳號已啟用',
+                        'subject' => $this->subject,
                         'content' => $this->getContent(),
                         'clickType' => 'dealerValidate',
                         'clickUrl'  => $this->user->dealerValidateUrl,

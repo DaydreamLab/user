@@ -48,6 +48,7 @@ class UserAdminResource extends BaseJsonResource
             'zipcode'               => $this->zipcode,
             'activation'            => $this->activation,
             'block'                 => $this->block,
+            'lineBind'              => $this->line ? 1 : 0,
             'lastResetAt'           => $this->getDateTimeString($this->lastResetAt, $timezone),
             'lastLoginAt'           => $this->getDateTimeString($this->lastLoginAt, $timezone),
             'lastLoginIp'           => $this->lastLoginIp,

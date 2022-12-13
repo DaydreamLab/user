@@ -3,6 +3,8 @@
 namespace DaydreamLab\User\Requests\Company\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\JJAJ\Rules\Domain;
+use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
 use DaydreamLab\User\Helpers\CompanyRequestHelper;
 use DaydreamLab\User\Helpers\EnumHelper;
 use Illuminate\Validation\Rule;
@@ -33,7 +35,7 @@ class CompanyAdminStorePost extends AdminRequest
             'id'            => 'nullable|integer',
             'categoryId'    => 'required|integer',
             'name'          => 'required|string',
-            'vat'           => 'required|string',
+            'vat'           => ['required', new TaiwanUnifiedBusinessNumber()],
             'logo'          => 'nullable|string',
 //            'country'       => 'nullable|string',
 //            'state'         => 'nullable|string',
@@ -56,7 +58,7 @@ class CompanyAdminStorePost extends AdminRequest
             'scale'         => 'required|string',
             'mailDomains' => 'required|array',
             'mailDomains.domain' => 'nullable|array',
-            'mailDomains.domain.*' => 'required|string',
+            'mailDomains.domain.*' => ['required', new Domain()],
             'mailDomains.email' => 'nullable|array',
             'mailDomains.email.*' => 'required|email',
             'phones'    => 'required|array',
@@ -81,7 +83,7 @@ class CompanyAdminStorePost extends AdminRequest
         $validated->put('state_', $validated->get('state'));
         $validated->put('category_id', $validated->get('categoryId'));
         $validated->forget(['state', 'categoryId']);
-
+        exit();
         return $validated;
     }
 }
