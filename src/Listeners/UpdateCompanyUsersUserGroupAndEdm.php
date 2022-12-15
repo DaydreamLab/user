@@ -7,7 +7,6 @@ use DaydreamLab\User\Events\UpdateCompanyUsersUserGroupAndEdmEvent;
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Notifications\User\UserCompanyEmailVerificationNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-
 use Illuminate\Support\Facades\Notification;
 
 use function Symfony\Component\String\s;
