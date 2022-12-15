@@ -4,15 +4,12 @@ namespace DaydreamLab\User\Services\User\Admin;
 
 use DaydreamLab\Cms\Models\Item\Item;
 use DaydreamLab\Cms\Services\NewsletterSubscription\Admin\NewsletterSubscriptionAdminService;
-use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Helpers\OtpHelper;
-use DaydreamLab\User\Models\Company\Company;
-use DaydreamLab\User\Models\Company\CompanyCategory;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Models\User\UserGroup;
@@ -21,7 +18,6 @@ use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class UserAdminService extends UserService
 {
@@ -31,11 +27,17 @@ class UserAdminService extends UserService
 
     protected $companyAdminRepo;
 
-    public function __construct(UserAdminRepository $repo, CompanyAdminRepository $companyAdminRepo)
-    {
+    protected $newsletterSubscriptionAdminService;
+
+    public function __construct(
+        UserAdminRepository $repo,
+        CompanyAdminRepository $companyAdminRepo,
+        NewsletterSubscriptionAdminService $newsletterSubscriptionAdminService
+    ) {
         parent::__construct($repo);
         $this->repo = $repo;
         $this->companyAdminRepo = $companyAdminRepo;
+        $this->newsletterSubscriptionAdminService = $newsletterSubscriptionAdminService;
     }
 
 
@@ -63,14 +65,7 @@ class UserAdminService extends UserService
         $inputUserCompany['user_id'] = $item->id;
         $item->company()->create($inputUserCompany);
 
-        $data = [
-            'user_id' => $item->id,
-            'email' => $item->email
-        ];
-        $sub = app(NewsletterSubscriptionAdminService::class)->add(collect($data));
-        if ($input->get('subscribeNewsletter')) {
-            $this->decideNewsletterSubscription(['attached' => []], $item, $input);
-        }
+        $this->decideNewsletterSubscription(['attached' => []], $item, $input);
 
         # 檢查會蟲
         $this->checkBlacklist($item, $item->refresh()->company);
@@ -352,7 +347,7 @@ class UserAdminService extends UserService
                 'newsletterCategoryIds' => $categories
             ];
 
-            $newsletterSSer = app(NewsletterSubscriptionAdminService::class);
+            $newsletterSSer = $this->newsletterSubscriptionAdminService;
             $sub = $newsletterSSer->findBy('user_id', '=', $item->id)->first();
             if ($sub) {
                 $data['id'] = $sub->id;
@@ -363,7 +358,8 @@ class UserAdminService extends UserService
             $newsletterSSer->edmProcessSubscription($item->email, $sub); # 串接edm訂閱管理
         } else {
             $sub = $item->newsletterSubscription;
-            $newsletterSSer = app(NewsletterSubscriptionAdminService::class);
+            # 處理 email 更換問題
+            $newsletterSSer = $this->newsletterSubscriptionAdminService;
             $subscribeNewsletter = $input->get('subscribeNewsletter');
             if ($subscribeNewsletter === '1' && !$sub->newsletterCategories->count()) {
                 $categoryId = $item->company->company
@@ -430,8 +426,7 @@ class UserAdminService extends UserService
         }
 
         if ($result->block == 1 && in_array(config('app.env'), ['production', 'staging'])) {
-            $newsletterSSer = app(NewsletterSubscriptionAdminService::class);
-            $newsletterSSer->edmAddBlackList($result->email);
+            $this->newsletterSubscriptionAdminService->edmAddBlackList($result->email);
         }
         $this->response = $result;
 

@@ -377,7 +377,7 @@ class UserFrontService extends UserService
         $nsfs = app(NewsletterSubscriptionFrontService::class);
         # 檢查有沒有相同 email 但是沒有 user_id
         $q = new QueryCapsule();
-        $q->where('email', $user->email)
+        $q->where('email', $user->company->email)
             ->whereNull('user_id');
         $noUserSub = $nsfs->search(collect(['q' => $q]))->first();
         if ($noUserSub) {
@@ -525,7 +525,7 @@ class UserFrontService extends UserService
         $this->checkBlacklist($user, $userCompany->refresh());
 
         # 通知
-        $this->sendNotification('mail', $user->email, new RegisteredNotification($user));
+        $this->sendNotification('mail', $userCompany->email, new RegisteredNotification($user));
         $this->status = 'RegisterSuccess';
     }
 
