@@ -310,6 +310,11 @@ class UserAdminService extends UserService
 
     protected function decideNewsletterSubscription($changes, $item, $input = null)
     {
+        $data = [
+            'user_id' => $item->id,
+            'email' => $item->email,
+        ];
+
         if (count($attached = $changes['attached'])) {
             # 根據會員群組的變動更新電子報訂閱
             if (in_array(7, $attached)) {
@@ -341,24 +346,18 @@ class UserAdminService extends UserService
                     : 35;
             }
 
-            $data = [
-                'user_id' => $item->id,
-                'email' => $item->email,
-                'newsletterCategoryIds' => $categories
-            ];
-
-            $newsletterSSer = $this->newsletterSubscriptionAdminService;
-            $sub = $newsletterSSer->findBy('user_id', '=', $item->id)->first();
+            $data['newsletterCategoryIds'] = $categories;
+            $sub = $this->newsletterSubscriptionAdminService->findBy('user_id', '=', $item->id)->first();
             if ($sub) {
                 $data['id'] = $sub->id;
-                $newsletterSSer->modify(collect($data));
+                $this->newsletterSubscriptionAdminService->modify(collect($data));
             } else {
-                $sub = $newsletterSSer->add(collect($data));
+                $sub = $this->newsletterSubscriptionAdminService->add(collect($data));
             }
-            $newsletterSSer->edmProcessSubscription($item->email, $sub); # 串接edm訂閱管理
+//            $newsletterSSer->edmProcessSubscription($item->email, $sub); # 串接edm訂閱管理
         } else {
+            $data = [];
             $sub = $item->newsletterSubscription;
-            # 處理 email 更換問題
             $newsletterSSer = $this->newsletterSubscriptionAdminService;
             $subscribeNewsletter = $input->get('subscribeNewsletter');
             if ($subscribeNewsletter === '1' && !$sub->newsletterCategories->count()) {
@@ -369,7 +368,7 @@ class UserAdminService extends UserService
                 $sub->cancelReason = null;
                 $sub->cancelAt = null;
                 $sub->save();
-                $newsletterSSer->edmAddSubscription($sub->email, ($categoryId == 35 ? 6 : 7));
+//                $newsletterSSer->edmAddSubscription($sub->email, ($categoryId == 35 ? 6 : 7));
             } elseif ($subscribeNewsletter === '0' && $sub->newsletterCategories->count()) {
                 $categoryId = $item->company->company
                     ? ($item->company->company->category->title == '一般會員' ? 35 : 36)
@@ -378,7 +377,7 @@ class UserAdminService extends UserService
                 $sub->cancelAt = now()->toDateTimeString();
                 $sub->save();
                 $sub->newsletterCategories()->detach();
-                $newsletterSSer->edmRemoveSubscription($sub->email, ($categoryId == 35 ? 6 : 7));
+//                $newsletterSSer->edmRemoveSubscription($sub->email, ($categoryId == 35 ? 6 : 7));
             }
         }
     }

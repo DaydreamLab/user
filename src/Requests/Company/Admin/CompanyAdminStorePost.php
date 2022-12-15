@@ -55,7 +55,7 @@ class CompanyAdminStorePost extends AdminRequest
             'reason'       => 'nullable|string',
             'industry'      => 'nullable|array',
             'industry.*'    => 'required|string',
-            'scale'         => 'required|string',
+            'scale'         => 'nullable|string',
             'mailDomains' => 'nullable|array',
             'mailDomains.domain' => 'nullable|array',
             'mailDomains.domain.*' => ['required', new Domain()],
