@@ -353,6 +353,11 @@ class UserFrontService extends UserService
         # 如果有統編，取出公司資料，公司不存在則新增
         $cpy = $this->firstOrCreateCompany($companyData);
         if ($cpy) {
+            $industry = $cpy->industry;
+            if (!in_array($companyData['industry'], $industry)) {
+                $industry[] = $companyData['industry'];
+            }
+            $this->repo->update($cpy, ['industry' => $industry]);
             $companyData['name'] = $cpy->name;
             $companyData['company_id'] = $cpy->id;
         }
@@ -540,7 +545,7 @@ class UserFrontService extends UserService
                     'name' => $companyData['name'],
                     'vat' => $companyData['vat'],
                     'category_id' => $normalCategory->id,
-                    'mailDomains' => ['domain' => [], 'email' => []]
+                    'mailDomains' => ['domain' => [], 'email' => []],
                 ]);
             }
         } else {
