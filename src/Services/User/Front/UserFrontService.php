@@ -379,18 +379,39 @@ class UserFrontService extends UserService
 
     public function handleUserNewsletterSubscription(Collection $input, $user)
     {
+        $subscribeNewsletter = $input->get('subscribeNewsletter');
         $nsfs = app(NewsletterSubscriptionFrontService::class);
         # 檢查有沒有相同 email 但是沒有 user_id
         $q = new QueryCapsule();
         $q->where('email', $user->company->email)
-            ->whereNull('user_id');
-        $noUserSub = $nsfs->search(collect(['q' => $q]))->first();
-        if ($noUserSub) {
-            $nsfs->update($noUserSub, collect(['user_id' => $user->id]));
+            ->where('user_id', '!=', $user->id);
+        $emailSubs = $nsfs->search(collect(['q' => $q, 'limit' => 0, 'paginate' => 0]));
+
+        if ($emailSubs->count()) {
+            # 尚未綁訂的會員
+            $emailSubs->filter(function ($emailSub) {
+                return !$emailSub->user_id;
+            })->each(function ($noneUserSub) use ($nsfs, $user) {
+                $nsfs->update($noneUserSub, collect(['user_id' => $user->id]));
+            });
+
+            # 同 email 訂閱同時更動
+            $emailSubs->filter(function ($emailSub) use ($user) {
+                return $emailSub->user_id != $user->id;
+            })->each(function ($sameUserSub) use ($nsfs, $subscribeNewsletter) {
+                try {
+                    $targetUser = $this->checkItem(collect(['id' => $sameUserSub->user_id]));
+                    $nsfs->store(collect([
+                        'subscribeNewsletter'       => $subscribeNewsletter,
+                        'user'                      => $targetUser,
+                    ]));
+                } catch (\Throwable $t) {
+                }
+            });
         }
 
         return $nsfs->store(collect([
-            'subscribeNewsletter'       => $input->get('subscribeNewsletter'),
+            'subscribeNewsletter'       => $subscribeNewsletter,
             'user'                      => $user->refresh(),
         ]));
     }
