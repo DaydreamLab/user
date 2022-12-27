@@ -529,9 +529,6 @@ class UserFrontService extends UserService
         # 根據公司的身份決定使用者的群組
         $userGroupType = $this->decideUserGroup($user->refresh(), $cpy, $companyData);
 
-        # 更新電子報訂閱
-        $this->handleUserNewsletterSubscription($input, $user);
-
         $companyData['user_id'] = $user->id;
         $companyData['company_id'] = $cpy ? $cpy->id : null;
         $companyData['lastUpdate'] = now()->toDateTimeString();
@@ -546,6 +543,9 @@ class UserFrontService extends UserService
             }
             $this->repo->update($userCompany, $companyData);
         }
+
+        # 更新電子報訂閱
+        $this->handleUserNewsletterSubscription($input, $user->refresh());
 
         # 檢查會蟲
         $this->checkBlacklist($user, $userCompany->refresh());
