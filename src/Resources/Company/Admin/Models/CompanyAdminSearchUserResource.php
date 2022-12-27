@@ -19,7 +19,7 @@ class CompanyAdminSearchUserResource extends BaseJsonResource
         return [
             'id' => $this->id,
             'mobilePhone'   => $this->mobilePhone,
-            'email' => $this->email,
+            'email' => $this->company->email,
             'name'  => $this->name,
             'groupTitle' => $this->groups->whereIn('title', ['一般會員', '經銷會員'])->first()->title,
             'jobCategory' => $this->company->jobCategory,
