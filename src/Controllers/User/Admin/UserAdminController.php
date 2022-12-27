@@ -17,6 +17,7 @@ use DaydreamLab\User\Requests\User\Admin\UserAdminStorePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminSearchPost;
 use Illuminate\Http\Request;
 use Throwable;
+
 use function Symfony\Component\String\s;
 
 class UserAdminController extends BaseController
@@ -43,7 +44,12 @@ class UserAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response, [], UserAdminExportResourceCollection::class);
+        return $this->response(
+            $this->service->status,
+            $this->service->response,
+            [],
+            UserAdminExportResourceCollection::class
+        );
     }
 
 
@@ -77,9 +83,9 @@ class UserAdminController extends BaseController
     {
         $this->service->setUser($request->user('api'));
         try {
-            $this->service->getSelfPage($request->get('site_id') ? :1);
+            $this->service->getSelfPage($request->get('site_id') ?: 1);
         } catch (Throwable $t) {
-           $this->handleException($t);
+            $this->handleException($t);
         }
 
         return $this->response($this->service->status, $this->service->response);

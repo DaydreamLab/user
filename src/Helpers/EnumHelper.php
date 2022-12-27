@@ -26,4 +26,23 @@ class EnumHelper
     public const SUBSCRIBE_EMAIL_CANCEL = 'Email通知';
     public const SUBSCRIBE_PHONE_CANCEL = '電話通知';
     public const SUBSCRIBE_SALES_CANCEL = '業務通知';
+
+    public const USERTAG_BASIC_CHECK_KEYS = [
+        'createdAtFrom',
+        'createdAtTo',
+        'lastLoginAtFrom',
+        'lastLoginAtTo',
+        'lastUpdateFrom',
+        'lastUpdateTo',
+    ];
+
+    public const USERTAG_EVENT_CHECK_KEYS = [
+        'startDate',
+        'endDate'
+    ];
+
+    public static function constant($name)
+    {
+        return constant('self::' . $name);
+    }
 }

@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Models\UserTag;
 
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
+use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\UserModel;
 use Illuminate\Support\Str;
 
@@ -59,5 +60,22 @@ class UserTag extends UserModel
 
     public static function newFactory()
     {
+    }
+
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'users_usertags_maps', 'userTagId', 'userId')
+            ->withPivot(['forceAdd', 'forceDelete'])
+            ->withTimestamps();
+    }
+
+
+    public function activeUsers()
+    {
+        return $this->belongsToMany(User::class, 'users_usertags_maps', 'userTagId', 'userId')
+            ->withPivot(['forceAdd', 'forceDelete'])
+            ->wherePivot('forceDelete', 0)
+            ->withTimestamps();
     }
 }

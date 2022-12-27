@@ -2,7 +2,10 @@
 
 namespace DaydreamLab\User\Requests\UserTag\Admin;
 
+use DaydreamLab\JJAJ\Helpers\RequestHelper;
+use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Requests\ComponentBase\UserStoreRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class UserTagAdminStoreRequest extends UserStoreRequest
@@ -41,7 +44,26 @@ class UserTagAdminStoreRequest extends UserStoreRequest
     public function validated()
     {
         $validated = parent::validated();
+        $validated->put('rules', $this->handleRules($validated->get('rules'))) ;
 
         return $validated;
+    }
+
+
+    public function handleRules($rules)
+    {
+        $keys = ['basic', 'event'];
+        foreach ($keys as $key) {
+            $data = $rules[$key];
+            $checkKeysType = 'USERTAG_' . Str::upper($key) . '_CHECK_KEYS';
+            foreach (EnumHelper::constant($checkKeysType) as $checkKey) {
+                if (isset($data[$checkKey])) {
+                    $data[$checkKey] = RequestHelper::toSystemTime($data[$checkKey]);
+                }
+            }
+            $rules[$key] = $data;
+        }
+
+        return $rules;
     }
 }

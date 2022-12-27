@@ -17,6 +17,7 @@ use DaydreamLab\User\Database\Factories\UserFactory;
 use DaydreamLab\User\Helpers\CompanyHelper;
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Models\Line\Line;
+use DaydreamLab\User\Models\UserTag\UserTag;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
@@ -490,5 +491,11 @@ class User extends BaseModel implements
         if ($order_by && $order_by != '') {
             $this->order_by = $order_by;
         }
+    }
+
+
+    public function userTags()
+    {
+        return $this->belongsToMany(UserTag::class, 'users_usertags_maps', 'userId', 'userTagId');
     }
 }

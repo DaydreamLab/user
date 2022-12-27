@@ -2,11 +2,14 @@
 
 namespace DaydreamLab\User\Services\User\Admin;
 
+use DaydreamLab\Cms\Helpers\EnumHelper as CmsEnumHelper;
 use DaydreamLab\Cms\Models\Item\Item;
 use DaydreamLab\Cms\Services\NewsletterSubscription\Admin\NewsletterSubscriptionAdminService;
+use DaydreamLab\Dsth\Helpers\EnumHelper as DsthEnumHelper;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
+use DaydreamLab\JJAJ\Helpers\RequestHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Helpers\OtpHelper;
@@ -385,6 +388,331 @@ class UserAdminService extends UserService
     }
 
 
+    public function handleBasicQuery(Collection &$validated)
+    {
+        $basic = $validated->get('basic');
+        $q = $validated->get('q');
+        # 排除 noneCustomer
+        $q->where('id', '!=', 48464);
+
+        if ($basic['userGroup']) {
+            $q->whereHas('groups', function ($q) use ($basic) {
+                $q->where('users_groups.title', $basic['userGroup']);
+            });
+        }
+
+        if ($basic['lineBind'] == '是') {
+            $q->whereHas('line');
+        } elseif ($basic['lineBind'] == '否') {
+            $q->whereDoesntHave('line');
+        }
+
+        if ($basic['createdAtFrom'] || $basic['createdAtTo']) {
+            if ($basic['createdAtFrom']) {
+                $q->where('created_at', '>=', $basic['createdAtFrom']);
+            }
+            if ($basic['createdAtTo']) {
+                $q->where('created_at', '<=', $basic['createdAtTo']);
+            }
+        }
+
+        if ($basic['lastLoginAtFrom'] || $basic['lastLoginAtTo']) {
+            if ($basic['lastLoginAtFrom']) {
+                $q->where('lastLoginAt', '>=', $basic['lastLoginAtFrom']);
+            }
+            if ($basic['lastLoginAtTo']) {
+                $q->where('lastLoginAt', '<=', $basic['lastLoginAtTo']);
+            }
+        }
+
+        $block = $validated->get('block');
+        if (in_array($block, ['是', '否'])) {
+            $q->where('block', $block);
+        }
+
+        if (
+            $basic['lastUpdateFrom']
+            || $basic['lastUpdateTo']
+            || count($basic['purchaseRoles'] ?: [])
+            || count($basic['jobTypes'] ?: [])
+            || count($basic['jobCategories'] ?: [])
+            || count($basic['interestedIssues'] ?: [])
+        ) {
+            $q->whereHas('company', function ($q) use ($basic) {
+                if ($basic['lastUpdateFrom']) {
+                    $q->where(
+                        'users_companies.lastUpdate',
+                        '>=',
+                        $basic['lastUpdateFrom']
+                    );
+                }
+                if ($basic['lastUpdateTo']) {
+                    $q->where('users_companies.lastUpdate', '<=', $basic['lastUpdateTo']);
+                }
+                if (count($basic['purchaseRoles'] ?: [])) {
+                    $q->whereIn('purchaseRole', $basic['purchaseRoles']);
+                }
+                if (count($basic['jobTypes'] ?: [])) {
+                    $q->whereIn('jobType', $basic['jobTypes']);
+                }
+                if (count($basic['jobCategories'] ?: [])) {
+                    $q->whereIn('jobCategories', $basic['jobCategories']);
+                }
+                foreach ($basic['interestedIssues'] ?: [] as $issue) {
+                    $q->where('interestedIssue', 'like', "%{$issue}%");
+                }
+            });
+        }
+
+        if ($basic['subscription'] == CmsEnumHelper::NEWSLETTER_SUBSCRIBE) {
+            $q->whereHas('newsletterSubscription.newsletterCategories');
+        } elseif ($basic['subscription']  == CmsEnumHelper::NEWSLETTER_NONESUBSCRIBE) {
+            $q->whereDoesntHave('newsletterSubscription.newsletterCategories');
+        } elseif ($basic['subscription']  == CmsEnumHelper::NEWSLETTER_UNSUBSCRIBE) {
+            $q->whereHas('newsletterSubscription', function ($q) {
+                $q->whereNotNull('cancelAt');
+            });
+        }
+
+        $validated->put('q', $q);
+    }
+
+    public function handleCompanyQuery(&$validated)
+    {
+        $company = $validated->get('company');
+        $q = $validated->get('q');
+
+        if (
+            count($company['city'] ?: [])
+            || count($company['categoryNotes'] ?: [])
+            || count($company['industry'] ?: [])
+            || $company['scale']
+        ) {
+            $q->whereHas('company.company', function ($q) use ($company) {
+                if (count($company['categoryNotes'] ?: [])) {
+                    $q->whereIn('companies.categoryNote', $company['categoryNotes']);
+                }
+
+                $industry = $company['industry'] ?: [];
+                if (count($industry)) {
+                    $q->where(function ($q) use ($industry) {
+                        foreach ($industry as $i) {
+                            $q->orWhere('companies.industry', 'like', "%{$i}%");
+                        }
+                    });
+                }
+
+                $city = $company['city'] ?: [];
+                if (count($city)) {
+                    $q->where(function ($q) use ($city) {
+                        foreach ($city as $c) {
+                            $q->orWhere('companies.city', $c);
+                        }
+                    });
+                }
+                if ($company['scale']) {
+                    $q->where('companies.scale', $company['scale']);
+                }
+            });
+        }
+
+        $validated->put('q', $q);
+    }
+
+
+    public function handleOrderEventCouponQuery(&$validated)
+    {
+        $order = $validated->get('order');
+        $event = $validated->get('event');
+        $coupon = $validated->get('coupon');
+
+        $eventValues = [
+            $event['search'],
+            $event['category'],
+            $event['type'],
+            $event['canRegisterGroup'],
+            count($event['brands'] ?: []),
+            $event['dateType'],
+            $event['registrationType'],
+            $event['startDate'],
+            $event['endDate'],
+        ];
+
+        $orderValues = [
+            $order['regStatus'],
+            $order['participateTimesFrom'],
+            $order['participateTimesTo'],
+            $order['cancelTimesFrom'],
+            $order['cancelTimesTo'],
+            $order['noshowTimesFrom'],
+            $order['noshowTimesTo'],
+        ];
+
+        $couponValues = [
+            $coupon['type'],
+            $coupon['userGroup']
+        ];
+
+        $q = $validated->get('q');
+
+        if ($order['replyQuestionnaire'] == '是') {
+            $q->whereHas('questionnaire');
+        } elseif ($order['replyQuestionnaire'] == '否') {
+            $q->whereDoesntHave('questionnaire');
+        }
+
+        if ($this->valueOr($couponValues)) {
+            $q->whereHas('couponGroups', function ($q) use ($coupon) {
+                if (in_array($coupon['type'], ['一般上課券', '批次上課券']) || $coupon['userGroup']) {
+                    if ($coupon['type'] == '一般上課券') {
+                        $q->where('type', 'normal');
+                    }
+                    if ($coupon['type'] == '批次上課券') {
+                        $q->where('type', 'normal');
+                    }
+                    if ($coupon['userGroup']) {
+                        $q->whereHas('userGroups', function ($q) use ($coupon) {
+                            if (in_array($coupon['userGroup'], ['一般會員', '經銷會員'])) {
+                                $q->where('users_groups.title', $coupon['userGroup']);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        if ($this->valueOr($orderValues) || $this->valueOr($eventValues)) {
+            $q->whereHas('orders', function ($q) use ($order, $event, $orderValues, $eventValues) {
+                if ($this->valueOr($orderValues)) {
+                    $participateTimesFrom = $order['participateTimesFrom'];
+                    $participateTimesTo = $order['participateTimesTo'];
+                    if ($participateTimesFrom || $participateTimesTo) {
+                        $q->select(['userId', DB::raw('COUNT(*) as ordersCount')])
+                            ->groupBy('userId');
+                        if ($participateTimesFrom) {
+                            $q->having('ordersCount', '>=', $participateTimesFrom);
+                        }
+                        if ($participateTimesTo) {
+                            $q->having('ordersCount', '<=', $participateTimesTo);
+                        }
+                    }
+                    if (
+                        $order['cancelTimesFrom']
+                        || $order['cancelTimesTo']
+                        || $order['noshowTimesFrom']
+                        || $order['noshowTimesTo']
+                    ) {
+                        $q->whereHas('items', function ($q) use ($order) {
+                            $cancelTimesFrom = $order['cancelTimesFrom'];
+                            $cancelTimesTo = $order['cancelTimesTo'];
+                            if ($cancelTimesFrom || $cancelTimesTo) {
+                                $q->select(['orderId', DB::raw('COUNT(*) as cancelOrdersCount')])
+                                    ->where('order_items.regStatus', DsthEnumHelper::CANCELED)
+                                    ->groupBy('orderId');
+                                if ($cancelTimesFrom) {
+                                    $q->having('cancelOrdersCount', '>=', $cancelTimesFrom);
+                                }
+                                if ($cancelTimesTo) {
+                                    $q->having('cancelOrdersCount', '<=', $cancelTimesTo);
+                                }
+                            }
+
+                            $noshowTimesFrom = $order['noshowTimesFrom'];
+                            $noshowTimesTo = $order['noshowTimesTo'];
+                            if ($noshowTimesFrom || $noshowTimesTo) {
+                                $q->select(['orderId', DB::raw('COUNT(*) as noshowOrdersCount')])
+                                    ->where('order_items.regStatus', DsthEnumHelper::NOSHOW)
+                                    ->groupBy('orderId');
+                                if ($noshowTimesFrom) {
+                                    $q->having('noshowOrdersCount', '>=', $noshowTimesFrom);
+                                }
+                                if ($noshowTimesTo) {
+                                    $q->having('noshowOrdersCount', '<=', $noshowTimesTo);
+                                }
+                            }
+                        });
+                    }
+                }
+
+                if ($this->valueOr($eventValues)) {
+                    $q->whereHas('event', function ($q) use ($event) {
+                        if ($event['search']) {
+                            $q->where(function ($q) use ($event) {
+                                $q->orWhere('events.title', 'like', "%{$event['search']}%")
+                                    ->orWhere('events.description', 'like', "%{$event['search']}%");
+                            });
+                        }
+
+                        if ($event['category']) {
+                            $q->whereHas('category', function ($q) use ($event) {
+                                $q->where('event_categories.title', $event['category']);
+                            });
+                        }
+
+                        if ($event['type'] == '實體') {
+                            $q->where('events.type', 'physical');
+                        } elseif ($event['type'] == '線上') {
+                            $q->where('events.type', 'online');
+                        }
+
+                        if ($event['canRegisterGroup'] == '一般會員') {
+                            $q->where('events.canRegisterGroup', 7);
+                        } elseif ($event['canRegisterGroup'] == '經銷會員') {
+                            $q->where('events.canRegisterGroup', 6);
+                        }
+
+                        $brands = $event['brands'] ?: [];
+                        if (count($brands)) {
+                            $q->whereHas('brands', function ($q) use ($brands) {
+                                $q->whereIn('brands.title', $brands);
+                            });
+                        }
+
+                        if ($event['dateType'] == '單天') {
+                            $q->where('events.dateType', 'single');
+                        } elseif ($event['dateType'] == '多天') {
+                            $q->where('events.dateType', 'multiple');
+                        } elseif ($event['dateType'] == '系列') {
+                            $q->where('events.dateType', 'series');
+                        }
+
+                        if ($event['registrationType'] == '統一報名') {
+                            $q->where('events.registrationType', 'impartial');
+                        } elseif ($event['registrationType'] == '依場次報名') {
+                            $q->where('events.registrationType', 'partial');
+                        }
+
+                        $startDate = $event['startDate'];
+                        $endDate = $event['endDate'];
+                        if ($startDate || $endDate) {
+                            $q->whereHas('dates', function ($q) use ($startDate, $endDate) {
+                                if ($startDate) {
+                                    $q->where('event_dates.date', '>=', $startDate);
+                                }
+                                if ($endDate) {
+                                    $q->where('event_dates.date', '<=', $endDate);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        $validated->put('q', $q);
+    }
+
+    public function valueOr(array $array)
+    {
+        $v = 0;
+        foreach ($array as $value) {
+            $v = $v || $value;
+        }
+
+        return $v;
+    }
+
+
     public function removeMapping($item)
     {
         $item->groups()->detach();
@@ -437,8 +765,13 @@ class UserAdminService extends UserService
 
     public function crmSearch(Collection $input)
     {
+        $this->handleBasicQuery($input);
+        $this->handleCompanyQuery($input);
+        $this->handleOrderEventCouponQuery($input);
+
         return $this->search($input->only(['q', 'limit', 'paginate']));
     }
+
 
     public function sendTotp($input)
     {

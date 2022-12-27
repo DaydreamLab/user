@@ -3,13 +3,14 @@
 namespace DaydreamLab\User\Requests\UserTag\Admin;
 
 use DaydreamLab\User\Requests\ComponentBase\UserSearchRequest;
-use Illuminate\Validation\Rule;
 
-class UserTagAdminSearchRequest extends UserSearchRequest
+class UserTagAdminGetUsersRequest extends UserSearchRequest
 {
     protected $modelName = 'UserTag';
 
-    protected $apiMethod = 'searchUserTag';
+    protected $apiMethod = 'getUserTagUsers';
+
+    protected $searchKeys = [];
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -28,7 +29,7 @@ class UserTagAdminSearchRequest extends UserSearchRequest
     public function rules()
     {
         $rules = [
-            'type'  => ['nullable', Rule::in(['auto', 'manual'])],
+            //
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -38,6 +39,7 @@ class UserTagAdminSearchRequest extends UserSearchRequest
     public function validated()
     {
         $validated = parent::validated();
+        $validated->put('id', $this->route('id'));
 
         return $validated;
     }

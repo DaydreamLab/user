@@ -21,7 +21,7 @@ class UserAdminListResource extends BaseJsonResource
 
         return [
             'id'            => $this->id,
-            'email'         => $this->email,
+            'email'         => $this->company->email,
             'name'          => $this->name,
             'firstName'     => $this->firstName,
             'lastName'      => $this->lastName,

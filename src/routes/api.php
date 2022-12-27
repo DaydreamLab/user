@@ -200,13 +200,16 @@ Route::get('api/admin/user/{id}', [UserAdminController::class, 'getItem'])
 # 會員標籤(UserTag)
 Route::post('/api/admin/user/tag/store', [UserTagAdminController::class, 'store'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
-Route::post('/api/admin/user/tag/search', [UserTagAdminController::class], 'search')
+Route::post('/api/admin/user/tag/search', [UserTagAdminController::class, 'search'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
-Route::post('/api/admin/user/tag/state', [UserTagAdminController::class], 'state')
+Route::post('/api/admin/user/tag/state', [UserTagAdminController::class, 'state'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('/api/admin/user/tag/{id}', [UserTagAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
-
+Route::post('/api/admin/user/tag/{id}/users/edit', [UserTagAdminController::class, 'editUsers'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('/api/admin/user/tag/{id}/users', [UserTagAdminController::class, 'getUsers'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 Route::post('api/admin/user/group/search', [UserGroupAdminController::class, 'search'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
