@@ -60,6 +60,8 @@ class RegisteredNotification extends Notification implements ShouldQueue
         $path = '/user/activate/' . $this->user->activateToken;
 
         $template = config('daydreamlab.user.register.mail.template');
+        # 這邊要注意裡面有偷塞 subject 因此要先 call
+        $content = $this->getContent();
 
         return $template == 'default' ?
                 (new MailMessage())
@@ -71,7 +73,7 @@ class RegisteredNotification extends Notification implements ShouldQueue
                     ->view($template, [
                         'user' => $this->user,
                         'subject' => $this->subject,
-                        'content' => $this->getContent(),
+                        'content' => $content,
                         'clickType' => 'dealerValidate',
                         'clickUrl'  => $this->user->dealerValidateUrl,
                         'order' => null
