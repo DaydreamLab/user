@@ -383,8 +383,7 @@ class UserFrontService extends UserService
         $nsfs = app(NewsletterSubscriptionFrontService::class);
         # 檢查有沒有相同 email 但是沒有 user_id
         $q = new QueryCapsule();
-        $q->where('email', $user->company->email)
-            ->where('user_id', '!=', $user->id);
+        $q->where('email', $user->company->email);
         $emailSubs = $nsfs->search(collect(['q' => $q, 'limit' => 0, 'paginate' => 0]));
         if ($emailSubs->count()) {
             # 尚未綁訂的會員
