@@ -145,7 +145,7 @@ class UserFrontService extends UserService
         $userCompany = $user->company;
         if ($userCompany->validateToken == $input->get('token')) {
             # 處理電子報訂閱類型
-            if ($user->newsletterSubscription->newsletterCategories->count()) {
+            if ($user->newsletterSubscription && $user->newsletterSubscription->newsletterCategories->count()) {
                 $nss = app(NewsletterSubscriptionFrontService::class);
                 # 沒登入的會員缺少 mail subscribe 會噴錯
                 $input->put('email', $user->email);
