@@ -386,7 +386,6 @@ class UserFrontService extends UserService
         $q->where('email', $user->company->email)
             ->where('user_id', '!=', $user->id);
         $emailSubs = $nsfs->search(collect(['q' => $q, 'limit' => 0, 'paginate' => 0]));
-
         if ($emailSubs->count()) {
             # 尚未綁訂的會員
             $emailSubs->filter(function ($emailSub) {

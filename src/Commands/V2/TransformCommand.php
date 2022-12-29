@@ -7,6 +7,7 @@ use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\Company\CompanyCategory;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserCompany;
+use DaydreamLab\User\Services\User\Front\UserFrontService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
@@ -58,25 +59,46 @@ class  TransformCommand extends Command
         $this->info('更新電子報訂閱資料中...');
         $this->transformNewsletterSubscription();
         $this->info('更新電子報訂閱資料完成');
+
+        $this->call('user:newsletter-subscription-handle');
     }
 
 
     public function transformNewsletterSubscription()
     {
-        $users = User::with('newsletterSubscription')->get();
+        # 確保每個會員都有對應的電子報訂閱
+        $users = User::with('company', 'newsletterSubscription', 'newsletterSubscription.newsletterCategories')->get();
+        $counter = 0;
         foreach ($users as $user) {
-            if (!$user->newsletterSubscription) {
+            if (!$user->newsletterSubscription && $user->email) {
                 $user->newsletterSubscription()->create([
-                    'user_id' => $user->id,
                     'email' => $user->email,
                 ]);
+                $counter++;
             }
         }
+        $this->info("有email 但是沒有電子報訂閱記錄有：{$counter}筆");
     }
 
 
     public function transformUserCompany()
     {
+        # 確保每個 user 都有 userCompany
+        $this->info('確保每個 user 都有 userCompany中...');
+        $noUserCompanyUsers = User::whereDoesntHave('company')->get();
+        $this->info("未有userCompany 的筆數： {$noUserCompanyUsers->count()}");
+        $noUserCompanyUsers->each(function ($user) {
+            $user->company()->create([
+                'email' => $user->email
+            ]);
+        });
+        $this->info('確保每個 user 都有 userCompany 完成');
+
+        $this->info('刪除沒有 user 的 userCompany中 ...');
+        UserCompany::whereDoesntHave('user')->delete();
+        $this->info('刪除沒有 user 的 userCompany 完成');
+
+        $this->info('個人公司電話格式轉換中...');
         $userCompanies = UserCompany::all();
         foreach ($userCompanies as $userCompany) {
             if (!$userCompany->validateToken) {
@@ -95,5 +117,6 @@ class  TransformCommand extends Command
                 $userCompany->save();
             }
         }
+        $this->info('個人公司電話格式轉換完成');
     }
 }

@@ -74,8 +74,12 @@ class RegisteredNotification extends Notification implements ShouldQueue
                         'user' => $this->user,
                         'subject' => $this->subject,
                         'content' => $content,
-                        'clickType' => 'dealerValidate',
-                        'clickUrl'  => $this->user->dealerValidateUrl,
+                        'clickType' => $this->user->isDealer && $this->user->companyEmailIsDealer
+                            ? 'dealerValidate'
+                            : null,
+                        'clickUrl'  => $this->user->isDealer && $this->user->companyEmailIsDealer
+                            ? $this->user->dealerValidateUrl
+                            : null,
                         'order' => null
                     ]);
     }
