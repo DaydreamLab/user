@@ -391,13 +391,20 @@ class UserAdminService extends UserService
     public function handleBasicQuery(Collection &$validated)
     {
         $basic = $validated->get('basic');
+        $menu = $validated->get('menu');
+        $except = $validated->get('except');
         $q = $validated->get('q');
         # 排除 noneCustomer
         $q->where('id', '!=', 48464);
 
-        if ($basic['userGroup']) {
-            $q->whereHas('groups', function ($q) use ($basic) {
-                $q->where('users_groups.title', $basic['userGroup']);
+        if ($basic['userGroup'] || $except['userGroup']) {
+            $q->whereHas('groups', function ($q) use ($basic, $except) {
+                if ($basic['userGroup']) {
+                    $q->where('users_groups.title', $basic['userGroup']);
+                }
+                if ($except['userGroup']) {
+                    $q->where('users_groups.title', '!=', $except['userGroup']);
+                }
             });
         }
 
@@ -416,12 +423,23 @@ class UserAdminService extends UserService
             }
         }
 
-        if ($basic['lastLoginAtFrom'] || $basic['lastLoginAtTo']) {
+        if ($basic['lastLoginAtFrom'] || $basic['lastLoginAtTo'] || $except['lastLoginDate']) {
             if ($basic['lastLoginAtFrom']) {
                 $q->where('lastLoginAt', '>=', $basic['lastLoginAtFrom']);
             }
             if ($basic['lastLoginAtTo']) {
                 $q->where('lastLoginAt', '<=', $basic['lastLoginAtTo']);
+            }
+            if ($basic['lastLoginDate']) {
+                $q->where(
+                    'lastLoginAt',
+                    '<',
+                    now()->tz($this->getUser()->timezone)
+                        ->subDays($basic['lastLoginDate'])
+                        ->startOfDay()
+                        ->tz(config('app.timezone'))
+                        ->toDateTimeString()
+                );
             }
         }
 
@@ -474,12 +492,25 @@ class UserAdminService extends UserService
             });
         }
 
+        if ($menu['id']) {
+            if ($menu['action'] == '點擊') {
+                $q->withCount(['menuLogs' => function ($q) use ($menu) {
+                    $q->where('menu_logs.menuId', $menu['id']);
+                }])->having('menu_logs_count', '>=', $menu['value']);
+            } else {
+                $q->withSum(['menuLogs' => function ($q) use ($menu) {
+                    $q->where('menu_logs.menuId', $menu['id']);
+                }], 'time')->having('menu_logs_sum_time', '>=', $menu['value']);
+            }
+        }
+
         $validated->put('q', $q);
     }
 
     public function handleCompanyQuery(&$validated)
     {
         $company = $validated->get('company');
+        $except = $validated->get('except');
         $q = $validated->get('q');
 
         if (
@@ -487,10 +518,28 @@ class UserAdminService extends UserService
             || count($company['categoryNotes'] ?: [])
             || count($company['industry'] ?: [])
             || $company['scale']
+            || $except['companyName']
+            || $except['companyVat']
+            || count($except['companyCategoryNotes'] ?: [])
         ) {
-            $q->whereHas('company.company', function ($q) use ($company) {
-                if (count($company['categoryNotes'] ?: [])) {
-                    $q->whereIn('companies.categoryNote', $company['categoryNotes']);
+            $q->whereHas('company.company', function ($q) use ($company, $except) {
+                $countNotes = count($company['categoryNotes'] ?: []);
+                $countExceptNotes = count($except['companyCategoryNotes'] ?: []);
+                if ($countNotes || $countExceptNotes) {
+                    if ($countNotes) {
+                        $q->whereIn('companies.categoryNote', $company['categoryNotes']);
+                    }
+                    if ($countExceptNotes) {
+                        $q->whereNotIn('companies.categoryNote', $company['categoryNotes']);
+                    }
+                }
+
+                if ($except['companyName']) {
+                    $q->where('name', 'not like', "%{$except['companyName']}%");
+                }
+
+                if ($except['companyVat']) {
+                    $q->where('vat', 'not like', "%{$except['companyVat']}%");
                 }
 
                 $industry = $company['industry'] ?: [];
@@ -525,6 +574,7 @@ class UserAdminService extends UserService
         $order = $validated->get('order');
         $event = $validated->get('event');
         $coupon = $validated->get('coupon');
+        $except = $validated->get('except');
 
         $eventValues = [
             $event['search'],
@@ -551,6 +601,13 @@ class UserAdminService extends UserService
         $couponValues = [
             $coupon['type'],
             $coupon['userGroup']
+        ];
+
+        $exceptValues = [
+            $except['cancelTimesFrom'],
+            $except['cancelTimesTo'],
+            $except['noshowTimesFrom'],
+            $except['noshowTimesTo'],
         ];
 
         $q = $validated->get('q');
@@ -581,8 +638,8 @@ class UserAdminService extends UserService
             });
         }
 
-        if ($this->valueOr($orderValues) || $this->valueOr($eventValues)) {
-            $q->whereHas('orders', function ($q) use ($order, $event, $orderValues, $eventValues) {
+        if ($this->valueOr($orderValues) || $this->valueOr($eventValues) || $this->valueOr($exceptValues)) {
+            $q->whereHas('orders', function ($q) use ($order, $event, $except, $orderValues, $eventValues) {
                 if ($this->valueOr($orderValues)) {
                     $participateTimesFrom = $order['participateTimesFrom'];
                     $participateTimesTo = $order['participateTimesTo'];
@@ -601,11 +658,17 @@ class UserAdminService extends UserService
                         || $order['cancelTimesTo']
                         || $order['noshowTimesFrom']
                         || $order['noshowTimesTo']
+                        || $except['cancelTimesFrom']
+                        || $except['cancelTimesTo']
+                        || $except['noshowTimesFrom']
+                        || $except['noshowTimesTo']
                     ) {
-                        $q->whereHas('items', function ($q) use ($order) {
+                        $q->whereHas('items', function ($q) use ($order, $except) {
                             $cancelTimesFrom = $order['cancelTimesFrom'];
                             $cancelTimesTo = $order['cancelTimesTo'];
-                            if ($cancelTimesFrom || $cancelTimesTo) {
+                            $exceptCancelTimesFrom = $except['cancelTimesFrom'];
+                            $exceptCancelTimesTo = $except['cancelTimesTo'];
+                            if ($cancelTimesFrom || $cancelTimesTo || $exceptCancelTimesFrom || $exceptCancelTimesTo) {
                                 $q->select(['orderId', DB::raw('COUNT(*) as cancelOrdersCount')])
                                     ->where('order_items.regStatus', DsthEnumHelper::CANCELED)
                                     ->groupBy('orderId');
@@ -615,11 +678,19 @@ class UserAdminService extends UserService
                                 if ($cancelTimesTo) {
                                     $q->having('cancelOrdersCount', '<=', $cancelTimesTo);
                                 }
+                                if ($exceptCancelTimesFrom) {
+                                    $q->having('cancelOrdersCount', '<', $exceptCancelTimesFrom);
+                                }
+                                if ($exceptCancelTimesTo) {
+                                    $q->having('cancelOrdersCount', '>', $exceptCancelTimesTo);
+                                }
                             }
 
                             $noshowTimesFrom = $order['noshowTimesFrom'];
                             $noshowTimesTo = $order['noshowTimesTo'];
-                            if ($noshowTimesFrom || $noshowTimesTo) {
+                            $exceptNoshowTimesFrom = $except['noshowTimesFrom'];
+                            $exceptNoshowTimesTo = $except['noshowTimesTo'];
+                            if ($noshowTimesFrom || $noshowTimesTo || $exceptNoshowTimesFrom || $exceptNoshowTimesTo) {
                                 $q->select(['orderId', DB::raw('COUNT(*) as noshowOrdersCount')])
                                     ->where('order_items.regStatus', DsthEnumHelper::NOSHOW)
                                     ->groupBy('orderId');
@@ -628,6 +699,12 @@ class UserAdminService extends UserService
                                 }
                                 if ($noshowTimesTo) {
                                     $q->having('noshowOrdersCount', '<=', $noshowTimesTo);
+                                }
+                                if ($exceptNoshowTimesFrom) {
+                                    $q->having('noshowOrdersCount', '<', $exceptCancelTimesFrom);
+                                }
+                                if ($exceptNoshowTimesTo) {
+                                    $q->having('noshowOrdersCount', '>', $exceptNoshowTimesTo);
                                 }
                             }
                         });

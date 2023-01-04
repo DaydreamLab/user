@@ -114,7 +114,30 @@ class UserAdminCrmSearchPost extends ListRequest
             'coupon.type'    =>  ['nullable', Rule::in(['不拘', '一般上課券', '批次上課券'])],
             'coupon.userGroup'    =>  ['nullable', Rule::in(['不拘', '一般會員', '經銷會員'])],
             'coupon.useTimesFrom' => 'nullable|integer',
-            'coupon.useTimesTo' => 'nullable|integer'
+            'coupon.useTimesTo' => 'nullable|integer',
+            # 選端訪問（網路行為）
+            'menu'  => 'required|array',
+            'menu.id'   => 'nullable|integer',
+            'menu.action'   => ['nullable', Rule::in(['點擊', '停留時間'])],
+            'menu.value'    => 'nullable|integer',
+            # 排除項目
+            'except' => 'required|array',
+            'except.lastLoginDate' => 'nullable|integer',
+            'except.userGroup'  => ['nullable', Rule::in(['一般會員', '經銷會員'])],
+            'except.companyName' => 'nullable|string',
+            'except.companyVat' => 'nullable|numeric',
+            'except.companyCategoryNotes' => 'nullable|array',
+            'except.companyCategoryNotes.*' => ['nullable', Rule::in([
+                EnumHelper::COMPANY_NOTE_STAFF,
+                EnumHelper::COMPANY_NOTE_COMPETITION,
+                EnumHelper::COMPANY_NOTE_BLACKLIST,
+                EnumHelper::COMPANY_NOTE_NONE,
+                EnumHelper::COMPANY_NOTE_OBM
+            ])],
+            'except.cancelTimesFrom' => 'nullable|integer',
+            'except.cancelTimesTo' => 'nullable|integer',
+            'except.noshowTimesFrom' => 'nullable|integer',
+            'except.noshowTimesTo' => 'nullable|integer',
         ];
 
         return array_merge(parent::rules(), $rules);

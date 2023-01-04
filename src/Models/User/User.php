@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Models\User;
 
 use Carbon\Carbon;
 use DaydreamLab\Cms\Models\Brand\Brand;
+use DaydreamLab\Cms\Models\MenuLog\MenuLog;
 use DaydreamLab\Cms\Models\Newsletter\Newsletter;
 use DaydreamLab\Cms\Models\NewsletterSubscription\NewsletterSubscription;
 use DaydreamLab\Cms\Models\Tag\Tag;
@@ -205,6 +206,12 @@ class User extends BaseModel implements
     public function line()
     {
         return $this->hasOne(Line::class, 'user_id', 'id');
+    }
+
+
+    public function menuLogs()
+    {
+        return $this->hasMany(MenuLog::class, 'userId', 'id');
     }
 
 
