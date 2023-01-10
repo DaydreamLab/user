@@ -137,6 +137,8 @@ class UserTagAdminService extends UserTagService
                 'event' => $input->get('rules')['event'],
                 'order' => $input->get('rules')['order'],
                 'coupon' => $input->get('rules')['coupon'],
+                'menu' => $input->get('rules')['menu'],
+                'except' => $input->get('rules')['except'],
                 'q' => $q,
                 'paginate' => 0,
                 'limit' => 0
