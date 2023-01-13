@@ -36,12 +36,12 @@ class UserAdminRepository extends UserRepository
                 $q->where(function ($q) use ($updateStatus) {
                     if ($updateStatus == EnumHelper::ALREADY_UPDATE) {
                         $q->whereNotNull('lastUpdate')
-                            ->where('lastUpdate', '>', now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 90))->toDateTimeString());
+                            ->where('lastUpdate', '>', now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))->toDateTimeString());
                     } else {
                         $q->whereNull('lastUpdate')
                             ->orWhere(function ($q) {
                                 $q->whereNotNull('lastUpdate')
-                                    ->where('lastUpdate', '<', now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 90))->toDateTimeString());
+                                    ->where('lastUpdate', '<', now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))->toDateTimeString());
                             });
                     }
                 });

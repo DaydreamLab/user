@@ -42,7 +42,7 @@ class DailyDealerCheckJob implements ShouldQueue
             $q->whereIn('companies_categories.title', ['經銷會員']);
         })->where(function ($q) {
             $threeMonthAgo = now()
-                ->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 90))
+                ->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))
                 ->toDateTimeString();
             $q->where('validated', 1)
                 ->where('lastValidate', '<', $threeMonthAgo);
