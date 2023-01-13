@@ -53,6 +53,7 @@ class HandleCompanyCategoryCommand extends Command
             ->get()
             ->each(function ($company) {
                 $company->state = -1;
+                $company->timestamps = false;
                 $company->save();
             });
     }

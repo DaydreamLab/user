@@ -66,6 +66,7 @@ class TransformCompanyCategoryNoteCommand extends Command
                 $company->category_id = 3;
                 $company->categoryNote = '員工';
             }
+            $company->timestamps = false;
             $company->save();
         }
     }

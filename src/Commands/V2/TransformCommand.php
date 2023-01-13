@@ -114,6 +114,7 @@ class  TransformCommand extends Command
                 } else {
                     $userCompany->phones = [];
                 }
+                $userCompany->timestamps = false;
                 $userCompany->save();
             }
         }

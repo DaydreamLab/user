@@ -131,11 +131,11 @@ class HandleUserValidateCommand extends Command
             });
         });
 
-//        $filename = 'test.xlsx';
-//        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreedsheet);
-//        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-//        header('Content-Disposition: attachment; filename="' . urlencode($filename) . '"');
-//        $writer->save(app_path() . $filename);
+        $filename = 'auto-vildate-failed.xlsx';
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreedsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . urlencode($filename) . '"');
+        $writer->save(app_path() . $filename);
 
         $str =  '原始經銷會員人數：' . $original->count() . ' 自動驗證成功人數：' . $counter
             . ' 無法自動驗證人數：' . ($original->count() - $counter);
