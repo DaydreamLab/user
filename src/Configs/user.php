@@ -46,5 +46,5 @@ return [
         'channelSecret' => env('LINE_CHANNEL_SECRET')
     ],
 
-    'userCompanyUpdateInterval' => 120
+    'userCompanyUpdateInterval' => 90
 ];

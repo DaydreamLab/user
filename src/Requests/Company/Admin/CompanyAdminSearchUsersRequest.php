@@ -49,14 +49,14 @@ class CompanyAdminSearchUsersRequest extends ListRequest
                     $q->where(
                         'users_companies.lastUpdate',
                         '<=',
-                        now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))->toDateTimeString()
+                        now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 90))->toDateTimeString()
                     )->orWhereNull('users_companies.lastUpdate');
                 });
             } elseif ($updateStatus && $updateStatus == EnumHelper::ALREADY_UPDATE) {
                 $q->where(
                     'users_companies.lastUpdate',
                     '>',
-                    now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))->toDateTimeString()
+                    now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 90))->toDateTimeString()
                 );
             }
         });
