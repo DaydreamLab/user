@@ -44,10 +44,10 @@ class UserAdminRepository extends UserRepository
             });
         }
 
-        $company_id = $data->get('company_id');
+        $company_id = $data->pull('company_id');
         $updateStatus = $data->pull('updateStatus');
         if ($company_id || $updateStatus) {
-            $q->whereIn(function ($q) use ($company_id, $updateStatus) {
+            $q->whereIn('id', function ($q) use ($company_id, $updateStatus) {
                  $q->select('user_id')
                      ->from('users_companies');
                 if ($company_id) {

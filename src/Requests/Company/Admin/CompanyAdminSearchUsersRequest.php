@@ -39,27 +39,7 @@ class CompanyAdminSearchUsersRequest extends ListRequest
     public function validated()
     {
         $validated = parent::validated();
-
-        $q = $validated->get('q');
-        $updateStatus = $validated->pull('updateStatus');
-        $q->whereHas('company', function ($q) use ($updateStatus) {
-            $q->where('users_companies.company_id', $this->route('id'));
-            if ($updateStatus && $updateStatus == EnumHelper::WAIT_UPDATE) {
-                $q->where(function ($q) {
-                    $q->where(
-                        'users_companies.lastUpdate',
-                        '<=',
-                        now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))->toDateTimeString()
-                    )->orWhereNull('users_companies.lastUpdate');
-                });
-            } elseif ($updateStatus && $updateStatus == EnumHelper::ALREADY_UPDATE) {
-                $q->where(
-                    'users_companies.lastUpdate',
-                    '>',
-                    now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))->toDateTimeString()
-                );
-            }
-        });
+        $validated->put('compnay_id', $this->route('id'));
 
         return $validated;
     }
