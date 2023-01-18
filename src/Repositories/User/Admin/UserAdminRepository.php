@@ -44,11 +44,16 @@ class UserAdminRepository extends UserRepository
             });
         }
 
-        if (($company_id = $data->get('company_id')) || ($updateStatus = $data->pull('updateStatus'))) {
-            $q->whereHas('company', function ($q) use ($company_id, $updateStatus) {
+        $company_id = $data->get('company_id');
+        $updateStatus = $data->pull('updateStatus');
+        if ($company_id || $updateStatus) {
+            $q->whereIn(function ($q) use ($company_id, $updateStatus) {
+                 $q->select('user_id')
+                     ->from('users_companies');
                 if ($company_id) {
-                    $q->where('users_companies.id', $company_id);
+                    $q->where('users_companies.company_id', $company_id);
                 }
+
                 if ($updateStatus) {
                     $q->where(function ($q) use ($updateStatus) {
                         if ($updateStatus == EnumHelper::ALREADY_UPDATE) {
