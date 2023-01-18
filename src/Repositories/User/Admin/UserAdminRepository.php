@@ -22,9 +22,25 @@ class UserAdminRepository extends UserRepository
         $search = $data->pull('search');
         if ($search) {
             $q->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('mobilePhone', 'like', "%{$search}%");
+                $q->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('mobilePhone', 'like', "%{$search}%");
+                })->orWhere(function ($q) use ($search) {
+                    $q->whereIn('id', function ($q) use ($search) {
+                        $q->select('user_id')
+                            ->from('users_companies')
+                            ->orWhere('users_companies.email', 'like', "%{$search}%")
+                            ->orWhereIn('company_id', function ($q) use ($search) {
+                                $q->select('id')
+                                    ->from('companies')
+                                    ->where(function ($q) use ($search) {
+                                        $q->orWhere('companies.name', 'like', "%{$search}%")
+                                            ->orWhere('companies.vat', 'like', "%$search%");
+                                    });
+                            });
+                    });
+                });
             });
         }
 
