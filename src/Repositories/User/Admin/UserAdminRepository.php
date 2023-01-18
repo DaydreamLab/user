@@ -44,25 +44,37 @@ class UserAdminRepository extends UserRepository
             });
         }
 
-        $q->whereHas('company', function ($q) use ($data) {
-            if ($company_id = $data->get('company_id')) {
-                $q->where('users_companies.id', $company_id);
-            }
-            if ($updateStatus = $data->pull('updateStatus')) {
-                $q->where(function ($q) use ($updateStatus) {
-                    if ($updateStatus == EnumHelper::ALREADY_UPDATE) {
-                        $q->whereNotNull('lastUpdate')
-                            ->where('lastUpdate', '>', now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))->toDateTimeString());
-                    } else {
-                        $q->whereNull('lastUpdate')
-                            ->orWhere(function ($q) {
-                                $q->whereNotNull('lastUpdate')
-                                    ->where('lastUpdate', '<', now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))->toDateTimeString());
-                            });
-                    }
-                });
-            }
-        });
+        if (($company_id = $data->get('company_id')) || ($updateStatus = $data->pull('updateStatus'))) {
+            $q->whereHas('company', function ($q) use ($company_id, $updateStatus) {
+                if ($company_id) {
+                    $q->where('users_companies.id', $company_id);
+                }
+                if ($updateStatus) {
+                    $q->where(function ($q) use ($updateStatus) {
+                        if ($updateStatus == EnumHelper::ALREADY_UPDATE) {
+                            $q->whereNotNull('lastUpdate')
+                                ->where(
+                                    'lastUpdate',
+                                    '>',
+                                    now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))
+                                        ->toDateTimeString()
+                                );
+                        } else {
+                            $q->whereNull('lastUpdate')
+                                ->orWhere(function ($q) {
+                                    $q->whereNotNull('lastUpdate')
+                                        ->where(
+                                            'lastUpdate',
+                                            '<',
+                                            now()->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))
+                                                ->toDateTimeString()
+                                        );
+                                });
+                        }
+                    });
+                }
+            });
+        }
 
         $q->with([
             'company',
