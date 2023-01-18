@@ -39,7 +39,7 @@ class CompanyAdminSearchUsersRequest extends ListRequest
     public function validated()
     {
         $validated = parent::validated();
-        $validated->put('compnay_id', $this->route('id'));
+        $validated->put('company_id', $this->route('id'));
 
         return $validated;
     }
