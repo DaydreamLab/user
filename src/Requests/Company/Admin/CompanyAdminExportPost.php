@@ -46,14 +46,16 @@ class CompanyAdminExportPost extends ListRequest
     {
         $validated = parent::validated();
 
-        if ( $validated->get('company_category') ) {
+        if ($validated->get('company_category')) {
             $validated->put('category_id', $validated->get('company_category'));
             $validated->forget('company_category');
-        } else {
-            $category_ids = CompanyCategory::query()->where('title', '!=', '一般')->get()->pluck('id');
-            $q = $validated->get('q');
-            $q->whereIn('category_id', $category_ids);
         }
+
+        $validated->put('paginate', 0);
+        $validated->put('limit', 0);
+        $q = $validated->get('q');
+        $q->with('userCompanies');
+        $validated->put('q', $q);
 
         return $validated;
     }

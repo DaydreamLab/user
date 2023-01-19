@@ -3,11 +3,11 @@
 namespace DaydreamLab\User\Resources\Company\Admin\Collections;
 
 use DaydreamLab\JJAJ\Resources\BaseResourceCollection;
-use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminSearchUserResource;
+use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminSearchUsersResource;
 
-class CompanyAdminSearchUsersResourceCollection extends BaseResourceCollection
+class CompanyAdminSearchUserResourceCollection extends BaseResourceCollection
 {
-    public $collects = CompanyAdminSearchUserResource::class;
+    public $collects = CompanyAdminSearchUsersResource::class;
 
     /**
      * Transform the resource collection into an array.

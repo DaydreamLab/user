@@ -27,6 +27,7 @@ class UserServiceProvider extends ServiceProvider
         'DaydreamLab\User\Commands\V2\CompanyApiRenameCommand',
         'DaydreamLab\User\Commands\V2\HandleNewsletterSubscriptionCommand',
         'DaydreamLab\User\Commands\V2\HandleUserValidateCommand',
+        'DaydreamLab\User\Commands\Feat\ExportCompanyUsersInstallCommand',
     ];
 
 
