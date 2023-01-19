@@ -76,6 +76,7 @@ class HandleUserValidateCommand extends Command
                 ->from('users_groups_maps')
                 ->where('group_id', 6);
         })
+        ->where('validated', 0)
         ->with(['user', 'user.company', 'user.company.company', 'user.orders', 'user.company.company.category'])
         ->chunkById(1000, function ($userCompanies) use (&$counter, &$r, $headers, &$spreedsheet, &$sheet) {
             $userCompanies->each(function ($userCompany) use (&$counter, &$r, $headers, &$spreedsheet, &$sheet) {
