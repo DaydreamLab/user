@@ -14,10 +14,14 @@ class CompanyAdminExportResource extends BaseJsonResource
      */
     public function toArray($request)
     {
+        $mailDomain = count($this->mailDomains['domain'])
+            ? $this->mailDomains['domain']
+            : $this->mailDomains['email'];
+
         return [
             $this->name,
             $this->vat,
-            $this->domain,
+            implode(',', $mailDomain),
             ($this->category) ? $this->category->title : '',
             implode(',', $this->industry),
             $this->userCompanies->count(),
