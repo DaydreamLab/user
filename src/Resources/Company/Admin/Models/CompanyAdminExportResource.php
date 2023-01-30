@@ -19,7 +19,7 @@ class CompanyAdminExportResource extends BaseJsonResource
             $this->vat,
             $this->domain,
             ($this->category) ? $this->category->title : '',
-            $this->industry,
+            implode(',', $this->industry),
             $this->userCompanies->count(),
             $this->getDateTimeString($this->approvedAt),
             $this->getDateTimeString($this->expiredAt),
