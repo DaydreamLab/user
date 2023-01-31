@@ -40,8 +40,8 @@ class CompanyAdminExportSearchUsersRequest extends ListRequest
     {
         $validated = parent::validated();
         $validated->put('company_id', $this->route('id'));
-        $validated->put('limit', 0);
-        $validated->put('paginate', 0);
+//        $validated->put('limit', 0);
+//        $validated->put('paginate', 0);
 
         return $validated;
     }
