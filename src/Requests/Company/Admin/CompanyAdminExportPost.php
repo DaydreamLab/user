@@ -51,8 +51,8 @@ class CompanyAdminExportPost extends ListRequest
             $validated->forget('company_category');
         }
 
-        $validated->put('paginate', 0);
-        $validated->put('limit', 0);
+//        $validated->put('paginate', 0);
+//        $validated->put('limit', 0);
         $q = $validated->get('q');
         $q->with('userCompanies');
         $validated->put('q', $q);
