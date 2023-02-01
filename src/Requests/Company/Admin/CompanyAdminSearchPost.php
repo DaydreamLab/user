@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Requests\Company\Admin;
 
+use DaydreamLab\Cms\Models\Item\Item;
 use DaydreamLab\JJAJ\Requests\ListRequest;
 use DaydreamLab\User\Models\Company\CompanyCategory;
 use Illuminate\Validation\Rule;
@@ -33,7 +34,8 @@ class CompanyAdminSearchPost extends ListRequest
                 'integer',
                 Rule::in([0,1,-2])
             ],
-            'company_category' => 'nullable|integer'
+            'company_category' => 'nullable|integer',
+            'company_industry' => 'nullable|integer',
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -52,6 +54,14 @@ class CompanyAdminSearchPost extends ListRequest
             if (!$validated->get('search')) {
                 $category_ids = CompanyCategory::query()->where('state', 1)->get()->pluck('id');
                 $q->whereIn('category_id', $category_ids);
+            }
+        }
+
+        if ($inputIndustry = $validated->pull('company_industry')) {
+            $industry = Item::where('id', $inputIndustry)->first();
+            if ($industry) {
+                $name = ($industry->title);
+                $q->whereJsonContains('industry', [$name]);
             }
         }
 
