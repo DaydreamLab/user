@@ -89,7 +89,7 @@ class  TransformCommand extends Command
         $this->info("未有userCompany 的筆數： {$noUserCompanyUsers->count()}");
         $noUserCompanyUsers->each(function ($user) {
             $user->company()->create([
-                'email' => $user->email
+                'email' => trim(Str::lower($user->email))
             ]);
         });
         $this->info('確保每個 user 都有 userCompany 完成');
@@ -106,14 +106,16 @@ class  TransformCommand extends Command
                 if ($userCompany->phone) {
                     $userCompany->phones = [
                         [
-                            'phoneCode' => $userCompany->phoneCode,
-                            'phone' => $userCompany->phone,
+                            'phoneCode' => trim($userCompany->phoneCode),
+                            'phone' => trim($userCompany->phone),
                             'ext' => $userCompany->extNumber,
                         ]
                     ];
                 } else {
                     $userCompany->phones = [];
                 }
+                $userCompany->timestamps = false;
+                $userCompany->email = trim(Str::lower($userCompany->email));
                 $userCompany->save();
             }
         }

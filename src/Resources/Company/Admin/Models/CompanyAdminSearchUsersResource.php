@@ -4,7 +4,7 @@ namespace DaydreamLab\User\Resources\Company\Admin\Models;
 
 use DaydreamLab\JJAJ\Resources\BaseJsonResource;
 
-class CompanyAdminSearchUserResource extends BaseJsonResource
+class CompanyAdminSearchUsersResource extends BaseJsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,9 +18,9 @@ class CompanyAdminSearchUserResource extends BaseJsonResource
 
         return [
             'id' => $this->id,
-            'mobilePhone'   => $this->mobilePhone,
+            'mobilePhone' => $this->mobilePhone,
             'email' => $this->company->email,
-            'name'  => $this->name,
+            'name' => $this->name,
             'groupTitle' => $this->groups->whereIn('title', ['一般會員', '經銷會員'])->first()->title,
             'jobCategory' => $this->company->jobCategory,
             'jobType' => $this->company->jobType,

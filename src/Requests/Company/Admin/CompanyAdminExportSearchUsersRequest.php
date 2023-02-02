@@ -7,11 +7,11 @@ use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Models\Company\CompanyCategory;
 use Illuminate\Validation\Rule;
 
-class CompanyAdminSearchUsersRequest extends ListRequest
+class CompanyAdminExportSearchUsersRequest extends ListRequest
 {
     protected $modelName = 'Company';
 
-    protected $apiMethod = 'searchCompanyMembers';
+    protected $apiMethod = 'exportCompanyMembers';
 
     protected $needAuth = true;
 
@@ -40,6 +40,8 @@ class CompanyAdminSearchUsersRequest extends ListRequest
     {
         $validated = parent::validated();
         $validated->put('company_id', $this->route('id'));
+//        $validated->put('limit', 0);
+//        $validated->put('paginate', 0);
 
         return $validated;
     }

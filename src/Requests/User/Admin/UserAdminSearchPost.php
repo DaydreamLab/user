@@ -77,24 +77,6 @@ class UserAdminSearchPost extends ListRequest
             });
         }
 
-        $searchFilterUserIds = collect();
-        if ($search = $this->get('search')) {
-            $searchFilterUserIds = DB::table('users_companies')
-                ->select('user_id')
-                ->where('name', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%")
-                ->orWhere('vat', 'like', "%$search%")
-                ->get()
-                ->pluck('user_id')
-                ->values()
-                ?: collect();
-            if ($searchFilterUserIds->count()) {
-                $q->extraSearch(function ($q) use ($searchFilterUserIds) {
-                    $q->whereIn('id', $searchFilterUserIds->all());
-                });
-            }
-        }
-
         $validated->put('q', $q);
         $validated->forget(['parent_group', 'user_group']);
 

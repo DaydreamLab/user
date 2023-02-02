@@ -63,7 +63,7 @@ return [
     'SEND_VERIFICATION_CODE_SUCCESS'    => '寄送簡訊驗證碼成功',
     'SEND_VERIFICATION_CODE_IN_COOL_DOWN' => '寄送簡訊驗證碼冷卻中',
     'SEND_DEALER_VALIDATE_EMAIL_SUCCESS' => '寄送經銷商驗證信件成功',
-    'SEND_DEALER_VALIDATE_EMAIL_FAIL'   => '寄送經銷商驗證信件失敗',
+    'SEND_DEALER_VALIDATE_EMAIL_FAIL'   => '非經銷會員或公司信箱與公司網域不吻合',
 
     'TOKEN_EXPIRED'                     => '使用者 token 已過期，請重新登入',
     'TOKEN_REVOKED'                     => '使用者 token 已被撤銷',

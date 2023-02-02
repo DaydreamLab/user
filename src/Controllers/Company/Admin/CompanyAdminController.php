@@ -3,11 +3,13 @@
 namespace DaydreamLab\User\Controllers\Company\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\User\Requests\Company\Admin\CompanyAdminExportSearchUsersRequest;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminSearchUsersRequest;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminExportResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminListResourceCollection;
-use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminSearchUsersResourceCollection;
+use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminSearchUserResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminResource;
+use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminExportResourceCollection;
 use DaydreamLab\User\Services\Company\Admin\CompanyAdminService;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminExportPost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminRemovePost;
@@ -47,6 +49,24 @@ class CompanyAdminController extends BaseController
             $this->service->response,
             [],
             CompanyAdminExportResourceCollection::class
+        );
+    }
+
+
+    public function exportSearchUsers(CompanyAdminExportSearchUsersRequest $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->searchUsers($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response(
+            $this->service->status,
+            $this->service->response,
+            [],
+            UserAdminExportResourceCollection::class
         );
     }
 
@@ -146,7 +166,7 @@ class CompanyAdminController extends BaseController
             $this->service->status,
             $this->service->response,
             [],
-            CompanyAdminSearchUsersResourceCollection::class
+            CompanyAdminSearchUserResourceCollection::class
         );
     }
 

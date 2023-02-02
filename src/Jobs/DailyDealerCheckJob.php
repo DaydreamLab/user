@@ -41,18 +41,18 @@ class DailyDealerCheckJob implements ShouldQueue
         $userCompanies = UserCompany::whereHas('company.category', function ($q) {
             $q->whereIn('companies_categories.title', ['經銷會員']);
         })->where(function ($q) {
-            $fourMonthAgo = now()
+            $threeMonthAgo = now()
                 ->subDays(config('daydreamlab.user.userCompanyUpdateInterval', 120))
                 ->toDateTimeString();
             $q->where('validated', 1)
-                ->Where('lastValidate', '<', $fourMonthAgo);
+                ->where('lastValidate', '<', $threeMonthAgo);
         })->get();
 
         foreach ($userCompanies as $userCompany) {
             $userCompany->validateToken = Str::random(128);
             $userCompany->save();
-            Notification::route('mail', $userCompany->user->email)
-                ->notify(new UserCompanyEmailVerificationNotification($userCompany->user));
+//            Notification::route('mail', $userCompany->user->email)
+//                ->notify(new UserCompanyEmailVerificationNotification($userCompany->user));
         }
     }
 }

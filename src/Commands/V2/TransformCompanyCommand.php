@@ -55,14 +55,27 @@ class TransformCompanyCommand extends Command
                 $company->approvedAt = $company->created_at;
             }
 
-            if (!isset($company->mailDomains['domain'])) {
-                $data = ['domain' => $company->mailDomains, 'email' => []];
-                $company->mailDomains = $data;
+            if (
+                is_array($company->mailDomains)
+                && ($company->domain && !in_array($company->domain, $company->mailDomains ?: []))
+            ) {
+                $mailDomains = $company->mailDomains;
+                $mailDomains[] = $company->domain;
+                $data = ['domain' => $mailDomains, 'email' => []];
+
+            } else {
+                if ($company->domain) {
+                    $data = ['domain' => [$company->domain], 'email' => []];
+                } else {
+                    $data = ['domain' => [], 'email' => []];
+                }
             }
+            $company->mailDomains = $data;
 
             $company->industry = $company->userCompanies->filter(function ($userCompany) {
                 return !in_array($userCompany->industry, ['', null]);
             })->pluck('industry')->unique()->values()->except(['', null])->all() ?: [];
+            $company->timestamps = false;
             $company->save();
         }
     }
