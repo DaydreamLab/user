@@ -28,6 +28,7 @@ class UserServiceProvider extends ServiceProvider
         'DaydreamLab\User\Commands\V2\HandleNewsletterSubscriptionCommand',
         'DaydreamLab\User\Commands\V2\HandleUserValidateCommand',
         'DaydreamLab\User\Commands\Feat\ExportCompanyUsersInstallCommand',
+        'DaydreamLab\User\Commands\Dev\ClearCompanyMembersIsEmptyCommand',
     ];
 
 

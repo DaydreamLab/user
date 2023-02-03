@@ -21,10 +21,13 @@ class CompanyAdminExportResource extends BaseJsonResource
         return [
             $this->name,
             $this->vat,
-            implode(',', $mailDomain),
-            ($this->category) ? $this->category->title : '',
             implode(',', $this->industry),
             $this->userCompanies->count(),
+            implode(',', $mailDomain),
+            ($this->category) ? $this->category->title : '',
+            $this->categoryNote,
+            #todo：公司聯絡資訊 電話、地址
+            $this->scale ?: '無資料',
             $this->getDateTimeString($this->approvedAt),
             $this->getDateTimeString($this->expiredAt),
         ];

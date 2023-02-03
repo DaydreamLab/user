@@ -139,7 +139,9 @@ class CompanyAdminController extends BaseController
     {
         $this->service->setUser($request->user('api'));
         try {
+            startLog();
             $this->service->search($request->validated());
+            showLog();
         } catch (Throwable $t) {
             $this->handleException($t);
         }
