@@ -59,6 +59,7 @@ class CompanyAdminRepository extends CompanyRepository
             $q->whereDoesntHave('userCompanies');
         }
 
+        $q->with('userCompanies');
         $data->put('q', $q);
 
         return parent::search($data);
