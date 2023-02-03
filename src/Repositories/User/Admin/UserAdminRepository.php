@@ -85,7 +85,8 @@ class UserAdminRepository extends UserRepository
             'company',
             'company.company',
             'newsletterSubscription',
-            'newsletterSubscription.newsletterCategories'
+            'newsletterSubscription.newsletterCategories',
+            'groups'
         ]);
         $data->put('q', $q);
 

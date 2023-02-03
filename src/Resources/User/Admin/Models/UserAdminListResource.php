@@ -16,8 +16,9 @@ class UserAdminListResource extends BaseJsonResource
     public function toArray($request)
     {
         $tz = $request->user('api')->timezone;
-        $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
-        $userGroup = UserGroup::where('title', '一般會員')->first();
+//        $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
+//        $userGroup = UserGroup::where('title', '一般會員')->first();
+        $company = $this->company->company;
 
         return [
             'id'            => $this->id,
@@ -25,7 +26,7 @@ class UserAdminListResource extends BaseJsonResource
             'name'          => $this->name,
             'firstName'     => $this->firstName,
             'lastName'      => $this->lastName,
-            'company'       => $this->company ? $this->company->name : '',
+            'company'       => $company ? $this->company->name : '',
             'mobilePhoneCode' => $this->moiblePhoneCode,
             'mobilePhone'   => $this->mobilePhone,
             'backupMobilePhone'   => $this->backupMobilePhone,
@@ -35,8 +36,8 @@ class UserAdminListResource extends BaseJsonResource
             'lastLoginIp'   => $this->lastLoginIp,
             'groups'        => ($request->get('pageGroupId') == 16)
                 ? // 排除掉管理員以外的群組
-                    $this->groups->filter(function ($g) use ($dealerUserGroup, $userGroup) {
-                        return $g->id != $dealerUserGroup->id && $g->id != $userGroup->id;
+                    $this->groups->filter(function ($g) {
+                        return !in_array($g->id, [6,7]);
                     })->sortByDesc('id')->pluck('title')->take(1)
                 : $this->groups->pluck('title')->all(),
         ];
