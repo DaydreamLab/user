@@ -2,9 +2,11 @@
 
 namespace DaydreamLab\User\Repositories\Company\Admin;
 
+use DaydreamLab\Cms\Models\Item\Item;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\User\Repositories\Company\CompanyRepository;
 use DaydreamLab\User\Models\Company\Admin\CompanyAdmin;
+use Illuminate\Support\Collection;
 
 class CompanyAdminRepository extends CompanyRepository
 {
@@ -36,5 +38,21 @@ class CompanyAdminRepository extends CompanyRepository
         return $this->model
                 ->where('vat', $companyData['vat'])
                 ->first();
+    }
+
+
+    public function search(Collection $data)
+    {
+        $q = $data->get('q');
+        if ($inputIndustry = $data->pull('company_industry')) {
+            $industry = Item::where('id', $inputIndustry)->first();
+            if ($industry) {
+                $name = ($industry->title);
+                $q->whereJsonContains('industry', [$name]);
+            }
+        }
+        $data->put('q', $q);
+
+        return parent::search($data);
     }
 }

@@ -35,7 +35,8 @@ class CompanyAdminExportPost extends ListRequest
                 'integer',
                 Rule::in([0,1,-2])
             ],
-            'company_category' => 'nullable|integer'
+            'company_category' => 'nullable|integer',
+            'company_industry' => 'nullable|integer',
         ];
 
         return array_merge(parent::rules(), $rules);

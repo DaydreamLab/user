@@ -57,14 +57,6 @@ class CompanyAdminSearchPost extends ListRequest
             }
         }
 
-        if ($inputIndustry = $validated->pull('company_industry')) {
-            $industry = Item::where('id', $inputIndustry)->first();
-            if ($industry) {
-                $name = ($industry->title);
-                $q->whereJsonContains('industry', [$name]);
-            }
-        }
-
         $validated->put('q', $q);
 
         return $validated;
