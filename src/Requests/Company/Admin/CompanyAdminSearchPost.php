@@ -36,8 +36,7 @@ class CompanyAdminSearchPost extends ListRequest
             ],
             'company_category' => 'nullable|integer',
             'company_industry' => 'nullable|integer',
-            'memberOperator'    => ['nullable', Rule::in(['>', '=', '<'])],
-            'memberCount'   => 'nullable|integer'
+            'haveMembers' => ['nullable', Rule::in([0, 1])],
         ];
 
         return array_merge(parent::rules(), $rules);

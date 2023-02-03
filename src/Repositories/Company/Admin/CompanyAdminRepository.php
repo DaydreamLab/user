@@ -52,11 +52,11 @@ class CompanyAdminRepository extends CompanyRepository
             }
         }
 
-        $memberCount = $data->pull('memberCount');
-        $memberOperator = $data->pull('memberOperator');
-        if ($memberCount !== null) {
-            $q->withCount('userCompanies')
-                ->having('user_companies_count', $memberOperator, $memberCount);
+        $haveMembers = $data->pull('haveMembers');
+        if ($haveMembers === null) {
+            $q->whereHas('userCompanies');
+        } else {
+            $q->whereDoesntHave('userCompanies');
         }
 
         $data->put('q', $q);
