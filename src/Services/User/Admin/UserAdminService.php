@@ -12,7 +12,9 @@ use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Helpers\RequestHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
+use DaydreamLab\User\Helpers\CompanyHelper;
 use DaydreamLab\User\Helpers\OtpHelper;
+use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Models\User\UserGroup;
@@ -62,9 +64,18 @@ class UserAdminService extends UserService
                 $inputUserCompany['name'] = $company->name;
                 $inputUserCompany['vat'] = $company->vat;
                 $inputUserCompany['company_id'] = $company->id;
+                CompanyHelper::updatePhonesByUserPhones($company, $inputUserCompany);
                 $item->groups()->sync([$company->category->userGroupId]);
             }
+        } else {
+            # 判斷domain 是不是原廠
+            $company = CompanyHelper::checkOemByUserEmail($inputUserCompany);
+            if ($company) {
+                $inputUserCompany['name'] = $company->name;
+                $inputUserCompany['company_id'] = $company->id;
+            }
         }
+
         $inputUserCompany['user_id'] = $item->id;
         $item->company()->create($inputUserCompany);
 
@@ -211,6 +222,7 @@ class UserAdminService extends UserService
                         'category_id'   => 5,
                     ]));
                 }
+                CompanyHelper::updatePhonesByUserPhones($company, $inputUserCompany);
 
                 $updateData = [
                     'name'          => $company->name,
@@ -259,20 +271,19 @@ class UserAdminService extends UserService
                 }
 
                 $changes = $item->groups()->sync($groupIds->all());
-                $this->decideNewsletterSubscription($changes, $item->refresh(), $input);
             } else {
+                $oem = CompanyHelper::checkOemByUserEmail($inputUserCompany);
                 $userCompany->update(array_merge($inputUserCompany, [
-                    'name'          => @$inputUserCompany['name'],
+                    'name'          => $oem ? $oem->name :  @$inputUserCompany['name'],
                     'vat'           => @$inputUserCompany['vat'],
                     'department'    => @$inputUserCompany['department'],
                     'jobTitle'      => @$inputUserCompany['jobTitle'],
-                    'company_id'    => null,
+                    'company_id'    => $oem ? $oem->id : null,
                     'validated'     => 0,
                     'lastValidate'  => null,
                     'lastUpdate'    => now()->toDateTimeString()
                 ]));
                 $changes = $item->groups()->sync([$userGroup->id]);
-                $this->decideNewsletterSubscription($changes, $item->refresh(), $input);
             }
         } else {
             UserCompany::create(array_merge($inputUserCompany, [
@@ -286,8 +297,8 @@ class UserAdminService extends UserService
                 'lastUpdate'    => now()->toDateTimeString()
             ]));
             $changes = $item->groups()->sync([$userGroup->id]);
-            $this->decideNewsletterSubscription($changes, $item->refresh(), $input);
         }
+        $this->decideNewsletterSubscription($changes, $item->refresh(), $input);
     }
 
 

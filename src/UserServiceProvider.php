@@ -28,8 +28,9 @@ class UserServiceProvider extends ServiceProvider
         'DaydreamLab\User\Commands\V2\HandleNewsletterSubscriptionCommand',
         'DaydreamLab\User\Commands\V2\HandleUserValidateCommand',
         'DaydreamLab\User\Commands\Feat\ExportCompanyUsersInstallCommand',
-        'DaydreamLab\User\Commands\Dev\ClearCompanyMembersIsEmptyCommand',
-        'DaydreamLab\User\Commands\Dev\ClearUserWithoutCompanyCommand',
+        'DaydreamLab\User\Commands\Hotfix\V2_001\ClearCompanyMembersIsEmptyCommand',
+        'DaydreamLab\User\Commands\Hotfix\V2_001\ClearUserWithoutCompanyCommand',
+        'DaydreamLab\User\Commands\Hotfix\V2_001\UpdateCompanyPhoneCommand',
     ];
 
 
