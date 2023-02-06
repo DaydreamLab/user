@@ -53,10 +53,10 @@ class CompanyAdminRepository extends CompanyRepository
         }
 
         $haveMembers = $data->pull('haveMembers');
-        if ($haveMembers === null) {
-            $q->whereHas('userCompanies');
-        } else {
+        if ($haveMembers === 0) {
             $q->whereDoesntHave('userCompanies');
+        } elseif ($haveMembers === 1) {
+            $q->whereHas('userCompanies');
         }
 
         $q->with('userCompanies');
