@@ -17,16 +17,23 @@ class CompanyAdminExportResource extends BaseJsonResource
         $mailDomain = count($this->mailDomains['domain'])
             ? $this->mailDomains['domain']
             : $this->mailDomains['email'];
+        $phonesStr = '';
+        foreach ($this->phones ?: [] as $key => $phone) {
+            if ($key != 0) {
+                $phonesStr .= ',';
+            }
+            $phonesStr .= $phone['phoneCode'] . '-' . $phone['phone'];
+        }
 
         return [
+            ($this->category) ? $this->category->title : '',
+            $this->categoryNote,
             $this->name,
             $this->vat,
             implode(',', $this->industry),
             $this->userCompanies->count(),
             implode(',', $mailDomain),
-            ($this->category) ? $this->category->title : '',
-            $this->categoryNote,
-            #todo：公司聯絡資訊 電話、地址
+            $phonesStr,
             $this->scale ?: '無資料',
             $this->getDateTimeString($this->approvedAt),
             $this->getDateTimeString($this->expiredAt),

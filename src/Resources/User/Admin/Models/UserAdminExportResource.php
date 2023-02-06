@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Resources\User\Admin\Models;
 
+use Carbon\Carbon;
 use DaydreamLab\JJAJ\Resources\BaseJsonResource;
 
 class UserAdminExportResource extends BaseJsonResource
@@ -40,13 +41,13 @@ class UserAdminExportResource extends BaseJsonResource
             $this->mobilePhone ?: '',
             $this->name ?: '',
             $this->email ?: '',
-            ($userCompany) ? $userCompany->department : '',
-            ($userCompany) ? $userCompany->jobTitle : '',
+            ($userCompany) ? $userCompany->jobType : '',
+            ($userCompany) ? $userCompany->jobCategory : '',
             ($userCompany) ? $userCompany->purchaseRole : '',
             ($userCompany) ? implode(',', $userCompany->interestedIssue) : '',
             $this->block ? '是' : '否',
-            $this->blockReason ?: '',
-            $this->line ? '已綁訂' : '未綁訂'
+            $this->line ? '已綁訂' : '未綁訂',
+            $this->lastLoginAt ? Carbon::parse($this->lastLoginAt)->tz('Asia/Taipei')->toDateTimeString() : '無'
         ];
     }
 }

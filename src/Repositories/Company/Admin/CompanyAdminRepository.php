@@ -52,6 +52,12 @@ class CompanyAdminRepository extends CompanyRepository
             }
         }
 
+        $categoryNote = $data->get('categoryNote');
+        if ($data->has('categoryNote')) {
+            $q->where('categoryNote', $categoryNote);
+        }
+        $data->forget('categoryNote');
+
         $haveMembers = $data->pull('haveMembers');
         if ($haveMembers === 0) {
             $q->whereDoesntHave('userCompanies');
