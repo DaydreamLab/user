@@ -23,7 +23,7 @@ class CompanyAdminRepository extends CompanyRepository
     {
         $domain = explode('@', $email)[1];
         $companies = $this->model
-            ->where('mailDomains', 'like', '%' . $domain . '%')
+            ->whereJsonContains('mailDomains->domain', [$domain])
             ->get();
 
         return $companies->filter(function ($company) use ($domain, $email) {

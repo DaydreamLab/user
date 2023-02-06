@@ -567,9 +567,16 @@ class UserFrontService extends UserService
                     'mailDomains' => ['domain' => [], 'email' => []],
                 ]);
             }
+        } elseif (isset($companyData['email'])) {
+            # 判斷domain 是不是原廠
+            $domain = explode('@', $companyData['email'])[1];
+            $cpy = Company::where('categoryNote', '原廠')
+                ->whereJsonContains('mailDomains->domain', [$domain])
+                ->first();
         } else {
             $cpy = null;
         }
+
         return $cpy;
     }
 

@@ -71,9 +71,11 @@ class ClearUserWithoutCompanyCommand extends Command
             '上次登入日期'
         ];
 
+        $oems = Company::where('categoryNote', '原廠')->get();
+        $oemUsers = collect();
         $data = $users->filter(function ($user) {
             return $user->groups->pluck('id')->intersect([6,7])->count();
-        })->map(function ($user) {
+        })->map(function ($user) use ($oems, &$oemUsers) {
             $userCompany = $user->company;
             $company = $userCompany->company;
 
@@ -86,6 +88,21 @@ class ClearUserWithoutCompanyCommand extends Command
                 }
                 if ($key != count($phones) - 1) {
                     $phoneStr .= ',';
+                }
+            }
+
+            # 重新檢查是不是原廠
+            if (isset($userCompany->email) && $userCompany->email != '') {
+                $domain = explode('@', $userCompany->email)[1];
+                $targetOem = $oems->filter(function ($oem) use ($domain) {
+                     return in_array($domain, $oem->mailDomains['domain']);
+                })->first();
+                if ($targetOem) {
+                    $userCompany->name = $targetOem->name;
+                    $userCompany->company_id = $targetOem->id;
+                    $userCompany->save();
+                    $oemUsers->push($user);
+                    $company = $targetOem;
                 }
             }
 
