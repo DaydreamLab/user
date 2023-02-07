@@ -22,7 +22,7 @@ class UserAdminListResource extends BaseJsonResource
 
         return [
             'id'            => $this->id,
-            'email'         => $this->company->email,
+            'email'         => $request->get('parent_group') == 4 ? $this->email : $this->company->email,
             'name'          => $this->name,
             'firstName'     => $this->firstName,
             'lastName'      => $this->lastName,
