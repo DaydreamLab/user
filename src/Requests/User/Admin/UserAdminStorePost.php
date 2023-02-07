@@ -87,7 +87,7 @@ class UserAdminStorePost extends AdminRequest
             'birthday'              => 'nullable|date',
             'phoneCode'             => 'nullable|string',
             'phone'                 => 'nullable|string',
-            'mobilePhone'           => 'nullable|string',
+            'mobilePhone'           => 'nullable|unique:users,mobilePhone',
             'backupMobilePhone'     => 'nullable|numeric',
             'country'               => 'nullable|string',
             'state'                 => 'nullable|string',
