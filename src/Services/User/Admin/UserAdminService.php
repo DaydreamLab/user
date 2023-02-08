@@ -13,6 +13,7 @@ use DaydreamLab\JJAJ\Helpers\RequestHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Helpers\CompanyHelper;
+use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Helpers\OtpHelper;
 use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\User\User;
@@ -231,23 +232,28 @@ class UserAdminService extends UserService
                     'email'         => $inputUserCompany['email']
                 ];
 
-                # 處理是否有更換公司 + 沒填部門、職稱就不變
-                if ($userCompany->company_id != $company->id) {
+
+                $updateData['department'] = $inputUserCompany['department'];
+                if ($inputUserCompany['department'] != '') {
                     $updateData['department'] = $inputUserCompany['department'];
-                    $updateData['jobTitle'] = $inputUserCompany['jobTitle'];
-                } else {
-                    if ($inputUserCompany['department'] != '') {
-                        $updateData['department'] = $inputUserCompany['department'];
-                    }
-                    if ($inputUserCompany['jobTitle'] != '') {
-                        $updateData['jobTitle'] = $inputUserCompany['jobTitle'];
-                    }
                 }
+                if ($inputUserCompany['jobTitle'] != '') {
+                    $updateData['jobTitle'] = $inputUserCompany['jobTitle'];
+                }
+
                 $inputCompany = $input->get('company');
                 if ($userCompany->company && $userCompany->company->category->title == '經銷會員') {
-                    # 原本沒過期強制變成已過期
-                    if (isset($inputCompany['isExpired']) && $inputCompany['isExpired'] === '0') {
+                    if (
+                        $item->validateStatus == EnumHelper::DEALER_VALIDATE_WAIT
+                        && $inputCompany['validateStatus'] == EnumHelper::DEALER_VALIDATE_PASS
+                    ) {
+                        $updateData['validated'] = 1;
                         $updateData['lastValidate'] = now()->toDateTimeString();
+                    } elseif (
+                        $item->validateStatus == EnumHelper::DEALER_VALIDATE_PASS
+                        && $inputCompany['validateStatus'] == EnumHelper::DEALER_VALIDATE_WAIT
+                    ) {
+                        $updateData['validated'] = 0;
                     }
                 } else {
                     $updateData['validated'] = 0;

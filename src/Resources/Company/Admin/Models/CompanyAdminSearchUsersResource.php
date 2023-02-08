@@ -27,7 +27,8 @@ class CompanyAdminSearchUsersResource extends BaseJsonResource
             'jobTitle' => $this->company->jobTitle,
             'lastLoginAt' => $this->getDateTimeString($this->lastLoginAt, $tz),
             'subscriptionStatus' => $this->subscriptionStatus,
-            'updateStatus' => $this->updateStatus
+            'updateStatus' => $this->updateStatus,
+            'validateStatus' => $this->validateStatus
         ];
     }
 }
