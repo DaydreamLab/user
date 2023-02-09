@@ -47,7 +47,8 @@ class UserAdminExportResource extends BaseJsonResource
             ($userCompany) ? implode(',', $userCompany->interestedIssue) : '',
             $this->block ? '是' : '否',
             $this->line ? '已綁訂' : '未綁訂',
-            $this->lastLoginAt ? Carbon::parse($this->lastLoginAt)->tz('Asia/Taipei')->toDateTimeString() : '無'
+            $this->lastLoginAt ? Carbon::parse($this->lastLoginAt)->tz('Asia/Taipei')->toDateTimeString() : '無',
+            $this->validateStatus
         ];
     }
 }
