@@ -18,7 +18,7 @@
 
     "minimum-stability": "dev",
     "require": {
-        "daydreamlab/jjaj": "dev-base/develop",
+        "daydreamlab/jjaj": "dev-v1/main",
         "kalnoy/nestedset": "^v5.0",
         "laravel/socialite": "^v5.0",
         "laravel/passport": "^10.0"
