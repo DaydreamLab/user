@@ -245,15 +245,20 @@ class UserAdminService extends UserService
                 if ($userCompany->company && $userCompany->company->category->title == '經銷會員') {
                     if (
                         $item->validateStatus == EnumHelper::DEALER_VALIDATE_WAIT
-                        && $inputCompany['validateStatus'] == EnumHelper::DEALER_VALIDATE_PASS
+                        && $input->get('validateStatus') == EnumHelper::DEALER_VALIDATE_PASS
                     ) {
                         $updateData['validated'] = 1;
                         $updateData['lastValidate'] = now()->toDateTimeString();
                     } elseif (
                         $item->validateStatus == EnumHelper::DEALER_VALIDATE_PASS
-                        && $inputCompany['validateStatus'] == EnumHelper::DEALER_VALIDATE_WAIT
+                        && $input->get('validateStatus') == EnumHelper::DEALER_VALIDATE_WAIT
                     ) {
                         $updateData['validated'] = 0;
+                    } elseif (
+                        $item->validateStatus == EnumHelper::DEALER_VALIDATE_PASS
+                        && $input->get('validateStatus') == EnumHelper::DEALER_VALIDATE_EXPIRED
+                    ) {
+                        $updateData['lastValidate'] = now()->toDateTimeString();
                     }
                 } else {
                     $updateData['validated'] = 0;
