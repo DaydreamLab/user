@@ -249,7 +249,7 @@ class UserAdminService extends UserService
                         } elseif ($inputValidateStatus ==  EnumHelper::DEALER_VALIDATE_EXPIRED) {
                             $updateData['validated'] = 1;
                             $updateData['lastValidate'] = now()
-                                ->subDays(config('daydreamlab.user.userCompanyUpdateInterval'))
+                                ->subDays(config('daydreamlab.user.userCompanyUpdateInterval') + 1)
                                 ->toDateTimeString();
                         } else {
                             $updateData['validated'] = 1;
