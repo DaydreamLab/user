@@ -23,7 +23,7 @@ class EnumHelper
     public const ALREADY_UPDATE = '已更新';
 
     public const DEALER_VALIDATE_PASS = '已驗證';
-    public const DEALER_VALIDATE_WAIT = '待驗證';
+    public const DEALER_VALIDATE_WAIT = '未驗證';
     public const DEALER_VALIDATE_EXPIRED = '已逾期';
 
     public const SUBSCRIBE_SELF_CANCEL = '自行取消';
