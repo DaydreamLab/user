@@ -143,7 +143,7 @@ class UserAdminStorePost extends AdminRequest
             'company.interestedIssue'   => 'nullable|array',
             'company.interestedIssue.*' => 'nullable|string',
             'company.issueOther'    => 'nullable|string',
-            'company.validateStatus'    => [
+            'validateStatus'    => [
                 'nullable',
                 Rule::in(
                     UserEnumHelper::DEALER_VALIDATE_WAIT,
