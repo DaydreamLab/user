@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\User\Jobs;
 
-
 use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\Company\CompanyCategory;
 use Illuminate\Bus\Queueable;
@@ -14,7 +13,10 @@ use Illuminate\Support\Str;
 
 class ImportCompany implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     protected $filePath;
 

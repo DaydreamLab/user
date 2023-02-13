@@ -39,7 +39,7 @@ class NotificationTemplateSearchRequest extends UserSearchRequest
     public function validated()
     {
         $validated = parent::validated();
-        $validated->put('q', $validated->get('q')->where('category', 'message'));
+        $validated->put('q', $validated->get('q')->where('category', 'marketing'));
 
         return $validated;
     }

@@ -42,7 +42,7 @@ class NotificationTemplateStoreRequest extends UserStoreRequest
     {
         $validated = parent::validated();
         $validated->put('channelType', 'default');
-        $validated->put('category', 'message');
+        $validated->put('category', 'marketing');
 
         return $validated;
     }
