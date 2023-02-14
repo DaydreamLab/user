@@ -28,17 +28,17 @@ class EnumHelper
     public const SUBSCRIBE_SALES_CANCEL = '業務通知';
 
     public const USERTAG_BASIC_CHECK_KEYS = [
-        'createdAtFrom',
-        'createdAtTo',
-        'lastLoginAtFrom',
-        'lastLoginAtTo',
-        'lastUpdateFrom',
-        'lastUpdateTo',
+        'createdAtFrom'     => 'startOfDay',
+        'createdAtTo'       => 'endOfDay',
+        'lastLoginAtFrom'   => 'startOfDay',
+        'lastLoginAtTo'     => 'endOfDay',
+        'lastUpdateFrom'    => 'startOfDay',
+        'lastUpdateTo'      => 'endOfDay',
     ];
 
     public const USERTAG_EVENT_CHECK_KEYS = [
-        'startDate',
-        'endDate'
+        'startDate' => null,
+        'endDate'   => null
     ];
 
     public static function constant($name)

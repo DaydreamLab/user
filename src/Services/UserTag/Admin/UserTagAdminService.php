@@ -4,10 +4,13 @@ namespace DaydreamLab\User\Services\UserTag\Admin;
 
 use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Helpers\RequestHelper;
+use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Repositories\UserTag\Admin\UserTagAdminRepository;
 use DaydreamLab\User\Services\User\Admin\UserAdminService;
 use DaydreamLab\User\Services\UserTag\UserTagService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class UserTagAdminService extends UserTagService
 {
@@ -23,6 +26,7 @@ class UserTagAdminService extends UserTagService
 
     public function addMapping($item, $input)
     {
+        $input->put('rules', $input->get('originalRules'));
         $userIds = $this->getCrmUserIds($input);
 
         if ($input->get('type') != 'auto' && count($userIds)) {
@@ -31,6 +35,12 @@ class UserTagAdminService extends UserTagService
     }
 
 
+    /**
+     * 強制加入會員或刪除標籤內會員（介面設計已移除...）
+     * @param Collection $input
+     * @return null
+     * @throws \DaydreamLab\JJAJ\Exceptions\NotFoundException
+     */
     public function editUsers(Collection $input)
     {
         $userTag = $this->checkItem($input);
@@ -89,7 +99,6 @@ class UserTagAdminService extends UserTagService
     }
 
 
-
     public function modifyMapping($item, $input)
     {
         if ($input->get('type') != 'auto') {
@@ -101,6 +110,7 @@ class UserTagAdminService extends UserTagService
                 ];
             });
             $nowUserIds = $nowUsersData->pluck('id');
+            $input->put('rules', $input->get('originalRules'));
             $newUserIds = $this->getCrmUserIds($input);
 
             # 找出有被強制取消或強制新增的

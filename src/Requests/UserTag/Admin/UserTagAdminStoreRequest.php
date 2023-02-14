@@ -44,6 +44,7 @@ class UserTagAdminStoreRequest extends UserStoreRequest
     public function validated()
     {
         $validated = parent::validated();
+        $validated->put('originalRules', $validated->get('rules'));
         $validated->put('rules', $this->handleRules($validated->get('rules'))) ;
 
         return $validated;
@@ -56,14 +57,13 @@ class UserTagAdminStoreRequest extends UserStoreRequest
         foreach ($keys as $key) {
             $data = $rules[$key];
             $checkKeysType = 'USERTAG_' . Str::upper($key) . '_CHECK_KEYS';
-            foreach (EnumHelper::constant($checkKeysType) as $checkKey) {
+            foreach (EnumHelper::constant($checkKeysType) as $checkKey => $function) {
                 if (isset($data[$checkKey])) {
-                    $data[$checkKey] = RequestHelper::toSystemTime($data[$checkKey]);
+                    $data[$checkKey] = RequestHelper::toSystemTime($data[$checkKey], 'Asia/Taipei', $function);
                 }
             }
             $rules[$key] = $data;
         }
-
         return $rules;
     }
 }
