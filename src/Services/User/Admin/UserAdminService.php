@@ -7,6 +7,7 @@ use DaydreamLab\Cms\Models\Item\Item;
 use DaydreamLab\Cms\Services\NewsletterSubscription\Admin\NewsletterSubscriptionAdminService;
 use DaydreamLab\Dsth\Helpers\EnumHelper as DsthEnumHelper;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
+use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Helpers\RequestHelper;
@@ -395,7 +396,7 @@ class UserAdminService extends UserService
         }
 
         if ($basic['createdAtFrom'] || $basic['createdAtTo']) {
-            $q->isNotNull('created_at');
+            $q->whereNotNull('created_at');
             if ($basic['createdAtFrom']) {
                 $q->where('created_at', '>=', RequestHelper::toSystemTime($basic['createdAtFrom']));
             }
@@ -491,14 +492,41 @@ class UserAdminService extends UserService
         }
 
         if ($menu['id']) {
-            if ($menu['action'] == '點擊') {
-                $q->withCount(['menuLogs' => function ($q) use ($menu) {
+            if ($menu['action']) {
+                $closure = function ($q) use ($menu) {
                     $q->where('menu_logs.menuId', $menu['id']);
-                }])->having('menu_logs_count', '>=', $menu['value']);
+                    if ($menu['startDate']) {
+                        $q->where(
+                            'menu_logs.created_at',
+                            '>=',
+                            RequestHelper::toSystemTime($menu['startDate'], 'Asia/Taipei', 'startOfDay')
+                        );
+                    }
+                    if ($menu['endDate']) {
+                        $q->where(
+                            'menu_logs.created_at',
+                            '<=',
+                            RequestHelper::toSystemTime($menu['endDate'], 'Asia/Taipei', 'endOfDay')
+                        );
+                    }
+                };
+                if ($menu['action'] == '點擊') {
+                    $q->withCount(['menuLogs' => $closure]);
+                } else {
+                    $q->withSum(['menuLogs' => $closure], 'time');
+                }
             } else {
-                $q->withSum(['menuLogs' => function ($q) use ($menu) {
-                    $q->where('menu_logs.menuId', $menu['id']);
-                }], 'time')->having('menu_logs_sum_time', '>=', $menu['value']);
+                throw new InternalServerErrorException(
+                    'InputInvalid',
+                    ['key' => 'menu[\'action\']'],
+                    null,
+                    'User'
+                );
+            }
+            if ($menu['action'] == '點擊') {
+                $q->having('menu_logs_count', '>=', $menu['value']);
+            } elseif ($menu['action'] == '停留時間') {
+                $q->having('menu_logs_sum_time', '>=', $menu['value']);
             }
         }
 

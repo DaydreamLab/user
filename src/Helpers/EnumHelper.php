@@ -41,6 +41,11 @@ class EnumHelper
         'endDate'   => null
     ];
 
+    public const USERTAG_MENU_CHECK_KEYS = [
+        'startDate' => 'startOfDay',
+        'endDate'   => 'endOfDay'
+    ];
+
     public static function constant($name)
     {
         return constant('self::' . $name);

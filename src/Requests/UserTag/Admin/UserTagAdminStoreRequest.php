@@ -53,7 +53,7 @@ class UserTagAdminStoreRequest extends UserStoreRequest
 
     public function handleRules($rules)
     {
-        $keys = ['basic', 'event'];
+        $keys = ['basic', 'event', 'menu'];
         foreach ($keys as $key) {
             $data = $rules[$key];
             $checkKeysType = 'USERTAG_' . Str::upper($key) . '_CHECK_KEYS';
