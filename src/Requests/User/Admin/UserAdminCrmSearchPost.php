@@ -32,6 +32,7 @@ class UserAdminCrmSearchPost extends ListRequest
     public function rules()
     {
         $rules = [
+            'search'    => 'nullable|string',
             'basic' => 'required|array',
             /**** 基本資料****/
             'basic.userGroup'   => ['nullable', Rule::in(['一般會員', '經銷會員'])],
@@ -68,6 +69,8 @@ class UserAdminCrmSearchPost extends ListRequest
 
             /***** 公司 *****/
             'company' => 'required|array',
+            'company.search' => 'nullable|array',
+            'company.search.*' => 'required|string',
             # 公司所在城市
             'company.city' => 'nullable|array',
             'company.city.*' => 'required|string',
@@ -124,8 +127,8 @@ class UserAdminCrmSearchPost extends ListRequest
             'except' => 'required|array',
             'except.lastLoginDate' => 'nullable|integer',
             'except.userGroup'  => ['nullable', Rule::in(['一般會員', '經銷會員'])],
-            'except.companyName' => 'nullable|string',
-            'except.companyVat' => 'nullable|numeric',
+            'except.companySearch' => 'nullable|array',
+            'except.companySearch.*' => 'required|string',
             'except.companyCategoryNotes' => 'nullable|array',
             'except.companyCategoryNotes.*' => ['nullable', Rule::in([
                 EnumHelper::COMPANY_NOTE_STAFF,

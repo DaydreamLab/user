@@ -511,13 +511,32 @@ class UserAdminService extends UserService
         $except = $validated->get('except');
         $q = $validated->get('q');
 
+        # 有排除公司條件：無公司或有公司但是統編、公司名稱不含...
+        $exceptCompanySearch = $except['companySearch'] ?: [];
+        if (count($exceptCompanySearch)) {
+            $q->whereIn('users.id', function ($q) use ($exceptCompanySearch) {
+                $q->select('uc.user_id')
+                    ->from('users_companies as uc')
+                    ->leftJoin('companies as c', 'c.id', '=', 'uc.company_id')
+                    ->where(function ($q) use ($exceptCompanySearch) {
+                        $q->whereNull('uc.company_id')
+                            ->orWhere(function ($q) use ($exceptCompanySearch) {
+                                foreach ($exceptCompanySearch as $input) {
+                                    $q->where('c.name', 'not like', "%$input%")
+                                        ->where('c.vat', 'not like', "%$input%");
+                                }
+                            })
+                        ;
+                    });
+            });
+        }
+
         if (
             count($company['city'] ?: [])
             || count($company['categoryNotes'] ?: [])
             || count($company['industry'] ?: [])
+            || count($company['search'] ?: [])
             || $company['scale']
-            || $except['companyName']
-            || $except['companyVat']
             || count($except['companyCategoryNotes'] ?: [])
         ) {
             $q->whereHas('company.company', function ($q) use ($company, $except) {
@@ -532,12 +551,14 @@ class UserAdminService extends UserService
                     }
                 }
 
-                if ($except['companyName']) {
-                    $q->where('name', 'not like', "%{$except['companyName']}%");
-                }
-
-                if ($except['companyVat']) {
-                    $q->where('vat', 'not like', "%{$except['companyVat']}%");
+                $companySearch = $company['search'] ?: [];
+                if (count($companySearch)) {
+                    $q->where(function ($q) use ($companySearch) {
+                        foreach ($companySearch as $search) {
+                            $q->orWhere('companies.vat', 'like', "%{$search}%")
+                                ->orWhere('companies.name', 'like', "%{$search}%");
+                        }
+                    });
                 }
 
                 $industry = $company['industry'] ?: [];
@@ -852,7 +873,7 @@ class UserAdminService extends UserService
         $this->handleCompanyQuery($input);
         $this->handleOrderEventCouponQuery($input);
 
-        return $this->search($input->only(['q', 'limit', 'paginate']));
+        return $this->search($input->only(['search', 'company_id', 'updateStatus', 'q', 'limit', 'paginate']));
     }
 
 

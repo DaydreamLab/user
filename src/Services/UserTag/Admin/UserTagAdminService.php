@@ -76,7 +76,6 @@ class UserTagAdminService extends UserTagService
     public function getUsers(Collection $input)
     {
         $userTag = $this->checkItem($input);
-
         if ($search = $input->get('search')) {
             $users = $userTag->activeUsers()->where(function ($q) use ($search) {
                 $q->orWhere('users.name', 'like', "%{$search}%")
@@ -109,6 +108,7 @@ class UserTagAdminService extends UserTagService
                     'forceDelete'  => $user->pivot->forceDelete,
                 ];
             });
+
             $nowUserIds = $nowUsersData->pluck('id');
             $input->put('rules', $input->get('originalRules'));
             $newUserIds = $this->getCrmUserIds($input);
