@@ -199,19 +199,13 @@ class UserAdminService extends UserService
         }
 
         $input->forget('password_confirmation');
+        $groupIds = $input->pull('group_ids') ?? [];
 
+        $user = parent::store($input);
 
-        $result = parent::store($input);
-        if (gettype($result) == 'boolean') {    //更新使用者
-            $user = $this->find($input->get('id'));
-            $user->usergroup()->detach();
-            $user->usergroup()->attach($input->get('group_ids'));
-        }
-        else {//新增使用者
-            $result->usergroup()->attach($input->get('group_ids'));
-        }
+        $user->usergroup()->withTimestamps()->sync($groupIds);
 
-        return $result;
+        return $user;
     }
 
 }

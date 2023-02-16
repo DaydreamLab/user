@@ -59,7 +59,7 @@ return [
     ],
 
     'USER_EMAIL_OR_PASSWORD_INCORRECT' => [
-        'code'      => 400,
+        'code'      => 403,
         'message'   => 'Email or password incorrect'
     ],
 
