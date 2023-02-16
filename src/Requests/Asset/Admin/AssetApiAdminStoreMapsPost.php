@@ -1,6 +1,8 @@
 <?php
 
-namespace DaydreamLab\User\Requests;
+namespace DaydreamLab\User\Requests\Asset\Admin;
+
+use DaydreamLab\User\Requests\Asset\AssetApiStoreMapsPost;
 
 class AssetApiAdminStoreMapsPost extends AssetApiStoreMapsPost
 {

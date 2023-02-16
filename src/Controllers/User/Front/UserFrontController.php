@@ -9,7 +9,7 @@ use DaydreamLab\User\Requests\User\Front\UserFrontResetPasswordPost;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\User\Requests\User\UserCheckEmailPost;
-use DaydreamLab\User\Requests\User\UserFrontRegisterPost;
+use DaydreamLab\User\Requests\User\Front\UserFrontRegisterPost;
 use DaydreamLab\User\Requests\User\UserLoginPost;
 use DaydreamLab\User\Resources\User\Front\Models\UserFrontGetLoginResource;
 use DaydreamLab\User\Services\User\Front\UserFrontService;

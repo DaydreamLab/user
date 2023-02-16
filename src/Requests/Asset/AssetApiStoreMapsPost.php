@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Requests;
+namespace DaydreamLab\User\Requests\Asset;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 
