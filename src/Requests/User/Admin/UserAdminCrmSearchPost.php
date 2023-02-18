@@ -143,6 +143,10 @@ class UserAdminCrmSearchPost extends ListRequest
             'except.cancelTimesTo' => 'nullable|integer',
             'except.noshowTimesFrom' => 'nullable|integer',
             'except.noshowTimesTo' => 'nullable|integer',
+            'export'    => ['nullable', Rule::in([0, 1])],
+            'userTags'   => 'nullable|array',
+            'userTags.*'   => 'required|array',
+            'userTags.*.id'   => 'required|integer',
         ];
 
         return array_merge(parent::rules(), $rules);

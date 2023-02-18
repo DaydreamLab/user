@@ -1,0 +1,86 @@
+[
+  {
+    "name": "CRM會員搜尋",
+    "method": "searchCrmUser",
+    "url": "/admin/user/tag/{id}",
+    "created_by": 1
+  },
+  {
+    "name": "取得訊息樣板",
+    "method": "getNotificationTemplate",
+    "url": "/admin/notification/template/{id}",
+    "created_by": 1
+  },
+  {
+    "name": "新增訊息樣板",
+    "method": "addNotificationTemplate",
+    "url": "/admin/notification/template/store",
+    "created_by": 1
+  },
+  {
+    "name": "編輯訊息樣板",
+    "method": "editNotificationTemplate",
+    "url": "/admin/notification/template/store",
+    "created_by": 1
+  },
+  {
+    "name": "搜尋訊息樣板",
+    "method": "searchNotificationTemplate",
+    "url": "/admin/notification/template/search",
+    "created_by": 1
+  },
+  {
+    "name": "刪除訊息樣板",
+    "method": "deleteNotificationTemplate",
+    "url": "/admin/notification/template/remove",
+    "created_by": 1
+  },
+  {
+    "name": "取得分眾標籤",
+    "method": "getUserTag",
+    "url": "/admin/user/tag/{id}",
+    "created_by": 1
+  },
+  {
+    "name": "新增分眾標籤",
+    "method": "addUserTag",
+    "url": "/admin/user/tag/store",
+    "created_by": 1
+  },
+  {
+    "name": "編輯分眾標籤",
+    "method": "editUserTag",
+    "url": "/admin/user/tag/store",
+    "created_by": 1
+  },
+  {
+    "name": "搜尋分眾標籤",
+    "method": "searchUserTag",
+    "url": "/admin/user/tag/search",
+    "created_by": 1
+  },
+  {
+    "name": "更新分眾標籤狀態",
+    "method": "updateUserTagState",
+    "url": "/admin/user/tag/state",
+    "created_by": 1
+  },
+  {
+    "name": "刪除分眾標籤",
+    "method": "deleteUserTag",
+    "url": "/admin/user/tag/remove",
+    "created_by": 1
+  },
+  {
+    "name": "取得分眾標籤會員名單",
+    "method": "getUserTagUsers",
+    "url": "/admin/user/tag/{id}/users",
+    "created_by": 1
+  },
+  {
+    "name": "編輯分眾標籤會員名單",
+    "method": "editUserTagUsers",
+    "url": "/admin/user/tag/{id}/users/edit",
+    "created_by": 1
+  }
+]

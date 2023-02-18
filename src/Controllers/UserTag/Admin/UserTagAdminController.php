@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\UserTag\Admin;
 
 use DaydreamLab\User\Controllers\UserController;
+use DaydreamLab\User\Requests\UserTag\Admin\UserTagAdminRemovePost;
 use DaydreamLab\User\Requests\UserTag\Admin\UserTagAdminEditUsersRequest;
 use DaydreamLab\User\Requests\UserTag\Admin\UserTagAdminGetItemRequest;
 use DaydreamLab\User\Requests\UserTag\Admin\UserTagAdminGetUsersRequest;
@@ -11,6 +12,7 @@ use DaydreamLab\User\Requests\UserTag\Admin\UserTagAdminStateRequest;
 use DaydreamLab\User\Requests\UserTag\Admin\UserTagAdminStoreRequest;
 use DaydreamLab\User\Resources\UserTag\Admin\Collections\UserTagAdminGetUsersResourceCollection;
 use DaydreamLab\User\Resources\UserTag\Admin\Collections\UserTagAdminSearchResourceCollection;
+use DaydreamLab\User\Resources\UserTag\Admin\Models\UserTagAdminResource;
 use DaydreamLab\User\Services\UserTag\Admin\UserTagAdminService;
 use Throwable;
 
@@ -44,7 +46,7 @@ class UserTagAdminController extends UserController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response, [], UserTagAdminResource::class);
     }
 
 
@@ -62,6 +64,18 @@ class UserTagAdminController extends UserController
             [],
             UserTagAdminGetUsersResourceCollection::class
         );
+    }
+
+    public function remove(UserTagAdminRemovePost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->remove($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
     }
 
 

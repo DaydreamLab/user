@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Controllers\User\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\User\Requests\User\Admin\UserAdminCrmSearchPost;
+use DaydreamLab\User\Requests\User\Admin\UserAdminExportCrmSearchPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminExportPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminGetItem;

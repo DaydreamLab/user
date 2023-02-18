@@ -6,6 +6,7 @@ use DaydreamLab\Cms\Helpers\EnumHelper as CmsEnumHelper;
 use DaydreamLab\Cms\Models\Item\Item;
 use DaydreamLab\Cms\Services\NewsletterSubscription\Admin\NewsletterSubscriptionAdminService;
 use DaydreamLab\Dsth\Helpers\EnumHelper as DsthEnumHelper;
+use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\JJAJ\Exceptions\UnauthorizedException;
@@ -19,6 +20,7 @@ use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
+use DaydreamLab\User\Repositories\UserTag\Admin\UserTagAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -33,15 +35,19 @@ class UserAdminService extends UserService
 
     protected $newsletterSubscriptionAdminService;
 
+    protected $userTagAdminRepository;
+
     public function __construct(
         UserAdminRepository $repo,
         CompanyAdminRepository $companyAdminRepo,
-        NewsletterSubscriptionAdminService $newsletterSubscriptionAdminService
+        NewsletterSubscriptionAdminService $newsletterSubscriptionAdminService,
+        UserTagAdminRepository $userTagAdminRepository
     ) {
         parent::__construct($repo);
         $this->repo = $repo;
         $this->companyAdminRepo = $companyAdminRepo;
         $this->newsletterSubscriptionAdminService = $newsletterSubscriptionAdminService;
+        $this->userTagAdminRepository = $userTagAdminRepository;
     }
 
 
@@ -900,6 +906,19 @@ class UserAdminService extends UserService
         $this->handleBasicQuery($input);
         $this->handleCompanyQuery($input);
         $this->handleOrderEventCouponQuery($input);
+
+        $inputTags = $input->get('userTags') ?: [];
+        if (count($inputTags)) {
+            $userIds = collect();
+            foreach ($inputTags as $inputTag) {
+                $userTag = $this->userTagAdminRepository
+                    ->find($inputTag['id'], (new QueryCapsule())->with('activeUsers'));
+                $userIds = $userIds->merge($userTag->activeUsers->pluck('id'))->unique()->values();
+            }
+            $q = $input->get('q');
+            $q->whereIn('id', $userIds);
+            $input->put('q', $q);
+        }
 
         return $this->search($input->only(['search', 'company_id', 'updateStatus', 'q', 'limit', 'paginate']));
     }

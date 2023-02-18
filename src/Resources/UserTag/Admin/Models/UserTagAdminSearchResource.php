@@ -17,9 +17,9 @@ class UserTagAdminSearchResource extends BaseJsonResource
         $tz = $request->user('api')->timezone;
 
         return [
-            'id'    => $this->id,
-            'title' => $this->title,
-            'type'  => $this->type,
+            'id'            => $this->id,
+            'title'         => $this->title,
+            'type'          => $this->type,
             'activeUsers'   => $this->activeUsers->count(),
             'createdAt'     => $this->getDateTimeString($this->created_at, $tz),
             'creatorName'   => $this->creator->name

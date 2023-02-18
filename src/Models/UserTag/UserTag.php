@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Models\UserTag;
 
+use DaydreamLab\Dsth\Models\Notification\Notification;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\User\Models\User\User;
@@ -76,6 +77,13 @@ class UserTag extends UserModel
         return $this->belongsToMany(User::class, 'users_usertags_maps', 'userTagId', 'userId')
             ->withPivot(['forceAdd', 'forceDelete'])
             ->wherePivot('forceDelete', 0)
+            ->withTimestamps();
+    }
+
+
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class, 'notifications_usertags_maps', 'userTagId', 'notificationId')
             ->withTimestamps();
     }
 }
