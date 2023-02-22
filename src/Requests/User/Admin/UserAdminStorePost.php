@@ -87,7 +87,7 @@ class UserAdminStorePost extends AdminRequest
             'birthday'              => 'nullable|date',
             'phoneCode'             => 'nullable|string',
             'phone'                 => 'nullable|string',
-            'mobilePhone'           => 'nullable|string',
+            'mobilePhone'           => ['nullable', Rule::unique('users')->ignore($this->get('id'))],
             'backupMobilePhone'     => 'nullable|numeric',
             'country'               => 'nullable|string',
             'state'                 => 'nullable|string',
@@ -143,6 +143,14 @@ class UserAdminStorePost extends AdminRequest
             'company.interestedIssue'   => 'nullable|array',
             'company.interestedIssue.*' => 'nullable|string',
             'company.issueOther'    => 'nullable|string',
+            'validateStatus'    => [
+                'nullable',
+                Rule::in(
+                    UserEnumHelper::DEALER_VALIDATE_WAIT,
+                    UserEnumHelper::DEALER_VALIDATE_PASS,
+                    UserEnumHelper::DEALER_VALIDATE_EXPIRED
+                )
+            ],
             'subscribeNewsletter'       => ['nullable', Rule::in(EnumHelper::BOOLEAN)],
             'cancelReason'       => ['nullable', Rule::in([
                 UserEnumHelper::SUBSCRIBE_SELF_CANCEL,

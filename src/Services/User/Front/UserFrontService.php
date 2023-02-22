@@ -522,6 +522,7 @@ class UserFrontService extends UserService
         if ($cpy) {
             $companyData['name'] = $cpy->name;
             $companyData['company_id'] = $cpy->id;
+            CompanyHelper::updatePhonesByUserPhones($cpy, $companyData);
         }
 
         # 根據公司的身份決定使用者的群組
@@ -567,9 +568,13 @@ class UserFrontService extends UserService
                     'mailDomains' => ['domain' => [], 'email' => []],
                 ]);
             }
+        } elseif (isset($companyData['email'])) {
+            # 判斷domain 是不是原廠
+            $cpy = CompanyHelper::checkOemByUserEmail($companyData);
         } else {
             $cpy = null;
         }
+
         return $cpy;
     }
 

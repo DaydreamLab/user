@@ -36,6 +36,8 @@ class CompanyAdminSearchPost extends ListRequest
             ],
             'company_category' => 'nullable|integer',
             'company_industry' => 'nullable|integer',
+            'haveMembers' => ['nullable', Rule::in([0, 1])],
+            'categoryNote'  => ['nullable', Rule::in(['無', '原廠', '競業', '員工', '黑名單'])]
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -46,7 +48,7 @@ class CompanyAdminSearchPost extends ListRequest
     {
         $validated = parent::validated();
         $q = $validated->get('q');
-        $q->with('userCompanies');
+
         if ($validated->get('company_category')) {
             $validated->put('category_id', $validated->get('company_category'));
             $validated->forget('company_category');
@@ -54,14 +56,6 @@ class CompanyAdminSearchPost extends ListRequest
             if (!$validated->get('search')) {
                 $category_ids = CompanyCategory::query()->where('state', 1)->get()->pluck('id');
                 $q->whereIn('category_id', $category_ids);
-            }
-        }
-
-        if ($inputIndustry = $validated->pull('company_industry')) {
-            $industry = Item::where('id', $inputIndustry)->first();
-            if ($industry) {
-                $name = ($industry->title);
-                $q->whereJsonContains('industry', [$name]);
             }
         }
 

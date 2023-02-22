@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Resources\User\Admin\Models;
 
+use Carbon\Carbon;
 use DaydreamLab\JJAJ\Resources\BaseJsonResource;
 
 class UserAdminExportResource extends BaseJsonResource
@@ -14,26 +15,40 @@ class UserAdminExportResource extends BaseJsonResource
      */
     public function toArray($request)
     {
+        $userCompany = $this->company;
+        $company = $userCompany->company;
+
+        $phones = $userCompany->phones ?: [];
+        $phoneStr = '';
+        foreach ($phones as $key => $phone) {
+            $phoneStr .= $phone['phoneCode'] . '-' . $phone['phone'];
+            if ($phone['ext']) {
+                $phoneStr .= '#' . $phone['ext'];
+            }
+            if ($key != count($phones) - 1) {
+                $phoneStr .= ',';
+            }
+        }
+
         return [
-            $this->groups()->first()->title,
-//            $this->groupTitle,
-            ($this->company) ? $this->company->name : '',
-            ($this->company) ? $this->company->vat : '',
-            ($this->company) ? $this->company->phoneCode : '',
-            ($this->company) ? $this->company->phone : '',
-            ($this->company) ? $this->company->extNumber : '',
-            ($this->company) ? $this->company->email : '',
-            ($this->company) ? $this->company->industry : '',
-            ($this->company) ? $this->company->scale : '',
+            $this->groups->first()->title,
+            ($company) ? $company->name : '',
+            ($company) ? $company->vat : '',
+            $phoneStr,
+            ($userCompany) ? $userCompany->email : '',
+            ($company) ? implode(',', $company->industry) : '',
+            ($company) ? $company->scale : '',
             $this->mobilePhone ?: '',
             $this->name ?: '',
             $this->email ?: '',
-            ($this->company) ? $this->company->department : '',
-            ($this->company) ? $this->company->jobTitle : '',
-            ($this->company) ? $this->company->purchaseRole : '',
-            ($this->company) ? implode(',', $this->company->interestedIssue) : '',
-            $this->block,
-            $this->blockReason
+            ($userCompany) ? $userCompany->jobType : '',
+            ($userCompany) ? $userCompany->jobCategory : '',
+            ($userCompany) ? $userCompany->purchaseRole : '',
+            ($userCompany) ? implode(',', $userCompany->interestedIssue) : '',
+            $this->block ? '是' : '否',
+            $this->line ? '已綁訂' : '未綁訂',
+            $this->lastLoginAt ? Carbon::parse($this->lastLoginAt)->tz('Asia/Taipei')->toDateTimeString() : '無',
+            $this->validateStatus
         ];
     }
 }

@@ -106,6 +106,9 @@ class Company extends BaseModel
                     'email'  => []
                 ];
             }
+            if (!$item->categoryNote) {
+                $item->categoryNote = '無';
+            }
         });
     }
 

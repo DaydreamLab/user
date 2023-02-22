@@ -19,8 +19,12 @@ class EnumHelper
     public const COMPANY_CATEGORY_NORMAL = '一般';
     public const COMPANY_CATEGORY_DEALER = '經銷會員';
 
-    public const WAIT_UPDATE = '待更新狀態';
-    public const ALREADY_UPDATE = '已更新狀態';
+    public const WAIT_UPDATE = '待更新';
+    public const ALREADY_UPDATE = '已更新';
+
+    public const DEALER_VALIDATE_PASS = '已驗證';
+    public const DEALER_VALIDATE_WAIT = '未驗證';
+    public const DEALER_VALIDATE_EXPIRED = '已逾期';
 
     public const SUBSCRIBE_SELF_CANCEL = '自行取消';
     public const SUBSCRIBE_EMAIL_CANCEL = 'Email通知';

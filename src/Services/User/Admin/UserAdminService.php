@@ -14,7 +14,10 @@ use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Helpers\RequestHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Events\Block;
+use DaydreamLab\User\Helpers\CompanyHelper;
+use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Helpers\OtpHelper;
+use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Models\User\UserGroup;
@@ -63,15 +66,24 @@ class UserAdminService extends UserService
 
         # 會員新增時，先檢查公司統編，若存在則更新會員使用者群組（一般會員、經銷會員），同時必定創建一個 userCompany
         $inputUserCompany = $input->get('company') ?: [];
-        if (isset($inputUserCompany['vat'])) {
+        if (isset($inputUserCompany['vat']) && $inputUserCompany['vat'] !== '') {
             $company = $this->companyAdminRepo->findBy('vat', '=', $inputUserCompany['vat'])->first();
             if ($company) {
                 $inputUserCompany['name'] = $company->name;
                 $inputUserCompany['vat'] = $company->vat;
                 $inputUserCompany['company_id'] = $company->id;
+                CompanyHelper::updatePhonesByUserPhones($company, $inputUserCompany);
                 $item->groups()->sync([$company->category->userGroupId]);
             }
+        } else {
+            # 判斷domain 是不是原廠
+            $company = CompanyHelper::checkOemByUserEmail($inputUserCompany);
+            if ($company) {
+                $inputUserCompany['name'] = $company->name;
+                $inputUserCompany['company_id'] = $company->id;
+            }
         }
+
         $inputUserCompany['user_id'] = $item->id;
         $item->company()->create($inputUserCompany);
 
@@ -218,6 +230,7 @@ class UserAdminService extends UserService
                         'category_id'   => 5,
                     ]));
                 }
+                CompanyHelper::updatePhonesByUserPhones($company, $inputUserCompany);
 
                 $updateData = [
                     'name'          => $company->name,
@@ -226,23 +239,29 @@ class UserAdminService extends UserService
                     'email'         => $inputUserCompany['email']
                 ];
 
-                # 處理是否有更換公司 + 沒填部門、職稱就不變
-                if ($userCompany->company_id != $company->id) {
+
+                $updateData['department'] = $inputUserCompany['department'];
+                if ($inputUserCompany['department'] != '') {
                     $updateData['department'] = $inputUserCompany['department'];
-                    $updateData['jobTitle'] = $inputUserCompany['jobTitle'];
-                } else {
-                    if ($inputUserCompany['department'] != '') {
-                        $updateData['department'] = $inputUserCompany['department'];
-                    }
-                    if ($inputUserCompany['jobTitle'] != '') {
-                        $updateData['jobTitle'] = $inputUserCompany['jobTitle'];
-                    }
                 }
-                $inputCompany = $input->get('company');
+                if ($inputUserCompany['jobTitle'] != '') {
+                    $updateData['jobTitle'] = $inputUserCompany['jobTitle'];
+                }
+
                 if ($userCompany->company && $userCompany->company->category->title == '經銷會員') {
-                    # 原本沒過期強制變成已過期
-                    if (isset($inputCompany['isExpired']) && $inputCompany['isExpired'] === '0') {
-                        $updateData['lastValidate'] = now()->toDateTimeString();
+                    $inputValidateStatus = $input->get('validateStatus');
+                    if ($item->validateStatus != $inputValidateStatus) {
+                        if ($inputValidateStatus ==  EnumHelper::DEALER_VALIDATE_WAIT) {
+                            $updateData['validated'] = 0;
+                        } elseif ($inputValidateStatus ==  EnumHelper::DEALER_VALIDATE_EXPIRED) {
+                            $updateData['validated'] = 1;
+                            $updateData['lastValidate'] = now()
+                                ->subDays(config('daydreamlab.user.userCompanyUpdateInterval') + 1)
+                                ->toDateTimeString();
+                        } else {
+                            $updateData['validated'] = 1;
+                            $updateData['lastValidate'] = now()->toDateTimeString();
+                        }
                     }
                 } else {
                     $updateData['validated'] = 0;
@@ -266,20 +285,19 @@ class UserAdminService extends UserService
                 }
 
                 $changes = $item->groups()->sync($groupIds->all());
-                $this->decideNewsletterSubscription($changes, $item->refresh(), $input);
             } else {
+                $oem = CompanyHelper::checkOemByUserEmail($inputUserCompany);
                 $userCompany->update(array_merge($inputUserCompany, [
-                    'name'          => @$inputUserCompany['name'],
+                    'name'          => $oem ? $oem->name :  @$inputUserCompany['name'],
                     'vat'           => @$inputUserCompany['vat'],
                     'department'    => @$inputUserCompany['department'],
                     'jobTitle'      => @$inputUserCompany['jobTitle'],
-                    'company_id'    => null,
+                    'company_id'    => $oem ? $oem->id : null,
                     'validated'     => 0,
                     'lastValidate'  => null,
                     'lastUpdate'    => now()->toDateTimeString()
                 ]));
                 $changes = $item->groups()->sync([$userGroup->id]);
-                $this->decideNewsletterSubscription($changes, $item->refresh(), $input);
             }
         } else {
             UserCompany::create(array_merge($inputUserCompany, [
@@ -293,8 +311,8 @@ class UserAdminService extends UserService
                 'lastUpdate'    => now()->toDateTimeString()
             ]));
             $changes = $item->groups()->sync([$userGroup->id]);
-            $this->decideNewsletterSubscription($changes, $item->refresh(), $input);
         }
+        $this->decideNewsletterSubscription($changes, $item->refresh(), $input);
     }
 
 

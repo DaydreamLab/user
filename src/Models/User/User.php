@@ -505,4 +505,17 @@ class User extends BaseModel implements
     {
         return $this->belongsToMany(UserTag::class, 'users_usertags_maps', 'userId', 'userTagId');
     }
+
+
+    public function getValidateStatusAttribute()
+    {
+        if (!$this->company->validated || !$this->company->lastValidate) {
+            return EnumHelper::DEALER_VALIDATE_WAIT;
+        }
+
+        return now()->diffInDays($this->company->lastValidate)
+        <= config('daydreamlab.user.userCompanyUpdateInterval', 120)
+            ? EnumHelper::DEALER_VALIDATE_PASS
+            : EnumHelper::DEALER_VALIDATE_EXPIRED;
+    }
 }

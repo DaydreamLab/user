@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\Company\Admin;
 
 use DaydreamLab\JJAJ\Requests\ListRequest;
+use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Models\Company\CompanyCategory;
 use Illuminate\Validation\Rule;
 
@@ -35,7 +36,9 @@ class CompanyAdminExportPost extends ListRequest
                 'integer',
                 Rule::in([0,1,-2])
             ],
-            'company_category' => 'nullable|integer'
+            'company_category' => 'nullable|integer',
+            'company_industry' => 'nullable|integer',
+            'haveMembers' => ['nullable', Rule::in([0, 1])],
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -50,12 +53,6 @@ class CompanyAdminExportPost extends ListRequest
             $validated->put('category_id', $validated->get('company_category'));
             $validated->forget('company_category');
         }
-
-//        $validated->put('paginate', 0);
-//        $validated->put('limit', 0);
-        $q = $validated->get('q');
-        $q->with('userCompanies');
-        $validated->put('q', $q);
 
         return $validated;
     }
