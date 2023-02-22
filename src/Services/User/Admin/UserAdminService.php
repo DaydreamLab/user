@@ -59,7 +59,7 @@ class UserAdminService extends UserService
 
         # 會員新增時，先檢查公司統編，若存在則更新會員使用者群組（一般會員、經銷會員），同時必定創建一個 userCompany
         $inputUserCompany = $input->get('company') ?: [];
-        if (isset($inputUserCompany['vat'])) {
+        if (isset($inputUserCompany['vat']) && $inputUserCompany['vat'] !== '') {
             $company = $this->companyAdminRepo->findBy('vat', '=', $inputUserCompany['vat'])->first();
             if ($company) {
                 $inputUserCompany['name'] = $company->name;
