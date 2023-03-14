@@ -21,8 +21,6 @@ class OldPasswordIncorrect extends UserTestBase
     {
         $input = collect([
             'old_password' => Str::random(8),
-            'password'     => 'daydream5182',
-            'password_confirmation' => 'daydream5182'
         ]);
 
         $user = User::all()->first();

@@ -19,7 +19,6 @@ class CaseLoginSuccess extends UserTestBase
     {
         $input = collect([
             'email' => 'admin@daydream-lab.com',
-            'password' => 'daydream5182'
         ]);
 
         // 測試一般登入

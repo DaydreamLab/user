@@ -27,7 +27,6 @@ class UserFactory extends Factory
         $gender = $this->faker->randomElement(['male', 'female']);
         return [
             'email'         => $this->faker->email,
-            'password'      => bcrypt(1234),
             'first_name'    => $this->faker->firstName($gender),
             'last_name'     => $this->faker->lastName,
             'user_name'     => $this->faker->userName,

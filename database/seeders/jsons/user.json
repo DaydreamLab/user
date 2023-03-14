@@ -1,7 +1,6 @@
 [
   {
     "email": "admin@daydream-lab.com",
-    "password": "daydream5182",
     "first_name": "Daydream Lab",
     "last_name": "Super Admin",
     "user_name": "Daydream Lab Super Admin",
@@ -17,7 +16,6 @@
   },
   {
     "email": "administrator@daydream-lab.com",
-    "password": "daydream5182",
     "first_name": "Daydream Lab",
     "last_name": "Admin",
     "user_name": "Daydream Lab Admin",
@@ -33,7 +31,6 @@
   },
   {
     "email": "registered@daydream-lab.com",
-    "password": "daydream5182",
     "first_name": "Registered",
     "last_name": "Registered",
     "user_name": "Registered",

@@ -25,7 +25,6 @@ class CaseUnactivated extends UserTestBase
 
         $input = collect([
             'email' => 'admin@daydream-lab.com',
-            'password' => 'daydream5182'
         ]);
 
         $this->assertHttpResponseException('login', $input, 'Unactivated');
