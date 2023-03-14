@@ -21,7 +21,6 @@ class CaseChangePasswordSuccess extends UserTestBase
     public function testCase()
     {
         $input = collect([
-            'old_password' => 'daydream5182',
             'password'     => $password = Str::random(8),
         ]);
 
