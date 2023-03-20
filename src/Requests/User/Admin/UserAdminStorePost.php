@@ -46,7 +46,8 @@ class UserAdminStorePost extends AdminRequest
             'address',
             'zipcode',
             'department',
-            'jobTitle'
+            'jobTitle',
+            'phones'
         ];
         foreach ($keys as $key) {
             if ($key == 'company_id') {
@@ -178,13 +179,19 @@ class UserAdminStorePost extends AdminRequest
             }
         }
 
-        $pageGroupId = $this->get('pageGroupId');
-        if ($pageGroupId === 16) {
-            $validated->put('editAdmin', 1);
-        }
         $validated->put('groupIds', $validated->get('groupIds') ?: []);
         $validated->put('email', Str::lower($validated->get('email')));
         $validated->put('company', $this->handleCompany($validated->get('company')));
+
+        $pageGroupId = $this->get('pageGroupId');
+        if ($pageGroupId === 16) {
+            $validated->put('editAdmin', 1);
+            if (!$validated->get('id')) {
+                $companyData = $validated->get('company');
+                $companyData['email'] = $validated->get('email');
+                $validated->put('company', $companyData);
+            }
+        }
 
         return $validated;
     }

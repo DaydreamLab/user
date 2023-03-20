@@ -246,6 +246,7 @@ class UserAdminService extends UserService
                         'category_id'   => 5,
                     ]));
                 }
+
                 CompanyHelper::updatePhonesByUserPhones($company, $inputUserCompany);
 
                 $updateData = [
@@ -286,7 +287,7 @@ class UserAdminService extends UserService
                 $updateData['lastUpdate'] = now()->toDateTimeString();
 
                 # 更新 userCompany
-                $userCompany->update(array_merge($inputUserCompany, $updateData));
+                $r = $userCompany->update(array_merge($inputUserCompany, $updateData));
 
                 # 取出管理者權限（如果有）
                 $groupIds = $item->groups->pluck('id')->reject(function ($value) {
