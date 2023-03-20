@@ -2,6 +2,8 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use DaydreamLab\User\Helpers\OtpHelper;
+use DaydreamLab\User\Notifications\GetOtpNotification;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\OldUserResetPasswordNotification;
 use DaydreamLab\User\Events\Add;
@@ -115,47 +117,56 @@ class UserService extends BaseService
             'password'  => $input->get('password')
         ]);
 
+        if ($auth && $input->get('code') === null) {
+            // 帳密正確，且未帶入驗證碼就產生一個
+            OtpHelper::createOtp($user, 6, 900);
+            $this->status = 'SendOtpSuccess';
+            $this->response = null;
+            return;
+        }
+
+
         $user = Auth::user() ?: null;
         $login = false;
-        if ($auth) {
-            if ($user->activation) { // 帳號已啟用
-
-                if ($user->block) {
-                    $this->status = 'IsBlocked';
-                    $this->throwResponse($this->status, null, $input->only('email'));
-                } else {
-                    $this->repo->update([
-                        'login_fail_count' => 0,
-                        'last_login_at' => now()
-                    ], $user);
-                    $tokens = $user->tokens()->get();
-                    if(!config('daydreamlab.user.multiple_login')) {
-                        $tokens->each(function ($token) {
-                            $token->multipleLogin = 1;
-                            $token->save();
-                        });
-                    }
-
-                    $this->status = $tokens->count()
-                        ? 'MultipleLoginSuccess'
-                        : 'LoginSuccess';
-                    $this->response = $this->helper->getUserLoginData($user);
-                    $login = true;
-
-                    return  $this->response;
-                }
-            } else { // 帳號尚未啟用
-                $user->notify(new RegisteredNotification($user));
-                $this->status = 'Unactivated';
-                $this->throwResponse($this->status, null, $input->only('email'));
+        if (
+            $auth
+            && ! $user->block
+            && $user->activation
+            && OtpHelper::verify('OTP', $input->get('code'), $user)
+        ) {
+            $this->repo->update([
+                'login_fail_count' => 0,
+                'last_login_at' => now()
+            ], $user);
+            $tokens = $user->tokens()->get();
+            if(!config('daydreamlab.user.multiple_login')) {
+                $tokens->each(function ($token) {
+                    $token->multipleLogin = 1;
+                    $token->save();
+                });
             }
+
+            $this->status = $tokens->count()
+                ? 'MultipleLoginSuccess'
+                : 'LoginSuccess';
+            $this->response = $this->helper->getUserLoginData($user);
+            $login = true;
+
+            return  $this->response;
         } else {
-            $user = $this->findBy('email', '=', $input->get('email'))->first();
             if ($user) {
+                // 帳號未啟用
+                if (! $user->activation) {
+                    $user->notify(new RegisteredNotification($user));
+                    $this->status = 'Unactivated';
+                    $this->throwResponse($this->status, null, $input->only('email'));
+                }
+
                 if ($user->block) {
                     $this->status = 'IsBlocked';
                     $this->throwResponse($this->status, null, $input->only('email'));
                 }
+
                 $fail_count = $user->login_fail_count+1;
                 if ($fail_count >= config('daydreamlab.user.max_login_fail_attempt')) {
                     $this->repo->update([

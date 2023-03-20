@@ -67,6 +67,7 @@ class User extends Authenticatable
         //'redirect',
         'block',
         'reset_password',
+        'twofactor',
         'last_reset_at',
         'last_login_at',
         'login_fail_count',
@@ -88,7 +89,8 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        'how' => 'array'
+        'how' => 'array',
+        'twofactor' => 'array'
     ];
 
     protected $appends = [
