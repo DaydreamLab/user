@@ -194,6 +194,8 @@ Route::post('api/admin/user/remove', [UserAdminController::class, 'remove'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/user/store', [UserAdminController::class, 'store'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('api/admin/user/importUpdate', [UserAdminController::class, 'importUpdate'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin', 'superuser']);
 Route::get('api/admin/user/{id}', [UserAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 

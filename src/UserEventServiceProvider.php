@@ -17,7 +17,7 @@ class UserEventServiceProvider extends EventServiceProvider
     protected $listen = [
         UpdateCompanyUsersUserGroupAndEdmEvent::class => [
             UpdateCompanyUsersUserGroupAndEdm::class
-        ]
+        ],
     ];
 
     public function boot()

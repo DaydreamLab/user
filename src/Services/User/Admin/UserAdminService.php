@@ -15,6 +15,7 @@ use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Helpers\CompanyHelper;
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Helpers\OtpHelper;
+use DaydreamLab\User\Jobs\ImportUpdateUser;
 use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserCompany;
@@ -24,6 +25,8 @@ use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class UserAdminService extends UserService
 {
@@ -190,6 +193,26 @@ class UserAdminService extends UserService
     }
 
 
+    public function importUpdate(Collection $input)
+    {
+        $file = $input->get('file');
+        $filename = Str::random(5) . '-importUpdateUser-' . now('Asia/Taipei')->format('YmdHis');
+        $file->storeAs('/uploads', $filename);
+
+        $reader = new Xlsx();
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load(storage_path('app/uploads/' . $filename));
+        $sheet = $spreadsheet->getSheet(1);
+        $rows = $sheet->getHighestRow();
+        $jobCount = $rows / 1000 + 1;
+        for ($i = 0; $i < $jobCount; $i++) {
+            dispatch(new ImportUpdateUser(storage_path('app/uploads/' . $filename), $i));
+        }
+
+        $this->status = 'ImportUpdateUserProcessing';
+    }
+
+
     public function modifyMapping($item, $input)
     {
         $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
@@ -231,7 +254,6 @@ class UserAdminService extends UserService
                     'company_id'    => $company->id,
                     'email'         => $inputUserCompany['email']
                 ];
-
 
                 $updateData['department'] = $inputUserCompany['department'];
                 if ($inputUserCompany['department'] != '') {
