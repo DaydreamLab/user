@@ -45,6 +45,9 @@ return [
     'RESET_PASSWORD_TOKEN_IS_USED'      => '重設密碼 token 已被使用',
     'RESET_PASSWORD_TOKEN_EXPIRED'      => '重設密碼 token 已過期',
 
+    'SEND_OTP_SUCCESS'                  => '驗證信已發送',
+    'CODE_INVALID'                      => '驗證碼錯誤',
+
     'NEED_RESET_PASSWORD'               => '使用者需重設密碼',
 
     'TOKEN_EXPIRED'                     => '使用者 token 已過期，請重新登入',

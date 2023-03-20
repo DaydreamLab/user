@@ -167,6 +167,12 @@ class UserService extends BaseService
                     $this->throwResponse($this->status, null, $input->only('email'));
                 }
 
+
+                if (!OtpHelper::verify('OTP', $input->get('code'), $user)) {
+                    $this->status = 'CodeInvalid';
+                    $this->throwResponse($this->status);
+                }
+
                 $fail_count = $user->login_fail_count+1;
                 if ($fail_count >= config('daydreamlab.user.max_login_fail_attempt')) {
                     $this->repo->update([

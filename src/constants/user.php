@@ -47,6 +47,7 @@ return [
     'RESET_PASSWORD_TOKEN_EXPIRED'      => 403,
 
     'SEND_OTP_SUCCESS'                  => 200,
+    'CODE_INVALID'                      => 400,
 
     'NEED_RESET_PASSWORD'               => 200,
 

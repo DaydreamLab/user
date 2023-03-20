@@ -46,6 +46,9 @@ return [
     'RESET_PASSWORD_TOKEN_IS_USED'      => '{$ModelName} reset password token is used',
     'RESET_PASSWORD_TOKEN_EXPIRED'      => '{$ModelName} reset password token expired',
 
+    'SEND_OTP_SUCCESS'                  => '{$ModelName} otp email send success',
+    'CODE_INVALID'                      => '{$ModelName} otp code is invalid',
+
     'NEED_RESET_PASSWORD'               => '{$ModelName} need to reset password',
 
     'TOKEN_EXPIRED'                     => '{$ModelName} Token expired. Please login again',

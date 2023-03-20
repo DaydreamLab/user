@@ -26,7 +26,7 @@ class UserFrontLoginPost extends AdminRequest
         return [
             'email'     => 'required|email',
             'password'  => 'required|string',
-            'code'      => 'nullable',
+            'code'      => 'nullable|string',
         ];
     }
 }
