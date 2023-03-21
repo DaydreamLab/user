@@ -48,7 +48,6 @@ class ImportUpdateUser implements ShouldQueue
         $maxIndex = ($this->rowIndex + 1) * 1000 + 2 < $maxRows
             ? ($this->rowIndex + 1) * 1000 + 2
             : $maxRows;
-        show($maxIndex);
         for ($i = 2 + $this->rowIndex * 1000; $i < $maxIndex; $i++) {
             $data = [];
             $keys = [
@@ -81,6 +80,7 @@ class ImportUpdateUser implements ShouldQueue
                 $user = $service->findBy('mobilePhone', '=', $rowData['mobilePhone'])->first();
                 $userCompany = $user->company;
                 $input = [];
+                $input['importUpdateUser'] = 1;
                 $phonesData = [];
                 if ($rowData['companyPhone']) {
                     $phoneCode = explode('-', $rowData['companyPhone'][0]);
@@ -135,10 +135,8 @@ class ImportUpdateUser implements ShouldQueue
                     ? '1'
                     : '0';
                 $service->modifyMapping($user, collect($input));
-                echo ($this->rowIndex * 1000 + $i) . PHP_EOL;
             }
         }
-
         // 刪除暫存檔
 //        unlink($this->filePath);
     }

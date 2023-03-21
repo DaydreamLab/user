@@ -328,7 +328,10 @@ class UserAdminService extends UserService
             ]));
             $changes = $item->groups()->sync([$userGroup->id]);
         }
-        $this->decideNewsletterSubscription($changes, $item->refresh(), $input);
+
+        if (!$input->get('importUpdateUser')) {
+            $this->decideNewsletterSubscription($changes, $item->refresh(), $input);
+        }
     }
 
 
