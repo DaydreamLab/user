@@ -118,7 +118,12 @@ class UserService extends BaseService
         ]);
 
 
-        $isAdmin = array_intersect($user->groups->pluck('id')->toArray(), [1, 5, 6, 7, 8, 9, 10]);
+        if ($auth) {
+            $isAdmin = array_intersect($user->groups->pluck('id')->toArray(), [1, 5, 6, 7, 8, 9, 10]);
+        } else {
+            ! $isAdmin = false;
+        }
+
         if (
             $auth
             && $input->get('code') === null
