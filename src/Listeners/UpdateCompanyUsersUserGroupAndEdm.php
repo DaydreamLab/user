@@ -57,12 +57,14 @@ class UpdateCompanyUsersUserGroupAndEdm implements ShouldQueue
                         Notification::route('mail', $user->company->email)
                             ->notify(new UserCompanyEmailVerificationNotification($user));
                     }
+                    $userCompany->name = $company->name;
                 } else {
                     $userCompany = $user->company;
                     $userCompany->lastValidate = null;
+                    $userCompany->name = $company->name;
                     $userCompany->validated = 0;
-                    $userCompany->save();
                 }
+                $userCompany->save();
 
                 $subscription = $user->newsletterSubscription;
                 if ($subscription && $subscription->newsletterCategories->count()) {
