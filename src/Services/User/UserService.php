@@ -117,8 +117,14 @@ class UserService extends BaseService
             'password'  => $input->get('password')
         ]);
 
-        if ($auth && $input->get('code') === null) {
-            // 帳密正確，且未帶入驗證碼就產生一個
+
+        $isAdmin = array_intersect($user->groups->pluck('id')->toArray(), [1, 5, 6, 7, 8, 9, 10]);
+        if (
+            $auth
+            && $input->get('code') === null
+            && $isAdmin
+        ) {
+            // 帳密正確、是後台管理員群組的帳號，且未帶入驗證碼就產生一個
             OtpHelper::createOtp($user, 6, 900);
             $this->status = 'SendOtpSuccess';
             $this->response = null;
@@ -132,7 +138,7 @@ class UserService extends BaseService
             $auth
             && ! $user->block
             && $user->activation
-            && OtpHelper::verify('OTP', $input->get('code'), $user)
+            && (! $isAdmin  || OtpHelper::verify('OTP', $input->get('code'), $user))
         ) {
             $this->repo->update([
                 'login_fail_count' => 0,
