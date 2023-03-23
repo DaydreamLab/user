@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
@@ -42,19 +43,21 @@ class ClearEmptyUserJob implements ShouldQueue
     {
         $thirtyDayAgo = now('Asia/Taipei')->endOfDay()->subDays(16)->tz('UTC')->toDateTimeString();
         $q = new QueryCapsule();
-        $q->whereRaw("mobilePhone REGEXP '^[0-9]+$'")
+        $users = $q->whereRaw("mobilePhone REGEXP '^[0-9]+$'")
             ->whereNotNull('mobilePhone')
             ->whereNull('email')
             ->whereNull('name')
             ->whereNull('created_by')
             ->where('created_at', '<', $thirtyDayAgo)
             ->with('company')
-            ->exec(new User())
-            ->each(function ($user) {
-                $user->groups()->detach();
-                $user->company()->delete();
-                $user->delete();
-            });
+            ->exec(new User());
+        Log::info('刪除未完成註冊會員：' . $users->count() . '筆');
+        $users->each(function ($user) {
+            $user->groups()->detach();
+            $user->company()->delete();
+            Log::info('手機:' . $user->mobilePhone);
+            $user->delete();
+        });
 
 //
 //        $data = $users->map(function ($user) {
