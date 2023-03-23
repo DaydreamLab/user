@@ -23,10 +23,6 @@ class ClearEmptyUserJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    protected $filePath;
-
-    protected $rowIndex;
-
     /**
      * Create a new job instance.
      *
