@@ -41,14 +41,14 @@ class ClearEmptyUserJob implements ShouldQueue
      */
     public function handle()
     {
-        $thirtyDayAgo = now('Asia/Taipei')->endOfDay()->subDays(16)->tz('UTC')->toDateTimeString();
+        $fifteenDayAgo = now('Asia/Taipei')->endOfDay()->subDays(16)->tz('UTC')->toDateTimeString();
         $q = new QueryCapsule();
         $users = $q->whereRaw("mobilePhone REGEXP '^[0-9]+$'")
             ->whereNotNull('mobilePhone')
             ->whereNull('email')
             ->whereNull('name')
             ->whereNull('created_by')
-            ->where('created_at', '<', $thirtyDayAgo)
+            ->where('created_at', '<', $fifteenDayAgo)
             ->with('company')
             ->exec(new User());
         Log::info('刪除未完成註冊會員：' . $users->count() . '筆');
