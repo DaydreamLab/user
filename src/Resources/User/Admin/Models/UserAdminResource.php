@@ -68,7 +68,9 @@ class UserAdminResource extends BaseJsonResource
             'backupMobilePhone'     => $this->backupMobilePhone,
             'updateStatus'          => $this->updateStatus,
             'validateStatus'        => $this->validateStatus,
-            'subscribeNewsletter'   => $this->newsletterSubscription->newsletterCategories->count() ? 1 : 0,
+            'subscribeNewsletter'   => $this->newsletterSubscription
+                ? ($this->newsletterSubscription->newsletterCategories->count() ? 1 : 0)
+                : 0,
             'cancelAt'   => $this->getDateTimeString($this->newsletterSubscription->cancelAt),
             'cancelReason'   => $this->newsletterSubscription->cancelReason,
         ];
