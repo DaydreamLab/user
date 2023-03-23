@@ -71,8 +71,12 @@ class UserAdminResource extends BaseJsonResource
             'subscribeNewsletter'   => $this->newsletterSubscription
                 ? ($this->newsletterSubscription->newsletterCategories->count() ? 1 : 0)
                 : 0,
-            'cancelAt'   => $this->getDateTimeString($this->newsletterSubscription->cancelAt),
-            'cancelReason'   => $this->newsletterSubscription->cancelReason,
+            'cancelAt'   => $this->newsletterSubscription
+                ? $this->getDateTimeString($this->newsletterSubscription->cancelAt)
+                : null,
+            'cancelReason'   => $this->newsletterSubscription
+                ? $this->newsletterSubscription->cancelReason
+                : null
         ];
     }
 }
