@@ -15,13 +15,16 @@ class CompanyAdminSearchUsersResource extends BaseJsonResource
     public function toArray($request)
     {
         $tz = $request->user('api')->timezone;
+        $groups = $this->groups->whereIn('title', ['一般會員', '經銷會員']);
 
         return [
             'id' => $this->id,
             'mobilePhone' => $this->mobilePhone,
             'email' => $this->company->email,
             'name' => $this->name,
-            'groupTitle' => $this->groups->whereIn('title', ['一般會員', '經銷會員'])->first()->title,
+            'groupTitle' => $groups->count()
+                ? $groups->first()->title
+                : null,
             'jobCategory' => $this->company->jobCategory,
             'jobType' => $this->company->jobType,
             'jobTitle' => $this->company->jobTitle,
