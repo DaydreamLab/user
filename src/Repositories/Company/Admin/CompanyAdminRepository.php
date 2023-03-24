@@ -53,7 +53,7 @@ class CompanyAdminRepository extends CompanyRepository
         }
 
         $categoryNote = $data->get('categoryNote');
-        if ($data->has('categoryNote')) {
+        if ($data->has('categoryNote') && $categoryNote) {
             $q->where('categoryNote', $categoryNote);
         }
         $data->forget('categoryNote');
