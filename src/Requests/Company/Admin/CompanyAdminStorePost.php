@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Requests\Company\Admin;
 
+use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\JJAJ\Rules\Domain;
 use DaydreamLab\JJAJ\Rules\TaiwanUnifiedBusinessNumber;
@@ -77,6 +78,9 @@ class CompanyAdminStorePost extends AdminRequest
     public function validated()
     {
         $validated = parent::validated();
+        if (!$validated->get('vat') && $validated->get('categoryType') != '原廠') {
+            throw new ForbiddenException('VatCan\'tEmpty', null);
+        }
 
         $validated->put('mailDomains', CompanyRequestHelper::handleMailDomains($validated->get('mailDomains')));
         $validated->put('phones', CompanyRequestHelper::handlePhones($validated->get('phones')));

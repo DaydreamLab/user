@@ -13,7 +13,7 @@ class CompanyAdminSearchPost extends ListRequest
 
     protected $apiMethod = 'searchCompany';
 
-    protected $searchKeys = ['name', 'vat', 'domain'];
+    protected $searchKeys = ['name', 'vat', 'mailDomains'];
 
     public function authorize()
     {

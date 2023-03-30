@@ -8,5 +8,6 @@ return [
     'SEARCH_USER_SUCCESS' => '搜尋公司成員成功',
 
     'VAT_NOT_EXIST'     => '公司統編資料尚未建立',
-    'VAT_EXISTS'     => '公司統編資料已存在'
+    'VAT_EXISTS'     => '公司統編資料已存在',
+    'VAT_CAN\'T_EMPTY' => '公司統編無法為空',
 ];
