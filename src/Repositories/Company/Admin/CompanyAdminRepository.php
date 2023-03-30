@@ -59,9 +59,9 @@ class CompanyAdminRepository extends CompanyRepository
         $data->forget('categoryNote');
 
         $haveMembers = $data->pull('haveMembers');
-        if ($haveMembers === 0) {
+        if ($haveMembers === '無') {
             $q->whereDoesntHave('userCompanies');
-        } elseif ($haveMembers === 1) {
+        } elseif ($haveMembers === '有') {
             $q->whereHas('userCompanies');
         }
 

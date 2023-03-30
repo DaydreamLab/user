@@ -36,7 +36,7 @@ class CompanyAdminSearchPost extends ListRequest
             ],
             'company_category' => 'nullable|integer',
             'company_industry' => 'nullable|integer',
-            'haveMembers' => ['nullable', Rule::in([0, 1])],
+            'haveMembers' => ['nullable', Rule::in(['有', '無'])],
             'categoryNote'  => ['nullable', Rule::in(['無', '原廠', '競業', '員工', '黑名單'])]
         ];
 
