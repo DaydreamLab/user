@@ -35,7 +35,7 @@ class CompanyAdminStorePost extends AdminRequest
             'id'            => 'nullable|integer',
             'categoryId'    => 'required|integer',
             'name'          => 'required|string',
-            'vat'           => ['required', new TaiwanUnifiedBusinessNumber()],
+            'vat'           => ['nullable', new TaiwanUnifiedBusinessNumber()],
             'logo'          => 'nullable|string',
 //            'country'       => 'nullable|string',
 //            'state'         => 'nullable|string',
