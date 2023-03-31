@@ -22,6 +22,7 @@ class UserFrontResource extends JsonResource
             'user_name'             => $this->user_name,
             'gender'                => $this->gender,
             //'image'                 => $this->image,
+            'phone_code'            => $this->phone_code,
             'phone'                 => $this->phone,
             //'birthday'              => $this->birthday,
             //'country'               => $this->country,
