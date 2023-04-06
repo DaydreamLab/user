@@ -32,6 +32,7 @@ class UserFrontEditPost extends AdminRequest
             'gender'                => 'nullable|string',
             'identity'              => 'nullable|string',
             'phone'                 => 'nullable|string',
+            'phone_code'            => 'nullable',
             'how'                   => 'nullable|array',
 
             'unit'                  => 'nullable|string',
