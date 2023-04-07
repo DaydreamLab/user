@@ -13,6 +13,7 @@ class UserFrontRepository extends UserRepository
     public function __construct(UserFront $model, UserCompanyRepository $userCompanyRepo)
     {
         parent::__construct($model);
+        $this->userCompanyRepo = $userCompanyRepo;
     }
 
 
