@@ -29,7 +29,7 @@ class UserFrontRegisterPost extends AdminRequest
             'password'              => 'required|string|min:8|max:16',
             'password_confirmation' => 'required|same:password',
             'user_name'             => 'required|string',
-            'gender'                => 'required|string',
+            'gender'                => 'nullable|string',
             'identity'              => 'nullable|string',
             'phone_code'            => 'nullable|string',
             'phone'                 => 'required|string',
