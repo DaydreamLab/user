@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\User\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\User\Rules\RecaptchaV3;
 
 class UserFrontLoginPost extends AdminRequest
 {
@@ -27,6 +28,7 @@ class UserFrontLoginPost extends AdminRequest
             'email'     => 'required|email',
             'password'  => 'required|string',
             'code'      => 'nullable|string',
+            'g_recaptcha_response' => ['required', new RecaptchaV3()]
         ];
     }
 }
