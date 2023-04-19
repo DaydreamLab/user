@@ -73,5 +73,27 @@ class FixTotpPermissionCommand extends Command
                     'checked' => 1
                 ]);
         }
+
+        $administratorGroups = UserGroup::whereIn(
+            'title',
+            ['Administrator', '網站管理員', 'Marcom', 'iot管理員(Kate)']
+        )->get();
+        foreach ($administratorGroups as $administratorGroup) {
+            $record = DB::table('users_groups_apis_maps')
+                ->where('asset_group_id', $assetGroup->id)
+                ->where('asset_id', $asset->id)
+                ->where('api_id', $api->id)
+                ->where('group_id', $administratorGroup->id)
+                ->first();
+            if (!$record) {
+                DB::table('users_groups_apis_maps')
+                    ->insert([
+                        'asset_group_id' => $assetGroup->id,
+                        'asset_id' => $asset->id,
+                        'api_id' => $api->id,
+                        'group_id' => $administratorGroup->id
+                    ]);
+            }
+        }
     }
 }
