@@ -31,6 +31,7 @@ class UserServiceProvider extends ServiceProvider
         'DaydreamLab\User\Commands\Hotfix\V2_001\ClearCompanyMembersIsEmptyCommand',
         'DaydreamLab\User\Commands\Hotfix\V2_001\ClearUserWithoutCompanyCommand',
         'DaydreamLab\User\Commands\Hotfix\V2_001\UpdateCompanyPhoneCommand',
+        'DaydreamLab\User\Commands\Hotfix\TotpPermission\FixTotpPermissionCommand',
     ];
 
 
