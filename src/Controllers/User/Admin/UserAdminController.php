@@ -8,6 +8,7 @@ use DaydreamLab\User\Requests\User\Admin\UserAdminExportCrmSearchPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminExportPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminGetItem;
+use DaydreamLab\User\Requests\User\Admin\UserAdminImportUpdatePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminSendTotpPost;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminExportResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminListResourceCollection;
@@ -83,6 +84,19 @@ class UserAdminController extends BaseController
         $this->service->setUser($request->user('api'));
         try {
             $this->service->getSelfPage($request->get('site_id') ?: 1);
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function importUpdate(UserAdminImportUpdatePost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->importUpdate($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }

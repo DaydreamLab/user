@@ -136,7 +136,7 @@ class UserFrontService extends UserService
 
     public function dealerValidate(Collection $input)
     {
-        $user = $input->get('user') ?: $this->repo->findDealerTokenUser($input->get('token'));
+        $user = $this->repo->findDealerTokenUser($input->get('token'));
         if (!$user) {
             $this->status = 'InvalidDealerToken';
             return false;

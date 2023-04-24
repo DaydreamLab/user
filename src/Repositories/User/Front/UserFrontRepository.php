@@ -2,21 +2,28 @@
 
 namespace DaydreamLab\User\Repositories\User\Front;
 
+use DaydreamLab\User\Repositories\User\UserCompanyRepository;
 use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\User\Models\User\Front\UserFront;
 
 class UserFrontRepository extends UserRepository
 {
-    public function __construct(UserFront $model)
+    protected $userCompanyRepo;
+
+    public function __construct(UserFront $model, UserCompanyRepository $userCompanyRepo)
     {
         parent::__construct($model);
+        $this->userCompanyRepo = $userCompanyRepo;
     }
 
 
     public function findDealerTokenUser($token)
     {
-        return $this->model->whereHas('company', function ($q) use ($token) {
-            $q->where('users_companies.validateToken', $token);
-        })->first();
+        $userCompany = $this->userCompanyRepo->findBy('validateToken', '=', $token)->first();
+        if (!$userCompany || !in_array($userCompany->company->category->title, ['經銷會員', '零壹員工'])) {
+            return false;
+        }
+
+        return $userCompany->user;
     }
 }

@@ -163,7 +163,9 @@ class UserService extends BaseService
 
         # 只送過驗證碼，但是沒有執行過完整流程
         if (!$user->activation) {
-            if ( !$user->email || !$user->name || in_array($user->activateToken, ['couponAddUser', 'eventAddUser'])) {
+            if (!$user->email || !$user->name || in_array($user->activateToken, ['couponAddUser', 'eventAddUser'])
+                || ($user->email && $user->name && !$user->activateToken)
+            ) {
                 $this->status = 'RegistrationIsNotCompleted';
                 $this->response = $user;
                 return $this->response;

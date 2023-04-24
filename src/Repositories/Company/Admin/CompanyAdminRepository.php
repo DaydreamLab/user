@@ -3,10 +3,13 @@
 namespace DaydreamLab\User\Repositories\Company\Admin;
 
 use DaydreamLab\Cms\Models\Item\Item;
+use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
+use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Repositories\Company\CompanyRepository;
 use DaydreamLab\User\Models\Company\Admin\CompanyAdmin;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class CompanyAdminRepository extends CompanyRepository
 {
@@ -53,16 +56,24 @@ class CompanyAdminRepository extends CompanyRepository
         }
 
         $categoryNote = $data->get('categoryNote');
-        if ($data->has('categoryNote')) {
+        if ($data->has('categoryNote') && $categoryNote) {
             $q->where('categoryNote', $categoryNote);
         }
         $data->forget('categoryNote');
 
         $haveMembers = $data->pull('haveMembers');
-        if ($haveMembers === 0) {
-            $q->whereDoesntHave('userCompanies');
-        } elseif ($haveMembers === 1) {
-            $q->whereHas('userCompanies');
+        if ($haveMembers) {
+            $companies = (new QueryCapsule())
+                ->select('company_id')
+                ->whereNotNull('company_id')
+                ->exec(new UserCompany());
+            if ($haveMembers === '無') {
+//                $q->whereDoesntHave('userCompanies');
+                $q->whereNotIn('id', $companies->pluck('company_id')->all());
+            } elseif ($haveMembers === '有') {
+//                $q->whereHas('userCompanies');
+                $q->whereIn('id', $companies->pluck('company_id')->all());
+            }
         }
 
         $q->with('userCompanies');

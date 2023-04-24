@@ -68,7 +68,7 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
     {
         $validated = parent::validated();
 
-        $validated->put('email', Str::lower($validated->get('email')));
+        $validated->put('email', Str::lower(trim($validated->get('email'))));
         $companyData = $validated->get('company') ?: [];
         if (isset($companyData['email'])) {
             $companyData['email'] = Str::lower(trim($companyData['email']));
@@ -76,6 +76,7 @@ class UserFrontRegisterMobilePhonePost extends AdminRequest
 
         $companyData['phones'] = CompanyRequestHelper::handlePhones($companyData['phones'] ?? []);
         $validated->put('company', $companyData);
+        $validated->put('name', trim($validated->get('name')));
 
         return $validated;
     }
