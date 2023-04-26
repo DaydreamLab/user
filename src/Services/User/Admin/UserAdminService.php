@@ -957,10 +957,14 @@ class UserAdminService extends UserService
             foreach ($inputTags as $inputTag) {
                 $userTag = $this->userTagAdminRepository
                     ->find($inputTag['id'], (new QueryCapsule())->with('activeUsers'));
-                $userIds = $userIds->merge($userTag->activeUsers->pluck('id'))->unique()->values();
+                $userIds = $userTag
+                    ? $userIds->merge($userTag->activeUsers->pluck('id'))->unique()->values()
+                    : collect();
             }
             $q = $input->get('q');
-            $q->whereIn('id', $userIds);
+            if ($userIds->count()) {
+                $q->whereIn('id', $userIds);
+            }
             $input->put('q', $q);
         }
 
