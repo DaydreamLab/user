@@ -116,6 +116,11 @@ class UserTagAdminController extends UserController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response(
+            $this->service->status,
+            $this->service->response,
+            [],
+            UserTagAdminResource::class
+        );
     }
 }

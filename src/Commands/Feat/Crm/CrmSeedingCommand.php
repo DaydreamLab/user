@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Commands\Feat\Crm;
 
+use DaydreamLab\Cms\Models\Category\Category;
 use DaydreamLab\Cms\Services\IotCategory\Admin\IotCategoryAdminService;
 use DaydreamLab\Cms\Services\Site\Admin\SiteAdminService;
 use DaydreamLab\User\Models\Api\Api;
@@ -57,6 +58,22 @@ class CrmSeedingCommand extends Command
         foreach ($data as $apiData) {
             $apiData['ordering'] = ++$counter;
             Api::create($apiData);
+        }
+
+        # 新增"未分類"標籤分類
+        $uncategory = Category::where('title', '未分類')
+            ->where('extension', 'userTag')
+            ->first();
+        if (!$uncategory) {
+            Category::create([
+                'title' => '未分類',
+                'alias' => 'usertag',
+                'state' => 1,
+                'extension' => 'usertag',
+                'access' => 1,
+                'language' => '*',
+                'ordering' => 1
+            ]);
         }
     }
 }

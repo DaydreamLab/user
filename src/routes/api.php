@@ -15,6 +15,8 @@ use DaydreamLab\User\Controllers\CompanyOrder\Admin\CompanyOrderAdminController;
 use DaydreamLab\User\Controllers\CompanyOrderItem\Admin\CompanyOrderItemAdminController;
 use DaydreamLab\User\Controllers\UserTag\Admin\UserTagAdminController;
 use DaydreamLab\User\Controllers\NotificationTemplate\NotificationTemplateController;
+use DaydreamLab\User\Controllers\UserTagCategory\Admin\UserTagCategoryAdminController;
+
 /************************************  前台 API  ************************************/
 
 // 啟用帳號
@@ -214,6 +216,17 @@ Route::post('/api/admin/user/tag/{id}/users/edit', [UserTagAdminController::clas
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('/api/admin/user/tag/{id}/users', [UserTagAdminController::class, 'getUsers'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+
+#會員標籤分類(UserTagCategory)
+Route::post('/api/admin/user/tag/category/store', [UserTagCategoryAdminController::class, 'store'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('/api/admin/user/tag/category/search', [UserTagCategoryAdminController::class, 'search'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('/api/admin/user/tag/category/state', [UserTagCategoryAdminController::class, 'state'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::get('/api/admin/user/tag/category/{id}', [UserTagCategoryAdminController::class, 'getItem'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+
 
 Route::post('api/admin/user/group/search', [UserGroupAdminController::class, 'search'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);

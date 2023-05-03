@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Models\UserTag;
 
+use DaydreamLab\Cms\Models\Category\Category;
 use DaydreamLab\Dsth\Models\Notification\Notification;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
@@ -55,6 +56,12 @@ class UserTag extends UserModel
 
         static::creating(function ($model) {
             $model->alias = Str::random(8);
+            if (!$model->categoryId) {
+                $model->categoryId = Category::where('title', '未分類')
+                    ->where('extension', 'usertag')
+                    ->first()
+                    ->id;
+            }
         });
     }
 
@@ -64,19 +71,25 @@ class UserTag extends UserModel
     }
 
 
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'users_usertags_maps', 'userTagId', 'userId')
-            ->withPivot(['forceAdd', 'forceDelete'])
-            ->withTimestamps();
-    }
-
-
     public function activeUsers()
     {
         return $this->belongsToMany(User::class, 'users_usertags_maps', 'userTagId', 'userId')
             ->withPivot(['forceAdd', 'forceDelete'])
             ->wherePivot('forceDelete', 0)
+            ->withTimestamps();
+    }
+
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'categoryId', 'id');
+    }
+
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'users_usertags_maps', 'userTagId', 'userId')
+            ->withPivot(['forceAdd', 'forceDelete'])
             ->withTimestamps();
     }
 
