@@ -190,6 +190,8 @@ Route::post('api/admin/user/search', [UserAdminController::class, 'search'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/user/crm/search', [UserAdminController::class, 'crmSearch'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('api/admin/user/crm/search/export', [UserAdminController::class, 'exportCrmSearch'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('api/admin/user/page', [UserAdminController::class, 'getSelfPage'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/user/remove', [UserAdminController::class, 'remove'])
@@ -209,6 +211,8 @@ Route::post('/api/admin/user/tag/store', [UserTagAdminController::class, 'store'
 Route::post('/api/admin/user/tag/search', [UserTagAdminController::class, 'search'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('/api/admin/user/tag/state', [UserTagAdminController::class, 'state'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('/api/admin/user/tag/batch', [UserTagAdminController::class, 'batch'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::get('/api/admin/user/tag/{id}', [UserTagAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);

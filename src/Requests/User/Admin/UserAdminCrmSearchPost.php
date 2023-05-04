@@ -121,8 +121,8 @@ class UserAdminCrmSearchPost extends ListRequest
             # 選端訪問（網路行為）
             'menu'  => 'required|array',
             'menu.id'   => 'nullable|integer',
-            'menu.action'   => ['required_with:menu.id', Rule::in(['','點擊', '停留時間'])],
-            'menu.value'    => 'required_with:menu.id|integer',
+            'menu.action'   => ['nullable', Rule::in(['','點擊', '停留時間'])],
+            'menu.value'    => 'nullable|integer',
             'menu.startDate' => 'nullable|date_format:Y-m-d',
             'menu.endDate'  => 'nullable|date_format:Y-m-d',
             # 排除項目

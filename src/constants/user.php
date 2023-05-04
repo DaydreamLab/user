@@ -5,6 +5,7 @@ return [
     'ACTIVATION_SUCCESS'                => 200,
     'ACTIVATION_TOKEN_INVALID'          => 403,
 
+    'BATCH_UPDATE_SUCCESS'              => 200,
     'BLOCK_SUCCESS'                     => 200,
     'BLOCK_FAIL'                        => 500,
 

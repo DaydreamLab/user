@@ -2,7 +2,13 @@
   {
     "name": "CRM會員搜尋",
     "method": "searchCrmUser",
-    "url": "/admin/user/tag/{id}",
+    "url": "/admin/user/crm/search",
+    "created_by": 1
+  },
+  {
+    "name": "CRM會員搜尋匯出",
+    "method": "exportCrmUser",
+    "url": "/admin/user/crm/search/export",
     "created_by": 1
   },
   {
@@ -72,6 +78,12 @@
     "created_by": 1
   },
   {
+    "name": "批次更新分眾標籤",
+    "method": "batchUpdateUserTag",
+    "url": "/admin/user/tag/batch",
+    "created_by": 1
+  },
+  {
     "name": "取得分眾標籤會員名單",
     "method": "getUserTagUsers",
     "url": "/admin/user/tag/{id}/users",
@@ -81,6 +93,42 @@
     "name": "編輯分眾標籤會員名單",
     "method": "editUserTagUsers",
     "url": "/admin/user/tag/{id}/users/edit",
+    "created_by": 1
+  },
+  {
+    "name": "取得分眾標籤分類",
+    "method": "getUserTagCategory",
+    "url": "/admin/user/tag/category/{id}",
+    "created_by": 1
+  },
+  {
+    "name": "新增分眾標籤分類",
+    "method": "addUserTagCategory",
+    "url": "/admin/user/tag/category/store",
+    "created_by": 1
+  },
+  {
+    "name": "編輯分眾標籤分類",
+    "method": "editUserTagCategory",
+    "url": "/admin/user/tag/category/store",
+    "created_by": 1
+  },
+  {
+    "name": "搜尋分眾標籤分類",
+    "method": "searchUserTagCategory",
+    "url": "/admin/user/tag/category/search",
+    "created_by": 1
+  },
+  {
+    "name": "更新分眾標籤分類狀態",
+    "method": "updateUserTagCategoryState",
+    "url": "/admin/user/tag/category/state",
+    "created_by": 1
+  },
+  {
+    "name": "刪除分眾標籤分類",
+    "method": "deleteUserTagCategory",
+    "url": "/admin/user/tag/category/remove",
     "created_by": 1
   }
 ]

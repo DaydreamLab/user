@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Controllers\UserTag\Admin;
 
 use DaydreamLab\User\Controllers\UserController;
+use DaydreamLab\User\Requests\UserTag\Admin\UserTagAdminBatchRequest;
 use DaydreamLab\User\Requests\UserTag\Admin\UserTagAdminRemovePost;
 use DaydreamLab\User\Requests\UserTag\Admin\UserTagAdminEditUsersRequest;
 use DaydreamLab\User\Requests\UserTag\Admin\UserTagAdminGetItemRequest;
@@ -25,6 +26,20 @@ class UserTagAdminController extends UserController
         parent::__construct($service);
         $this->service = $service;
     }
+
+
+    public function batch(UserTagAdminBatchRequest $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->batch($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
 
     public function editUsers(UserTagAdminEditUsersRequest $request)
     {

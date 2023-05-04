@@ -35,6 +35,37 @@ class UserAdminController extends BaseController
     }
 
 
+    public function block(UserAdminBlockPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->block($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function crmSearch(UserAdminCrmSearchPost $request)
+    {
+        $this->service->setUser($request->user());
+        try {
+            $this->service->crmSearch($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response(
+            $this->service->status,
+            $this->service->response,
+            [],
+            UserAdminListResourceCollection::class
+        );
+    }
+
+
     public function export(UserAdminExportPost $request)
     {
         $this->service->setUser($request->user('api'));
@@ -53,16 +84,21 @@ class UserAdminController extends BaseController
     }
 
 
-    public function block(UserAdminBlockPost $request)
+    public function exportCrmSearch(UserAdminExportCrmSearchPost $request)
     {
-        $this->service->setUser($request->user('api'));
+        $this->service->setUser($request->user());
         try {
-            $this->service->block($request->validated());
+            $this->service->crmSearch($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response(
+            $this->service->status,
+            $this->service->response,
+            [],
+            UserAdminExportResourceCollection::class
+        );
     }
 
 
@@ -134,25 +170,6 @@ class UserAdminController extends BaseController
             UserAdminListResourceCollection::class
         );
     }
-
-
-    public function crmSearch(UserAdminCrmSearchPost $request)
-    {
-        $this->service->setUser($request->user());
-        try {
-            $this->service->crmSearch($request->validated());
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
-
-        return $this->response(
-            $this->service->status,
-            $this->service->response,
-            [],
-            UserAdminListResourceCollection::class
-        );
-    }
-
 
 
     public function store(UserAdminStorePost $request)

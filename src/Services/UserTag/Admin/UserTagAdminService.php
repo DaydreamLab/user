@@ -35,6 +35,19 @@ class UserTagAdminService extends UserTagService
     }
 
 
+    public function batch(Collection $input)
+    {
+        foreach ($input->get('ids') as $id) {
+            $this->modify(collect([
+                'id' => $id,
+                'categoryId' => $input->get('id')
+            ]));
+        }
+        $this->status = 'BatchUpdateSuccess';
+
+        return $this->response;
+    }
+
     /**
      * 強制加入會員或刪除標籤內會員（介面設計已移除...）
      * @param Collection $input

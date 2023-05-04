@@ -1,13 +1,14 @@
 <?php
 
-namespace DaydreamLab\User\Requests\User\Admin;
+namespace DaydreamLab\User\Requests\UserTag\Admin;
 
-class UserAdminExportCrmSearchPost extends UserAdminCrmSearchPost
+use DaydreamLab\User\Requests\ComponentBase\UserStoreRequest;
+
+class UserTagAdminBatchRequest extends UserStoreRequest
 {
-    protected $modelName = 'User';
+    protected $modelName = 'UserTag';
 
-    protected $apiMethod = 'exportCrmUser';
-
+    protected $apiMethod = 'batchUserTag';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,6 +27,9 @@ class UserAdminExportCrmSearchPost extends UserAdminCrmSearchPost
     public function rules()
     {
         $rules = [
+            'ids' => 'required|array',
+            'ids.*' => 'required|integer',
+            'categoryId' => 'required|integer'
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -35,8 +39,6 @@ class UserAdminExportCrmSearchPost extends UserAdminCrmSearchPost
     public function validated()
     {
         $validated = parent::validated();
-        $validated->put('paginate', 0);
-        $validated->put('limit', 0);
 
         return $validated;
     }
