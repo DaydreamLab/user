@@ -9,6 +9,7 @@ class CompanyOrderAdminSearchRequest extends UserSearchRequest
     protected $modelName = 'CompanyOrder';
 
     protected $apiMethod = 'searchCompanyOrder';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -27,7 +28,9 @@ class CompanyOrderAdminSearchRequest extends UserSearchRequest
     public function rules()
     {
         $rules = [
-            //
+            'brandId' => 'nullable|integer',
+            'startDate' => 'nullable|date_format:Y-m',
+            'endDate' => 'nullable|date_format:Y-m',
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -37,6 +40,7 @@ class CompanyOrderAdminSearchRequest extends UserSearchRequest
     public function validated()
     {
         $validated = parent::validated();
+        $validated->put('companyId', $this->route('companyId'));
 
         return $validated;
     }

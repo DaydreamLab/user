@@ -147,15 +147,7 @@ Route::get('api/admin/asset/group/{id}', [AssetGroupAdminController::class, 'get
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 # CompanyOrder
-Route::get('api/admin/company/{companyId}/order/{orderId}', [CompanyOrderAdminController::class, 'getItem'])
-    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
-Route::post('api/admin/company/{companyId}/order/store', [CompanyOrderAdminController::class, 'store'])
-    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/{companyId}/order/search', [CompanyOrderAdminController::class, 'search'])
-    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
-Route::post('api/admin/company/{companyId}/order/remove', [CompanyOrderAdminController::class, 'remove'])
-    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
-Route::post('api/admin/company/{companyId}/order/import', [CompanyOrderAdminController::class, 'import'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
 # Company

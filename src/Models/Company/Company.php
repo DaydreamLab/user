@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Models\BaseModel;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\User\Helpers\EnumHelper;
+use DaydreamLab\User\Models\CompanyOrder\CompanyOrder;
 use DaydreamLab\User\Models\User\UserCompany;
 
 class Company extends BaseModel
@@ -116,6 +117,13 @@ class Company extends BaseModel
     public function category()
     {
         return $this->belongsTo(CompanyCategory::class, 'category_id', 'id');
+    }
+
+
+    public function orders()
+    {
+        return $this->hasMany(CompanyOrder::class, 'companyId', 'id')
+            ->orderBy('date', 'desc');
     }
 
 

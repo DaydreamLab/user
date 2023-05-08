@@ -2,8 +2,10 @@
 
 namespace DaydreamLab\User\Models\CompanyOrder;
 
+use DaydreamLab\Cms\Models\Brand\Brand;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\JJAJ\Traits\UserInfo;
+use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\UserModel;
 use Illuminate\Support\Str;
 
@@ -23,6 +25,9 @@ class CompanyOrder extends UserModel
 
     protected $name = 'CompanyOrder';
 
+    protected $order_by = 'date';
+
+    protected $order = 'desc';
 
     /**
      * The attributes that are mass assignable.
@@ -30,11 +35,9 @@ class CompanyOrder extends UserModel
      * @var array
      */
     protected $fillable = [
-        'userId',
-        'uuid',
-        'orderNum',
+        'companyId',
+        'brandId',
         'date',
-        'total',
         'created_by',
         'updated_by',
     ];
@@ -48,14 +51,22 @@ class CompanyOrder extends UserModel
     public static function boot()
     {
         self::traitBoot();
-
-        static::creating(function ($item) {
-            $item->uuid = Str::uuid();
-        });
     }
 
 
     public static function newFactory()
     {
+    }
+
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brandId', 'id');
+    }
+
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'companyId', 'id');
     }
 }

@@ -15,13 +15,9 @@ class CreateCompanyOrdersTable extends Migration
     {
         Schema::create('company_orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-//            $table->unsignedBigInteger('userId');
-            $table->uuid('uuid');
-            $table->string('orderNum');
-            $table->string('companyName');
-            $table->string('company');
+            $table->unsignedBigInteger('companyId');
+            $table->unsignedBigInteger('brandId');
             $table->timestamp('date')->nullable();
-            $table->bigInteger('total')->default(0);
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();

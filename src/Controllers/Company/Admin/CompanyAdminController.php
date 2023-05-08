@@ -84,11 +84,11 @@ class CompanyAdminController extends BaseController
     }
 
 
-    public function ordering(CompanyAdminOrderingPost $request)
+    public function importCompany(Request $request)
     {
         $this->service->setUser($request->user('api'));
         try {
-            $this->service->ordering($request->validated());
+            $this->service->importCompany($request);
         } catch (Throwable $t) {
             $this->handleException($t);
         }
@@ -97,11 +97,11 @@ class CompanyAdminController extends BaseController
     }
 
 
-    public function restore(CompanyAdminRestorePost $request)
+    public function ordering(CompanyAdminOrderingPost $request)
     {
         $this->service->setUser($request->user('api'));
         try {
-            $this->service->restore($request->validated());
+            $this->service->ordering($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
@@ -122,16 +122,16 @@ class CompanyAdminController extends BaseController
     }
 
 
-    public function store(CompanyAdminStorePost $request)
+    public function restore(CompanyAdminRestorePost $request)
     {
         $this->service->setUser($request->user('api'));
         try {
-            $this->service->store($request->validated());
+            $this->service->restore($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response, [], CompanyAdminResource::class);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -170,15 +170,16 @@ class CompanyAdminController extends BaseController
         );
     }
 
-    public function importCompany(Request $request)
+
+    public function store(CompanyAdminStorePost $request)
     {
         $this->service->setUser($request->user('api'));
         try {
-            $this->service->importCompany($request);
+            $this->service->store($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response, [], CompanyAdminResource::class);
     }
 }
