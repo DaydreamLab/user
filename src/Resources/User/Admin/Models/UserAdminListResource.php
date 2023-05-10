@@ -39,7 +39,7 @@ class UserAdminListResource extends BaseJsonResource
                     $this->groups->filter(function ($g) {
                         return !in_array($g->id, [6,7]);
                     })->sortByDesc('id')->pluck('title')->take(1)
-                : $this->groups->pluck('title')->all(),
+                : $this->groups->sortByDesc('id')->pluck('title')->all(),
         ];
     }
 }
