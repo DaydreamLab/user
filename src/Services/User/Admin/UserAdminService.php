@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User\Admin;
 
+use Carbon\Carbon;
 use DaydreamLab\Cms\Helpers\EnumHelper as CmsEnumHelper;
 use DaydreamLab\Cms\Models\Item\Item;
 use DaydreamLab\Cms\Services\NewsletterSubscription\Admin\NewsletterSubscriptionAdminService;
@@ -586,6 +587,7 @@ class UserAdminService extends UserService
     public function handleCompanyQuery(&$validated)
     {
         $company = $validated->get('company');
+        $companyOrder = $validated->get('companyOrder');
         $except = $validated->get('except');
         $q = $validated->get('q');
 
@@ -616,8 +618,9 @@ class UserAdminService extends UserService
             || count($company['search'] ?: [])
             || $company['scale']
             || count($except['companyCategoryNotes'] ?: [])
+            || $companyOrder['enable'] == '是'
         ) {
-            $q->whereHas('company.company', function ($q) use ($company, $except) {
+            $q->whereHas('company.company', function ($q) use ($company, $companyOrder, $except) {
                 $countNotes = count($company['categoryNotes'] ?: []);
                 $countExceptNotes = count($except['companyCategoryNotes'] ?: []);
                 if ($countNotes || $countExceptNotes) {
@@ -658,6 +661,24 @@ class UserAdminService extends UserService
                 }
                 if ($company['scale']) {
                     $q->where('companies.scale', $company['scale']);
+                }
+
+                if ($companyOrder['enable'] == '是') {
+                    $q->whereHas('orders', function ($q) use ($companyOrder) {
+                        if ($companyOrder['type'] == '符合全部勾選') {
+                            $q->select(DB::raw('COUNT(DISTINCT(brandId)) as brandCount'))
+                                ->having('brandCount', count($companyOrder['brands']));
+                        } else {
+                            $q->whereIn('company_orders.brandId', $companyOrder['brands']);
+                        }
+
+                        if ($companyOrder['startDate']) {
+                            $q->where('company_orders.date', '>=', $companyOrder['startDate']);
+                        }
+                        if ($companyOrder['endDate']) {
+                            $q->where('company_orders.date', '<=', $companyOrder['endDate']);
+                        }
+                    });
                 }
             });
         }
