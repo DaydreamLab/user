@@ -19,6 +19,9 @@ class EnumHelper
     public const COMPANY_CATEGORY_NORMAL = '一般';
     public const COMPANY_CATEGORY_DEALER = '經銷會員';
 
+    public const COMPANY_ORDER_BRAND_INTERSECT = '符合全部勾選';
+    public const COMPANY_ORDER_BRAND_UNION = '符合其一勾選';
+
     public const WAIT_UPDATE = '待更新';
     public const ALREADY_UPDATE = '已更新';
 

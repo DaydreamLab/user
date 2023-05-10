@@ -130,5 +130,11 @@
     "method": "deleteUserTagCategory",
     "url": "/admin/user/tag/category/remove",
     "created_by": 1
+  },
+  {
+    "name": "搜尋公司銷售記錄",
+    "method": "searchCompanyOrder",
+    "url": "/admin/company/{id}/order/search",
+    "created_by": 1
   }
 ]

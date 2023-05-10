@@ -89,6 +89,18 @@ class UserAdminCrmSearchPost extends ListRequest
             # 公司規模
             'company.scale'  => 'nullable|string',
 
+            /** 公司銷售記錄 */
+            'companyOrder' => 'required|array',
+            'companyOrder.brands' => 'nullable|array',
+            'companyOrder.brands.*' => 'required|integer',
+            'companyOrder.type' => ['nullable', Rule::in([
+                '',
+                EnumHelper::COMPANY_ORDER_BRAND_INTERSECT,
+                EnumHelper::COMPANY_ORDER_BRAND_UNION
+            ])],
+            'companyOrder.startDate*' => 'nullable|date_format:Y-m',
+            'companyOrder.endDate*' => 'nullable|date_format:Y-m',
+
             /**** 活動課程 ****/
             'event' => 'required|array',
             'event.search' => 'nullable|string',

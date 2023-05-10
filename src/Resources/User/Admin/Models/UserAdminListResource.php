@@ -40,7 +40,7 @@ class UserAdminListResource extends BaseJsonResource
                         $this->groups->filter(function ($g) use ($dealerUserGroup, $userGroup) {
                             return $g->id != $dealerUserGroup->id && $g->id != $userGroup->id;
                         })->sortByDesc('id')->pluck('title')->take(1)
-                    : $this->groups->pluck('title')->all(),
+                    : $this->groups->sortByDesc('id')->pluck('title')->all(),
             ];
         } else {
             return [
