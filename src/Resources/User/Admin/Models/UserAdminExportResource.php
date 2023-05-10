@@ -29,8 +29,16 @@ class UserAdminExportResource extends BaseJsonResource
             }
         }
 
+        $groupsStr = '';
+        foreach ($this->groups as $key => $group) {
+            $groupsStr .= $group->title;
+            if ($key != count($this->groups) - 1) {
+                $groupsStr .= ',';
+            }
+        }
+
         return [
-            $this->groups->first()->title,
+            $groupsStr,
             ($company) ? $company->name : '',
             ($company) ? $company->vat : '',
             $phoneStr,
