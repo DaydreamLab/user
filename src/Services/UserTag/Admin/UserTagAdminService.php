@@ -157,6 +157,7 @@ class UserTagAdminService extends UserTagService
             collect([
                 'basic' => $input->get('rules')['basic'],
                 'company' => $input->get('rules')['company'],
+                'companyOrder' => $input->get('rules')['companyOrder'],
                 'event' => $input->get('rules')['event'],
                 'order' => $input->get('rules')['order'],
                 'coupon' => $input->get('rules')['coupon'],

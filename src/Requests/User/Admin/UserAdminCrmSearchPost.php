@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Requests\User\Admin;
 use Carbon\Carbon;
 use DaydreamLab\JJAJ\Exceptions\BadRequestException;
 use DaydreamLab\JJAJ\Requests\ListRequest;
+use DaydreamLab\User\Helpers\CompanyRequestHelper;
 use DaydreamLab\User\Helpers\EnumHelper;
 use Illuminate\Validation\Rule;
 use DaydreamLab\Cms\Helpers\EnumHelper as CmsEnumHelper;
@@ -180,39 +181,13 @@ class UserAdminCrmSearchPost extends ListRequest
     }
 
 
+    /**
+     * @throws BadRequestException
+     */
     public function validated()
     {
         $validated = parent::validated();
-
-        $companyOrder = $validated->get('companyOrder');
-        if ($companyOrder['enable'] == '是') {
-            if (
-                !$companyOrder['type']
-                || !$companyOrder['brands']
-                || !is_array($companyOrder['brands'])
-                || !count($companyOrder['brands'])
-            ) {
-                throw new BadRequestException('InputInvalid', [
-                    'companyOrder.type' => $companyOrder['type'],
-                    'companyOrder.brands' => $companyOrder['brands']
-                ]);
-            }
-
-            if ($companyOrder['startDate']) {
-                $companyOrder['startDate'] = Carbon::parse($companyOrder['startDate'] . '-01', 'Asia/Taipei')
-                    ->startOfDay()
-                    ->tz(config('app.timezone'))
-                    ->toDateTimeString();
-            }
-
-            if ($companyOrder['endDate']) {
-                $companyOrder['endDate'] = Carbon::parse($companyOrder['endDate'] . '-01', 'Asia/Taipei')
-                    ->startOfMonth()
-                    ->tz(config('app.timezone'))
-                    ->toDateTimeString();
-            }
-            $validated->put('companyOrder', $companyOrder);
-        }
+        $validated->put('companyOrder', CompanyRequestHelper::handleCompanyOrder($validated->get('companyOrder')));
 
         return $validated;
     }

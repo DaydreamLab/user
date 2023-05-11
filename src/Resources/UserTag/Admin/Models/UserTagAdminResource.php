@@ -16,7 +16,6 @@ class UserTagAdminResource extends BaseJsonResource
     public function toArray($request)
     {
         $timezone = $request->user('api')->timezone;
-
         return [
             'id'        => $this->id,
             'title'     => $this->title,
@@ -24,7 +23,7 @@ class UserTagAdminResource extends BaseJsonResource
             'categoryId' => $this->categoryId,
             'categoryTitle' => $this->category->title,
             'type'      => $this->type,
-            'rules'     => $this->rules,
+            'rules'     => new UserTagAdminRulesResource($this->rules),
             'notifications' => new NotificationAdminSearchResourceCollection($this->notifications, false)
         ];
     }

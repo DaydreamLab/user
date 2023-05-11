@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\UserTag\Admin;
 
 use DaydreamLab\JJAJ\Helpers\RequestHelper;
+use DaydreamLab\User\Helpers\CompanyRequestHelper;
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Requests\ComponentBase\UserStoreRequest;
 use Illuminate\Support\Str;
@@ -46,7 +47,10 @@ class UserTagAdminStoreRequest extends UserStoreRequest
     {
         $validated = parent::validated();
         $validated->put('originalRules', $validated->get('rules'));
-        $validated->put('rules', $this->handleRules($validated->get('rules'))) ;
+        # 額外處理公司銷售記錄
+        $rules = $this->handleRules($validated->get('rules'));
+        $rules['companyOrder'] = CompanyRequestHelper::handleCompanyOrder($rules['companyOrder']);
+        $validated->put('rules', $rules) ;
 
         return $validated;
     }
