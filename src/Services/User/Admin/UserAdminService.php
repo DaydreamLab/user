@@ -203,6 +203,10 @@ class UserAdminService extends UserService
 
         $user = parent::store($input);
 
+        if (! $user instanceof User) {
+            $user = $this->find($input->get('id'));
+        }
+
         $user->usergroup()->withTimestamps()->sync($groupIds);
 
         return $user;
