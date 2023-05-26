@@ -24,11 +24,16 @@ class UserFrontLoginPost extends AdminRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'email'     => 'required|email',
             'password'  => 'required|string',
             'code'      => 'nullable|string',
-            'g_recaptcha_response' => ['required', new RecaptchaV3()]
         ];
+
+        if (config('app.env') == 'production') {
+            $rules['g_recaptcha_response'] = ['required', new RecaptchaV3()];
+        }
+
+        return $rules;
     }
 }
