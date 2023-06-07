@@ -51,7 +51,7 @@ class XsmsChannel
 
         $content = [
             'Subject' => $message->subject,
-            'Message' => $message->content,
+            'Message' => strip_tags($message->content),
             'MDNList' => [
                 [
                     'MSISDN' => $to,
