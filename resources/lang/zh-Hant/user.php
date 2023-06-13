@@ -27,7 +27,7 @@ return [
 
     'HAS_BEEN_ACTIVATED'                => '使用者帳號已被啟用過',
 
-    'INVALID_DEALER_TOKEN'              => '經銷商驗證權仗無法辨識',
+    'INVALID_DEALER_TOKEN'              => '驗證連結無效或已失效',
     'IS_BLOCKED'                        => '使用者已被封鎖',
     'IMPORT_UPDATE_USER_PROCESSING'        => '會員資料更新背景處理中...',
     'INSUFFICIENT_PERMISSION_ASSIGN_GROUP' => '使用者不具有指派特定群組的權限',
