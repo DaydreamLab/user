@@ -49,8 +49,9 @@ class XsmsChannel
         $to = $this->formatPhone($to);
         $message = $notification->toXsms($notifiable);
 
+        $subjectLen = mb_strlen($message->subject, 'UTF-8');
         $content = [
-            'Subject' => $message->subject,
+            'Subject' => $subjectLen >= 20 ? substr($message->subject, 0, 20) : $message->subject,
             'Message' => strip_tags($message->content),
             'MDNList' => [
                 [
