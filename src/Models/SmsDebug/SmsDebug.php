@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Models\SmsHistory;
+namespace DaydreamLab\User\Models\SmsDebug;
 
 use DaydreamLab\Dsth\Models\Notification\Notification;
 use DaydreamLab\JJAJ\Models\BaseModel;
