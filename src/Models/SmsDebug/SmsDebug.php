@@ -2,16 +2,10 @@
 
 namespace DaydreamLab\User\Models\SmsDebug;
 
-use DaydreamLab\Dsth\Models\Notification\Notification;
 use DaydreamLab\JJAJ\Models\BaseModel;
-use DaydreamLab\JJAJ\Traits\RecordChanger;
-use DaydreamLab\User\Models\User\User;
 
 class SmsDebug extends BaseModel
 {
-    use RecordChanger {
-        RecordChanger::boot as traitBoot;
-    }
     /**
      * The table associated with the model.
      *
