@@ -48,10 +48,4 @@ class SmsDebug extends BaseModel
     protected $casts = [
         'response' => 'array'
     ];
-
-
-    public static function boot()
-    {
-        self::traitBoot();
-    }
 }
