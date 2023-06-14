@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Notifications\Channels;
 
 use DaydreamLab\Dsth\Notifications\DeveloperNotification;
+use DaydreamLab\User\Models\SmsHistory\SmsDebug;
 use DaydreamLab\User\Models\SmsHistory\SmsHistory;
 use GuzzleHttp\Client;
 use Illuminate\Notifications\Notification;
@@ -53,6 +54,7 @@ class MitakeChannel
         if (config('daydreamlab.user.sms.env') == 'local') {
             $sendResult = true;
             $msgId = '';
+            $response = [];
         } else {
             $client = new Client();
             $response = $client->post($this->baseUrl, [
@@ -60,15 +62,6 @@ class MitakeChannel
             ]);
 
             $content = $response->getBody()->getContents();
-
-            if (config('daydreamlab.user.sms.debug')) {
-                \Illuminate\Support\Facades\Notification::route('mail', 'technique@daydream-lab.com')
-                    ->notify(new DeveloperNotification('簡訊Debug', '', [
-                        'post' => $this->params,
-                        'response' => $content
-                    ]));
-            }
-
             $contentExplode = explode('%0D%0A', urlencode($content));
 
             /**
@@ -101,7 +94,14 @@ class MitakeChannel
             ];
 
             $data = array_merge($data, $message->extraFields);
-            SmsHistory::create($data);
+            $history = SmsHistory::create($data);
+        }
+
+        if (config('daydreamlab.user.sms.debug')) {
+            SmsDebug::create([
+                'response' => $response,
+                'historyId' => isset($history) ? $history->id : null
+            ]);
         }
 
         return $sendResult;
