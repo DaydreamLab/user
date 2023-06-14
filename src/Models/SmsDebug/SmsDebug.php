@@ -24,6 +24,7 @@ class SmsDebug extends BaseModel
      */
     protected $fillable = [
         'historyId',
+        'payload',
         'response'
     ];
 
@@ -46,6 +47,7 @@ class SmsDebug extends BaseModel
     ];
 
     protected $casts = [
+        'payload'   => 'array',
         'response' => 'array'
     ];
 }

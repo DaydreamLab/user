@@ -16,6 +16,7 @@ class CreateSmsDebugTable extends Migration
         Schema::create('sms_debug', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('historyId')->nullable();
+            $table->text('payload')->nullable();
             $table->text('response')->nullable();
             $table->timestamps();
         });

@@ -99,6 +99,7 @@ class MitakeChannel
 
         if (config('daydreamlab.user.sms.debug')) {
             SmsDebug::create([
+                'payload' => $this->params,
                 'response' => $response,
                 'historyId' => isset($history) ? $history->id : null
             ]);
