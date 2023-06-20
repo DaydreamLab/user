@@ -17,9 +17,10 @@ class UserGroupAdminService extends UserGroupService
 
     protected $modelType = 'Admin';
 
-    public function __construct(UserGroupAdminRepository $repo,
-                                ViewlevelAdminService $viewlevelAdminService)
-    {
+    public function __construct(
+        UserGroupAdminRepository $repo,
+        ViewlevelAdminService $viewlevelAdminService
+    ) {
         parent::__construct($repo);
         $this->viewlevelAdminService = $viewlevelAdminService;
         $this->repo = $repo;
@@ -34,7 +35,7 @@ class UserGroupAdminService extends UserGroupService
         if ($ancestorsTitle->intersect(['Administrator', 'Registered', 'Public', 'Guest'])->count()) {
             $adminViewlevel = $this->viewlevelAdminService->findBy('title', '=', 'Administrator')->first();
             $adminViewlevel->groups()->attach($item->id);
-            $adminGroup = $this->repo->findBy('title','=', 'Administrator')->first();
+            $adminGroup = $this->repo->findBy('title', '=', 'Administrator')->first();
             $adminGroup->defaultAccessGroups()->attach($item->id);
         }
 
@@ -132,7 +133,7 @@ class UserGroupAdminService extends UserGroupService
         $item->assets()->detach();
         $item->apis()->detach();
         $item->descendants()->each(function ($descendant) {
-           $descendant->viewlevels()->detach();
+            $descendant->viewlevels()->detach();
         });
         $item->viewlevels()->detach();
     }

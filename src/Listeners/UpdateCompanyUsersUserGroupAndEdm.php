@@ -32,6 +32,10 @@ class UpdateCompanyUsersUserGroupAndEdm implements ShouldQueue
      */
     public function handle(UpdateCompanyUsersUserGroupAndEdmEvent $event)
     {
+        # 6: 經銷會員
+        # 7: 一般會員
+        # 25: 外部會員
+
         $company = $event->company;
         $companyUserGroup = $event->companyUserGroup;
         foreach ($company->userCompanies as $userCompany) {
@@ -39,9 +43,15 @@ class UpdateCompanyUsersUserGroupAndEdm implements ShouldQueue
                 # 這邊要考慮管理員同時擁有經銷商資格
                 $original = $user->groups->pluck('id');
                 $adminGroupIds = $original->reject(function ($o) {
-                    return in_array($o, [6,7]);
+                    return in_array($o, [6,7,25]);
                 })->values()->all();
-                $adminGroupIds[] = $companyUserGroup->id;
+
+                # 外部會員不會因為公司級別改變而改變會員群組
+                if ($original->contains(25)) {
+                    $adminGroupIds[] = 25;
+                } else {
+                    $adminGroupIds[] = $companyUserGroup->id;
+                }
                 $user->groups()->sync($adminGroupIds);
 
                 if ($company->categoryNote == EnumHelper::COMPANY_NOTE_BLACKLIST) {
