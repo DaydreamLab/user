@@ -54,5 +54,19 @@ class OuterEventInstallCommand extends Command
                 ])
             );
         }
+
+        $nonePhoneGroup = UserGroup::where('title', '無手機名單')->first();
+        if (!$nonePhoneGroup) {
+            $normalGroup = UserGroup::where('title', '一般會員')->first();
+            app(UserGroupAdminService::class)->store(
+                collect([
+                    'parent_id' => $normalGroup->id,
+                    'title' => '無手機名單',
+                    'canDelete' => 0,
+                    'description' => '無手機名單',
+                    'access'    => 8,
+                ])
+            );
+        }
     }
 }

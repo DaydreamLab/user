@@ -29,7 +29,7 @@ return [
 
     'INVALID_DEALER_TOKEN'              => 403,
     'IS_BLOCKED'                        => 403,
-    'IMPORT_UPDATE_USER_PROCESSING'     => 200,
+    'IMPORT_PROCESSING'                 => 200,
     'INSUFFICIENT_PERMISSION_ASSIGN_GROUP' => 403,
     'INVALID_VERIFICATION_CODE'         => 403,
     'IP_REJECTED'                       => 403,

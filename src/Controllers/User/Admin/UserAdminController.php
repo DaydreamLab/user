@@ -93,6 +93,18 @@ class UserAdminController extends BaseController
     }
 
 
+    public function importNonePhone(UserAdminImportUpdatePost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->importNonePhone($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
     public function importUpdate(UserAdminImportUpdatePost $request)
     {
         $this->service->setUser($request->user('api'));

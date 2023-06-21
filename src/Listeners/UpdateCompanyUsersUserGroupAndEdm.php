@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Listeners;
 use DaydreamLab\Cms\Services\NewsletterSubscription\Front\NewsletterSubscriptionFrontService;
 use DaydreamLab\User\Events\UpdateCompanyUsersUserGroupAndEdmEvent;
 use DaydreamLab\User\Helpers\EnumHelper;
+use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Notifications\User\UserCompanyEmailVerificationNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
@@ -32,23 +33,24 @@ class UpdateCompanyUsersUserGroupAndEdm implements ShouldQueue
      */
     public function handle(UpdateCompanyUsersUserGroupAndEdmEvent $event)
     {
-        # 6: 經銷會員
-        # 7: 一般會員
-        # 25: 外部會員
-
+        $userGroups = UserGroup::whereIn('title', ['經銷會員', '一般會員', '外部會員', '無手機名單'])->get();
+        $outerGroup = $userGroups->where('title', '外部會員')->first();
+        $nonePhoneGroup = $userGroups->where('title', '無手機名單')->first();
         $company = $event->company;
         $companyUserGroup = $event->companyUserGroup;
         foreach ($company->userCompanies as $userCompany) {
             if ($user = $userCompany->user) {
                 # 這邊要考慮管理員同時擁有經銷商資格
                 $original = $user->groups->pluck('id');
-                $adminGroupIds = $original->reject(function ($o) {
-                    return in_array($o, [6,7,25]);
+                $adminGroupIds = $original->reject(function ($o) use ($userGroups) {
+                    return in_array($o, $userGroups->pluck('id')->all());
                 })->values()->all();
 
                 # 外部會員不會因為公司級別改變而改變會員群組
-                if ($original->contains(25)) {
-                    $adminGroupIds[] = 25;
+                if ($original->contains($outerGroup->id)) {
+                    $adminGroupIds[] = $outerGroup->id;
+                } elseif ($original->contains($nonePhoneGroup)) {
+                    $adminGroupIds[] = $nonePhoneGroup->id;
                 } else {
                     $adminGroupIds[] = $companyUserGroup->id;
                 }

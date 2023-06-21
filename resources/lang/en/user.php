@@ -29,7 +29,7 @@ return [
 
     'INVALID_DEALER_TOKEN'              => '{$ModelName} invalid dealer token',
     'IS_BLOCKED'                        => '{$ModelName} is blocked',
-    'IMPORT_UPDATE_USER_PROCESSING'        => '{$ModelName} import update user succes',
+    'IMPORT_PROCESSING'                 => '{$ModelName} import processing...',
     'INSUFFICIENT_PERMISSION_ASSIGN_GROUP' => '{$ModelName} insufficient permission assign group',
     'INVALID_VERIFICATION_CODE'         => 'Invalid verification code',
     'IP_REJECTED'                       => 'IP address rejected',

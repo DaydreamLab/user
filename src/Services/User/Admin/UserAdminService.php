@@ -15,6 +15,7 @@ use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Helpers\CompanyHelper;
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Helpers\OtpHelper;
+use DaydreamLab\User\Jobs\ImportNonePhoneUser;
 use DaydreamLab\User\Jobs\ImportUpdateUser;
 use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\User\User;
@@ -80,7 +81,11 @@ class UserAdminService extends UserService
                 $inputUserCompany['company_id'] = $company->id;
                 CompanyHelper::updatePhonesByUserPhones($company, $inputUserCompany);
                 $outerGroup = $this->userGroupAdminRepo->findBy('title', '=', '外部會員')->first();
-                if ($input->get('groupIds') != [$outerGroup->id]) {
+                $nonePhoneGroup = $this->userGroupAdminRepo->findBy('title', '=', '無手機名單')->first();
+                if (
+                    $input->get('groupIds') !== [$outerGroup->id]
+                    && $input->get('groupIds') !== [$nonePhoneGroup->id]
+                ) {
                     $item->groups()->sync([$company->category->userGroupId]);
                 }
             }
@@ -206,6 +211,25 @@ class UserAdminService extends UserService
     }
 
 
+    public function importNonePhone(Collection $input)
+    {
+        $file = $input->get('file');
+        $filename = Str::random(5) . '-importNonePhone-' . now('Asia/Taipei')->format('YmdHis');
+        $file->storeAs('/uploads', $filename);
+
+        $reader = new Xlsx();
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load(storage_path('app/uploads/' . $filename));
+        $sheet = $spreadsheet->getSheet(0);
+        $rows = $sheet->getHighestRow();
+        $jobCount = $rows / 1000 + 1;
+        for ($i = 0; $i < $jobCount; $i++) {
+            dispatch(new ImportNonePhoneUser(storage_path('app/uploads/' . $filename), $i));
+        }
+
+        $this->status = 'ImportProcessing';
+    }
+
     public function importUpdate(Collection $input)
     {
         $file = $input->get('file');
@@ -222,7 +246,7 @@ class UserAdminService extends UserService
             dispatch(new ImportUpdateUser(storage_path('app/uploads/' . $filename), $i));
         }
 
-        $this->status = 'ImportUpdateUserProcessing';
+        $this->status = 'ImportProcessing';
     }
 
 
@@ -231,7 +255,9 @@ class UserAdminService extends UserService
         $dealerUserGroup =  $this->userGroupAdminRepo->findBy('title', '=', '經銷會員')->first();
         $normalUserGroup = $this->userGroupAdminRepo->findBy('title', '=', '一般會員')->first();
         $outerUserGroup = $this->userGroupAdminRepo->findBy('title', '=', '外部會員')->first();
+        $nonePhoneUserGroup = $this->userGroupAdminRepo->findBy('title', '=', '無手機名單')->first();
         $isOuterUser = $item->groups->pluck('id')->contains($outerUserGroup->id);
+        $isNonePhoneUser = $item->groups->pluck('id')->contains($nonePhoneUserGroup->id);
 
         if ($input->get('editAdmin')) {
             $item->brands()->sync($input->get('brandIds') ?: []);
@@ -318,6 +344,8 @@ class UserAdminService extends UserService
                     $groupIds->push($dealerUserGroup->id);
                 } elseif ($isOuterUser) {
                     $groupIds->push($outerUserGroup->id);
+                } elseif ($isNonePhoneUser) {
+                    $groupIds->push($nonePhoneUserGroup->id);
                 } else {
                     $groupIds->push($normalUserGroup->id);
                 }
@@ -336,7 +364,9 @@ class UserAdminService extends UserService
                     'lastUpdate'    => now()->toDateTimeString()
                 ]));
                 $changes = $item->groups()->sync([
-                    $isOuterUser ? $outerUserGroup->id : $normalUserGroup->id
+                    $isOuterUser
+                        ? $outerUserGroup->id
+                        : ($isNonePhoneUser ? $nonePhoneUserGroup->id : $normalUserGroup->id)
                 ]);
             }
         } else {
@@ -350,7 +380,10 @@ class UserAdminService extends UserService
                 'lastValidate'  => null,
                 'lastUpdate'    => now()->toDateTimeString()
             ]));
-            $changes = $item->groups()->sync([$isOuterUser ? $outerUserGroup->id : $normalUserGroup->id]);
+            $changes = $item->groups()->sync([    $isOuterUser
+                ? $outerUserGroup->id
+                : ($isNonePhoneUser ? $nonePhoneUserGroup->id : $normalUserGroup->id)
+            ]);
         }
 
         if (!$input->get('importUpdateUser')) {
