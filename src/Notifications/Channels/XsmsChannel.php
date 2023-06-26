@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Notifications\Channels;
 
 use DaydreamLab\Dsth\Notifications\DeveloperNotification;
 use DaydreamLab\JJAJ\Helpers\ArrayToXml;
+use DaydreamLab\User\Models\SmsDebug\SmsDebug;
 use DaydreamLab\User\Models\SmsHistory\SmsHistory;
 use GuzzleHttp\Client;
 use Illuminate\Notifications\Notification;
@@ -36,7 +37,7 @@ class XsmsChannel
         $this->phoneCode = $phoneData[0];
         $this->phone = $phoneData[1];
 
-        return substr($this->phoneCode, 1). (int)$this->phone;
+        return substr($this->phoneCode, 1) . (int)$this->phone;
     }
 
 
@@ -49,9 +50,10 @@ class XsmsChannel
         $to = $this->formatPhone($to);
         $message = $notification->toXsms($notifiable);
 
+        $subjectLen = mb_strlen($message->subject, 'UTF-8');
         $content = [
-            'Subject' => $message->subject,
-            'Message' => $message->content,
+            'Subject' => $subjectLen >= 20 ? mb_substr($message->subject, 0, 20) : $message->subject,
+            'Message' => strip_tags($message->content),
             'MDNList' => [
                 [
                     'MSISDN' => $to,
@@ -66,6 +68,7 @@ class XsmsChannel
         if (config('daydreamlab.user.sms.env') == 'local') {
             $sendResult = true;
             $msgId = '';
+            $response = [];
         } else {
             $client = new Client();
 
@@ -74,15 +77,6 @@ class XsmsChannel
             ]);
 
             $response = $response->getBody()->getContents();
-
-            if (config('daydreamlab.user.sms.debug')) {
-                \Illuminate\Support\Facades\Notification::route('mail', 'technique@daydream-lab.com')
-                    ->notify(new DeveloperNotification('簡訊Debug', '', [
-                        'post' => $this->params,
-                        'response' => $response
-                    ]));
-            }
-
             $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
             $statusCode = $arrayResponse->Code;
             $sendResult = $arrayResponse->Code == 0 ? 1 : 0;
@@ -92,7 +86,7 @@ class XsmsChannel
         if (config('daydreamlab.user.sms.log')) {
             $strlen = mb_strlen($message->content, 'UTF-8');
             $data = [
-                'notificationId'=> isset($notification->notificationId) ? $notification->notificationId : null,
+                'notificationId' => isset($notification->notificationId) ? $notification->notificationId : null,
                 'phoneCode'     => $this->phoneCode,
                 'phone'         => $this->phone,
                 'category'      => $message->category,
@@ -107,7 +101,15 @@ class XsmsChannel
             ];
 
             $data = array_merge($data, $message->extraFields);
-            SmsHistory::create($data);
+            $history = SmsHistory::create($data);
+        }
+
+        if (config('daydreamlab.user.sms.debug')) {
+            SmsDebug::create([
+                'payload' => $this->params,
+                'response' => $response,
+                'historyId' => isset($history) ? $history->id : null
+            ]);
         }
 
         return $sendResult;

@@ -43,6 +43,7 @@ class UserAdminSearchPost extends ListRequest
                 'integer',
                 Rule::in([0,1])
             ],
+            'nonePhone'     => ['nullable', Rule::in([0,1])],
             'search'        => 'nullable|string',
             'user_group'    => 'nullable|integer',
             'parent_group'  => 'nullable|integer'
@@ -65,20 +66,31 @@ class UserAdminSearchPost extends ListRequest
                 $q->select('user_id')->from('users_groups_maps');
                 if ($parent_group) {
                     $g = UserGroup::where('id', $parent_group)->first();
-                    $c = $g->descendants->pluck(['id'])->toArray();
-                    $ids = array_merge($c, [$g->id]);
-                    $q->whereIn('users_groups_maps.group_id', $ids);
-                }
-                if ($child_group) {
-                    is_array($child_group)
+                    $c = $g->descendants;
+                    if ($child_group) {
+                        $q->where('users_groups_maps.group_id', $child_group);
+                    } else {
+                        $c = $c->where('title', '!=', '無手機名單');
+                        $ids = array_merge($c->pluck('id')->all(), [$g->id]);
+                        $q->whereIn('users_groups_maps.group_id', $ids);
+                    }
+                } else {
+                    if ($child_group) {
+                        is_array($child_group)
                         ? $q->whereIn('users_groups_maps.group_id', $child_group)
                         : $q->where('users_groups_maps.group_id', $child_group);
+                    }
                 }
             });
         }
 
+        if ($validated->get('nonePhone')) {
+            $q->where('activateToken', 'importNonePhoneUser')
+                ->whereRaw("mobilePhone REGEXP '[^0-9]'");
+        }
+
         $validated->put('q', $q);
-        $validated->forget(['parent_group', 'user_group']);
+        $validated->forget(['parent_group', 'user_group', 'nonePhone']);
 
         return $validated;
     }

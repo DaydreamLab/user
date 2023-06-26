@@ -17,11 +17,11 @@ class UserAdminResource extends BaseJsonResource
         $timezone = $request->user('api')->timezone;
         if ($request->get('pageGroupId') == 16) {
             $group_ids = $this->groups->pluck('id')->reject(function ($value) {
-                return in_array($value, [6,7]);
+                return in_array($value, [6,7,25]);
             })->values();
         } else {
             $group_ids = $this->groups->pluck('id')->reject(function ($value) {
-                return !in_array($value, [6,7]);
+                return !in_array($value, [6,7,25]);
             })->values();
         }
 

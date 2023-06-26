@@ -33,6 +33,7 @@ class UserServiceProvider extends ServiceProvider
         'DaydreamLab\User\Commands\Hotfix\V2_001\UpdateCompanyPhoneCommand',
         'DaydreamLab\User\Commands\Feat\Crm\CrmSeedingCommand',
         'DaydreamLab\User\Commands\Hotfix\TotpPermission\FixTotpPermissionCommand',
+        'DaydreamLab\User\Commands\Feat\OuterEvent\OuterEventInstallCommand',
     ];
 
 

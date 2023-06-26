@@ -27,9 +27,9 @@ return [
 
     'HAS_BEEN_ACTIVATED'                => '使用者帳號已被啟用過',
 
-    'INVALID_DEALER_TOKEN'              => '經銷商驗證權仗無法辨識',
+    'INVALID_DEALER_TOKEN'              => '經銷商驗證碼已失效，請重新發送驗證',
     'IS_BLOCKED'                        => '使用者已被封鎖',
-    'IMPORT_UPDATE_USER_PROCESSING'        => '會員資料更新背景處理中...',
+    'IMPORT_PROCESSING'                 => '匯入資料背景處理中...',
     'INSUFFICIENT_PERMISSION_ASSIGN_GROUP' => '使用者不具有指派特定群組的權限',
     'INVALID_VERIFICATION_CODE'         => '簡訊驗證碼錯誤',
     'IP_REJECTED'                       => '不被允許的訪問IP',

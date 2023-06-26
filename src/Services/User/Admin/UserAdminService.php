@@ -18,14 +18,17 @@ use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Helpers\CompanyHelper;
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Helpers\OtpHelper;
+use DaydreamLab\User\Jobs\ImportNonePhoneUser;
 use DaydreamLab\User\Jobs\ImportUpdateUser;
 use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\User\UserCompany;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
+use DaydreamLab\User\Repositories\Company\CompanyCategoryRepository;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Repositories\UserTag\Admin\UserTagAdminRepository;
+use DaydreamLab\User\Repositories\User\Admin\UserGroupAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -42,19 +45,29 @@ class UserAdminService extends UserService
 
     protected $newsletterSubscriptionAdminService;
 
+
     protected $userTagAdminRepository;
+
+    protected $userGroupAdminRepo;
+
+    protected $companyCategoryRepo;
+
 
     public function __construct(
         UserAdminRepository $repo,
         CompanyAdminRepository $companyAdminRepo,
         NewsletterSubscriptionAdminService $newsletterSubscriptionAdminService,
-        UserTagAdminRepository $userTagAdminRepository
+        UserTagAdminRepository $userTagAdminRepository,
+        UserGroupAdminRepository $userGroupAdminRepo,
+        CompanyCategoryRepository $companyCategoryRepo
     ) {
         parent::__construct($repo);
         $this->repo = $repo;
         $this->companyAdminRepo = $companyAdminRepo;
         $this->newsletterSubscriptionAdminService = $newsletterSubscriptionAdminService;
         $this->userTagAdminRepository = $userTagAdminRepository;
+        $this->userGroupAdminRepo = $userGroupAdminRepo;
+        $this->companyCategoryRepo = $companyCategoryRepo;
     }
 
 
@@ -77,7 +90,14 @@ class UserAdminService extends UserService
                 $inputUserCompany['vat'] = $company->vat;
                 $inputUserCompany['company_id'] = $company->id;
                 CompanyHelper::updatePhonesByUserPhones($company, $inputUserCompany);
-                $item->groups()->sync([$company->category->userGroupId]);
+                $outerGroup = $this->userGroupAdminRepo->findBy('title', '=', '外部會員')->first();
+                $nonePhoneGroup = $this->userGroupAdminRepo->findBy('title', '=', '無手機名單')->first();
+                if (
+                    $input->get('groupIds') !== [$outerGroup->id]
+                    && $input->get('groupIds') !== [$nonePhoneGroup->id]
+                ) {
+                    $item->groups()->sync([$company->category->userGroupId]);
+                }
             }
         } else {
             # 判斷domain 是不是原廠
@@ -201,6 +221,25 @@ class UserAdminService extends UserService
     }
 
 
+    public function importNonePhone(Collection $input)
+    {
+        $file = $input->get('file');
+        $filename = Str::random(5) . '-importNonePhone-' . now('Asia/Taipei')->format('YmdHis');
+        $file->storeAs('/uploads', $filename);
+
+        $reader = new Xlsx();
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load(storage_path('app/uploads/' . $filename));
+        $sheet = $spreadsheet->getSheet(0);
+        $rows = $sheet->getHighestRow();
+        $jobCount = $rows / 1000 + 1;
+        for ($i = 0; $i < $jobCount; $i++) {
+            dispatch(new ImportNonePhoneUser(storage_path('app/uploads/' . $filename), $i));
+        }
+
+        $this->status = 'ImportProcessing';
+    }
+
     public function importUpdate(Collection $input)
     {
         $file = $input->get('file');
@@ -217,14 +256,18 @@ class UserAdminService extends UserService
             dispatch(new ImportUpdateUser(storage_path('app/uploads/' . $filename), $i));
         }
 
-        $this->status = 'ImportUpdateUserProcessing';
+        $this->status = 'ImportProcessing';
     }
 
 
     public function modifyMapping($item, $input)
     {
-        $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
-        $userGroup = UserGroup::where('title', '一般會員')->first();
+        $dealerUserGroup =  $this->userGroupAdminRepo->findBy('title', '=', '經銷會員')->first();
+        $normalUserGroup = $this->userGroupAdminRepo->findBy('title', '=', '一般會員')->first();
+        $outerUserGroup = $this->userGroupAdminRepo->findBy('title', '=', '外部會員')->first();
+        $nonePhoneUserGroup = $this->userGroupAdminRepo->findBy('title', '=', '無手機名單')->first();
+        $isOuterUser = $item->groups->pluck('id')->contains($outerUserGroup->id);
+        $isNonePhoneUser = $item->groups->pluck('id')->contains($nonePhoneUserGroup->id);
 
         if ($input->get('editAdmin')) {
             $item->brands()->sync($input->get('brandIds') ?: []);
@@ -251,7 +294,10 @@ class UserAdminService extends UserService
                     $company = $this->companyAdminRepo->add(collect([
                         'vat'   => $inputUserCompany['vat'],
                         'name'  => $inputUserCompany['name'],
-                        'category_id'   => 5,
+                        'category_id'   => $this->companyAdminRepo
+                            ->findBy('title', '=', '一般')
+                            ->first()
+                            ->id,
                     ]));
                 }
 
@@ -298,14 +344,20 @@ class UserAdminService extends UserService
                 $r = $userCompany->update(array_merge($inputUserCompany, $updateData));
 
                 # 取出管理者權限（如果有）
-                $groupIds = $item->groups->pluck('id')->reject(function ($value) {
-                     return in_array($value, [6,7]);
-                })->values();
+                $groupIds = $item->groups->pluck('id')->reject(
+                    function ($value) use ($dealerUserGroup, $normalUserGroup, $outerUserGroup) {
+                        return in_array($value, [$dealerUserGroup->id, $normalUserGroup->id, $outerUserGroup->id]);
+                    }
+                )->values();
 
                 if (in_array($company->category->title, ['經銷會員', '零壹員工'])) {
-                    $groupIds->push(6);
+                    $groupIds->push($dealerUserGroup->id);
+                } elseif ($isOuterUser) {
+                    $groupIds->push($outerUserGroup->id);
+                } elseif ($isNonePhoneUser) {
+                    $groupIds->push($nonePhoneUserGroup->id);
                 } else {
-                    $groupIds->push(7);
+                    $groupIds->push($normalUserGroup->id);
                 }
 
                 $changes = $item->groups()->sync($groupIds->all());
@@ -321,7 +373,11 @@ class UserAdminService extends UserService
                     'lastValidate'  => null,
                     'lastUpdate'    => now()->toDateTimeString()
                 ]));
-                $changes = $item->groups()->sync([$userGroup->id]);
+                $changes = $item->groups()->sync([
+                    $isOuterUser
+                        ? $outerUserGroup->id
+                        : ($isNonePhoneUser ? $nonePhoneUserGroup->id : $normalUserGroup->id)
+                ]);
             }
         } else {
             UserCompany::create(array_merge($inputUserCompany, [
@@ -334,7 +390,10 @@ class UserAdminService extends UserService
                 'lastValidate'  => null,
                 'lastUpdate'    => now()->toDateTimeString()
             ]));
-            $changes = $item->groups()->sync([$userGroup->id]);
+            $changes = $item->groups()->sync([    $isOuterUser
+                ? $outerUserGroup->id
+                : ($isNonePhoneUser ? $nonePhoneUserGroup->id : $normalUserGroup->id)
+            ]);
         }
 
         if (!$input->get('importUpdateUser')) {

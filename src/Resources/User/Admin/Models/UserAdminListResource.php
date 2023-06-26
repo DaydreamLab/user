@@ -5,6 +5,8 @@ namespace DaydreamLab\User\Resources\User\Admin\Models;
 use DaydreamLab\JJAJ\Resources\BaseJsonResource;
 use DaydreamLab\User\Models\User\UserGroup;
 
+use function GuzzleHttp\normalize_header_keys;
+
 class UserAdminListResource extends BaseJsonResource
 {
     /**
@@ -18,12 +20,11 @@ class UserAdminListResource extends BaseJsonResource
         $export = $request->get('export');
         if (!$export) {
             $tz = $request->user('api')->timezone;
-            $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
-            $userGroup = UserGroup::where('title', '一般會員')->first();
+            $normalGroups = $request->normalGroups;
 
             return [
                 'id'            => $this->id,
-                'email'         => $this->company->email,
+                'email'         => $request->get('parent_group') == 4 ? $this->email : $this->company->email,
                 'name'          => $this->name,
                 'firstName'     => $this->firstName,
                 'lastName'      => $this->lastName,
@@ -37,15 +38,15 @@ class UserAdminListResource extends BaseJsonResource
                 'lastLoginIp'   => $this->lastLoginIp,
                 'groups'        => ($request->get('pageGroupId') == 16)
                     ? // 排除掉管理員以外的群組
-                        $this->groups->filter(function ($g) use ($dealerUserGroup, $userGroup) {
-                            return $g->id != $dealerUserGroup->id && $g->id != $userGroup->id;
+                        $this->groups->filter(function ($g) use ($normalGroups) {
+                            return !in_array($g->id, $normalGroups->pluck('id')->all());
                         })->sortByDesc('id')->pluck('title')->take(1)
                     : $this->groups->sortByDesc('id')->pluck('title')->all(),
             ];
         } else {
+            $groupTitle = $this->groups->first()->title;
             return [
-                $this->groups()->first()->title,
-//            $this->groupTitle,
+                $groupTitle,
                 ($this->company) ? $this->company->name : '',
                 ($this->company) ? $this->company->vat : '',
                 ($this->company) ? $this->company->phoneCode : '',
@@ -54,7 +55,7 @@ class UserAdminListResource extends BaseJsonResource
                 ($this->company) ? $this->company->email : '',
                 ($this->company) ? $this->company->industry : '',
                 ($this->company) ? $this->company->scale : '',
-                $this->mobilePhone ?: '',
+                ($this->mobilePhone && $groupTitle != '無手機名單') ? $this->mobilePhone : '',
                 $this->name ?: '',
                 $this->email ?: '',
                 ($this->company) ? $this->company->department : '',
