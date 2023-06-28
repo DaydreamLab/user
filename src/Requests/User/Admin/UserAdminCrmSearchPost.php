@@ -39,7 +39,7 @@ class UserAdminCrmSearchPost extends ListRequest
             'search' => 'nullable|string',
             'basic' => 'required|array',
             /**** 基本資料****/
-            'basic.userGroup' => ['nullable', Rule::in(['一般會員', '經銷會員'])],
+            'basic.userGroup' => ['nullable', Rule::in(['一般會員', '經銷會員', '外部會員', '無手機名單'])],
             # LINE綁定
             'basic.lineBind' => ['nullable', Rule::in(['是', '否'])],
             #todo 'source'
