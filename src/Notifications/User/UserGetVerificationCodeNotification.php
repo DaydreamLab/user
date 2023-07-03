@@ -29,6 +29,7 @@ class UserGetVerificationCodeNotification extends BaseNotification
         parent::__construct($creatorId);
         $this->code = $code;
         $this->user = $user;
+        $this->subject = $this->defaultSubject();
     }
 
 
