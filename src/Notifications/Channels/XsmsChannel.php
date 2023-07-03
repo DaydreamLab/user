@@ -47,6 +47,7 @@ class XsmsChannel
             return false;
         }
 
+
         $to = $this->formatPhone($to);
         $message = $notification->toXsms($notifiable);
         $subjectLen = mb_strlen($message->subject, 'UTF-8');
