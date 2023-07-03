@@ -62,7 +62,16 @@ class XsmsChannel
             'AutoSplit' => 'L'
         ];
 
-        $xml = ArrayToXml::convertWithoutDeclaration($content, 'Request');
+        $xml = ArrayToXml::convert(
+            $content,
+            'Request',
+            true,
+            'UTF-8',
+            '1.0',
+            [],
+            null,
+            false
+        );
         $this->params['Content'] = $xml;
 
         if (config('daydreamlab.user.sms.env') == 'local') {
