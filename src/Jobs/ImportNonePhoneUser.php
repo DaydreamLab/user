@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
@@ -104,7 +105,9 @@ class ImportNonePhoneUser implements ShouldQueue
             } else {
                 $userData['company']['phones'] = [];
             }
-            $service->add(collect($userData));
+            DB::transaction(function () use ($service, $userData) {
+                $service->add(collect($userData));
+            });
         }
         // 刪除暫存檔
 //        unlink($this->filePath);
