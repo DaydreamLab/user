@@ -87,6 +87,9 @@ class UserAdminSearchPost extends ListRequest
         if ($validated->get('nonePhone')) {
             $q->where('activateToken', 'importNonePhoneUser')
                 ->whereRaw("mobilePhone REGEXP '[^0-9]'");
+        } elseif ($validated->get('nonePhone') === 0) {
+            $q->where('activateToken', '!=', 'importNonePhoneUser')
+                ->whereRaw("mobilePhone REGEXP '[0-9]'");
         }
 
         $validated->put('q', $q);
