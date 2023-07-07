@@ -47,9 +47,9 @@ class XsmsChannel
             return false;
         }
 
+
         $to = $this->formatPhone($to);
         $message = $notification->toXsms($notifiable);
-
         $subjectLen = mb_strlen($message->subject, 'UTF-8');
         $content = [
             'Subject' => $subjectLen >= 20 ? mb_substr($message->subject, 0, 20) : $message->subject,
@@ -62,7 +62,16 @@ class XsmsChannel
             'AutoSplit' => 'L'
         ];
 
-        $xml = ArrayToXml::convertWithoutDeclaration($content, 'Request');
+        $xml = ArrayToXml::convert(
+            $content,
+            'Request',
+            true,
+            'UTF-8',
+            '1.0',
+            [],
+            null,
+            false
+        );
         $this->params['Content'] = $xml;
 
         if (config('daydreamlab.user.sms.env') == 'local') {

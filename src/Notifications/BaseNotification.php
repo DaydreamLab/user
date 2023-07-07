@@ -137,7 +137,7 @@ class BaseNotification extends Notification implements ShouldQueue
     }
 
 
-    public function toMitake($notifiable)
+    public function getSmsContent()
     {
         if ($this->useCustomTemplate) {
             $template = NotificationTemplate::where('channelType', 'sms')
@@ -154,10 +154,28 @@ class BaseNotification extends Notification implements ShouldQueue
             $this->content = $this->handleReplacement($this->defaultSmsContent('sms'));
         }
 
+        return $this->content;
+    }
+
+
+    public function toMitake($notifiable)
+    {
         return new MitakeMessage(
             $this->category,
             $this->type,
-            $this->content,
+            $this->getSmsContent(),
+            $this->creatorId,
+            []
+        );
+    }
+
+
+    public function toTruetel($notifiable)
+    {
+        return new MitakeMessage(
+            $this->category,
+            $this->type,
+            $this->getSmsContent(),
             $this->creatorId,
             []
         );
@@ -166,31 +184,11 @@ class BaseNotification extends Notification implements ShouldQueue
 
     public function toXsms($notifiable)
     {
-        if ($this->useCustomTemplate) {
-            $template = NotificationTemplate::where('channelType', 'sms')
-                ->where('category', $this->category)
-                ->where('type', $this->type)
-                ->first();
-
-            if ($template) {
-                $this->subject = $template->subject
-                    ? $this->handleReplacement($template->subject)
-                    : $this->subject;
-                $this->content = $this->handleReplacement($template->content);
-            } else {
-                $this->subject = $this->subject ?: $this->defaultSubject();
-                $this->content = $this->handleReplacement($this->defaultSmsContent('sms'));
-            }
-        } else {
-            $this->subject = $this->subject ?: $this->defaultSubject();
-            $this->content = $this->handleReplacement($this->defaultSmsContent('sms'));
-        }
-
         return new XsmsMessage(
             $this->category,
             $this->type,
             $this->subject,
-            $this->content,
+            $this->getSmsContent(),
             $this->creatorId,
             []
         );
@@ -204,6 +202,6 @@ class BaseNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', 'mitake', 'xsms'];
+        return ['mail', 'mitake', 'xsms', 'truetel'];
     }
 }

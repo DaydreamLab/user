@@ -28,6 +28,7 @@ class UserGetOtpCodeNotification extends BaseNotification
     {
         parent::__construct($creatorId);
         $this->user = $user;
+        $this->subject = $this->defaultSubject();
     }
 
 
