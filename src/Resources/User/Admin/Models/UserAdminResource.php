@@ -16,13 +16,13 @@ class UserAdminResource extends BaseJsonResource
     {
         $timezone = $request->user('api')->timezone;
         if ($request->get('pageGroupId') == 16) {
-            $group_ids = $this->groups->pluck('id')->reject(function ($value) {
-                return in_array($value, [6,7,25]);
-            })->values();
+            $group_ids = $this->groups->filter(function ($g) {
+                return !in_array($g->title, ['一般會員', '經銷會員', '外部會員', '無手機名單']);
+            })->pluck('id')->values();
         } else {
-            $group_ids = $this->groups->pluck('id')->reject(function ($value) {
-                return !in_array($value, [6,7,25]);
-            })->values();
+            $group_ids = $this->groups->filter(function ($g) {
+                return in_array($g->title, ['一般會員', '經銷會員', '外部會員', '無手機名單']);
+            })->pluck('id')->values();
         }
 
         return [

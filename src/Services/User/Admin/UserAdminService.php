@@ -231,10 +231,11 @@ class UserAdminService extends UserService
         $reader->setReadDataOnly(true);
         $spreadsheet = $reader->load(storage_path('app/uploads/' . $filename));
         $sheet = $spreadsheet->getSheet(0);
-        $rows = $sheet->getHighestRow();
-        $jobCount = $rows / 1000 + 1;
+        $rows = $sheet->getHighestRow() + 1;
+        $perFileRows = 1000;
+        $jobCount = $rows / $perFileRows + 1;
         for ($i = 0; $i < $jobCount; $i++) {
-            dispatch(new ImportNonePhoneUser(storage_path('app/uploads/' . $filename), $i));
+            dispatch(new ImportNonePhoneUser(storage_path('app/uploads/' . $filename), $i, $perFileRows));
         }
 
         $this->status = 'ImportProcessing';
