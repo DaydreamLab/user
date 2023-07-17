@@ -92,16 +92,28 @@ class ImportNonePhoneUser implements ShouldQueue
 
             $userData['company'] = [
                 'email' => Str::lower($rowData['companyEmail']),
+                'name' => $rowData['companyName'],
                 'vat' => $rowData['vat'] ?: null,
                 'department' => $rowData['department'],
                 'jobTitle' => $rowData['jobTitle'],
             ];
 
             if ($rowData['vat']) {
-                $company = Company::where('vat', $rowsData['vat'])->first();
-                if ($company) {
-                    $userData['company_id'] = $company->id;
+                $company = Company::where('vat', $rowData['vat'])->first();
+                if (!$company) {
+                    $company = Company::create([
+                        'category_id' => 5,
+                        'name' => $rowData['companyName'],
+                        'vat' => $rowData['vat'],
+                        'mailDomains' => [
+                            'domain' => [],
+                            'email' => []
+                        ],
+                        'phoneCode' => '+886',
+                        'categoryNote' => '無'
+                    ]);
                 }
+                $userData['company']['company_id'] = $company->id;
             }
 
             if ($rowData['companyPhoneCode'] || $rowData['companyPhone']) {
@@ -115,6 +127,7 @@ class ImportNonePhoneUser implements ShouldQueue
             } else {
                 $userData['company']['phones'] = [];
             }
+            show($userData);
             DB::transaction(function () use ($service, $userData) {
                 try {
                     $service->add(collect($userData));
