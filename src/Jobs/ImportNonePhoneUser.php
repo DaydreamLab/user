@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Jobs;
 
+use DaydreamLab\User\Models\Company\Company;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Services\User\Admin\UserAdminService;
 use Illuminate\Bus\Queueable;
@@ -95,6 +96,13 @@ class ImportNonePhoneUser implements ShouldQueue
                 'department' => $rowData['department'],
                 'jobTitle' => $rowData['jobTitle'],
             ];
+
+            if ($rowData['vat']) {
+                $company = Company::where('vat', $rowsData['vat'])->first();
+                if ($company) {
+                    $userData['company_id'] = $company->id;
+                }
+            }
 
             if ($rowData['companyPhoneCode'] || $rowData['companyPhone']) {
                 $userData['company']['phones'] = [
