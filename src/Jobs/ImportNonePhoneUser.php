@@ -127,7 +127,7 @@ class ImportNonePhoneUser implements ShouldQueue
             } else {
                 $userData['company']['phones'] = [];
             }
-            show($userData);
+
             DB::transaction(function () use ($service, $userData) {
                 try {
                     $service->add(collect($userData));
