@@ -546,13 +546,14 @@ class UserAdminService extends UserService
             }
         }
 
-        $block = $validated->get('block');
-        if (in_array($block, ['是', '否'])) {
+
+        if ($block = $validated->get('block')) {
             $q->where('block', $block);
         }
 
         if (
-            $basic['lastUpdateFrom']
+            $basic['lastUpdate']
+            || $basic['lastUpdateFrom']
             || $basic['lastUpdateTo']
             || count($basic['purchaseRoles'] ?: [])
             || count($basic['jobTypes'] ?: [])
@@ -560,6 +561,11 @@ class UserAdminService extends UserService
             || count($basic['interestedIssues'] ?: [])
         ) {
             $q->whereHas('company', function ($q) use ($basic) {
+                if ($basic['lastUpdate'] && $basic['lastUpdate'] == '已更新') {
+                    $q->whereNotNull('lastUpdate');
+                } elseif ($basic['lastUpdate'] && $basic['lastUpdate'] == '未更新') {
+                    $q->whereNull('lastUpdate');
+                }
                 if ($basic['lastUpdateFrom'] || $basic['lastUpdateTo']) {
                     $q->whereNotNull('users_companies.lastUpdate');
                     if ($basic['lastUpdateFrom']) {
@@ -679,6 +685,10 @@ class UserAdminService extends UserService
             || $company['scale']
             || count($except['companyCategoryNotes'] ?: [])
             || $companyOrder['enable'] == '是'
+            || $company['approvedFrom']
+            || $company['approvedTo']
+            || $company['expiredFrom']
+            || $company['expiredTo']
         ) {
             $q->whereHas('company.company', function ($q) use ($company, $companyOrder, $except) {
                 $countNotes = count($company['categoryNotes'] ?: []);
@@ -715,7 +725,7 @@ class UserAdminService extends UserService
                 if (count($city)) {
                     $q->where(function ($q) use ($city) {
                         foreach ($city as $c) {
-                            $q->orWhere('companies.city', $c);
+                            $q->whereJsonContains('phones', ['phoneCode' => $c]);
                         }
                     });
                 }
@@ -725,20 +735,39 @@ class UserAdminService extends UserService
 
                 if ($companyOrder['enable'] == '是') {
                     $q->whereHas('orders', function ($q) use ($companyOrder) {
+                        $q->whereIn('company_orders.brandId', $companyOrder['brands']);
                         if ($companyOrder['type'] == '符合全部勾選') {
                             $q->select(DB::raw('COUNT(DISTINCT(brandId)) as brandCount'))
                                 ->having('brandCount', count($companyOrder['brands']));
-                        } else {
-                            $q->whereIn('company_orders.brandId', $companyOrder['brands']);
                         }
-
                         if ($companyOrder['startDate']) {
-                            $q->where('company_orders.date', '>=', $companyOrder['startDate']);
+                            $q->where(
+                                'company_orders.date',
+                                '>=',
+                                RequestHelper::toSystemTime($companyOrder['startDate'])
+                            );
                         }
                         if ($companyOrder['endDate']) {
-                            $q->where('company_orders.date', '<=', $companyOrder['endDate']);
+                            $q->where(
+                                'company_orders.date',
+                                '<=',
+                                RequestHelper::toSystemTime($companyOrder['endDate'])
+                            );
                         }
                     });
+                }
+
+                if ($company['approvedFrom']) {
+                    $q->where('approvedAt', '>=', RequestHelper::toSystemTime($company['approvedFrom']));
+                }
+                if ($company['approvedTo']) {
+                    $q->where('approvedAt', '<=', RequestHelper::toSystemTime($company['approvedTo']));
+                }
+                if ($company['expiredFrom']) {
+                    $q->where('expiredAt', '>=', RequestHelper::toSystemTime($company['expiredFrom']));
+                }
+                if ($company['expiredTo']) {
+                    $q->where('expiredAt', '<=', RequestHelper::toSystemTime($company['expiredTo']));
                 }
             });
         }
@@ -764,6 +793,7 @@ class UserAdminService extends UserService
             $event['registrationType'],
             $event['startDate'],
             $event['endDate'],
+            $event['isOuter'],
         ];
 
         $orderValues = [
@@ -891,6 +921,10 @@ class UserAdminService extends UserService
 
                 if ($this->valueOr($eventValues)) {
                     $q->whereHas('event', function ($q) use ($event) {
+                        if ($event['isOuter']) {
+                            $q->where('events.isOuter', $event['isOuter'] == '內部活動' ? 0 : 1);
+                        }
+
                         if ($event['search']) {
                             $q->where(function ($q) use ($event) {
                                 $q->orWhere('events.title', 'like', "%{$event['search']}%")
@@ -1049,6 +1083,11 @@ class UserAdminService extends UserService
             $input->put('q', $q);
         }
 
+//        $q = $input->get('q');
+//        $q->toSql();
+//        $a = $this->search($input->only(['search', 'company_id', 'updateStatus', 'q', 'limit', 'paginate']));
+//        show($a);
+//        exit();
         return $this->search($input->only(['search', 'company_id', 'updateStatus', 'q', 'limit', 'paginate']));
     }
 

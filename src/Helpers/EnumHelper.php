@@ -4,6 +4,13 @@ namespace DaydreamLab\User\Helpers;
 
 class EnumHelper
 {
+    public const SITE_USER_GROUPS = [
+        '一般會員',
+        '經銷會員',
+        '外部會員',
+        '無手機名單'
+    ];
+
     public const COMPANY_APPROVED = 'APPROVED';
     public const COMPANY_NEW = 'NEW';
     public const COMPANY_NONE = 'NONE';
@@ -51,6 +58,18 @@ class EnumHelper
     public const USERTAG_MENU_CHECK_KEYS = [
         'startDate' => 'startOfDay',
         'endDate'   => 'endOfDay'
+    ];
+
+    public const USERTAG_COMPANY_CHECK_KEYS = [
+        'approvedFrom' => 'startOfDay',
+        'approvedTo'   => 'endOfDay',
+        'expiredFrom' => 'startOfDay',
+        'expiredTo'   => 'endOfDay'
+    ];
+
+    public const USERTAG_COMPANYORDER_CHECK_KEYS = [
+        'startDate' => 'startOfMonth',
+        'endDate'   => 'endOfMonth',
     ];
 
     public static function constant($name)

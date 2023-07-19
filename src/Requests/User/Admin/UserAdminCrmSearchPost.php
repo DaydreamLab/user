@@ -4,9 +4,11 @@ namespace DaydreamLab\User\Requests\User\Admin;
 
 use Carbon\Carbon;
 use DaydreamLab\JJAJ\Exceptions\BadRequestException;
+use DaydreamLab\JJAJ\Helpers\RequestHelper;
 use DaydreamLab\JJAJ\Requests\ListRequest;
 use DaydreamLab\User\Helpers\CompanyRequestHelper;
 use DaydreamLab\User\Helpers\EnumHelper;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use DaydreamLab\Cms\Helpers\EnumHelper as CmsEnumHelper;
 
@@ -39,17 +41,17 @@ class UserAdminCrmSearchPost extends ListRequest
             'search' => 'nullable|string',
             'basic' => 'required|array',
             /**** 基本資料****/
-            'basic.userGroup' => ['nullable', Rule::in(['一般會員', '經銷會員', '外部會員', '無手機名單'])],
+            'basic.userGroup' => ['nullable', Rule::in(EnumHelper::SITE_USER_GROUPS)],
             # LINE綁定
             'basic.lineBind' => ['nullable', Rule::in(['是', '否'])],
-            #todo 'source'
             # 註冊日期
             'basic.createdAtFrom' => 'nullable|date_format:Y-m-d',
             'basic.createdAtTo' => 'nullable|date_format:Y-m-d',
             # 最後登入日期
             'basic.lastLoginAtFrom' => 'nullable|date_format:Y-m-d',
             'basic.lastLoginAtTo' => 'nullable|date_format:Y-m-d',
-            'basic.block' => ['nullable', Rule::in(['不拘', '是', '否'])],
+            'basic.block' => ['nullable', Rule::in(['是', '否'])],
+            'basic.lastUpdate'     => ['nullable', Rule::in(['已更新', '未更新'])],
             'basic.lastUpdateFrom' => 'nullable|date_format:Y-m-d',
             'basic.lastUpdateTo' => 'nullable|date_format:Y-m-d',
             # 採購身分
@@ -98,6 +100,12 @@ class UserAdminCrmSearchPost extends ListRequest
             'company.industry.*' => ['required', 'string'],
             # 公司規模
             'company.scale' => 'nullable|string',
+            # 成為經銷商日期
+            'company.approvedFrom' => 'nullable|date_format:Y-m-d',
+            'company.approvedTo' => 'nullable|date_format:Y-m-d',
+            # 經銷商過期日期
+            'company.expiredFrom' => 'nullable|date_format:Y-m-d',
+            'company.expiredTo' => 'nullable|date_format:Y-m-d',
 
             /** 公司銷售記錄 */
             'companyOrder' => 'required|array',
@@ -117,19 +125,20 @@ class UserAdminCrmSearchPost extends ListRequest
             /**** 活動課程 ****/
             'event' => 'required|array',
             'event.search' => 'nullable|string',
-            'event.category' => ['nullable', Rule::in(['不拘', '課程', '活動'])],
-            'event.type' => ['nullable', Rule::in(['不拘', '實體', '線上'])],
-            'event.canRegisterGroup' => ['nullable', Rule::in(['不拘', '一般會員', '經銷會員'])],
-            'event.dateType' => ['nullable', Rule::in(['不拘', '單天', '多天', '系列'])],
-            'event.registrationType' => ['nullable', Rule::in(['不拘', '統一報名', '依場次報名'])],
+            'event.category' => ['nullable', Rule::in(['課程', '活動'])],
+            'event.type' => ['nullable', Rule::in(['實體', '線上'])],
+            'event.canRegisterGroup' => ['nullable', Rule::in(['一般會員', '經銷會員'])],
+            'event.dateType' => ['nullable', Rule::in(['單天', '多天', '系列'])],
+            'event.registrationType' => ['nullable', Rule::in(['統一報名', '依場次報名'])],
             'event.brands' => 'nullable|array',
             'event.brands.*' => 'required|string',
             'event.startDate' => 'nullable|required_with:event.endDate|date_format:Y-m-d',
             'event.endDate' => 'nullable|required_with:event.startDate|date_format:Y-m-d',
+            'event.isOuter' => ['nullable', Rule::in(['內部活動', '外部活動'])],
 
             # todo: 是否備取
             'order' => 'required|array',
-            'order.replyQuestionnaire' => ['nullable', Rule::in(['不拘', '是', '否'])],
+            'order.replyQuestionnaire' => ['nullable', Rule::in(['是', '否'])],
             'order.regStatus' => ['nullable', Rule::in(['報名成功', '報名取消'])],
             'order.participateTimesFrom' => 'nullable|integer',
             'order.participateTimesTo' => 'nullable|integer',
@@ -139,8 +148,8 @@ class UserAdminCrmSearchPost extends ListRequest
             'order.noshowTimesTo' => 'nullable|integer',
             #上課券
             'coupon' => 'required|array',
-            'coupon.type' => ['nullable', Rule::in(['不拘', '一般上課券', '批次上課券'])],
-            'coupon.userGroup' => ['nullable', Rule::in(['不拘', '一般會員', '經銷會員'])],
+            'coupon.type' => ['nullable', Rule::in(['一般上課券', '批次上課券'])],
+            'coupon.userGroup' => ['nullable', Rule::in(['一般會員', '經銷會員'])],
             'coupon.useTimesFrom' => 'nullable|integer',
             'coupon.useTimesTo' => 'nullable|integer',
             # 選端訪問（網路行為）
@@ -153,7 +162,7 @@ class UserAdminCrmSearchPost extends ListRequest
             # 排除項目
             'except' => 'required|array',
             'except.lastLoginDate' => 'nullable|integer',
-            'except.userGroup' => ['nullable', Rule::in(['一般會員', '經銷會員'])],
+            'except.userGroup' => ['nullable', Rule::in(EnumHelper::SITE_USER_GROUPS)],
             'except.companySearch' => 'nullable|array',
             'except.companySearch.*' => 'required|string',
             'except.companyCategoryNotes' => 'nullable|array',

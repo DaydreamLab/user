@@ -53,15 +53,13 @@ class CompanyRequestHelper
 
             if ($companyOrder['startDate']) {
                 $companyOrder['startDate'] = Carbon::parse($companyOrder['startDate'] . '-01', 'Asia/Taipei')
-                    ->startOfDay()
-                    ->tz(config('app.timezone'))
+                    ->startOfMonth()
                     ->toDateTimeString();
             }
 
             if ($companyOrder['endDate']) {
                 $companyOrder['endDate'] = Carbon::parse($companyOrder['endDate'] . '-01', 'Asia/Taipei')
-                    ->startOfMonth()
-                    ->tz(config('app.timezone'))
+                    ->endOfMonth()
                     ->toDateTimeString();
             }
         }
