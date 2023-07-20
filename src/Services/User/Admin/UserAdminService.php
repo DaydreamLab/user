@@ -703,7 +703,7 @@ class UserAdminService extends UserService
                 }
 
                 $companySearch = $company['search'] ?: [];
-                if (count($companySearch)) {
+                if (!empty($companySearch)) {
                     $q->where(function ($q) use ($companySearch) {
                         foreach ($companySearch as $search) {
                             $q->orWhere('companies.vat', 'like', "%{$search}%")
@@ -744,14 +744,14 @@ class UserAdminService extends UserService
                             $q->where(
                                 'company_orders.date',
                                 '>=',
-                                RequestHelper::toSystemTime($companyOrder['startDate'])
+                                RequestHelper::toSystemTime($companyOrder['startDate'], 'Asia/Taipei', 'startOfMonth')
                             );
                         }
                         if ($companyOrder['endDate']) {
                             $q->where(
                                 'company_orders.date',
                                 '<=',
-                                RequestHelper::toSystemTime($companyOrder['endDate'])
+                                RequestHelper::toSystemTime($companyOrder['endDate'], 'Asia/Taipei', 'endOfMonth')
                             );
                         }
                     });

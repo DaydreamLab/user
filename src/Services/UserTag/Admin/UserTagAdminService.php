@@ -168,7 +168,6 @@ class UserTagAdminService extends UserTagService
                 'limit' => 0
             ])
         );
-
         $userIds = $users->pluck('id');
 
         return $userIds;

@@ -67,11 +67,6 @@ class EnumHelper
         'expiredTo'   => 'endOfDay'
     ];
 
-    public const USERTAG_COMPANYORDER_CHECK_KEYS = [
-        'startDate' => 'startOfMonth',
-        'endDate'   => 'endOfMonth',
-    ];
-
     public static function constant($name)
     {
         return constant('self::' . $name);
