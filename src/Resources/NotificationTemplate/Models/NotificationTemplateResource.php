@@ -23,7 +23,7 @@ class NotificationTemplateResource extends BaseJsonResource
             'content'           => $this->content,
             'contentHtml'       => $this->contentHtml,
             'updatedAt'         => $this->getDateTimeString($this->updated_at, $tz),
-            'updator'           => $this->updaterName
+            'updaterName'           => $this->updaterName
         ];
     }
 }
