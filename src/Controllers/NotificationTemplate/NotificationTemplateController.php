@@ -8,6 +8,7 @@ use DaydreamLab\User\Requests\NotificationTemplate\NotificationTemplateRemoveReq
 use DaydreamLab\User\Requests\NotificationTemplate\NotificationTemplateSearchRequest;
 use DaydreamLab\User\Requests\NotificationTemplate\NotificationTemplateStoreRequest;
 use DaydreamLab\User\Resources\NotificationTemplate\Collections\NotificationTemplateListResourceCollection;
+use DaydreamLab\User\Resources\NotificationTemplate\Models\NotificationTemplateResource;
 use DaydreamLab\User\Services\NotificationTemplate\NotificationTemplateService;
 use Throwable;
 
@@ -30,7 +31,7 @@ class NotificationTemplateController extends UserController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response, [], NotificationTemplateResource::class);
     }
 
 

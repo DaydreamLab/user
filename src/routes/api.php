@@ -250,7 +250,8 @@ Route::post('api/admin/viewlevel/ordering', [ViewlevelAdminController::class, 'o
 Route::get('api/admin/viewlevel/{id}', [ViewlevelAdminController::class, 'getItem'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 
-
+Route::get('api/admin/notification/template/{id}', [NotificationTemplateController::class, 'getItem'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/notification/template/store', [NotificationTemplateController::class, 'store'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/notification/template/search', [NotificationTemplateController::class, 'search'])
