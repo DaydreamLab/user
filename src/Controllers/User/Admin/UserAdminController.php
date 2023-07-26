@@ -10,6 +10,7 @@ use DaydreamLab\User\Requests\User\Admin\UserAdminBlockPost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminGetItem;
 use DaydreamLab\User\Requests\User\Admin\UserAdminImportUpdatePost;
 use DaydreamLab\User\Requests\User\Admin\UserAdminSendTotpPost;
+use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminCrmSearchResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminExportResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminListResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Models\UserAdminResource;
@@ -61,7 +62,7 @@ class UserAdminController extends BaseController
             $this->service->status,
             $this->service->response,
             [],
-            UserAdminListResourceCollection::class
+            UserAdminCrmSearchResourceCollection::class
         );
     }
 

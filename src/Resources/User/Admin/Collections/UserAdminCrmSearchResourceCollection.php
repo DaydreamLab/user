@@ -5,11 +5,11 @@ namespace DaydreamLab\User\Resources\User\Admin\Collections;
 use DaydreamLab\JJAJ\Resources\BaseResourceCollection;
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Models\User\UserGroup;
-use DaydreamLab\User\Resources\User\Admin\Models\UserAdminListResource;
+use DaydreamLab\User\Resources\User\Admin\Models\UserAdminCrmSearchResource;
 
-class UserAdminListResourceCollection extends BaseResourceCollection
+class UserAdminCrmSearchResourceCollection extends BaseResourceCollection
 {
-    public $collects = UserAdminListResource::class;
+    public $collects = UserAdminCrmSearchResource::class;
 
     /**
      * Transform the resource collection into an array.
