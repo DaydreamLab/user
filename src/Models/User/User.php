@@ -151,6 +151,9 @@ class User extends BaseModel implements
             $item->verificationCode = $item->verificationCode
                 ? $item->verificationCode
                 : bcrypt(Str::random(8));
+            if (!$item->activateToken) {
+                $item->activateToken = Str::random(128);
+            }
         });
 
         static::updating(function ($item) {
