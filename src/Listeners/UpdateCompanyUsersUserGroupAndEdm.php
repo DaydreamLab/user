@@ -49,7 +49,7 @@ class UpdateCompanyUsersUserGroupAndEdm implements ShouldQueue
                 # 外部會員不會因為公司級別改變而改變會員群組
                 if ($original->contains($outerGroup->id)) {
                     $adminGroupIds[] = $outerGroup->id;
-                } elseif ($original->contains($nonePhoneGroup)) {
+                } elseif ($original->contains($nonePhoneGroup->id)) {
                     $adminGroupIds[] = $nonePhoneGroup->id;
                 } else {
                     $adminGroupIds[] = $companyUserGroup->id;
