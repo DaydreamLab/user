@@ -15,6 +15,7 @@ use DaydreamLab\User\Resources\UserTag\Admin\Collections\UserTagAdminGetUsersRes
 use DaydreamLab\User\Resources\UserTag\Admin\Collections\UserTagAdminSearchResourceCollection;
 use DaydreamLab\User\Resources\UserTag\Admin\Models\UserTagAdminResource;
 use DaydreamLab\User\Services\UserTag\Admin\UserTagAdminService;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class UserTagAdminController extends UserController
@@ -126,7 +127,9 @@ class UserTagAdminController extends UserController
     public function store(UserTagAdminStoreRequest $request)
     {
         try {
-            $this->service->store($request->validated());
+            DB::transaction(function () use ($request) {
+                $this->service->store($request->validated());
+            });
         } catch (Throwable $t) {
             $this->handleException($t);
         }

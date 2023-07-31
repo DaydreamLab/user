@@ -11,6 +11,14 @@ class EnumHelper
         '無手機名單'
     ];
 
+    public const COMPANY_NOTES = [
+        self::COMPANY_NOTE_NONE,
+        self::COMPANY_NOTE_COMPETITION,
+        self::COMPANY_NOTE_BLACKLIST,
+        self::COMPANY_NOTE_STAFF,
+        self::COMPANY_NOTE_OBM,
+    ];
+
     public const COMPANY_APPROVED = 'APPROVED';
     public const COMPANY_NEW = 'NEW';
     public const COMPANY_NONE = 'NONE';

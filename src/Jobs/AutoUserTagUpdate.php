@@ -2,6 +2,8 @@
 
 namespace DaydreamLab\User\Jobs;
 
+use DaydreamLab\Dsth\Helpers\NotificationHelper;
+use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\UserTag\UserTag;
 use DaydreamLab\User\Services\UserTag\Admin\UserTagAdminService;
 use Illuminate\Bus\Queueable;
@@ -43,14 +45,33 @@ class AutoUserTagUpdate implements ShouldQueue
             'rules' => $this->tag->rules
         ]));
 
-        $removeIds = $oldIds->diff($newUserIds);
-        $addIds = $newUserIds->diff($oldIds);
+        $intersectIds = $oldIds->intersect($newUserIds);
+        $removeIds = $oldIds->diff($intersectIds);
+        $addIds = $newUserIds->diff($intersectIds);
 
         $notifications = $this->tag->notifications->where('isAuto', 1)->where('state', 1);
         foreach ($notifications as $notification) {
-            # todo: 寄送對應的通知 可能分成 新增、移除 名單時做不同的通知
-            foreach ($addIds as $addId) {
+            $autoType = $notification->params['autoType'] ?? null;
+            $targetIds = [];
+            if ($autoType === 'join') {
+                $targetIds = $addIds;
+            } elseif ($autoType === 'leave') {
+                $targetIds = $removeIds;
             }
+
+            if (empty($targetIds)) {
+                continue;
+            }
+
+            $targetUsers =  User::whereIn('id', $targetIds)->get()->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'email' => $user->company->email,
+                    'mobilePhone'   => $user->mobilePhone
+                ];
+            });
+
+            NotificationHelper::createAndNotifyRecords($notification, $targetUsers);
         }
 
         # 強制被加入名單的不會被移除

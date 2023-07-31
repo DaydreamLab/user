@@ -29,8 +29,10 @@ class UserTagAdminService extends UserTagService
         $input->put('rules', $input->get('originalRules'));
         $userIds = $this->getCrmUserIds($input);
 
-        if ($input->get('type') != 'auto' && count($userIds)) {
-            $item->users()->attach($userIds);
+        if ($input->get('type') != 'auto' && $userIds->count()) {
+            $userIds->chunk(1000)->each(function ($chunk) use ($item) {
+                $item->users()->attach($chunk->all());
+            });
         }
     }
 
@@ -134,8 +136,10 @@ class UserTagAdminService extends UserTagService
             foreach ($diffUsersData as $diffUserData) {
                 $newUserIds[$diffUserData['id']] = collect($diffUserData)->except('id')->all();
             }
-
-            $item->users()->sync($newUserIds);
+            $item->users()->detach();
+            $newUserIds->chunk(1000)->each(function ($chunk) use ($item) {
+                $item->users()->attach($chunk);
+            });
         }
     }
 
