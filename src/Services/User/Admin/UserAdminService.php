@@ -203,7 +203,7 @@ class UserAdminService extends UserService
 
         $user = parent::store($input);
 
-        if (! $user instanceof User) {
+        if (! $user instanceof User && ! app()->runningInConsole()) {
             $user = $this->find($input->get('id'));
         }
 
