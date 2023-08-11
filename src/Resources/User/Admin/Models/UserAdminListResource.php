@@ -27,6 +27,7 @@ class UserAdminListResource extends BaseJsonResource
             'firstName'     => $this->firstName,
             'lastName'      => $this->lastName,
             'company'       => $company ? $this->company->name : '',
+            'companyCategoryTitle' => $company ? $company->category->title : '一般',
             'mobilePhoneCode' => $this->moiblePhoneCode,
             'mobilePhone'   => $this->mobilePhone,
             'backupMobilePhone'   => $this->backupMobilePhone,
