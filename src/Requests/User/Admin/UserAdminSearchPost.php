@@ -46,7 +46,8 @@ class UserAdminSearchPost extends ListRequest
             'nonePhone'     => ['nullable', Rule::in([0,1])],
             'search'        => 'nullable|string',
             'user_group'    => 'nullable|integer',
-            'parent_group'  => 'nullable|integer'
+            'parent_group'  => 'nullable|integer',
+            'companyCategoryId' => 'nullable|integer',
             # CRM
         ];
         return array_merge(parent::rules(), $rules);
@@ -92,8 +93,14 @@ class UserAdminSearchPost extends ListRequest
                 ->whereRaw("mobilePhone REGEXP '[0-9]'");
         }
 
+        if ($companyCategoryId = $validated->get('companyCategoryId')) {
+            $q->whereHas('company.company.category', function ($q) use ($companyCategoryId) {
+                $q->where('companies_categories.id', $companyCategoryId);
+            });
+        }
+
         $validated->put('q', $q);
-        $validated->forget(['parent_group', 'user_group', 'nonePhone']);
+        $validated->forget(['parent_group', 'user_group', 'nonePhone', 'companyCategoryId']);
 
         return $validated;
     }
