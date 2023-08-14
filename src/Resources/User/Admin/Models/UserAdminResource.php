@@ -68,6 +68,9 @@ class UserAdminResource extends BaseJsonResource
             'backupMobilePhone'     => $this->backupMobilePhone,
             'updateStatus'          => $this->updateStatus,
             'validateStatus'        => $this->validateStatus,
+            'companyCategoryTitle'  => $this->company
+                ? ($this->company->company ? $this->company->company->category->title : '一般')
+                : '一般',
             'subscribeNewsletter'   => $this->newsletterSubscription
                 ? ($this->newsletterSubscription->newsletterCategories->count() ? 1 : 0)
                 : 0,
