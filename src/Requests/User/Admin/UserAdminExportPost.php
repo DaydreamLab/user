@@ -45,6 +45,7 @@ class UserAdminExportPost extends ListRequest
                 'integer',
                 Rule::in([0,1])
             ],
+            'nonePhone'     => ['nullable', Rule::in([0,1])],
             'search'        => 'nullable|string',
             'user_group'    => 'nullable|integer',
             'parent_group'  => 'nullable|integer'
@@ -56,6 +57,16 @@ class UserAdminExportPost extends ListRequest
     public function validated()
     {
         $validated = parent::validated();
+        $q = $validated->pull('q');
+        if ($validated->get('nonePhone')) {
+            $q->where('activateToken', 'importNonePhoneUser')
+                ->whereRaw("mobilePhone REGEXP '[^0-9]'");
+        } elseif ($validated->get('nonePhone') === 0) {
+            $q->where('activateToken', '!=', 'importNonePhoneUser')
+                ->whereRaw("mobilePhone REGEXP '[0-9]'");
+        }
+        $validated->put('q', $q);
+        $validated->forget('nonePhone');
 
         return $validated;
     }

@@ -36,7 +36,6 @@ class UserAdminExportResource extends BaseJsonResource
                 $groupsStr .= ',';
             }
         }
-
         return [
             $groupsStr,
             ($company) ? $company->name : '',
@@ -45,7 +44,7 @@ class UserAdminExportResource extends BaseJsonResource
             ($userCompany) ? $userCompany->email : '',
             ($company) ? implode(',', $company->industry) : '',
             ($company) ? $company->scale : '',
-            $this->mobilePhone ?: '',
+            $request->get('nonePhone') ? '' : ($this->mobilePhone ?: ''),
             $this->name ?: '',
             $this->email ?: '',
             ($userCompany) ? $userCompany->jobType : '',
