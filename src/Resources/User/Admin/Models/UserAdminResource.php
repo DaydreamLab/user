@@ -76,7 +76,10 @@ class UserAdminResource extends BaseJsonResource
                 : null,
             'cancelReason'   => $this->newsletterSubscription
                 ? $this->newsletterSubscription->cancelReason
-                : null
+                : null,
+            'companyCategoryTitle' => ($this->company && $this->company->company)
+                ? $this->company->company->category->title
+                : '一般',
         ];
     }
 }
