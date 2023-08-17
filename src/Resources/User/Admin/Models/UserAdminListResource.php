@@ -19,7 +19,7 @@ class UserAdminListResource extends BaseJsonResource
 //        $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
 //        $userGroup = UserGroup::where('title', '一般會員')->first();
         $userCompany = $this->company ?: null;
-        $company = $userCompany ? $userCompany->company : null
+        $company = $userCompany ? $userCompany->company : null;
 
         return [
             'id'            => $this->id,
