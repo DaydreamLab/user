@@ -81,6 +81,9 @@ class ImportNonePhoneUser implements ShouldQueue
         }
         $service = app(UserAdminService::class);
         foreach ($rowsData as $i => $rowData) {
+            if (!$rowData['name'] || !$rowData['companyEmail']) {
+                continue;
+            }
             $userData = [
                 'name' => $rowData['name'],
                 'email' => Str::lower($rowData['companyEmail']),
