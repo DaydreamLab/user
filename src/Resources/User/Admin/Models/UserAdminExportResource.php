@@ -38,7 +38,7 @@ class UserAdminExportResource extends BaseJsonResource
         }
         return [
             $groupsStr,
-            ($company && $company->company) ? $company->company->category->title : '一般'
+            ($company && $company->company) ? $company->company->category->title : '一般',
             ($company) ? $company->name : '',
             ($company) ? $company->vat : '',
             $phoneStr,

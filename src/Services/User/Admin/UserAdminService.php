@@ -177,6 +177,7 @@ class UserAdminService extends UserService
             });
         }
 
+        $q->with('line');
         $input->put('q', $q);
         $input->forget(['parent_group', 'user_group']);
 
