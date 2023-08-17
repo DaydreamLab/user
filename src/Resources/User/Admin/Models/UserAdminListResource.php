@@ -18,7 +18,7 @@ class UserAdminListResource extends BaseJsonResource
         $tz = $request->user('api')->timezone;
 //        $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
 //        $userGroup = UserGroup::where('title', '一般會員')->first();
-        $company = $this->company->company;
+        $company = $this->company ? $this->company->company : null;
 
         return [
             'id'            => $this->id,
