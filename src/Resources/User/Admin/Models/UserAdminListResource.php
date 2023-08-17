@@ -18,15 +18,16 @@ class UserAdminListResource extends BaseJsonResource
         $tz = $request->user('api')->timezone;
 //        $dealerUserGroup = UserGroup::where('title', '經銷會員')->first();
 //        $userGroup = UserGroup::where('title', '一般會員')->first();
-        $company = $this->company ? $this->company->company : null;
+        $userCompany = $this->company ?: null;
+        $company = $userCompany ? $userCompany->company : null
 
         return [
             'id'            => $this->id,
-            'email'         => $request->get('parent_group') == 4 ? $this->email : $this->company->email,
+            'email'         => $request->get('parent_group') == 4 ? $this->email : $userCompany->email,
             'name'          => $this->name,
             'firstName'     => $this->firstName,
             'lastName'      => $this->lastName,
-            'company'       => $company ? $this->company->name : '',
+            'company'       => $userCompany ? $userCompany->name : '',
             'companyCategoryTitle' => $company ? $company->category->title : '一般',
             'mobilePhoneCode' => $this->moiblePhoneCode,
             'mobilePhone'   => $this->mobilePhone,
