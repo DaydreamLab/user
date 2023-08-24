@@ -135,6 +135,7 @@ class UserAdminCrmSearchPost extends ListRequest
             'event.startDate' => 'nullable|required_with:event.endDate|date_format:Y-m-d',
             'event.endDate' => 'nullable|required_with:event.startDate|date_format:Y-m-d',
             'event.isOuter' => ['nullable', Rule::in(['內部活動', '外部活動'])],
+            'event.waiting' => ['nullable', Rule::in(['是', '否'])],
 
             # todo: 是否備取
             'order' => 'required|array',

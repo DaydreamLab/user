@@ -794,6 +794,7 @@ class UserAdminService extends UserService
             $event['startDate'],
             $event['endDate'],
             $event['isOuter'],
+            $event['waiting'],
         ];
 
         $orderValues = [
@@ -870,8 +871,26 @@ class UserAdminService extends UserService
                         || $except['cancelTimesTo']
                         || $except['noshowTimesFrom']
                         || $except['noshowTimesTo']
+                        || $event['waiting']
                     ) {
-                        $q->whereHas('items', function ($q) use ($order, $except) {
+                        $q->whereHas('items', function ($q) use ($order, $except, $event) {
+
+                            if ($event['waiting'] == '是') {
+                                $q->withCount(['history', function ($q) use ($event) {
+                                    $q->whereIn('order_items.regStatus', [
+                                        DsthEnumHelper::WAITING,
+                                        DsthEnumHelper::CONFIRMED
+                                    ])->groupBy('order_items.regStatus');
+                                }])->having('history_count', '=', 2);
+                            } elseif ($event['waiting'] == '否') {
+                                $q->withCount(['history', function ($q) use ($event) {
+                                    $q->whereIn('order_items.regStatus', [
+                                        DsthEnumHelper::WAITING,
+                                        DsthEnumHelper::CONFIRMED
+                                    ])->groupBy('order_items.regStatus');
+                                }])->having('history_count', '=', 1);
+                            }
+
                             $cancelTimesFrom = $order['cancelTimesFrom'];
                             $cancelTimesTo = $order['cancelTimesTo'];
                             $exceptCancelTimesFrom = $except['cancelTimesFrom'];
