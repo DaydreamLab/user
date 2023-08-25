@@ -849,6 +849,15 @@ class UserAdminService extends UserService
 
         if ($this->valueOr($orderValues) || $this->valueOr($eventValues) || $this->valueOr($exceptValues)) {
             $q->whereHas('orders', function ($q) use ($order, $event, $except, $orderValues, $eventValues) {
+                if ($event['waiting'] == '是') {
+                    $q->whereHas('itemsWaiting');
+                } elseif ($event['waiting'] == '否') {
+                    $q->whereNotIn('orders.id', function ($q) {
+                        $q->select('orderId')
+                            ->from('order_items_waiting');
+                    });
+                }
+
                 if ($this->valueOr($orderValues)) {
                     $participateTimesFrom = $order['participateTimesFrom'];
                     $participateTimesTo = $order['participateTimesTo'];
@@ -871,26 +880,8 @@ class UserAdminService extends UserService
                         || $except['cancelTimesTo']
                         || $except['noshowTimesFrom']
                         || $except['noshowTimesTo']
-                        || $event['waiting']
                     ) {
                         $q->whereHas('items', function ($q) use ($order, $except, $event) {
-
-                            if ($event['waiting'] == '是') {
-                                $q->withCount(['history', function ($q) use ($event) {
-                                    $q->whereIn('order_items.regStatus', [
-                                        DsthEnumHelper::WAITING,
-                                        DsthEnumHelper::CONFIRMED
-                                    ])->groupBy('order_items.regStatus');
-                                }])->having('history_count', '=', 2);
-                            } elseif ($event['waiting'] == '否') {
-                                $q->withCount(['history', function ($q) use ($event) {
-                                    $q->whereIn('order_items.regStatus', [
-                                        DsthEnumHelper::WAITING,
-                                        DsthEnumHelper::CONFIRMED
-                                    ])->groupBy('order_items.regStatus');
-                                }])->having('history_count', '=', 1);
-                            }
-
                             $cancelTimesFrom = $order['cancelTimesFrom'];
                             $cancelTimesTo = $order['cancelTimesTo'];
                             $exceptCancelTimesFrom = $except['cancelTimesFrom'];

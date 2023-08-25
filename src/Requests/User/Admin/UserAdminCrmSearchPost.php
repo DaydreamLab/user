@@ -137,7 +137,6 @@ class UserAdminCrmSearchPost extends ListRequest
             'event.isOuter' => ['nullable', Rule::in(['內部活動', '外部活動'])],
             'event.waiting' => ['nullable', Rule::in(['是', '否'])],
 
-            # todo: 是否備取
             'order' => 'required|array',
             'order.replyQuestionnaire' => ['nullable', Rule::in(['是', '否'])],
             'order.regStatus' => ['nullable', Rule::in(['報名成功', '報名取消'])],
