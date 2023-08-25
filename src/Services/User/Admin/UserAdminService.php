@@ -590,7 +590,7 @@ class UserAdminService extends UserService
                     $q->whereIn('jobType', $basic['jobTypes']);
                 }
                 if (count($basic['jobCategories'] ?: [])) {
-                    $q->whereIn('jobCategories', $basic['jobCategories']);
+                    $q->whereIn('jobCategory', $basic['jobCategories']);
                 }
                 foreach ($basic['interestedIssues'] ?: [] as $issue) {
                     $q->where('interestedIssue', 'like', "%{$issue}%");
@@ -849,14 +849,15 @@ class UserAdminService extends UserService
 
         if ($this->valueOr($orderValues) || $this->valueOr($eventValues) || $this->valueOr($exceptValues)) {
             $q->whereHas('orders', function ($q) use ($order, $event, $except, $orderValues, $eventValues) {
-                if ($event['waiting'] == '是') {
-                    $q->whereHas('itemsWaiting');
-                } elseif ($event['waiting'] == '否') {
-                    $q->whereNotIn('orders.id', function ($q) {
-                        $q->select('orderId')
-                            ->from('order_items_waiting');
-                    });
-                }
+
+//                if ($order['waiting'] == '是') {
+//                    $q->whereHas('itemsWaiting');
+//                } elseif ($order['waiting'] == '否') {
+//                    $q->whereNotIn('orders.id', function ($q) {
+//                        $q->select('orderId')
+//                            ->from('order_items_waiting');
+//                    });
+//                }
 
                 if ($this->valueOr($orderValues)) {
                     $participateTimesFrom = $order['participateTimesFrom'];
@@ -931,6 +932,10 @@ class UserAdminService extends UserService
 
                 if ($this->valueOr($eventValues)) {
                     $q->whereHas('event', function ($q) use ($event) {
+                        if ($event['waiting']) {
+                            $q->where('events.canWait', $event['waiting'] == '是' ? 1 : 0);
+                        }
+
                         if ($event['isOuter']) {
                             $q->where('events.isOuter', $event['isOuter'] == '內部活動' ? 0 : 1);
                         }
