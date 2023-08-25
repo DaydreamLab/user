@@ -34,6 +34,7 @@ class UserTag extends UserModel
      * @var array
      */
     protected $fillable = [
+        'categoryId',
         'title',
         'alias',
         'state',

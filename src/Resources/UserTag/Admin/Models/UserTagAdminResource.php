@@ -23,6 +23,7 @@ class UserTagAdminResource extends BaseJsonResource
             'categoryId' => $this->categoryId,
             'categoryTitle' => $this->category->title,
             'type'      => $this->type,
+            'description' => $this->description,
             'rules'     => new UserTagAdminRulesResource($this->rules),
             'notifications' => new NotificationAdminSearchResourceCollection($this->notifications, false)
         ];

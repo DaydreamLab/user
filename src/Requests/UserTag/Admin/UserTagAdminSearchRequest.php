@@ -38,6 +38,9 @@ class UserTagAdminSearchRequest extends UserSearchRequest
     public function validated()
     {
         $validated = parent::validated();
+        $q = $validated->get('q');
+        $q->with('category');
+        $validated->put('q', $q);
 
         return $validated;
     }
