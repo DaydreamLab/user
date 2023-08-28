@@ -25,6 +25,7 @@ class UserTagAdminRulesResource extends BaseJsonResource
             'except'        => $this['except'],
             'menu'          => $this->handleMenu($timezone),
             'order'         => $this['order'],
+            'coupon'        => $this['coupon']
         ];
     }
 
