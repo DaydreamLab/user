@@ -39,13 +39,10 @@ class UserTagAdminService extends UserTagService
 
     public function batch(Collection $input)
     {
-        foreach ($input->get('ids') as $id) {
-            $this->modify(collect([
-                'id' => $id,
-                'categoryId' => $input->get('categoryId')
-            ]));
-        }
-        $this->status = 'BatchUpdateSuccess';
+        $result = $this->repo->batchUpdateCategoryId($input);;
+
+        $this->status = 'BatchUpdate' . ($result ? 'Success' : 'Fail');
+        $this->response = $result ? true : false;
 
         return $this->response;
     }
