@@ -42,7 +42,7 @@ class UserTagAdminService extends UserTagService
         foreach ($input->get('ids') as $id) {
             $this->modify(collect([
                 'id' => $id,
-                'categoryId' => $input->get('id')
+                'categoryId' => $input->get('categoryId')
             ]));
         }
         $this->status = 'BatchUpdateSuccess';
