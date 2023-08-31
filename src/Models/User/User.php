@@ -128,10 +128,10 @@ class User extends Authenticatable
     }
 
 
-    public function getGroupsAttribute()
-    {
-        return $this->groups()->get();
-    }
+//    public function getGroupsAttribute()
+//    {
+//        return $this->groups()->get();
+//    }
 
     public function groups()
     {
