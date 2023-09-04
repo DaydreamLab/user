@@ -29,6 +29,7 @@ class UserTagAdminSearchRequest extends UserSearchRequest
     {
         $rules = [
             'type'  => ['nullable', Rule::in(['auto', 'manual'])],
+            'categoryId' => 'nullable|integer',
         ];
 
         return array_merge(parent::rules(), $rules);
