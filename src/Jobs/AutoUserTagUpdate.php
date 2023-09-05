@@ -63,7 +63,7 @@ class AutoUserTagUpdate implements ShouldQueue
                 continue;
             }
 
-            $targetUsers =  User::whereIn('id', $targetIds)->get()->map(function ($user) {
+            $targetUsers = User::whereIn('id', $targetIds)->get()->map(function ($user) {
                 return [
                     'id' => $user->id,
                     'email' => $user->company->email,
