@@ -56,10 +56,10 @@ class UserTagAdminService extends UserTagService
     public function editUsers(Collection $input)
     {
         $userTag = $this->checkItem($input);
-
         $addIds = $input->get('addIds') ?: [];
         if (count($addIds)) {
             foreach ($addIds as $addId) {
+
                 if ($userTag->users()->allRelatedIds()->contains($addId)) {
                     $userTag->users()->updateExistingPivot($addId, ['forceAdd' => 1, 'forceDelete' => 0]);
                 } else {
@@ -123,6 +123,7 @@ class UserTagAdminService extends UserTagService
 
             $nowUserIds = $nowUsersData->pluck('id');
             $input->put('rules', $input->get('originalRules'));
+
             $newUserIds = $this->getCrmUserIds($input);
 
             # 找出有被強制取消或強制新增的

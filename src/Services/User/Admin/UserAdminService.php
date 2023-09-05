@@ -668,8 +668,10 @@ class UserAdminService extends UserService
                         $q->whereNull('uc.company_id')
                             ->orWhere(function ($q) use ($exceptCompanySearch) {
                                 foreach ($exceptCompanySearch as $input) {
-                                    $q->where('c.name', 'not like', "%$input%")
-                                        ->where('c.vat', 'not like', "%$input%");
+                                    if ($input !== null) {
+                                        $q->where('c.name', 'not like', "%$input%")
+                                            ->where('c.vat', 'not like', "%$input%");
+                                    }
                                 }
                             })
                         ;
@@ -706,8 +708,10 @@ class UserAdminService extends UserService
                 if (!empty($companySearch)) {
                     $q->where(function ($q) use ($companySearch) {
                         foreach ($companySearch as $search) {
-                            $q->orWhere('companies.vat', 'like', "%{$search}%")
-                                ->orWhere('companies.name', 'like', "%{$search}%");
+                            if ($search !== null) {
+                                $q->orWhere('companies.vat', 'like', "%{$search}%")
+                                    ->orWhere('companies.name', 'like', "%{$search}%");
+                            }
                         }
                     });
                 }
