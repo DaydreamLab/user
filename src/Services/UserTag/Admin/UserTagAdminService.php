@@ -88,20 +88,10 @@ class UserTagAdminService extends UserTagService
     public function getUsers(Collection $input)
     {
         $userTag = $this->checkItem($input);
-        if ($search = $input->get('search')) {
-            $users = $userTag->activeUsers()->where(function ($q) use ($search) {
-                $q->orWhere('users.name', 'like', "%{$search}%")
-                    ->orWhere('users.mobilePhone', 'like', "%{$search}%")
-                    ->orWhereHas('company', function ($q) use ($search) {
-                        $q->where('users_companies.email', 'like', "%{$search}%")
-                            ->orWhereHas('company', function ($q) use ($search) {
-                                $q->where('companies.name', 'like', "%{$search}%");
-                            });
-                    });
-            })->get();
-        } else {
-            $users = $userTag->activeUsers;
-        }
+        $users = $this->getCrmUserIds(collect(['rules' => $userTag->rules]), false)
+            ->merge($userTag->activeUsers)
+            ->unique('id')
+            ->values();
 
         $this->status = 'SearchUsersSuccess';
         $this->response = Helper::paginate($users, $input->get('limit') ?: 15, $input->get('page') ?: 1);
@@ -150,9 +140,10 @@ class UserTagAdminService extends UserTagService
 
     /**
      * @param $input
+     * @param bool $onlyIds
      * @return Collection
      */
-    public function getCrmUserIds($input): Collection
+    public function getCrmUserIds($input, bool $onlyIds = true): Collection
     {
         $q = new QueryCapsule();
         $users = $this->userAdminService->crmSearch(
@@ -170,8 +161,7 @@ class UserTagAdminService extends UserTagService
                 'limit' => 0
             ])
         );
-        $userIds = $users->pluck('id');
 
-        return $userIds;
+        return $onlyIds ? $users->pluck('id') : $users;
     }
 }

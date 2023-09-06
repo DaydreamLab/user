@@ -1102,11 +1102,6 @@ class UserAdminService extends UserService
             $input->put('q', $q);
         }
 
-//        $q = $input->get('q');
-//        $q->toSql();
-//        $a = $this->search($input->only(['search', 'company_id', 'updateStatus', 'q', 'limit', 'paginate']));
-//        show($a);
-//        exit();
         return $this->search($input->only(['search', 'company_id', 'updateStatus', 'q', 'limit', 'paginate']));
     }
 

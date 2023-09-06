@@ -2,14 +2,14 @@
 
 namespace DaydreamLab\User\Controllers\UserTagCategory\Admin;
 
-use DaydreamLab\Cms\Resources\Category\Admin\Collections\CategoryAdminListResourceCollection;
 use DaydreamLab\Cms\Resources\Category\Admin\Models\CategoryAdminResource;
 use DaydreamLab\JJAJ\Traits\ApiJsonResponse;
 use DaydreamLab\User\Requests\UserTagCategory\Admin\UserTagCategoryAdminGetItemRequest;
 use DaydreamLab\User\Requests\UserTagCategory\Admin\UserTagCategoryAdminSearchRequest;
 use DaydreamLab\User\Requests\UserTagCategory\Admin\UserTagCategoryAdminStatePost;
 use DaydreamLab\User\Requests\UserTagCategory\Admin\UserTagCategoryAdminStoreRequest;
-use DaydreamLab\User\Resources\UserTag\Admin\Collections\UserTagAdminSearchResourceCollection;
+use DaydreamLab\User\Resources\UserTagCategory\Admin\Collections\UserTagCategoryAdminSearchResourceCollection;
+use DaydreamLab\User\Resources\UserTagCategory\Admin\Models\UserTagCategoryAdminResource;
 use DaydreamLab\User\Services\UserTagCategory\UserTagCategoryService;
 use Throwable;
 
@@ -35,7 +35,12 @@ class UserTagCategoryAdminController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response, [], CategoryAdminResource::class);
+        return $this->response(
+            $this->service->status,
+            $this->service->response,
+            [],
+            UserTagCategoryAdminResource::class
+        );
     }
 
 
@@ -63,7 +68,7 @@ class UserTagCategoryAdminController
             $this->service->status,
             $this->service->response,
             [],
-            CategoryAdminListResourceCollection::class
+            UserTagCategoryAdminSearchResourceCollection::class
         );
     }
 

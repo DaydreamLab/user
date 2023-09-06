@@ -81,6 +81,8 @@ class UserServiceProvider extends ServiceProvider
             });
         });
 
+
+
         Notification::resolved(function (ChannelManager $service) {
             $service->extend('truetel', function ($app) {
                 return new TruetelChannel();
