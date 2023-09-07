@@ -97,9 +97,10 @@ class UserTag extends UserModel
 
     public function realTimeActiveUsers($crmSearchUsers)
     {
-        return $this->users->merge($crmSearchUsers->reject(function ($crmUser) {
-            return in_array($crmUser->id, $this->users->where('pivot.forceDelete', 1)->pluck('id')->all());
-        }))->unique('id')->values();
+        return $this->users->where('pivot.forceDelete', 0)
+            ->merge($crmSearchUsers->reject(function ($crmUser) {
+                return in_array($crmUser->id, $this->users->where('pivot.forceDelete', 1)->pluck('id')->all());
+            }))->unique('id')->values();
     }
 
 
