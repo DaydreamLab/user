@@ -17,6 +17,7 @@ class UserAdminListResource extends BaseJsonResource
      */
     public function toArray($request)
     {
+
         $export = $request->get('export');
         if (!$export) {
             $tz = $request->user('api')->timezone;
