@@ -487,8 +487,8 @@ class UserAdminService extends UserService
         $menu = $validated->get('menu');
         $except = $validated->get('except');
         $q = $validated->get('q');
-        # 排除 noneCustomer
-        $q->where('id', '!=', 48464);
+        # 排除 noneCustomer、白日夢超級管理者、白日夢管理者、零壹管理者
+        $q->whereNotIn('id', [1,2,4,48464]);
 
         if ($basic['userGroup'] || $except['userGroup']) {
             $q->whereHas('groups', function ($q) use ($basic, $except) {
@@ -539,7 +539,7 @@ class UserAdminService extends UserService
                     'lastLoginAt',
                     '<',
                     now()->tz($this->getUser()->timezone)
-                        ->subDays($basic['lastLoginDate'])
+                        ->subDays($except['lastLoginDate'])
                         ->startOfDay()
                         ->tz(config('app.timezone'))
                         ->toDateTimeString()
@@ -547,6 +547,14 @@ class UserAdminService extends UserService
             }
         }
 
+        if ($basic['canMarketing'] && config('app.marketing_message_limit_enabled')) {
+            $q->select('*', DB::raw('(SELECT COUNT(*) FROM notification_records where users.id = notification_records.userId) as marketing_messages_count'));
+            if ($basic['canMarketing'] == '可行銷') {
+                $q->having('marketing_messages_count', '<', config('app.marketing_month_messages'));
+            } else {
+                $q->having('maketing_messages_count', '>=', config('app.marketing_month_messages'));
+            }
+        }
 
         if ($block = $validated->get('block')) {
             $q->where('block', $block);

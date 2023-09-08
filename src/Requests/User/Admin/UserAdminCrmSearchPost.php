@@ -75,6 +75,7 @@ class UserAdminCrmSearchPost extends ListRequest
                     CmsEnumHelper::NEWSLETTER_UNSUBSCRIBE
                 ])
             ],
+            'basic.canMarketing' => ['nullable', Rule::in(EnumHelper::CAN_MARKETING)],
 
             /***** 公司 *****/
             'company' => 'required|array',

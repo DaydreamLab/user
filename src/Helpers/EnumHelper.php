@@ -11,6 +11,11 @@ class EnumHelper
         '無手機名單'
     ];
 
+    public const CAN_MARKETING = [
+        '可行銷',
+        '不可行銷'
+    ];
+
     public const COMPANY_NOTES = [
         self::COMPANY_NOTE_NONE,
         self::COMPANY_NOTE_COMPETITION,
