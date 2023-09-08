@@ -547,12 +547,12 @@ class UserAdminService extends UserService
             }
         }
 
-        if ($basic['canMarketing'] && config('app.marketing_message_limit_enabled')) {
+        if (isset($basic['canMarketing']) && $basic['canMarketing'] && config('app.marketing_message_limit_enabled')) {
             $q->select('*', DB::raw('(SELECT COUNT(*) FROM notification_records where users.id = notification_records.userId) as marketing_messages_count'));
             if ($basic['canMarketing'] == '可行銷') {
                 $q->having('marketing_messages_count', '<', config('app.marketing_month_messages'));
             } else {
-                $q->having('maketing_messages_count', '>=', config('app.marketing_month_messages'));
+                $q->having('marketing_messages_count', '>=', config('app.marketing_month_messages'));
             }
         }
 

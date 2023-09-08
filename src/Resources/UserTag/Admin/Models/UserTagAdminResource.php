@@ -25,7 +25,10 @@ class UserTagAdminResource extends BaseJsonResource
             'type'      => $this->type,
             'description' => $this->description,
             'rules'     => new UserTagAdminRulesResource($this->rules),
-            'notifications' => new NotificationAdminSearchResourceCollection($this->notifications, false)
+            'notifications' => new NotificationAdminSearchResourceCollection(
+                $this->notifications->where('isAuto', $this->type == 'auto' ? 1 : 0),
+                false
+            )
         ];
     }
 }

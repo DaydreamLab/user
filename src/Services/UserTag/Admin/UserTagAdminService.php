@@ -120,12 +120,22 @@ class UserTagAdminService extends UserTagService
             $diffIds = $nowUserIds->diff($newUserIds);
             $diffUsersData = $nowUsersData->filter(function ($u) use ($diffIds) {
                 return in_array($u['id'], $diffIds->all()) && ($u['forceAdd'] || $u['forceDelete']);
+            })->values();
+
+            $newUserIds = $newUserIds->map(function ($id) {
+                return [
+                    'id' => $id,
+                    'forceAdd'  => 0,
+                    'forceDelete'  => 0,
+                ];
             });
+
             foreach ($diffUsersData as $diffUserData) {
-                $newUserIds[$diffUserData['id']] = collect($diffUserData)->except('id')->all();
+                $newUserIds[] = collect($diffUserData)->all();
             }
+
             $item->users()->detach();
-            $newUserIds->chunk(1000)->each(function ($chunk) use ($item) {
+            $newUserIds->unique('id')->values()->chunk(1000)->each(function ($chunk) use ($item) {
                 $item->users()->attach($chunk);
             });
         }
