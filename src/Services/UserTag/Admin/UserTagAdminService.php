@@ -151,6 +151,20 @@ class UserTagAdminService extends UserTagService
     }
 
 
+    public function search(Collection $input)
+    {
+        $result =  parent::search($input);
+        $this->response = $result->map(function ($tag) {
+            $tag->realTimeUsers = $this->getCrmUserIds(
+                collect(['rules' => $tag->rules]),
+                false
+            );
+            return $tag;
+        });
+
+        return $this->response;
+    }
+
     /**
      * @param $input
      * @param bool $onlyIds

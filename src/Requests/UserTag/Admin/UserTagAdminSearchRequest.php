@@ -40,7 +40,7 @@ class UserTagAdminSearchRequest extends UserSearchRequest
     {
         $validated = parent::validated();
         $q = $validated->get('q');
-        $q->with('category');
+        $q->with('category', 'creator', 'activeUsers');
         $validated->put('q', $q);
 
         return $validated;
