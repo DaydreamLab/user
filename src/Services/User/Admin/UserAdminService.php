@@ -601,8 +601,12 @@ class UserAdminService extends UserService
                 if (count($basic['jobCategories'] ?: [])) {
                     $q->whereIn('jobCategory', $basic['jobCategories']);
                 }
-                foreach ($basic['interestedIssues'] ?: [] as $issue) {
-                    $q->where('interestedIssue', 'like', "%{$issue}%");
+                if (count($basic['interestedIssues'] ?: [])) {
+                    $q->where(function ($q) use ($basic) {
+                        foreach ($basic['interestedIssues'] ?: [] as $issue) {
+                            $q->orWhere('interestedIssue', 'like', "%{$issue}%");
+                        }
+                    });
                 }
             });
         }
