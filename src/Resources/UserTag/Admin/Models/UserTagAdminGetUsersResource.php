@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Resources\UserTag\Admin\Models;
 
 use DaydreamLab\JJAJ\Resources\BaseJsonResource;
+use DaydreamLab\User\Helpers\EnumHelper;
 
 class UserTagAdminGetUsersResource extends BaseJsonResource
 {
@@ -15,7 +16,7 @@ class UserTagAdminGetUsersResource extends BaseJsonResource
     public function toArray($request)
     {
         $userGroup =  $this->groups->filter(function ($group) {
-            return in_array($group->id, [6,7]);
+            return in_array($group->title, EnumHelper::SITE_USER_GROUPS);
         })->first();
 
         return [
@@ -25,6 +26,7 @@ class UserTagAdminGetUsersResource extends BaseJsonResource
             'userGroupTitle' => $userGroup ? $userGroup->title : '',
             'mobilePhone'   => $this->mobilePhone,
             'email'     => $this->company->email,
+            'monthMarketingMessages' => $this->monthMarketingMessages->count(),
             'tags'      => $this->userTags->map(function ($userTag) {
                 return $userTag->only('id', 'title', 'type');
             })

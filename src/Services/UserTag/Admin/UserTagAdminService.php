@@ -59,7 +59,6 @@ class UserTagAdminService extends UserTagService
         $addIds = $input->get('addIds') ?: [];
         if (count($addIds)) {
             foreach ($addIds as $addId) {
-
                 if ($userTag->users()->allRelatedIds()->contains($addId)) {
                     $userTag->users()->updateExistingPivot($addId, ['forceAdd' => 1, 'forceDelete' => 0]);
                 } else {
@@ -88,7 +87,12 @@ class UserTagAdminService extends UserTagService
     public function getUsers(Collection $input)
     {
         $userTag = $this->checkItem($input);
-        $users = $this->getCrmUserIds(collect(['rules' => $userTag->rules]), false)
+        $users = $this->getCrmUserIds(
+            collect([
+                'rules' => $userTag->rules]),
+            false,
+            ['userTags', 'monthMarketingMessages']
+        )
             ->merge($userTag->activeUsers)
             ->unique('id')
             ->values();
@@ -115,7 +119,6 @@ class UserTagAdminService extends UserTagService
             $input->put('rules', $input->get('originalRules'));
 
             $newUserIds = $this->getCrmUserIds($input);
-
             # 找出有被強制取消或強制新增的
             $diffIds = $nowUserIds->diff($newUserIds);
             $diffUsersData = $nowUsersData->filter(function ($u) use ($diffIds) {
@@ -153,9 +156,12 @@ class UserTagAdminService extends UserTagService
      * @param bool $onlyIds
      * @return Collection
      */
-    public function getCrmUserIds($input, bool $onlyIds = true): Collection
+    public function getCrmUserIds($input, bool $onlyIds = true, $withRelations = []): Collection
     {
         $q = new QueryCapsule();
+        if (count($withRelations)) {
+            $q->with($withRelations);
+        }
         $users = $this->userAdminService->crmSearch(
             collect([
                 'basic' => $input->get('rules')['basic'],
