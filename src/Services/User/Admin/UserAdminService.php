@@ -742,7 +742,7 @@ class UserAdminService extends UserService
                 if (count($city)) {
                     $q->where(function ($q) use ($city) {
                         foreach ($city as $c) {
-                            $q->whereJsonContains('phones', ['phoneCode' => $c]);
+                            $q->orWhereJsonContains('phones', ['phoneCode' => $c]);
                         }
                     });
                 }
