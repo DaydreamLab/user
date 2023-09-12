@@ -47,7 +47,6 @@ class UserTagAdminStoreRequest extends UserStoreRequest
     {
         $validated = parent::validated();
         $validated->put('originalRules', $validated->get('rules'));
-        # 額外處理公司銷售記錄
         $rules = $this->handleRules($validated->get('rules'));
         $rules['companyOrder'] = CompanyRequestHelper::handleCompanyOrder($rules['companyOrder']);
         $validated->put('rules', $rules) ;

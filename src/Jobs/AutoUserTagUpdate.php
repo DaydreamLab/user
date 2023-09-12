@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 class AutoUserTagUpdate implements ShouldQueue
 {
@@ -40,10 +41,16 @@ class AutoUserTagUpdate implements ShouldQueue
     public function handle()
     {
         $oldUsers = $this->tag->activeUsers;
+        $forceDeleteUserIds = $this->tag->users->where('pivot.forceDelete', 1)->pluck('id')->values();
+        $forceAddUserIds = $this->tag->users->where('pivot.forceAdd', 1)->pluck('id')->values();
+
         $oldIds = $oldUsers->pluck('id');
         $newUserIds = app(UserTagAdminService::class)->getCrmUserIds(collect([
             'rules' => $this->tag->rules
-        ]));
+        ]))->reject(function ($id) use ($forceDeleteUserIds) {
+            return in_array($id, $forceDeleteUserIds->all());
+        })->merge($forceAddUserIds)->unique()->values();
+
 
         $intersectIds = $oldIds->intersect($newUserIds);
         $removeIds = $oldIds->diff($intersectIds);
@@ -51,21 +58,22 @@ class AutoUserTagUpdate implements ShouldQueue
 
         $notifications = $this->tag->notifications->where('isAuto', 1)->where('state', 1);
         foreach ($notifications as $notification) {
-            $autoType = $notification->params['autoType'] ?? null;
+            $behavior = $notification->params['behavior'] ?? null;
             $targetIds = [];
-            if ($autoType === 'join') {
+            if ($behavior === 'join') {
                 $targetIds = $addIds;
-            } elseif ($autoType === 'leave') {
+            } elseif ($behavior === 'leave') {
                 $targetIds = $removeIds;
             }
 
-            if (empty($targetIds)) {
+            if (empty($targetIds) || ($targetIds instanceof Collection && $targetIds->count() == 0)) {
                 continue;
             }
 
             $targetUsers = User::whereIn('id', $targetIds)->get()->map(function ($user) {
                 return [
                     'id' => $user->id,
+                    'name' => $user->name,
                     'email' => $user->company->email,
                     'mobilePhone'   => $user->mobilePhone
                 ];
