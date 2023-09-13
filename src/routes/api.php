@@ -155,6 +155,8 @@ Route::post('api/admin/company/{id}/user/search', [CompanyAdminController::class
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/{id}/user/export', [CompanyAdminController::class, 'exportSearchUsers'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('api/admin/company/importOrder', [CompanyAdminController::class, 'importOrder'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/export', [CompanyAdminController::class, 'export'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/company/restore', [CompanyAdminController::class, 'restore'])

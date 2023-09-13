@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Controllers\Company\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminExportSearchUsersRequest;
+use DaydreamLab\User\Requests\Company\Admin\CompanyAdminImportOrderRequest;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminSearchUsersRequest;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminExportResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminListResourceCollection;
@@ -18,6 +19,7 @@ use DaydreamLab\User\Requests\Company\Admin\CompanyAdminStorePost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminSearchPost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminOrderingPost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class CompanyAdminController extends BaseController
@@ -89,6 +91,21 @@ class CompanyAdminController extends BaseController
         $this->service->setUser($request->user('api'));
         try {
             $this->service->importCompany($request);
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function importOrder(CompanyAdminImportOrderRequest $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            DB::transaction(function () use ($request) {
+                $this->service->importOrder($request);
+            });
         } catch (Throwable $t) {
             $this->handleException($t);
         }

@@ -4,6 +4,9 @@ return [
     'APPLY_SUCCESS'       => 'apply success',
     'APPLY_FAIL'          => 'apply fail',
 
+    'IMPORT_ORDER_FAIL' => '{$ModelName} import order fail',
+    'IMPORT_ORDER_SUCCESS'  => '{$ModelName} import order success',
+
     'STATUS_INVALID'    => '{$ModelName} status invalid',
     'SEARCH_USER_SUCCESS' => '{$ModelName} search user success',
 

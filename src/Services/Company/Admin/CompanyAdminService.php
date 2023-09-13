@@ -2,16 +2,21 @@
 
 namespace DaydreamLab\User\Services\Company\Admin;
 
+use Carbon\Carbon;
+use DaydreamLab\Cms\Models\Brand\Brand;
 use DaydreamLab\User\Events\UpdateCompanyUsersUserGroupAndEdmEvent;
 use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Jobs\ImportCompany;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
+use DaydreamLab\User\Models\Company\Company;
+use DaydreamLab\User\Models\CompanyOrder\CompanyOrder;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Repositories\Company\Admin\CompanyAdminRepository;
 use DaydreamLab\User\Repositories\Company\CompanyCategoryRepository;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\Company\CompanyService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class CompanyAdminService extends CompanyService
 {
@@ -81,6 +86,107 @@ class CompanyAdminService extends CompanyService
     public function export(Collection $input)
     {
         return $this->search($input);
+    }
+
+
+    public function importOrder($input)
+    {
+        $file = $input->file('file');
+        $temp = $file->move('tmp', $file->hashName());
+        $filePath = $temp->getRealPath();
+
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load($filePath);
+        $sheet = $spreadsheet->getSheet(0);
+        $rows = $sheet->getHighestRow();
+
+        $orderData = [];
+        for ($i = 2; $i <= $rows; $i++) {
+            $rowData = [];
+            for ($j = 'A'; $j <= 'G'; $j++) {
+                $key = $j . $i;
+                $rowData[] = $sheet->getCell($key)->getValue();
+            }
+            $temp  = [
+                'vat' => $rowData[3],
+                'companyName' => $rowData[4],
+                'brand' => $rowData[5],
+                'date'  => $rowData[6],
+                'row'   => $i
+            ];
+            $orderData[] = $temp;
+        }
+
+        $createData = [];
+        $errors = [];
+        $companyOrderData = collect($orderData)->groupBy('vat');
+        foreach ($companyOrderData as $vat => $orders) {
+            $company = Company::where('vat', $vat)->first();
+            if (!$company) {
+                $errors[] = [
+                    'name' => $orders->first()['companyName'],
+                    'vat' => $vat,
+                    'reason' => '公司不存在',
+                    'rows'  => $orders->pluck('row')->unique()->values()
+                ];
+                continue;
+            }
+
+            $errorRows = [];
+            foreach ($orders as $order) {
+                $brand = Brand::where('title', 'like', "{$order['brand']}")
+                    ->orWhereJsonContains('params', ['subBrands' => $order['brand']])
+                    ->first();
+                if (!$brand) {
+                    $errorRows[] = $order['row'];
+                } else {
+                    $date = Carbon::parse($order['date'] . '01', 'Asia/Taipei')
+                        ->startOfDay()
+                        ->tz('UTC')
+                        ->toDateTimeString();
+                    $companyOrder = CompanyOrder::where('brandId', $brand->id)
+                        ->where('companyId', $company->id)
+                        ->where('date', $date)
+                        ->first();
+                    if (!$companyOrder) {
+                        $createData[] = [
+                            'brandId' => $brand->id,
+                            'companyId' => $company->id,
+                            'date' => $date,
+                            'created_by' => $this->getUser()->id,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                    }
+                }
+            }
+
+            if (count($errorRows)) {
+                $errors[] = [
+                    'name' => $orders->first()['companyName'],
+                    'vat' => $vat,
+                    'reason' => '品牌不存在',
+                    'rows'   => $errorRows
+                ];
+            }
+        }
+        unlink($filePath);
+
+        if (count($errors)) {
+            $message = '';
+            foreach ($errors as $error) {
+                foreach ($error['rows'] as $row) {
+                    $message .= '列：' . $row . ' 原因：' . $error['reason'] . PHP_EOL;
+                }
+            }
+            $this->response = $message;
+            DB::rollBack();
+        } else {
+            DB::table('company_orders')->insert($createData);
+        }
+
+        $this->status = 'ImportOrder' . (count($errors) ? 'Fail' : 'Success');
     }
 
 
