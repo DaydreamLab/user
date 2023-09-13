@@ -35,6 +35,7 @@ class UserServiceProvider extends ServiceProvider
         'DaydreamLab\User\Commands\Feat\Crm\CrmSeedingCommand',
         'DaydreamLab\User\Commands\Hotfix\TotpPermission\FixTotpPermissionCommand',
         'DaydreamLab\User\Commands\Feat\OuterEvent\OuterEventInstallCommand',
+        'DaydreamLab\User\Commands\Feat\Botbonnie\BotbonnieSeedingCommand',
     ];
 
 
