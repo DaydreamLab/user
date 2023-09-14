@@ -53,21 +53,21 @@ class CrmSeedingCommand extends Command
 
     public function apiSeeder()
     {
-        $data = getJson(__DIR__ . '/jsons/api.json', true);
-        $counter = Api::all()->count();
-        foreach ($data as $apiData) {
-            $apiData['ordering'] = ++$counter;
-            Api::create($apiData);
-        }
+//        $data = getJson(__DIR__ . '/jsons/api.json', true);
+//        $counter = Api::all()->count();
+//        foreach ($data as $apiData) {
+//            $apiData['ordering'] = ++$counter;
+//            Api::create($apiData);
+//        }
 
         # 新增"未分類"標籤分類
         $userTagRoot = Category::where('title', 'ROOT')->where('extension', 'userTag')->first();
         if (!$userTagRoot) {
             $userTagRoot = Category::create([
                 'title' => 'ROOT',
-                'alias' => 'usertag',
+                'alias' => 'usertag_category',
                 'state' => 1,
-                'extension' => 'usertag',
+                'extension' => 'usertag_category',
                 'access' => 1,
                 'language' => '*',
                 'ordering' => 1
@@ -78,17 +78,15 @@ class CrmSeedingCommand extends Command
             ->where('extension', 'userTag')
             ->first();
         if (!$uncategory) {
-            $uncategory = Category::create([
+            $uncategory = $userTagRoot->children()->create([
                 'title' => '未分類',
                 'alias' => 'uncategory',
-                'path'  => '/usertag/uncategory',
                 'state' => 1,
-                'extension' => 'usertag',
+                'extension' => 'usertag_category',
                 'access' => 1,
                 'language' => '*',
                 'ordering' => 2
             ]);
         }
-        $userTagRoot->appendNode($uncategory);
     }
 }
