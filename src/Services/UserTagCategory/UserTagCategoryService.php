@@ -56,6 +56,9 @@ class UserTagCategoryService
     public function store(Collection $input)
     {
         $input->put('extension', 'usertag');
+        if (!$input->get('parent_id')) {
+            $input->put('parent_id', $this->service->getRoot('usertag')->id);
+        }
         $result = $this->service->store($input);
         $this->status = $this->service->status;
         $this->response = $this->service->response;

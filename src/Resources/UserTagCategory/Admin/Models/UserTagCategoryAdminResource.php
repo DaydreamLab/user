@@ -20,6 +20,7 @@ class UserTagCategoryAdminResource extends BaseJsonResource
         $manualTags = $this->userTags->where('type', 'manual')->values();
         return [
             'id' => $this->id,
+            'parentId' => $this->parent_id,
             'title' => $this->title,
             'description' => $this->description,
             'autoTags' => $autoTags->map(function ($tag) use ($tz) {

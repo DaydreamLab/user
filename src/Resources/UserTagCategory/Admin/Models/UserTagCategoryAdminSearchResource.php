@@ -19,6 +19,8 @@ class UserTagCategoryAdminSearchResource extends BaseJsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'tree_title' => $this->tree_title,
+            'depth'     => $this->depth,
             'description' => $this->description,
             'tagCount' => $this->userTags->count(),
             'tags'  => $this->userTags->map(function ($tag) {

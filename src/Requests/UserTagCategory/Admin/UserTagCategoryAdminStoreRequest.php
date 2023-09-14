@@ -28,6 +28,7 @@ class UserTagCategoryAdminStoreRequest extends UserStoreRequest
     {
         $rules = [
             'id' => 'nullable|integer',
+            'parentId' => 'nullable|integer',
             'title' => 'required|string',
             'description' => 'nullable|string'
         ];
@@ -39,6 +40,7 @@ class UserTagCategoryAdminStoreRequest extends UserStoreRequest
     public function validated()
     {
         $validated = parent::validated();
+        $validated->put('parent_id', $validated->pull('parentId'));
 
         return $validated;
     }
