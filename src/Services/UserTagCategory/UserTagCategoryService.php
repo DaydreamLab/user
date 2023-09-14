@@ -57,7 +57,7 @@ class UserTagCategoryService
     {
         $input->put('extension', 'usertag');
         if (!$input->get('parent_id')) {
-            $input->put('parent_id', $this->service->getUncategory('usertag')->id);
+            $input->put('parent_id', $this->service->getRoot('usertag')->id);
         }
         $result = $this->service->store($input);
         $this->status = $this->service->status;

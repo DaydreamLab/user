@@ -21,6 +21,7 @@ class UserTagCategoryAdminResource extends BaseJsonResource
         return [
             'id' => $this->id,
             'parentId' => $this->parent_id,
+            'parentTitle' => $this->parent->title,
             'title' => $this->title,
             'description' => $this->description,
             'autoTags' => $autoTags->map(function ($tag) use ($tz) {
