@@ -33,8 +33,8 @@ class UserTagAdminStoreRequest extends UserStoreRequest
     {
         $rules = [
             'id' => 'nullable|integer',
+            'parentId' => 'nullable|integer',
             'title' => 'required|string',
-            'categoryId' => 'nullable|integer',
             'type'  => ['required', Rule::in(['auto', 'manual'])],
             'rules' => 'required|array',
         ];

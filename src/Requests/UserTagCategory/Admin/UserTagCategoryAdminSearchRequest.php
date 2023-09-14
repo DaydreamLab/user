@@ -39,8 +39,7 @@ class UserTagCategoryAdminSearchRequest extends UserSearchRequest
     {
         $validated = parent::validated();
         $q = $validated->get('q');
-        $validated->put('q', $q->whereIn('state', [0,1]));
-
+        $validated->put('q', $q->whereIn('state', [0,1])->orderBy('_lft', 'asc')->where('title', '!=', 'ROOT'));
 
         return $validated;
     }
