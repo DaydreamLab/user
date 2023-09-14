@@ -53,21 +53,21 @@ class CrmSeedingCommand extends Command
 
     public function apiSeeder()
     {
-//        $data = getJson(__DIR__ . '/jsons/api.json', true);
-//        $counter = Api::all()->count();
-//        foreach ($data as $apiData) {
-//            $apiData['ordering'] = ++$counter;
-//            Api::create($apiData);
-//        }
+        $data = getJson(__DIR__ . '/jsons/api.json', true);
+        $counter = Api::all()->count();
+        foreach ($data as $apiData) {
+            $apiData['ordering'] = ++$counter;
+            Api::create($apiData);
+        }
 
         # 新增"未分類"標籤分類
-        $userTagRoot = Category::where('title', 'ROOT')->where('extension', 'userTag')->first();
+        $userTagRoot = Category::where('title', 'ROOT')->where('extension', 'usertag')->first();
         if (!$userTagRoot) {
             $userTagRoot = Category::create([
                 'title' => 'ROOT',
-                'alias' => 'usertag_category',
+                'alias' => 'usertag',
                 'state' => 1,
-                'extension' => 'usertag_category',
+                'extension' => 'usertag',
                 'access' => 1,
                 'language' => '*',
                 'ordering' => 1
@@ -82,7 +82,7 @@ class CrmSeedingCommand extends Command
                 'title' => '未分類',
                 'alias' => 'uncategory',
                 'state' => 1,
-                'extension' => 'usertag_category',
+                'extension' => 'usertag',
                 'access' => 1,
                 'language' => '*',
                 'ordering' => 2
