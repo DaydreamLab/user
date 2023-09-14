@@ -61,7 +61,7 @@ class CrmSeedingCommand extends Command
         }
 
         # 新增"未分類"標籤分類
-        $userTagRoot = Category::where('title', 'ROOT')->where('extension', 'userTag')->first();
+        $userTagRoot = Category::where('title', 'ROOT')->where('extension', 'usertag')->first();
         if (!$userTagRoot) {
             $userTagRoot = Category::create([
                 'title' => 'ROOT',
@@ -78,10 +78,9 @@ class CrmSeedingCommand extends Command
             ->where('extension', 'userTag')
             ->first();
         if (!$uncategory) {
-            $uncategory = Category::create([
+            $uncategory = $userTagRoot->children()->create([
                 'title' => '未分類',
                 'alias' => 'uncategory',
-                'path'  => '/usertag/uncategory',
                 'state' => 1,
                 'extension' => 'usertag',
                 'access' => 1,
@@ -89,6 +88,5 @@ class CrmSeedingCommand extends Command
                 'ordering' => 2
             ]);
         }
-        $userTagRoot->appendNode($uncategory);
     }
 }
