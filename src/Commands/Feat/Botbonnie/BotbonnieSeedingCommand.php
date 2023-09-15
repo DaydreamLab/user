@@ -2,21 +2,17 @@
 
 namespace DaydreamLab\User\Commands\Feat\Botbonnie;
 
-use DaydreamLab\Cms\Models\Category\Category;
-use DaydreamLab\Cms\Services\Category\Admin\CategoryAdminService;
-use DaydreamLab\Cms\Services\IotCategory\Admin\IotCategoryAdminService;
-use DaydreamLab\Cms\Services\Site\Admin\SiteAdminService;
 use DaydreamLab\JJAJ\Database\QueryCapsule;
-use DaydreamLab\JJAJ\Exceptions\NotFoundException;
-use DaydreamLab\User\Models\Api\Api;
-use DaydreamLab\User\Models\User\UserGroup;
-use DaydreamLab\User\Services\Asset\Admin\AssetAdminService;
-use DaydreamLab\User\Services\Asset\Admin\AssetGroupAdminService;
+use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\User\Helpers\BotbonnieHelper;
+use DaydreamLab\User\Models\Line\Line;
+use DaydreamLab\User\Models\User\User;
+use DaydreamLab\User\Models\UserTag\UserTag;
 use DaydreamLab\User\Services\UserTag\Admin\UserTagAdminService;
 use DaydreamLab\User\Services\UserTagCategory\UserTagCategoryService;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class BotbonnieSeedingCommand extends Command
 {
@@ -46,19 +42,61 @@ class BotbonnieSeedingCommand extends Command
     }
 
 
-    public function getBotBonnieTag($tagId)
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
     {
-        $response = (new Client())->get(
-            'https://api.botbonnie.com/v1/api/tag/' . $tagId,
-            [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . config('app.botbonnie_token'),
-                    'Content-Type' => 'application/json'
-                ]
-            ]
-        );
+        $this->info('同步 Botbonnie 標籤會員中...');
 
-        return json_decode($response->getBody()->getContents())->res;
+        $botbonnieUsers = BotbonnieHelper::getAllUsers();
+//        Storage::disk('public')->put('users.json', json_encode($botbonnieUsers));
+//        $botbonnieUsers = Helper::getJson(base_path() . '/public/users.json');
+
+        $autoBindLineUsers = [];
+        $lineBindUsers = [];
+        $botbonnieLineUsers = collect($botbonnieUsers)->where('platform', 'LINE');
+        foreach ($botbonnieLineUsers as $botbonnieLineUser) {
+            $lineBind = Line::where('line_user_id', $botbonnieLineUser['id'])->first();
+
+            if ($lineBind) {
+                $lineBindUsers = [$lineBind->user_id];
+//            if (!$lineBind && isset($botbonnieLineUser['phone'])) {
+//                $user = User::where('mobilePhone', $botbonnieLineUser['phone'])->first();
+//                if ($user) {0
+////                    Line::create([
+////                        'line_user_id' => $botbonnieLineUser->id,
+////                        'user_id' => $user->id,
+////                    ]);
+//                    $autoBindLineUsers[] = $user->id;
+//                }
+            }
+        }
+        show($lineBindUsers);
+        exit();
+        $fbUsers = collect($botbonnieUsers)->where('platform', 'FB');
+
+
+        $this->info('同步 Botbonnie 標籤會員完成');
+        exit();
+        $this->info('同步 BotBonnie 標籤中...');
+        $data = getJson(__DIR__ . '/jsons/tags.json', true);
+        $tagIds = collect($data)->pluck('tagId');
+        UserTag::whereNotNull('botbonnieId')
+            ->get()
+            ->each(function ($tag) use ($tagIds) {
+                if (!$tagIds->contains($tag->botbonnieId)) {
+                    $tag->state = -1;
+                    $tag->save();
+                }
+            });
+        foreach ($data as $tag) {
+            $tag = $this->getBotBonnieTag($tag['tagId']);
+            $this->recursive($tag);
+        }
+        $this->info('同步 BotBonnie 完成');
     }
 
 
@@ -125,22 +163,5 @@ class BotbonnieSeedingCommand extends Command
         }
 
         return true;
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $data = getJson(__DIR__ . '/jsons/tags.json', true);
-        #todo 還要處理被刪除的部分
-        foreach ($data as $tag) {
-            $tag = $this->getBotBonnieTag($tag['tagId']);
-            $this->recursive($tag);
-
-        }
-
     }
 }
