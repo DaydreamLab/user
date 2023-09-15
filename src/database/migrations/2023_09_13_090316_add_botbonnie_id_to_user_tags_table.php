@@ -17,6 +17,9 @@ class AddBotbonnieIdToUserTagsTable extends Migration
             if (!Schema::hasColumn('user_tags', 'botbonnieId')) {
                 $table->string('botbonnieId')->after('type')->nullable();
             }
+            if (!Schema::hasColumn('user_tags', 'botId')) {
+                $table->string('botId')->after('botbonnieId')->nullable();
+            }
         });
     }
 

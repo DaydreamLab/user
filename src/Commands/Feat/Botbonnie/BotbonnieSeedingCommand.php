@@ -12,6 +12,7 @@ use DaydreamLab\User\Models\Api\Api;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Services\Asset\Admin\AssetAdminService;
 use DaydreamLab\User\Services\Asset\Admin\AssetGroupAdminService;
+use DaydreamLab\User\Services\UserTag\Admin\UserTagAdminService;
 use DaydreamLab\User\Services\UserTagCategory\UserTagCategoryService;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
@@ -61,36 +62,68 @@ class BotbonnieSeedingCommand extends Command
     }
 
 
-    public function findOrCreate($tag)
-    {
-
-    }
-
     public function recursive($tag)
     {
-        $service = app(UserTagCategoryService::class);
-        if (property_exists($tag, 'parentId')) {
-            $parentTag = $service->search(collect([
-                'q' => (new QueryCapsule())->where('title', $tag->name)
-                    ->whereJsonContains('params', ['BotBonnieId' => $tag->parentId])]))->first();
-            if (!$parentTag) {
-                return $this->recursive($this->getBotBonnieTag($tag->parentId));
+        if ($tag->type == 0) {
+            # 找出這個標籤的分類存不存在
+            if (!property_exists($tag, 'parentId')) {
+                $userTagCategory = app(UserTagCategoryService::class)
+                    ->search(collect([
+                        'alias' => 'uncategory'
+                    ]))->first();
+            } else {
+                $userTagCategory = app(UserTagCategoryService::class)
+                    ->search(collect([
+                        'q' => (new QueryCapsule())
+                            ->whereJsonContains('params', ['BotBonnieId' => $tag->parentId, 'BotId' => $tag->botId])
+                    ]))->first();
+                if (!$userTagCategory) {
+                    $userTagCategory = $this->recursive($this->getBotBonnieTag($tag->parentId));
+                }
             }
+            $userTag =  app(UserTagAdminService::class)->search(collect([
+                'q' => (new QueryCapsule())->where('botbonnieId', $tag->id)->where('botId', $tag->botId)
+            ]))->first();
+            if (!$userTag) {
+                $userTag = app(UserTagAdminService::class)->store(collect([
+                    'title' => $tag->name,
+                    'categoryId' => $userTagCategory ? $userTagCategory->id : null,
+                    'botbonnieId' => $tag->id,
+                    'botId' => $tag->botId,
+                    'type'  => 'manual',
+                    'rules' => []
+                ]));
+            } else {
+                $userTag->title = $tag->name;
+                unset($userTag->realTimeUsers);
+                $userTag->save();
+            }
+        } else {
+            if (property_exists($tag, 'parentId')) {
+                $parentTagCategory = $this->recursive($this->getBotBonnieTag($tag->parentId));
+            }
+            $tagCategory = app(UserTagCategoryService::class)
+                ->search(collect([
+                    'q' => (new QueryCapsule())
+                        ->whereJsonContains('params', ['BotBonnieId' => $tag->id, 'BotId' => $tag->botId])
+                ]))->first();
+            if (!$tagCategory) {
+                $tagCategory = app(UserTagCategoryService::class)->store(collect([
+                    'title' => $tag->name,
+                    'parent_id' => isset($parentTagCategory) ? $parentTagCategory->id : null,
+                    'params' => [
+                        'BotBonnieId' => $tag->id,
+                        'BotId' => $tag->botId
+                    ]
+                ]));
+            } else {
+                $tagCategory->title = $tag->name;
+                $tagCategory->parent_id = isset($parentTagCategory) ? $parentTagCategory->id : $tagCategory->parent_id;
+                $tagCategory->save();
+            }
+            return $tagCategory;
         }
 
-        $tagCategory = $service->search(collect([
-            'q' => (new QueryCapsule())->where('title', $tag->name)
-                ->whereJsonContains('params', ['BotBonnieId' => $tag->id])]))->first();
-        if (!$tagCategory) {
-            $tagCategory = $service->store(collect([
-                'title' => $tag->name,
-                'parent_id' => isset($parentCategory) ? $parentCategory->id : null,
-                'params' => [
-                    'BotBonnieId' => $tag->id,
-                    'BotBonnieParentId' => property_exists($tag, 'parentId') ? $tag->parentId : null
-                ]
-            ]));
-        }
         return true;
     }
 
@@ -102,9 +135,12 @@ class BotbonnieSeedingCommand extends Command
     public function handle()
     {
         $data = getJson(__DIR__ . '/jsons/tags.json', true);
+        #todo 還要處理被刪除的部分
         foreach ($data as $tag) {
             $tag = $this->getBotBonnieTag($tag['tagId']);
             $this->recursive($tag);
+
         }
+
     }
 }

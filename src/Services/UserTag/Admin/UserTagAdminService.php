@@ -26,13 +26,15 @@ class UserTagAdminService extends UserTagService
 
     public function addMapping($item, $input)
     {
-        $input->put('rules', $input->get('originalRules'));
-        $userIds = $this->getCrmUserIds($input);
+        if (!$item->botbonnieId) {
+            $input->put('rules', $input->get('originalRules'));
+            $userIds = $this->getCrmUserIds($input);
 
-        if ($input->get('type') != 'auto' && $userIds->count()) {
-            $userIds->chunk(1000)->each(function ($chunk) use ($item) {
-                $item->users()->attach($chunk->all());
-            });
+            if ($input->get('type') != 'auto' && $userIds->count()) {
+                $userIds->chunk(1000)->each(function ($chunk) use ($item) {
+                    $item->users()->attach($chunk->all());
+                });
+            }
         }
     }
 
@@ -87,15 +89,20 @@ class UserTagAdminService extends UserTagService
     public function getUsers(Collection $input)
     {
         $userTag = $this->checkItem($input);
-        $users = $this->getCrmUserIds(
-            collect([
-                'rules' => $userTag->rules]),
-            false,
-            ['userTags', 'monthMarketingMessages']
-        )
-            ->merge($userTag->activeUsers)
-            ->unique('id')
-            ->values();
+
+        if ($userTag->botbonnieId) {
+            $users = $userTag->users;
+        } else {
+            $users = $this->getCrmUserIds(
+                collect([
+                    'rules' => $userTag->rules]),
+                false,
+                ['userTags', 'monthMarketingMessages']
+            )
+                ->merge($userTag->activeUsers)
+                ->unique('id')
+                ->values();
+        }
 
         $this->status = 'SearchUsersSuccess';
         $this->response = Helper::paginate($users, $input->get('limit') ?: 15, $input->get('page') ?: 1);
@@ -106,41 +113,43 @@ class UserTagAdminService extends UserTagService
 
     public function modifyMapping($item, $input)
     {
-        if ($input->get('type') != 'auto') {
-            $nowUsersData = $item->users->map(function ($user) {
-                return [
-                    'id' => $user->id,
-                    'forceAdd'  => $user->pivot->forceAdd,
-                    'forceDelete'  => $user->pivot->forceDelete,
-                ];
-            });
+        if (!$item->botbonnieId) {
+            if ($input->get('type') != 'auto') {
+                $nowUsersData = $item->users->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'forceAdd'  => $user->pivot->forceAdd,
+                        'forceDelete'  => $user->pivot->forceDelete,
+                    ];
+                });
 
-            $nowUserIds = $nowUsersData->pluck('id');
-            $input->put('rules', $input->get('originalRules'));
+                $nowUserIds = $nowUsersData->pluck('id');
+                $input->put('rules', $input->get('originalRules'));
 
-            $newUserIds = $this->getCrmUserIds($input);
-            # 找出有被強制取消或強制新增的
-            $diffIds = $nowUserIds->diff($newUserIds);
-            $diffUsersData = $nowUsersData->filter(function ($u) use ($diffIds) {
-                return in_array($u['id'], $diffIds->all()) && ($u['forceAdd'] || $u['forceDelete']);
-            })->values();
+                $newUserIds = $this->getCrmUserIds($input);
+                # 找出有被強制取消或強制新增的
+                $diffIds = $nowUserIds->diff($newUserIds);
+                $diffUsersData = $nowUsersData->filter(function ($u) use ($diffIds) {
+                    return in_array($u['id'], $diffIds->all()) && ($u['forceAdd'] || $u['forceDelete']);
+                })->values();
 
-            $newUserIds = $newUserIds->map(function ($id) {
-                return [
-                    'id' => $id,
-                    'forceAdd'  => 0,
-                    'forceDelete'  => 0,
-                ];
-            });
+                $newUserIds = $newUserIds->map(function ($id) {
+                    return [
+                        'id' => $id,
+                        'forceAdd'  => 0,
+                        'forceDelete'  => 0,
+                    ];
+                });
 
-            foreach ($diffUsersData as $diffUserData) {
-                $newUserIds[] = collect($diffUserData)->all();
+                foreach ($diffUsersData as $diffUserData) {
+                    $newUserIds[] = collect($diffUserData)->all();
+                }
+
+                $item->users()->detach();
+                $newUserIds->unique('id')->values()->chunk(1000)->each(function ($chunk) use ($item) {
+                    $item->users()->attach($chunk);
+                });
             }
-
-            $item->users()->detach();
-            $newUserIds->unique('id')->values()->chunk(1000)->each(function ($chunk) use ($item) {
-                $item->users()->attach($chunk);
-            });
         }
     }
 
@@ -155,10 +164,14 @@ class UserTagAdminService extends UserTagService
     {
         $result =  parent::search($input);
         $this->response = $result->map(function ($tag) {
-            $tag->realTimeUsers = $this->getCrmUserIds(
-                collect(['rules' => $tag->rules]),
-                false
-            );
+            if ($tag->botbonnieId) {
+                $tag->realTimeUsers = collect();
+            } else {
+                $tag->realTimeUsers = $this->getCrmUserIds(
+                    collect(['rules' => $tag->rules]),
+                    false
+                );
+            }
             return $tag;
         });
 
