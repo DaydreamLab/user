@@ -167,11 +167,10 @@ class UserTagAdminService extends UserTagService
 
         $this->response = new LengthAwarePaginator(
             $transformedItems,
-            $result->total(),
-            $result->perPage(),
-            $result->currentPage(),
+            $result instanceof LengthAwarePaginator ? $result->total() : $result->count(),
+            $result instanceof LengthAwarePaginator ? $result->perPage() : ($input->get('limit') ?: 10),
+            $result instanceof LengthAwarePaginator ? $result->currentPage() : ($input->get('page') ?: 1),
         );
-
 
         return $this->response;
     }
