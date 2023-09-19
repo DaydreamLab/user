@@ -163,6 +163,7 @@ class UserTagAdminService extends UserTagService
 
     public function search(Collection $input)
     {
+
         $result =  parent::search($input);
 
         $transformItems = $result->getCollection()->map(function ($tag) {

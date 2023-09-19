@@ -80,6 +80,9 @@ class UserAdminResource extends BaseJsonResource
             'cancelReason'   => $this->newsletterSubscription
                 ? $this->newsletterSubscription->cancelReason
                 : null,
+            'userTags'  => $this->userTags->map(function ($tag) {
+                return $tag->only('id', 'title', 'type');
+            })
         ];
     }
 }

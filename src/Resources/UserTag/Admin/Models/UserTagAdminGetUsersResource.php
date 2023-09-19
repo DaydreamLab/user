@@ -27,7 +27,7 @@ class UserTagAdminGetUsersResource extends BaseJsonResource
             'mobilePhone'   => $this->mobilePhone,
             'email'     => $this->company->email,
             'monthMarketingMessages' => $this->monthMarketingMessages->count(),
-            'tags'      => $this->userTags->map(function ($userTag) {
+            'userTags'      => $this->userTags->map(function ($userTag) {
                 return $userTag->only('id', 'title', 'type');
             })
         ];

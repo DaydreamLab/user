@@ -57,12 +57,12 @@ class UserTagAdminRulesResource extends BaseJsonResource
 
     public function handleEvent($tz)
     {
-        return  isset($this['event'])
+        return isset($this['event'])
             ? $this->dateTransform([
                 'startDate'     => 'Y-m-d',
                 'endDate'       => 'Y-m-d',
             ], $this['event'], $tz)
-            : null;
+            : [];
     }
 
 
@@ -73,7 +73,7 @@ class UserTagAdminRulesResource extends BaseJsonResource
                 'startDate'     => 'Y-m-d',
                 'endDate'       => 'Y-m-d',
             ], $this['menu'], $tz)
-            : null;
+            : [];
     }
 
 
