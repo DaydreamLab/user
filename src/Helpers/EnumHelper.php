@@ -24,6 +24,90 @@ class EnumHelper
         self::COMPANY_NOTE_OBM,
     ];
 
+    public const DEFFAULT_CRM_RULES = [
+        'basic' => [
+            'userGroup' => '',
+            'lineBind' => '',
+            'createdAtFrom' => '',
+            'createdAtTo' => '',
+            'lastLoginAtFrom' => '',
+            'lastLoginAtTo' => '',
+            'block' => '',
+            'lastUpdate' => '',
+            'lastUpdateFrom' => '',
+            'lastUpdateTo' => '',
+            'purchaseRoles' => [],
+            'jobTypes' => [],
+            'jobCategories' => [],
+            'interestedIssues' => [],
+            'subscription' => '',
+            'canMarketing' => ''
+        ],
+        'company' => [
+            'search' => [],
+            'city' => [],
+            'categoryNotes' => [],
+            'industry' => '',
+            'scale' => '',
+            'approvedFrom' => '',
+            'approvedTo' => '',
+            'expiredFrom' => '',
+            'expiredTo' => '',
+        ],
+        'companyOrder' => [
+            'enable' => '否',
+            'brands' => [],
+            'startDate' => '',
+            'endDate' => '',
+        ],
+        'event' => [
+            'search' => '',
+            'category' => '',
+            'type' => '',
+            'canRegisterGroup' => '',
+            'dateType' => '',
+            'registrationType' => '',
+            'brands' => [],
+            'startDate' => '',
+            'endDate' => '',
+            'isOuter' => '',
+            'waiting' => '',
+        ],
+        'order' => [
+            'replyQuestionnaire' => '',
+            'regStatus' => '',
+            'participateTimesFrom' => '',
+            'participateTimesTo' => '',
+            'cancelTimesFrom' => '',
+            'cancelTimesTo' => '',
+            'noshowTimesFrom' => '',
+            'noshowTimesTo' => '',
+        ],
+        'coupon' => [
+            'type' => '',
+            'userGroup' => '',
+            'useTimesFrom' => '',
+            'useTimesTo' => '',
+        ],
+        'menu' => [
+            'id' => '',
+            'action' => '',
+            'value' => '',
+            'startDate' => '',
+            'endDate' => '',
+        ],
+        'except' => [
+            'lastLoginDate' => '',
+            'userGroup' => '',
+            'companySearch' => [],
+            'companyCategoryNotes' => [],
+            'cancelTimesFrom' => '',
+            'cancelTimesTo' => '',
+            'noshowTimesFrom' => '',
+            'noshowTimesTo' => '',
+        ]
+    ];
+
     public const COMPANY_APPROVED = 'APPROVED';
     public const COMPANY_NEW = 'NEW';
     public const COMPANY_NONE = 'NONE';

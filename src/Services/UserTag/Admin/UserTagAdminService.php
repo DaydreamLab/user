@@ -163,10 +163,9 @@ class UserTagAdminService extends UserTagService
 
     public function search(Collection $input)
     {
-
         $result =  parent::search($input);
 
-        $transformItems = $result->getCollection()->map(function ($tag) {
+        $transformItems = $result->map(function ($tag) {
             if ($tag->botbonnieId) {
                 $tag->realTimeUsers = collect();
             } else {
@@ -177,11 +176,12 @@ class UserTagAdminService extends UserTagService
             }
             return $tag;
         });
+
         $this->response = new LengthAwarePaginator(
             $transformItems,
-            $result->total(),
-            $result->perPage(),
-            $result->currentPage(),
+            $result instanceof LengthAwarePaginator ? $result->total() : $result->count(),
+            $result instanceof LengthAwarePaginator ? $result->perPage() : ($input->get('limit') ?: 10),
+            $result instanceof LengthAwarePaginator ? $result->currentPage() : ($input->get('page') ?: 1),
         );
 
         return $this->response;

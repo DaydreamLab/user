@@ -5,6 +5,7 @@ namespace DaydreamLab\User\Jobs;
 use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Helpers\BotbonnieHelper;
+use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Models\Line\Line;
 use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Models\UserTag\UserTag;
@@ -47,22 +48,21 @@ class BotbonnieSync implements ShouldQueue
     public function handle()
     {
         # 處理標籤同步
-//        $botbonnieUsers = BotbonnieHelper::getAllUsers();
-//        $botbonnieTags = BotbonnieHelper::getTags($botbonnieUsers);
-//        foreach ($botbonnieTags as $botbonnieTag) {
-//            $this->recursiveVisit($botbonnieTag);
-//        }
+        $botbonnieUsers = BotbonnieHelper::getAllUsers();
+        $botbonnieTags = BotbonnieHelper::getTags($botbonnieUsers);
+        foreach ($botbonnieTags as $botbonnieTag) {
+            $this->recursiveVisit($botbonnieTag);
+        }
 
 
 //        Storage::disk('public')->put('tags.json', json_encode(BotbonnieHelper::getTags($botbonnieUsers)));
 //        Storage::disk('public')->put('users.json', json_encode($botbonnieUsers));
 //        $botbonieTags = Helper::getJson(base_path() . '/public/tags.json');
-        $botbonnieUsers = Helper::getJson(base_path() . '/public/users.json', false);
+//        $botbonnieUsers = Helper::getJson(base_path() . '/public/users.json', false);
         $users = $this->handleLineUsers($botbonnieUsers);
         foreach ($users as $user) {
             $userTags = UserTag::whereIn('botbonnieId', collect($user->tags)->pluck('id')->all())->get();
             if (!$user->user) {
-                echo 5566;
                 continue;
             }
             $user->user->userTags()->syncWithoutDetaching($userTags->pluck('id')->all());
@@ -158,7 +158,7 @@ class BotbonnieSync implements ShouldQueue
                    'botbonnieId' => $tag->id,
                    'botId' => $tag->botId,
                    'type'  => 'manual',
-                   'rules' => []
+                   'rules' => EnumHelper::DEFFAULT_CRM_RULES
                 ]));
             } else {
                 $userTag->title = $tag->name;
