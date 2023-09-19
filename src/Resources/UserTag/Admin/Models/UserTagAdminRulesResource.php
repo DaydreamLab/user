@@ -19,53 +19,61 @@ class UserTagAdminRulesResource extends BaseJsonResource
 
         return [
             'basic'         => $this->handleBasic($timezone),
-            'company'       => $this['company'],
+            'company'       => isset($this['company']) ? $this['company'] : null,
             'companyOrder'  => $this->handleCompanyOrder($timezone),
             'event'         => $this->handleEvent($timezone),
-            'except'        => $this['except'],
+            'except'        => isset($this['except']) ? $this['except'] : null,
             'menu'          => $this->handleMenu($timezone),
-            'order'         => $this['order'],
-            'coupon'        => $this['coupon']
+            'order'         => isset($this['order']) ? $this['order'] : null,
+            'coupon'        => isset($this['coupon']) ? $this['coupon'] : null,
         ];
     }
 
 
     public function handleBasic($tz)
     {
-        return $this->dateTransform([
-            'createdAtFrom'     => 'Y-m-d',
-            'createdAtTo'       => 'Y-m-d',
-            'lastLoginAtFrom'   => 'Y-m-d',
-            'lastLoginAtTo'     => 'Y-m-d',
-            'lastUpdateFrom'     => 'Y-m-d',
-            'lastUpdateTo'     => 'Y-m-d',
-        ], $this['basic'], $tz);
+        return isset($this['basic'])
+            ? $this->dateTransform([
+                'createdAtFrom'     => 'Y-m-d',
+                'createdAtTo'       => 'Y-m-d',
+                'lastLoginAtFrom'   => 'Y-m-d',
+                'lastLoginAtTo'     => 'Y-m-d',
+                'lastUpdateFrom'     => 'Y-m-d',
+                'lastUpdateTo'     => 'Y-m-d',
+            ], $this['basic'], $tz)
+            : [];
     }
 
     public function handleCompanyOrder($tz)
     {
-        return $this->dateTransform([
-            'startDate'     => 'Y-m',
-            'endDate'       => 'Y-m',
-        ], $this['companyOrder'], $tz);
+        return isset($this['companyOrder'])
+            ? $this->dateTransform([
+                'startDate'     => 'Y-m',
+                'endDate'       => 'Y-m',
+            ], $this['companyOrder'], $tz)
+            : [];
     }
 
 
     public function handleEvent($tz)
     {
-        return $this->dateTransform([
-            'startDate'     => 'Y-m-d',
-            'endDate'       => 'Y-m-d',
-        ], $this['event'], $tz);
+        return isset($this['event'])
+            ? $this->dateTransform([
+                'startDate'     => 'Y-m-d',
+                'endDate'       => 'Y-m-d',
+            ], $this['event'], $tz)
+            : [];
     }
 
 
     public function handleMenu($tz)
     {
-        return $this->dateTransform([
-            'startDate'     => 'Y-m-d',
-            'endDate'       => 'Y-m-d',
-        ], $this['menu'], $tz);
+        return isset($this['menu'])
+            ? $this->dateTransform([
+                'startDate'     => 'Y-m-d',
+                'endDate'       => 'Y-m-d',
+            ], $this['menu'], $tz)
+            : [];
     }
 
 
