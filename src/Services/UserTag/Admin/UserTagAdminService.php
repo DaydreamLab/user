@@ -9,6 +9,7 @@ use DaydreamLab\User\Helpers\EnumHelper;
 use DaydreamLab\User\Repositories\UserTag\Admin\UserTagAdminRepository;
 use DaydreamLab\User\Services\User\Admin\UserAdminService;
 use DaydreamLab\User\Services\UserTag\UserTagService;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -163,7 +164,8 @@ class UserTagAdminService extends UserTagService
     public function search(Collection $input)
     {
         $result =  parent::search($input);
-        $this->response = $result->map(function ($tag) {
+
+        $transformItems = $result->getCollection()->map(function ($tag) {
             if ($tag->botbonnieId) {
                 $tag->realTimeUsers = collect();
             } else {
@@ -174,6 +176,12 @@ class UserTagAdminService extends UserTagService
             }
             return $tag;
         });
+        $this->response = new LengthAwarePaginator(
+            $transformItems,
+            $result->total(),
+            $result->perPage(),
+            $result->currentPage(),
+        );
 
         return $this->response;
     }

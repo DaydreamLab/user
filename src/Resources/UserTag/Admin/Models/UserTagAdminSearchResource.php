@@ -25,7 +25,7 @@ class UserTagAdminSearchResource extends BaseJsonResource
             'description' => $this->description,
             'activeUsers'   => $this->activeUsers->merge($this->realTimeUsers)->count(),
             'createdAt'     => $this->getDateTimeString($this->created_at, $tz),
-            'creatorName'   => $this->creator->name,
+            'creatorName'   => $this->creator ? $this->creator->name : '',
             'rules'     => new UserTagAdminRulesResource($this->rules),
         ];
     }

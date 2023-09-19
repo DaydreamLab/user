@@ -18,7 +18,6 @@ use DaydreamLab\User\Controllers\NotificationTemplate\NotificationTemplateContro
 use DaydreamLab\User\Controllers\UserTagCategory\Admin\UserTagCategoryAdminController;
 
 /************************************  前台 API  ************************************/
-
 // 啟用帳號
 //Route::get('/api/user/activate/{token}', [UserFrontController::class, 'activate']);
 

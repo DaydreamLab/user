@@ -64,15 +64,12 @@ class BotbonnieHelper
     {
         $tags = [];
         foreach ($users as $user) {
-            foreach ($user['tags'] as $userTag) {
-                if (!array_key_exists($userTag['id'], $tags)) {
-                    $tags[$userTag['id']] = [
-                        'id'    => $userTag['id'],
-                        'name'  => $userTag['name'] ?? null,
-                        'users' => [$user]
-                    ];
+            foreach ($user->tags as $userTag) {
+                if (!array_key_exists($userTag->id, $tags)) {
+                    $tags[$userTag->id] = BotbonnieHelper::getTag($userTag->id);
+                    $tags[$userTag->id]->users = [];
                 } else {
-                    $tags[$userTag['id']]['users'][] = $user;
+                    $tags[$userTag->id]->users[] = $user;
                 }
             }
         }
