@@ -37,8 +37,7 @@ class BotbonnieSync implements ShouldQueue
      */
     public function __construct()
     {
-
-//        $this->onQueue('');
+        $this->onQueue('botnonnie-sync');
     }
 
     /**
