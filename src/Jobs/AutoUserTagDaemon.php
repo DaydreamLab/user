@@ -24,7 +24,7 @@ class AutoUserTagDaemon implements ShouldQueue
      */
     public function __construct()
     {
-        $this->onQueue('auto-tag-job');
+        $this->onQueue('auto-tag');
     }
 
     /**
