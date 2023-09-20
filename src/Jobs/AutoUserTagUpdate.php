@@ -31,7 +31,7 @@ class AutoUserTagUpdate implements ShouldQueue
     public function __construct(UserTag $tag)
     {
         $this->tag = $tag;
-        $this->onQueue('auto-tag-job');
+        $this->onQueue('auto-tag');
     }
 
     /**
