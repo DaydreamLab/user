@@ -67,21 +67,6 @@ class BotbonnieSync implements ShouldQueue
             }
             $user->user->userTags()->syncWithoutDetaching($userTags->pluck('id')->all());
         }
-
-        # 處理會員的標籤同步問題
-//        foreach ($lineBindUsers as $lineBindUser) {
-//            $user = $lineBindUser->users->first();
-//            show($lineBindUser);
-//            exit();
-//        }
-//
-//        foreach ($botbonieTags as $botbonieTag) {
-//            $tagUsers = $lineBindUsers->filter(function ($bindUser) use ($botbonieTag) {
-//                return collect($botbonieTag['users'])->pluck('id')->contains($bindUser->line_user_id);
-//            })->values();
-//            show($botbonieTag);
-//            exit();
-//        }
     }
 
 
