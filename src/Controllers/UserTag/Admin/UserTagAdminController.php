@@ -98,9 +98,7 @@ class UserTagAdminController extends UserController
     public function search(UserTagAdminSearchRequest $request)
     {
         try {
-            startLog();
             $this->service->search($request->validated());
-            showLog();
         } catch (Throwable $t) {
             $this->handleException($t);
         }
