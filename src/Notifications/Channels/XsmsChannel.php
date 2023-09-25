@@ -83,7 +83,7 @@ class XsmsChannel
             try {
                 $response = $client->post($this->baseUrl, [
                     'form_params' => $this->params,
-                    'timeout' => 30
+                    'timeout' => 15
                 ]);
             } catch (\Throwable $t) {
                 $response = null;
