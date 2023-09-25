@@ -96,7 +96,7 @@ class XsmsChannel
                 $msgId = $arrayResponse->TaskID;
             } else {
                 $sendResult = false;
-                $msgId = null;
+                $msgId = '';
             }
         }
 
