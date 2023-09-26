@@ -80,16 +80,24 @@ class XsmsChannel
             $response = [];
         } else {
             $client = new Client();
-
-            $response = $client->post($this->baseUrl, [
-                'form_params' => $this->params
-            ]);
-
-            $response = $response->getBody()->getContents();
-            $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
-            $statusCode = $arrayResponse->Code;
-            $sendResult = $arrayResponse->Code == 0 ? 1 : 0;
-            $msgId = $arrayResponse->TaskID;
+            try {
+                $response = $client->post($this->baseUrl, [
+                    'form_params' => $this->params,
+                    'timeout' => 30
+                ]);
+            } catch (\Throwable $t) {
+                $response = null;
+            }
+            if ($response) {
+                $response = $response->getBody()->getContents();
+                $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
+                $statusCode = $arrayResponse->Code;
+                $sendResult = $arrayResponse->Code == 0 ? 1 : 0;
+                $msgId = $arrayResponse->TaskID;
+            } else {
+                $sendResult = false;
+                $msgId = '';
+            }
         }
 
         if (config('daydreamlab.user.sms.log')) {

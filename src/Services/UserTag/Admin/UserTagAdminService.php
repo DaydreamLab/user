@@ -151,6 +151,17 @@ class UserTagAdminService extends UserTagService
                     $item->users()->attach($chunk);
                 });
             }
+
+            $item->users()->detach();
+            $newUserIds->unique('id')->values()->chunk(1000)->each(function ($chunk) use ($item) {
+                $sync = [];
+                foreach ($chunk as $data) {
+                    $index = $data['id'];
+                    unset($data['id']);
+                    $sync[$index] = $data;
+                }
+                $item->users()->sync($sync);
+            });
         }
     }
 

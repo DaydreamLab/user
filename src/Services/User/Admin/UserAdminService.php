@@ -488,7 +488,7 @@ class UserAdminService extends UserService
         $except = $validated->get('except');
         $q = $validated->get('q');
         # 排除 noneCustomer、白日夢超級管理者、白日夢管理者、零壹管理者
-        $q->whereNotIn('id', [1,2,4,48464]);
+//        $q->whereNotIn('id', [1,2,4,48464]);
 
         if ($basic['userGroup'] || $except['userGroup']) {
             $q->whereHas('groups', function ($q) use ($basic, $except) {
@@ -604,7 +604,7 @@ class UserAdminService extends UserService
                 if (count($basic['interestedIssues'] ?: [])) {
                     $q->where(function ($q) use ($basic) {
                         foreach ($basic['interestedIssues'] ?: [] as $issue) {
-                            $q->orWhere('interestedIssue', 'like', "%{$issue}%");
+                            $q->orWhereJsonContains('interestedIssue', $issue);
                         }
                     });
                 }
