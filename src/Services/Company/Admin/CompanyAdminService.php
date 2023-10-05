@@ -104,15 +104,15 @@ class CompanyAdminService extends CompanyService
         $orderData = [];
         for ($i = 2; $i <= $rows; $i++) {
             $rowData = [];
-            for ($j = 'A'; $j <= 'G'; $j++) {
+            for ($j = 'A'; $j <= 'H'; $j++) {
                 $key = $j . $i;
                 $rowData[] = $sheet->getCell($key)->getValue();
             }
             $temp  = [
-                'vat' => $rowData[3],
-                'companyName' => $rowData[4],
-                'brand' => $rowData[5],
-                'date'  => $rowData[6],
+                'vat' => $rowData[0],
+                'companyName' => $rowData[1],
+                'brand' => $rowData[6],
+                'date'  => $rowData[7],
                 'row'   => $i
             ];
             $orderData[] = $temp;
