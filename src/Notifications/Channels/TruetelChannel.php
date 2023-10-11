@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Notifications\Channels;
 
 use DaydreamLab\Dsth\Notifications\DeveloperNotification;
 use DaydreamLab\JJAJ\Helpers\ArrayToXml;
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Models\SmsDebug\SmsDebug;
 use DaydreamLab\User\Models\SmsHistory\SmsHistory;
 use GuzzleHttp\Client;
@@ -13,7 +14,7 @@ class TruetelChannel
 {
     protected $client;
 
-    public $baseUrl = 'http://IP:PORT/mpsiweb/smssubmit';
+    public $baseUrl = '';
 
     public $params = [];
 
@@ -23,10 +24,25 @@ class TruetelChannel
 
     public function __construct()
     {
+        $ip = config('app.truetel.host');
+        $port = config('app.truetel.port');
+        $this->baseUrl = "http://{$ip}:{$port}/mpushapi/smssubmit";
         $this->params = [
-            'SysId' => 'API帳號代碼',
-            'SrcAddress' => '來源位址'
+            'SysId' => config('app.truetel.sys_id'),
+            'SrcAddress' => config('app.truetel.source_address')
         ];
+    }
+
+
+    public function getMessageCount($length)
+    {
+        if ($length < 70) {
+            return 1;
+        } else {
+            $q = $length / 67;
+            $r = $length % 67;
+            return $r <= 3 ? $q : $q + 1;
+        }
     }
 
 
@@ -50,9 +66,7 @@ class TruetelChannel
         $message = $notification->toTruetel($notifiable);
         $messageContent = strip_tags($message->content);
         $messageLength = mb_strlen($messageContent, 'UTF-8');
-        if ($messageLength > 70) {
-            $this->params['LongSmsFlag'] = true;
-        }
+        $this->params['LongSmsFlag'] = $messageLength > 70;
         $this->params['SmsBody'] = base64_encode($messageContent);
         $this->params['DestAddress'] = $to;
 
@@ -62,47 +76,59 @@ class TruetelChannel
             $response = [];
         } else {
             $client = new Client();
-            $sendResult = true;
-            $xml = ArrayToXml::convert($this->params, 'SmsSubmitReq');
-            show($xml);
-//            $response = $client->post($this->baseUrl, [
-//                'form_params' => $xml
-//            ]);
 
-//            $response = $response->getBody()->getContents();
-//            $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
-//            $statusCode = $arrayResponse->ResultCode;
-//            $sendResult = $arrayResponse->ResultText;
-//            $msgId = $arrayResponse->MessageId;
+            $postData = [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded'
+                ],
+                'form_params' => ArrayToXml::convert(
+                    $this->params,
+                    'SmsSubmitReq',
+                    true,
+                    'UTF-8',
+                    '1.0',
+                    [],
+                    null,
+                    false
+                )
+            ];
+
+            $response = $client->post($this->baseUrl, $postData);
+            $response = $response->getBody()->getContents();
+            $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
+            $statusCode = $arrayResponse->ResultCode;
+            $sendResult = $arrayResponse->ResultText;
+            $msgId = $arrayResponse->MessageId;
         }
 
-//        if (config('daydreamlab.user.sms.log')) {
-//            $data = [
-//                'notificationId'=> isset($notification->notificationId) ? $notification->notificationId : null,
-//                'phoneCode'     => $this->phoneCode,
-//                'phone'         => $this->phone,
-//                'category'      => $message->category,
-//                'type'          => $message->type,
-//                'messageId'     => $msgId,
-//                'message'       => $message->content,
-//                'messageLength' => $messageLength,
-//                'messageCount'  => $messageLength <= 70 ? 1 : ceil($messageLength / 67),
-//                'success'       => $sendResult,
-//                'responseCode'  => isset($statusCode) ?: '',
-//                'created_by'    => $message->creatorId
-//            ];
-//
-//            $data = array_merge($data, $message->extraFields);
-//            $history = SmsHistory::create($data);
-//        }
-//
-//        if (config('daydreamlab.user.sms.debug')) {
-//            SmsDebug::create([
-//                'payload' => $this->params,
-//                'response' => $response,
-//                'historyId' => isset($history) ? $history->id : null
-//            ]);
-//        }
+
+        if (config('daydreamlab.user.sms.log')) {
+            $data = [
+                'notificationId' => isset($notification->notificationId) ? $notification->notificationId : null,
+                'phoneCode'     => $this->phoneCode,
+                'phone'         => $this->phone,
+                'category'      => $message->category,
+                'type'          => $message->type,
+                'messageId'     => $msgId,
+                'message'       => $message->content,
+                'messageLength' => $messageLength,
+                'messageCount'  => $this->getMessageCount($messageLength),
+                'success'       => $sendResult,
+                'responseCode'  => $statusCode ?? '',
+                'created_by'    => $message->creatorId
+            ];
+
+            $data = array_merge($data, $message->extraFields);
+            $history = SmsHistory::create($data);
+        }
+
+        if (config('daydreamlab.user.sms.debug')) {
+            SmsDebug::create([
+                'payload' => $this->params,
+                'response' => $response,
+                'historyId' => isset($history) ? $history->id : null
+            ]);
+        }
 
         return $sendResult;
     }

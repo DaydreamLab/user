@@ -2,15 +2,14 @@
 
 namespace DaydreamLab\User\Requests\Company\Admin;
 
-use DaydreamLab\Cms\Helpers\RequestHelper;
-use DaydreamLab\Cms\Requests\ComponentBase\CmsStoreRequest;
-use Illuminate\Validation\Rule;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class CompanyAdminImportOrderRequest extends CmsStoreRequest
+class CompanyAdminImportOrderRequest extends AdminRequest
 {
+    protected $modelName = 'Company';
+
     protected $apiMethod = 'importOrder';
 
-    protected $modelName = 'Company';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,17 +28,8 @@ class CompanyAdminImportOrderRequest extends CmsStoreRequest
     public function rules()
     {
         $rules = [
-            'file'  => 'required|file'
+            'file'  => 'required',
         ];
-
-        return array_merge(parent::rules(), $rules);
-    }
-
-
-    public function validated()
-    {
-        $validated = parent::validated();
-
-        return $validated;
+        return array_merge($rules, parent::rules());
     }
 }

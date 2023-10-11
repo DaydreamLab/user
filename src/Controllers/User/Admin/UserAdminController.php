@@ -53,9 +53,7 @@ class UserAdminController extends BaseController
     {
         $this->service->setUser($request->user());
         try {
-            startLog();
             $this->service->crmSearch($request->validated());
-            showLog();
         } catch (Throwable $t) {
             $this->handleException($t);
         }

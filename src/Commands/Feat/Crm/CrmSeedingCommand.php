@@ -6,6 +6,8 @@ use DaydreamLab\Cms\Models\Category\Category;
 use DaydreamLab\Cms\Services\IotCategory\Admin\IotCategoryAdminService;
 use DaydreamLab\Cms\Services\Site\Admin\SiteAdminService;
 use DaydreamLab\User\Models\Api\Api;
+use DaydreamLab\User\Models\Asset\Asset;
+use DaydreamLab\User\Models\Asset\AssetGroup;
 use DaydreamLab\User\Models\User\UserGroup;
 use DaydreamLab\User\Services\Asset\Admin\AssetAdminService;
 use DaydreamLab\User\Services\Asset\Admin\AssetGroupAdminService;
@@ -57,7 +59,10 @@ class CrmSeedingCommand extends Command
         $counter = Api::all()->count();
         foreach ($data as $apiData) {
             $apiData['ordering'] = ++$counter;
-            Api::create($apiData);
+            $api = Api::where('method', $apiData['method'])->first();
+            if (!$api) {
+                Api::create($apiData);
+            }
         }
 
         # 新增"未分類"標籤分類
@@ -88,5 +93,28 @@ class CrmSeedingCommand extends Command
                 'ordering' => 2
             ]);
         }
+
+        $this->info('處理公司銷售錄 api 中...');
+
+        $assetGroup = AssetGroup::where('title', 'COM_MEMBERS_TITLE')->first();
+        $asset = Asset::where('title', 'COM_MEMBERS_TAX_MANAGER_TITLE')->first();
+        $apis = Api::whereIn('name', ['搜尋公司銷售記錄', '匯入公司銷售記錄'])->get();
+        $userGroups = UserGroup::whereIn('title', ['Super User', 'Administrator', '網站管理員'])->get();
+        foreach ($apis as $api) {
+            $asset->apis()->syncWithoutDetaching([
+                $api->id => [
+                    'asset_group_id' => $assetGroup->id
+                ]
+            ]);
+            foreach ($userGroups as $userGroup) {
+                $api->userGroups()->syncWithoutDetaching([
+                    $userGroup->id => [
+                        'asset_group_id' => $assetGroup->id,
+                        'asset_id' => $asset->id
+                    ]
+                ]);
+            }
+        }
+        $this->info('處理公司銷售錄 api 完成');
     }
 }
