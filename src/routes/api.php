@@ -258,3 +258,7 @@ Route::post('api/admin/notification/template/store', [NotificationTemplateContro
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
 Route::post('api/admin/notification/template/search', [NotificationTemplateController::class, 'search'])
     ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('api/admin/notification/template/remove', [NotificationTemplateController::class, 'remove'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);
+Route::post('api/admin/notification/template/state', [NotificationTemplateController::class, 'state'])
+    ->middleware(['expired', 'admin', 'restrict-ip:admin']);

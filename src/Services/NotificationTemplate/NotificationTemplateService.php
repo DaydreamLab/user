@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Services\NotificationTemplate;
 
 use DaydreamLab\User\Repositories\NotificationTemplate\NotificationTemplateRepository;
 use DaydreamLab\User\Services\UserService;
+use Illuminate\Support\Collection;
 
 class NotificationTemplateService extends UserService
 {

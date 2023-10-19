@@ -25,6 +25,7 @@ class NotificationTemplate extends BaseModel
      * @var array
      */
     protected $fillable = [
+        'state',
         'channelType',
         'category',
         'type',

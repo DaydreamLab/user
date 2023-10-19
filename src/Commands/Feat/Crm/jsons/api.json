@@ -42,6 +42,12 @@
     "created_by": 1
   },
   {
+    "name": "更新訊息樣板狀態",
+    "method": "stateNotificationTemplate",
+    "url": "/admin/notification/template/state",
+    "created_by": 1
+  },
+  {
     "name": "取得分眾標籤",
     "method": "getUserTag",
     "url": "/admin/user/tag/{id}",

@@ -6,6 +6,7 @@ use DaydreamLab\User\Controllers\UserController;
 use DaydreamLab\User\Requests\NotificationTemplate\NotificationTemplateGetItemRequest;
 use DaydreamLab\User\Requests\NotificationTemplate\NotificationTemplateRemoveRequest;
 use DaydreamLab\User\Requests\NotificationTemplate\NotificationTemplateSearchRequest;
+use DaydreamLab\User\Requests\NotificationTemplate\NotificationTemplateStateRequest;
 use DaydreamLab\User\Requests\NotificationTemplate\NotificationTemplateStoreRequest;
 use DaydreamLab\User\Resources\NotificationTemplate\Collections\NotificationTemplateListResourceCollection;
 use DaydreamLab\User\Resources\NotificationTemplate\Models\NotificationTemplateResource;
@@ -31,7 +32,12 @@ class NotificationTemplateController extends UserController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response, [], NotificationTemplateResource::class);
+        return $this->response(
+            $this->service->status,
+            $this->service->response,
+            [],
+            NotificationTemplateResource::class
+        );
     }
 
 
@@ -61,6 +67,18 @@ class NotificationTemplateController extends UserController
             [],
             NotificationTemplateListResourceCollection::class
         );
+    }
+
+
+    public function state(NotificationTemplateStateRequest $request)
+    {
+        try {
+            $this->service->state($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
     }
 
 

@@ -2,16 +2,13 @@
 
 namespace DaydreamLab\User\Requests\NotificationTemplate;
 
-use DaydreamLab\User\Requests\ComponentBase\UserSearchRequest;
-use Illuminate\Validation\Rule;
+use DaydreamLab\User\Requests\ComponentBase\UserStateRequest;
 
-class NotificationTemplateSearchRequest extends UserSearchRequest
+class NotificationTemplateStateRequest extends UserStateRequest
 {
     protected $modelName = 'NotificationTemplate';
 
-    protected $apiMethod = 'searchNotificationTemplate';
-
-    protected $searchKeys = ['type', 'subject', 'content'];
+    protected $apiMethod = 'stateNotificationTemplate';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -30,7 +27,7 @@ class NotificationTemplateSearchRequest extends UserSearchRequest
     public function rules()
     {
         $rules = [
-            'state' => ['nullable', Rule::in([1,-2])]
+            //
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -40,7 +37,6 @@ class NotificationTemplateSearchRequest extends UserSearchRequest
     public function validated()
     {
         $validated = parent::validated();
-        $validated->put('q', $validated->get('q')->where('category', 'marketing'));
 
         return $validated;
     }
