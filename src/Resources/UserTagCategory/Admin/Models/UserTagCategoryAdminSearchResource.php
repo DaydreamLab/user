@@ -24,7 +24,7 @@ class UserTagCategoryAdminSearchResource extends BaseJsonResource
             'description' => $this->description,
             'tagCount' => $this->userTags->where('state', 1)->count(),
             'tags'  => $this->userTags->where('state', 1)->map(function ($tag) {
-                return $tag->only('id', 'title');
+                return $tag->only('id', 'title', 'state');
             }),
             'createdAt' => $this->getDateTimeString($this->created_at, $tz),
             'creatorName' => $this->creatorName,

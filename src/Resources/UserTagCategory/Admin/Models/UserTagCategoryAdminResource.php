@@ -24,20 +24,22 @@ class UserTagCategoryAdminResource extends BaseJsonResource
             'parentTitle' => $this->parent->title,
             'title' => $this->title,
             'description' => $this->description,
-            'autoTags' => $autoTags->map(function ($tag) use ($tz) {
+            'autoTags' => $autoTags->where('state', 1)->map(function ($tag) use ($tz) {
                 return [
                     'id' => $tag->id,
                     'title' => $tag->title,
+                    'state' => $tag->state,
                     'realTimeUsersCount' => $tag->realTimeActiveUsers($tag->realTimeUsers)->count(),
                     'createdAt' => $this->getDateTimeString($tag->created_at, $tz),
                     'creatorName' => $this->creatorName
                 ];
             }),
             'autoTagsCount' => $autoTags->count(),
-            'manualTags' => $manualTags->map(function ($tag) use ($tz) {
+            'manualTags' => $manualTags->where('state', 1)->map(function ($tag) use ($tz) {
                 return [
                     'id' => $tag->id,
                     'title' => $tag->title,
+                    'state' => $tag->state,
                     'realTimUsersCount' => $tag->realTimeActiveUsers($tag->realTimeUsers)->count(),
                     'createdAt' => $this->getDateTimeString($tag->created_at, $tz),
                     'creatorName' => $this->creatorName
