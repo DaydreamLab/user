@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\UserTagCategory\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
 class UserTagCategoryAdminStatePost extends AdminRequest
 {
@@ -28,7 +29,8 @@ class UserTagCategoryAdminStatePost extends AdminRequest
     {
         $rules = [
             'ids'       => 'required|array',
-            'ids.*'     => 'required|integer'
+            'ids.*'     => 'required|integer',
+            'state'     => ['required', Rule::in([1,-2])]
         ];
         return array_merge(parent::rules(), $rules);
     }
