@@ -34,7 +34,7 @@ class UserTagCategoryAdminResource extends BaseJsonResource
                     'creatorName' => $this->creatorName
                 ];
             }),
-            'autoTagsCount' => $autoTags->count(),
+            'autoTagsCount' => $autoTags->where('state', 1)->count(),
             'manualTags' => $manualTags->where('state', 1)->map(function ($tag) use ($tz) {
                 return [
                     'id' => $tag->id,
@@ -45,7 +45,7 @@ class UserTagCategoryAdminResource extends BaseJsonResource
                     'creatorName' => $this->creatorName
                 ];
             }),
-            'manualTagsCount' => $manualTags->count(),
+            'manualTagsCount' => $manualTags->where('state', 1)->count(),
         ];
     }
 }
