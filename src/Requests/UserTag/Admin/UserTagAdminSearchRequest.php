@@ -29,6 +29,7 @@ class UserTagAdminSearchRequest extends UserSearchRequest
     {
         $rules = [
             'type'  => ['nullable', Rule::in(['auto', 'manual'])],
+            'state' => ['nullable', Rule::in([-2, 1])],
             'categoryId' => 'nullable|integer',
         ];
 
