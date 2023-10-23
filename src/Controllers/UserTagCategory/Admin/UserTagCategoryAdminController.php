@@ -19,6 +19,8 @@ class UserTagCategoryAdminController
 
     protected $modelName = 'UserTagCategory';
 
+    protected $package = 'User';
+
     protected $service;
 
     public function __construct(UserTagCategoryService $service)
