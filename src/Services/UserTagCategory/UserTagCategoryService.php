@@ -69,7 +69,6 @@ class UserTagCategoryService
 
     public function state(Collection $input)
     {
-        $input->put('state', -2);
         $result = $this->service->state($input);
         $this->status = $this->service->status;
         $this->response = $this->service->response;
