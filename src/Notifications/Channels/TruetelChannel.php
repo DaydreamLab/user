@@ -80,16 +80,18 @@ class TruetelChannel
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded'
                 ],
-                'form_params' => ArrayToXml::convert(
-                    $this->params,
-                    'SmsSubmitReq',
-                    true,
-                    'UTF-8',
-                    '1.0',
-                    [],
-                    null,
-                    false
-                )
+                'form_params' => [
+                    'xml' => ArrayToXml::convert(
+                        $this->params,
+                        'SmsSubmitReq',
+                        true,
+                        'UTF-8',
+                        '1.0',
+                        [],
+                        null,
+                        false
+                    )
+                ]
             ];
 
             $response = $client->post($this->baseUrl, $postData);
@@ -112,7 +114,7 @@ class TruetelChannel
                 'message'       => $message->content,
                 'messageLength' => $messageLength,
                 'messageCount'  => $this->getMessageCount($messageLength),
-                'success'       => $sendResult,
+                'success'       => $statusCode == '00000' ? 1 : 0,
                 'responseCode'  => $statusCode ?? '',
                 'created_by'    => $message->creatorId
             ];
