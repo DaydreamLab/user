@@ -95,7 +95,15 @@ class TruetelChannel
             ];
 
             $response = $client->post($this->baseUrl, $postData);
-            $response = $response->getBody()->getContents();
+            try {
+                $response = $response->getBody()->getContents();
+            } catch (\Throwable $t) {
+                SmsDebug::create([
+                    'payload' => $this->params,
+                    'response' => $response->getBody(),
+                    'historyId' => null
+                ]);
+            }
             $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
             $statusCode = $arrayResponse->ResultCode;
             $sendResult = $arrayResponse->ResultText;
