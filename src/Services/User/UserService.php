@@ -12,6 +12,7 @@ use DaydreamLab\User\Helpers\UserHelper;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
+use DaydreamLab\User\Services\User\Front\UserFrontService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -117,7 +118,11 @@ class UserService extends BaseService
                         $resetPasswordDuration
                         && now()->diffInDays(Carbon::parse($user->last_reset_at)) >= $resetPasswordDuration
                     ) {
-                        $this->status = 'USER_RESET_PASSWORD_EMAIL_SEND';
+                        $service =  app(UserFrontService::class);
+                        $service->sendResetLinkEmail(Helper::collect([
+                            'email' => $user->email
+                        ]));
+                        $this->status = $service->status;
                         return false;
                     }
 
