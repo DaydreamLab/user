@@ -224,6 +224,7 @@ class UserFrontService extends UserService
         if ($token) {
             $user = $this->findBy('email', '=', $token->email)->first();
             $user->password = bcrypt($input->password);
+            $user->last_reset_at = now();
             if($user->save()){
                 $token->reset_at = now();
                 $token->save();

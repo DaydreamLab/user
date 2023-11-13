@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use Carbon\Carbon;
 use DaydreamLab\User\Events\Add;
 use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Events\Remove;
@@ -110,6 +111,16 @@ class UserService extends BaseService
                     $this->status = 'USER_IS_BLOCKED';
                 }
                 else {
+                    // 如果有設定重設密碼天數且超過該天數就要求重設
+                    $resetPasswordDuration = config('daydreamlab-user.reset_password_duration');
+                    if (
+                        $resetPasswordDuration
+                        && now()->diffInDays(Carbon::parse($user->last_reset_at)) >= $resetPasswordDuration
+                    ) {
+                        $this->status = 'USER_RESET_PASSWORD_EMAIL_SEND';
+                        return false;
+                    }
+
                     $this->status = 'USER_LOGIN_SUCCESS';
                     $this->response = $this->helper->getUserLoginData($user);
                     $login = true;
