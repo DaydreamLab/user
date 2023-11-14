@@ -457,7 +457,7 @@ class UserAdminService extends UserService
             if ($subscribeNewsletter === '1' || $subscribeNewsletter === 1) {
                 # 無訂閱 > 有訂閱
                 $categoryId = $item->company->company
-                    ? ($item->company->company->category->title == '一般會員' ? 35 : 36)
+                    ? ($item->company->company->category->title == '一般' ? 35 : 36)
                     : 35;
                 $data['cancelReason'] = null;
                 $data['cancelAt'] = null;
