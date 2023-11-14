@@ -7,6 +7,7 @@ use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\User\Events\Block;
 use DaydreamLab\User\Models\Asset\Asset;
+use DaydreamLab\User\Models\User\User;
 use DaydreamLab\User\Repositories\User\Admin\UserAdminRepository;
 use DaydreamLab\User\Services\User\UserService;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -184,6 +185,7 @@ class UserAdminService extends UserService
                 }
                 $input->put('password', bcrypt($input->get('password')));
                 $input->put('activate_token', Str::random(48));
+                $input->put('last_reset_at', now()->subDays(config('daydreamlab-user.reset_password_duration')));
             }
         }
         else
@@ -191,6 +193,7 @@ class UserAdminService extends UserService
             if (!InputHelper::null($input, 'password'))
             {
                 $input->put('password', bcrypt($input->get('password')));
+                $input->put('last_reset_at', now());
             }
             else
             {

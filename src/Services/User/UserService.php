@@ -118,7 +118,7 @@ class UserService extends BaseService
                         $resetPasswordDuration
                         && now()->diffInDays(Carbon::parse($user->last_reset_at)) >= $resetPasswordDuration
                     ) {
-                        $service =  app(UserFrontService::class);
+                        $service = app(UserFrontService::class);
                         $service->sendResetLinkEmail(Helper::collect([
                             'email' => $user->email
                         ]));
