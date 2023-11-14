@@ -419,9 +419,12 @@ class UserAdminService extends UserService
             }
 
             # 處理訂閱設定的部份
-            if ($input->get('subscribeNewsletter') === '0') {
+            if ($input->get('subscribeNewsletter') === '0' || $input->get('subscribeNewsletter') === 0) {
                 $categories = [];
-            } elseif ($input->get('subscribeNewsletter') === '1' && !count($categories)) {
+            } elseif (
+                ($input->get('subscribeNewsletter') === '1' || $input->get('subscribeNewsletter') == 1)
+                && !count($categories)
+            ) {
                 $categories[] = $item->company->company
                     ? ($item->company->company->category->title == '一般會員' ? 35 : 36)
                     : 35;
