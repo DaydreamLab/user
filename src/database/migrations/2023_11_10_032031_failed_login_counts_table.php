@@ -14,8 +14,8 @@ class FailedLoginCountsTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('failed_login_count')->default(0);
-            $table->timestamp('failed_login_at')->nullable();
+            $table->timestamp('failed_login_at')->nullable()->after('last_reset_at');
+            $table->unsignedBigInteger('failed_login_count')->default(0)->after('last_reset_at');
         });
     }
 
