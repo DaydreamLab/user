@@ -13,6 +13,7 @@ use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 use DaydreamLab\User\Services\User\Front\UserFrontService;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -112,8 +113,7 @@ class UserService extends BaseService
         if ($user) {
             if ($user->failed_login_at && now()->diffInMinutes($user->failed_login_at) < 5) {
                 if ($user->failed_login_count >= 3) {
-                    $this->status = 'OVER_3TIMES';
-                    return $user;
+                    throw new ThrottleRequestsException('Too Many Attempts.');
                 }
             } else {
                 $this->repo->update([
@@ -169,7 +169,8 @@ class UserService extends BaseService
 
         return $user;
     }
-    
+
+
     public function logout()
     {
         $user = Auth::guard('api')->user();
