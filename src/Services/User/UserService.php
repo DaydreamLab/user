@@ -12,6 +12,7 @@ use DaydreamLab\User\Helpers\UserHelper;
 use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Repositories\User\UserRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
+use DaydreamLab\User\Services\User\Front\UserFrontService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -132,6 +133,20 @@ class UserService extends BaseService
                         'failed_login_count' => 0,
                         'failed_login_at' => null
                     ], $user);
+                    // 如果有設定重設密碼天數且超過該天數就要求重設
+                    $resetPasswordDuration = config('daydreamlab-user.reset_password_duration');
+                    if (
+                        $resetPasswordDuration
+                        && now()->diffInDays(Carbon::parse($user->last_reset_at)) >= $resetPasswordDuration
+                    ) {
+                        $service = app(UserFrontService::class);
+                        $service->sendResetLinkEmail(Helper::collect([
+                            'email' => $user->email
+                        ]));
+                        $this->status = $service->status;
+                        return false;
+                    }
+
                     $this->status = 'USER_LOGIN_SUCCESS';
                     $this->response = $this->helper->getUserLoginData($user);
                     $login = true;
