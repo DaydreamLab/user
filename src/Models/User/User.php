@@ -57,7 +57,9 @@ class User extends Authenticatable
         'reset_password',
         'last_reset_at',
         'created_by',
-        'updated_by'
+        'updated_by',
+        'failed_login_count',
+        'failed_login_at'
     ];
 
     /**

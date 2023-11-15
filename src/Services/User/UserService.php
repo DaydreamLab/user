@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Services\User;
 
+use Carbon\Carbon;
 use DaydreamLab\User\Events\Add;
 use DaydreamLab\User\Events\Modify;
 use DaydreamLab\User\Events\Remove;
@@ -15,6 +16,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use DaydreamLab\User\Models\User;
 
 class UserService extends BaseService
 {
@@ -104,22 +106,47 @@ class UserService extends BaseService
 
         $user = Auth::user() ?: null;
         $login = false;
+        $user = $this->repo->findBy('email', '=', $input->email)->first();
+
+        if ($user) {
+            if ($user->failed_login_at && now()->diffInMinutes($user->failed_login_at) < 5) {
+                if ($user->failed_login_count >= 3) {
+                    $this->status = 'OVER_3TIMES';
+                    return $user;
+                }
+            } else {
+                $this->repo->update([
+                    'failed_login_count' => 0,
+                    'failed_login_at' => now()
+                ], $user);
+            }
+        }
+
         if ($auth) {
             if ($user->activation) { // 帳號已啟用
                 if ($user->block) {
                     $this->status = 'USER_IS_BLOCKED';
                 }
                 else {
+                    $this->repo->update([
+                        'failed_login_count' => 0,
+                        'failed_login_at' => null
+                    ], $user);
                     $this->status = 'USER_LOGIN_SUCCESS';
                     $this->response = $this->helper->getUserLoginData($user);
                     $login = true;
                 }
             } else { // 帳號尚未啟用
-                //$user->notify(new RegisteredNotification($user));
+//                $user->notify(new RegisteredNotification($user));
                 $this->status = 'USER_UNACTIVATED';
                 return false;
             }
         } else {
+            if ($user) {
+                $this->repo->update([
+                    'failed_login_count' => $user->failed_login_count + 1
+                ], $user);
+            }
             $this->status = 'USER_EMAIL_OR_PASSWORD_INCORRECT';
         }
 
@@ -127,8 +154,7 @@ class UserService extends BaseService
 
         return $user;
     }
-
-
+    
     public function logout()
     {
         $user = Auth::guard('api')->user();
