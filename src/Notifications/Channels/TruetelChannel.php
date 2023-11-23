@@ -35,7 +35,7 @@ class TruetelChannel
 
     public function getMessageCount($length)
     {
-        if ($length <=   70) {
+        if ($length <= 70) {
             return 1;
         } else {
             $q = (int) ($length / 67);
