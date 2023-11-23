@@ -38,7 +38,7 @@ class TruetelChannel
         if ($length < 70) {
             return 1;
         } else {
-            $q = $length / 67;
+            $q = (int) ($length / 67);
             $r = $length % 67;
             return $r <= 3 ? $q : $q + 1;
         }
