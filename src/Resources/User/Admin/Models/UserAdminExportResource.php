@@ -17,7 +17,7 @@ class UserAdminExportResource extends BaseJsonResource
     {
         $userCompany = $this->company;
         $company = $userCompany ? $userCompany->company : null;
-        $phones = $userCompany->phones ?: [];
+        $phones = $userCompany ? ($userCompany->phones ?: []) : [];
         $phoneStr = '';
         foreach ($phones as $key => $phone) {
             $phoneStr .= $phone['phoneCode'] . '-' . $phone['phone'];
