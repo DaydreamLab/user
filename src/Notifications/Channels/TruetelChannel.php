@@ -24,22 +24,22 @@ class TruetelChannel
 
     public function __construct()
     {
-        $ip = config('app.truetel.host');
-        $port = config('app.truetel.port');
+        $ip = config('daydreamlab.user.sms.truetel.host');
+        $port = config('daydreamlab.user.sms.truetel.port');
         $this->baseUrl = "http://{$ip}:{$port}/mpushapi/smssubmit";
         $this->params = [
-            'SysId' => config('app.truetel.sys_id'),
-            'SrcAddress' => config('app.truetel.source_address')
+            'SysId' => config('daydreamlab.user.sms.truetel.sysid'),
+            'SrcAddress' => config('daydreamlab.user.sms.truetel.source_address')
         ];
     }
 
 
     public function getMessageCount($length)
     {
-        if ($length < 70) {
+        if ($length <= 70) {
             return 1;
         } else {
-            $q = $length / 67;
+            $q = (int) ($length / 67);
             $r = $length % 67;
             return $r <= 3 ? $q : $q + 1;
         }
@@ -81,20 +81,30 @@ class TruetelChannel
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded'
                 ],
-                'form_params' => ArrayToXml::convert(
-                    $this->params,
-                    'SmsSubmitReq',
-                    true,
-                    'UTF-8',
-                    '1.0',
-                    [],
-                    null,
-                    false
-                )
+                'form_params' => [
+                    'xml' => ArrayToXml::convert(
+                        $this->params,
+                        'SmsSubmitReq',
+                        true,
+                        'UTF-8',
+                        '1.0',
+                        [],
+                        null,
+                        false
+                    )
+                ]
             ];
 
             $response = $client->post($this->baseUrl, $postData);
-            $response = $response->getBody()->getContents();
+            try {
+                $response = $response->getBody()->getContents();
+            } catch (\Throwable $t) {
+                SmsDebug::create([
+                    'payload' => $this->params,
+                    'response' => $response->getBody(),
+                    'historyId' => null
+                ]);
+            }
             $arrayResponse = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
             $statusCode = $arrayResponse->ResultCode;
             $sendResult = $arrayResponse->ResultText;
@@ -113,7 +123,7 @@ class TruetelChannel
                 'message'       => $message->content,
                 'messageLength' => $messageLength,
                 'messageCount'  => $this->getMessageCount($messageLength),
-                'success'       => $sendResult,
+                'success'       => $statusCode == '00000' ? 1 : 0,
                 'responseCode'  => $statusCode ?? '',
                 'created_by'    => $message->creatorId
             ];

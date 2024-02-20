@@ -16,8 +16,8 @@ class UserAdminExportResource extends BaseJsonResource
     public function toArray($request)
     {
         $userCompany = $this->company;
-        $company = $userCompany->company;
-        $phones = $userCompany->phones ?: [];
+        $company = $userCompany ? $userCompany->company : null;
+        $phones = $userCompany ? ($userCompany->phones ?: []) : [];
         $phoneStr = '';
         foreach ($phones as $key => $phone) {
             $phoneStr .= $phone['phoneCode'] . '-' . $phone['phone'];
@@ -38,7 +38,7 @@ class UserAdminExportResource extends BaseJsonResource
         }
         return [
             $groupsStr,
-            ($company && $company->company) ? $company->company->category->title : '一般',
+            ($company) ? $company->categoryNote : '無',
             ($company) ? $company->name : '',
             ($company) ? $company->vat : '',
             $phoneStr,

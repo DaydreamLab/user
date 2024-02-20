@@ -248,7 +248,7 @@ class UserFrontService extends UserService
             $user = $this->store($input);
         }
 
-        $code = config('app.env') == 'production' ? Helper::generateRandomIntegetString() : '0000';
+        $code = config('app.env') == 'production' ? Helper::generateRandomIntegerString() : '0000';
         if (
             config('app.env') == 'production'
             && $user->lastSendAt

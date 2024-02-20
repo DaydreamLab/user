@@ -429,9 +429,12 @@ class UserAdminService extends UserService
             }
 
             # 處理訂閱設定的部份
-            if ($input->get('subscribeNewsletter') === '0') {
+            if ($input->get('subscribeNewsletter') === '0' || $input->get('subscribeNewsletter') === 0) {
                 $categories = [];
-            } elseif ($input->get('subscribeNewsletter') === '1' && !count($categories)) {
+            } elseif (
+                ($input->get('subscribeNewsletter') === '1' || $input->get('subscribeNewsletter') == 1)
+                && !count($categories)
+            ) {
                 $categories[] = $item->company->company
                     ? ($item->company->company->category->title == '一般會員' ? 35 : 36)
                     : 35;
@@ -443,13 +446,12 @@ class UserAdminService extends UserService
                 'newsletterCategoryIds' => $categories
             ];
 
-            $newsletterSSer = $this->newsletterSubscriptionAdminService;
-            $sub = $newsletterSSer->findBy('user_id', '=', $item->id)->first();
+            $sub = $this->newsletterSubscriptionAdminService->findBy('user_id', '=', $item->id)->first();
             if ($sub) {
                 $data['id'] = $sub->id;
-                $newsletterSSer->modify(collect($data));
+                $this->newsletterSubscriptionAdminService->modify(collect($data));
             } else {
-                $newsletterSSer->add(collect($data));
+                $this->newsletterSubscriptionAdminService->add(collect($data));
             }
         } else {
             $sub = $item->newsletterSubscription;
@@ -462,21 +464,22 @@ class UserAdminService extends UserService
             }
             $data['id'] = $sub->id;
             $subscribeNewsletter = $input->get('subscribeNewsletter');
-            if ($subscribeNewsletter === '1' && !$sub->newsletterCategories->count()) {
+            if ($subscribeNewsletter === '1' || $subscribeNewsletter === 1) {
                 # 無訂閱 > 有訂閱
                 $categoryId = $item->company->company
-                    ? ($item->company->company->category->title == '一般會員' ? 35 : 36)
+                    ? ($item->company->company->category->title == '一般' ? 35 : 36)
                     : 35;
                 $data['cancelReason'] = null;
                 $data['cancelAt'] = null;
                 $data['newsletterCategoryIds'] = [$categoryId];
-            } elseif ($subscribeNewsletter === '0' && $sub->newsletterCategories->count()) {
+                $this->newsletterSubscriptionAdminService->modify(collect($data));
+            } elseif ($subscribeNewsletter === '0' || $subscribeNewsletter === 0) {
                 # 有訂閱 > 無訂閱
                 $data['cancelReason'] = $input->get('cancelReason');
                 $data['cancelAt'] = now()->toDateTimeString();
                 $data['newsletterCategoryIds'] = [];
+                $this->newsletterSubscriptionAdminService->modify(collect($data));
             }
-            $this->newsletterSubscriptionAdminService->modify(collect($data));
         }
     }
 
