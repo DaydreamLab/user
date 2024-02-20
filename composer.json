@@ -21,7 +21,7 @@
         "daydreamlab/jjaj": "dev-v2/main",
         "kalnoy/nestedset": "^v6.0",
         "laravel/socialite": "^v5.0",
-        "laravel/passport": "^10.0"
+        "laravel/passport": "^11.0"
     },
     "repositories" : [
         {
