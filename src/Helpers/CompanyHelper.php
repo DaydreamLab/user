@@ -25,6 +25,7 @@ class CompanyHelper
     public static function checkOemByUserEmail($inputUserCompany)
     {
         $domain = explode('@', $inputUserCompany['email'])[1];
+
         return Company::where('categoryNote', '原廠')
             ->whereJsonContains('mailDomains->domain', [$domain])
             ->first();
