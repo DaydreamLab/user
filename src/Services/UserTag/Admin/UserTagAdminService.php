@@ -88,18 +88,23 @@ class UserTagAdminService extends UserTagService
     public function getUsers(Collection $input)
     {
         $userTag = $this->checkItem($input);
-        $users = $this->getCrmUserIds(
-            collect([
-                'rules' => $userTag->rules]),
-            false,
-            ['userTags', 'monthMarketingMessages']
-        )
-            ->merge($userTag->activeUsers)
-            ->unique('id')
-            ->values();
+        # 這邊理論上不應該這樣寫，但是卻這樣寫，應該是有什麼原因，先註解
+//        $users = $this->getCrmUserIds(
+//            collect([
+//                'rules' => $userTag->rules]),
+//            false,
+//            ['userTags', 'monthMarketingMessages']
+//        )
+//            ->merge($userTag->activeUsers)
+//            ->unique('id')
+//            ->values();
 
         $this->status = 'SearchUsersSuccess';
-        $this->response = Helper::paginate($users, $input->get('limit') ?: 15, $input->get('page') ?: 1);
+        $this->response = Helper::paginate(
+            $userTag->activeUsers,
+            $input->get('limit') ?: 15,
+            $input->get('page') ?: 1
+        );
 
         return $this->response;
     }
@@ -117,26 +122,38 @@ class UserTagAdminService extends UserTagService
             });
 
             $nowUserIds = $nowUsersData->pluck('id');
-            $input->put('rules', $input->get('originalRules'));
 
+            $input->put('rules', $input->get('originalRules'));
             $newUserIds = $this->getCrmUserIds($input);
-            # 找出有被強制取消或強制新增的
-            $diffIds = $nowUserIds->diff($newUserIds);
-            $diffUsersData = $nowUsersData->filter(function ($u) use ($diffIds) {
-                return in_array($u['id'], $diffIds->all()) && ($u['forceAdd'] || $u['forceDelete']);
+
+            # 相同的部分
+            $sameIds = $nowUserIds->intersect($newUserIds);
+            $sameUsersData = $nowUsersData->filter(function ($u) use ($sameIds) {
+                return in_array($u['id'], $sameIds->all()) || ($u['forceAdd'] || $u['forceDelete']);
             })->values();
 
-            $newUserIds = $newUserIds->map(function ($id) {
+            # 找出有被強制取消或強制新增的(new的部分不會有強制新增或刪除，因此要重組)
+            $forceIds = $nowUserIds->diff($sameIds);
+            $forceUsersData = $nowUsersData->filter(function ($u) use ($forceIds) {
+                return in_array($u['id'], $forceIds->all()) || ($u['forceAdd'] || $u['forceDelete']);
+            })->values();
+
+
+            # 重複的 + 原始資料中強制新增的 + 新的
+            $newUserIds = $sameUsersData->merge($forceUsersData)->map(function ($u) {
+                return [
+                    'id' => $u['id'],
+                    'forceAdd'  => $u['forceAdd'],
+                    'forceDelete'  => $u['forceDelete'],
+                ];
+            })->merge($newUserIds->map(function ($id) {
                 return [
                     'id' => $id,
                     'forceAdd'  => 0,
                     'forceDelete'  => 0,
                 ];
-            });
+            }))->unique('id')->values();
 
-            foreach ($diffUsersData as $diffUserData) {
-                $newUserIds[] = collect($diffUserData)->all();
-            }
 
             $item->users()->detach();
             $newUserIds->unique('id')->values()->chunk(1000)->each(function ($chunk) use ($item) {

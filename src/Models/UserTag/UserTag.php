@@ -77,6 +77,7 @@ class UserTag extends UserModel
         return $this->belongsToMany(User::class, 'users_usertags_maps', 'userTagId', 'userId')
             ->withPivot(['forceAdd', 'forceDelete'])
             ->wherePivot('forceDelete', 0)
+            ->with(['userTags', 'monthMarketingMessages'])
             ->withTimestamps();
     }
 
