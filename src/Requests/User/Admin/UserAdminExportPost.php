@@ -54,9 +54,9 @@ class UserAdminExportPost extends ListRequest
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
         $q = $validated->pull('q');
         if ($validated->get('nonePhone')) {
             $q->where('activateToken', 'importNonePhoneUser')

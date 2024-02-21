@@ -35,9 +35,9 @@ class UserTagCategoryAdminSearchRequest extends UserSearchRequest
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
         $q = $validated->get('q');
         $validated->put('q', $q->whereIn('state', [0,1])->orderBy('_lft', 'asc')->where('title', '!=', 'ROOT'));
 

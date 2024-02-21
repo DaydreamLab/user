@@ -33,9 +33,9 @@ class UserGroupAdminSearchPost extends ListRequest
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
         if ( $group_id = $validated->get('group_id') ) {
             $validated['q'] = $this->q->where('parent_id', $group_id);
             $validated->forget('group_id');

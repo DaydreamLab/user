@@ -46,9 +46,9 @@ class CompanyAdminExportPost extends ListRequest
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
 
         if ($validated->get('company_category')) {
             $validated->put('category_id', $validated->get('company_category'));

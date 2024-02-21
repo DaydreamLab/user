@@ -36,9 +36,9 @@ class UserTagAdminGetUsersRequest extends UserSearchRequest
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
         $validated->put('id', $this->route('id'));
 
         return $validated;

@@ -194,9 +194,9 @@ class UserAdminCrmSearchPost extends ListRequest
     /**
      * @throws BadRequestException
      */
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
         $validated->put('companyOrder', CompanyRequestHelper::handleCompanyOrder($validated->get('companyOrder')));
 
         return $validated;

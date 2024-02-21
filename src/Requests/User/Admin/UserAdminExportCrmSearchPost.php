@@ -32,9 +32,9 @@ class UserAdminExportCrmSearchPost extends UserAdminCrmSearchPost
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
         $validated->put('paginate', 0);
         $validated->put('limit', 0);
 

@@ -75,9 +75,9 @@ class CompanyAdminStorePost extends AdminRequest
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
         if (!$validated->get('vat') && $validated->get('categoryNote') != '原廠') {
             throw new ForbiddenException('VatCan\'tEmpty', null);
         }

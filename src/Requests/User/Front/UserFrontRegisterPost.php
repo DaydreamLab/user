@@ -43,9 +43,9 @@ class UserFrontRegisterPost extends AdminRequest
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
         $validated->put('password', bcrypt($validated->get('password')));
         if ($state = $validated->get('state')) {
             $validated->put('state_', $validated->get('state'));

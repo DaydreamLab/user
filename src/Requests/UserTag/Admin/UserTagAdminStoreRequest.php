@@ -45,9 +45,9 @@ class UserTagAdminStoreRequest extends UserStoreRequest
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
         $validated->put('originalRules', $validated->get('rules'));
         $rules = $this->handleRules($validated->get('rules'));
         $rules['companyOrder'] = CompanyRequestHelper::handleCompanyOrder($rules['companyOrder']);

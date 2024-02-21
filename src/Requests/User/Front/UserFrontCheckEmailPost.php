@@ -30,8 +30,8 @@ class UserFrontCheckEmailPost extends AdminRequest
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        return parent::validated();
+        return parent::validated($key, $default);
     }
 }

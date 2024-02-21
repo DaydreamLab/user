@@ -44,9 +44,9 @@ class CompanyAdminSearchPost extends ListRequest
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
         $q = $validated->get('q');
 
         if ($validated->get('company_category')) {
