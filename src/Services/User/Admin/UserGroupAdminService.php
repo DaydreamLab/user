@@ -94,6 +94,7 @@ class UserGroupAdminService extends UserGroupService
     {
         $page = $input->get('page') ? : [];
         foreach ($page as $assetGroup) {
+            show($assetGroup);
             $assets = $assetGroup['assets'];
             $assetGroupId = $assetGroup['id'];
             if ($assetGroup['visible']) {
