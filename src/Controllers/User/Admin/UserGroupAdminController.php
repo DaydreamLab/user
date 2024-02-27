@@ -69,7 +69,6 @@ class UserGroupAdminController extends BaseController
     {
         $this->service->setUser($request->user('api'));
         try {
-            show($request->validated());
             $this->service->store($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
