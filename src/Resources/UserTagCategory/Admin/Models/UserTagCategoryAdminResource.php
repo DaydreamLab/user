@@ -40,9 +40,10 @@ class UserTagCategoryAdminResource extends BaseJsonResource
                     'id' => $tag->id,
                     'title' => $tag->title,
                     'state' => $tag->state,
+                    'description'   => $tag->description,
                     'realTimUsersCount' => $tag->realTimeActiveUsers($tag->realTimeUsers)->count(),
                     'createdAt' => $this->getDateTimeString($tag->created_at, $tz),
-                    'creatorName' => $this->creatorName
+                    'creatorName' => $tag->creatorName
                 ];
             }),
             'manualTagsCount' => $manualTags->where('state', 1)->count(),
