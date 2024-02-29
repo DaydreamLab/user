@@ -4,6 +4,7 @@ namespace DaydreamLab\User\Requests\User\Admin;
 
 use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
 class UserGroupAdminStorePost extends AdminRequest
 {
@@ -34,13 +35,14 @@ class UserGroupAdminStorePost extends AdminRequest
             'title'         => 'required|string',
             'description'   => 'nullable|string',
             'redirect'      => 'nullable|string',
+            'access'       => 'nullable|integer',
             'page'                          => 'nullable|array',
-            'page.*'                        => 'nullable|array',
             'page.*.id'                     => 'nullable|integer',
+            'page.*.visible'                => ['nullable', Rule::in([0, 1])],
             'page.*.assets'                 => 'nullable|array',
-            'page.*.assets.*.id'              => 'nullable|integer',
-            'page.*.assets.*.apis'            => 'nullable|array',
-            'page.*.assets.*.visible'         => 'nullable|integer',
+//            'page.*.assets.id'              => 'nullable|integer',
+//            'page.*.assets.apis'            => 'nullable|array',
+//            'page.*.assets.apis.*'          => 'nullable|array',
 //            'page.*.assets.apis.*.id'       => 'nullable|integer',
 //            //'page.*.assets.apis.*.hidden'   => 'nullable|integer',
 //            //'page.*.assets.apis.*.disabled' => 'nullable|integer',

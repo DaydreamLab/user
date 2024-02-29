@@ -23,7 +23,8 @@ class UserGroupAdminResource extends JsonResource
             'canDelete'     => $this->canDelete,
             'ordering'      => $this->ordering,
             'redirect'      => $this->redirect,
-            'page'          => $this->page
+            'page'          => $this->page,
+            'access'        => $this->access
         ];
     }
 }
