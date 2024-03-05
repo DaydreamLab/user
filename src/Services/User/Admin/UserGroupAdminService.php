@@ -107,6 +107,7 @@ class UserGroupAdminService extends UserGroupService
     {
         $api_ids    = $input->api_ids;
         $asset_ids  = $input->asset_ids;
+        $redirect   = $input->get('redirect') ?? '/';
         $input->forget('api_ids');
         $input->forget('asset_ids');
 
@@ -126,7 +127,26 @@ class UserGroupAdminService extends UserGroupService
             'asset_ids' => $asset_ids
         ]));
 
+        $this->storeRedirect($group_id, $redirect);
+
         return $result;
+    }
+
+    public function storeRedirect($group_id, $redirect)
+    {
+        $group = $this->find($group_id);
+        $assets = $group->asset()->get();
+        if (! $assets->contains('path', $redirect)) {
+            $redirect = $assets
+                ->where('parent_id', 1)
+                ->sortBy('_lft')
+                ->first()['path'];
+        }
+
+        if ($redirect) {
+            $group->redirect = $redirect;
+            $group->save();
+        }
     }
 
 }
