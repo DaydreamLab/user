@@ -28,10 +28,14 @@ class UserTagCategoryService
         $result = $this->service->getItem($input);
 
         $this->service->response->userTags->map(function ($tag) {
-            $tag->realTimeUsers = $this->userTagAdminService->getCrmUserIds(
-                collect(['rules' => $tag->rules]),
-                false
-            );
+            if ($tag->botbonnieId) {
+                $tag->realTimeUsers = collect();
+            } else {
+                $tag->realTimeUsers = $this->userTagAdminService->getCrmUserIds(
+                    collect(['rules' => $tag->rules]),
+                    false
+                );
+            }
             return $tag;
         });
 

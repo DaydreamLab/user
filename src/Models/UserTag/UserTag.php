@@ -39,6 +39,8 @@ class UserTag extends UserModel
         'alias',
         'state',
         'type',
+        'botbonnieId',
+        'botId',
         'description',
         'rules',
         'created_by',

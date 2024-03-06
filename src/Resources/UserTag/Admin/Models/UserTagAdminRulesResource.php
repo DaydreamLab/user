@@ -19,13 +19,13 @@ class UserTagAdminRulesResource extends BaseJsonResource
 
         return [
             'basic'         => $this->handleBasic($timezone),
-            'company'       => isset($this['company']) ? $this['company'] : null,
+            'company'       => isset($this['company']) ? $this['company'] : [],
             'companyOrder'  => $this->handleCompanyOrder($timezone),
             'event'         => $this->handleEvent($timezone),
-            'except'        => isset($this['except']) ? $this['except'] : null,
+            'except'        => isset($this['except']) ? $this['except'] : [],
             'menu'          => $this->handleMenu($timezone),
-            'order'         => isset($this['order']) ? $this['order'] : null,
-            'coupon'        => isset($this['coupon']) ? $this['coupon'] : null,
+            'order'         => isset($this['order']) ? $this['order'] : [],
+            'coupon'        => isset($this['coupon']) ? $this['coupon'] : [],
         ];
     }
 
