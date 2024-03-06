@@ -9,8 +9,10 @@ use DaydreamLab\User\Requests\Company\Admin\CompanyAdminSearchUsersRequest;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminExportResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminListResourceCollection;
 use DaydreamLab\User\Resources\Company\Admin\Collections\CompanyAdminSearchUserResourceCollection;
+use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminExportExcelResource;
 use DaydreamLab\User\Resources\Company\Admin\Models\CompanyAdminResource;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminExportResourceCollection;
+use DaydreamLab\User\Resources\User\Admin\Models\UserAdminExportExelResource;
 use DaydreamLab\User\Services\Company\Admin\CompanyAdminService;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminExportPost;
 use DaydreamLab\User\Requests\Company\Admin\CompanyAdminRemovePost;
@@ -50,7 +52,7 @@ class CompanyAdminController extends BaseController
             $this->service->status,
             $this->service->response,
             [],
-            CompanyAdminExportResourceCollection::class
+            CompanyAdminExportExcelResource::class
         );
     }
 
@@ -64,11 +66,12 @@ class CompanyAdminController extends BaseController
             $this->handleException($t);
         }
 
+
         return $this->response(
             $this->service->status,
             $this->service->response,
             [],
-            UserAdminExportResourceCollection::class
+            UserAdminExportExelResource::class
         );
     }
 

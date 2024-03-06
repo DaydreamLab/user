@@ -13,6 +13,7 @@ use DaydreamLab\User\Requests\User\Admin\UserAdminSendTotpPost;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminCrmSearchResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminExportResourceCollection;
 use DaydreamLab\User\Resources\User\Admin\Collections\UserAdminListResourceCollection;
+use DaydreamLab\User\Resources\User\Admin\Models\UserAdminExportExelResource;
 use DaydreamLab\User\Resources\User\Admin\Models\UserAdminResource;
 use DaydreamLab\User\Services\User\Admin\UserAdminService;
 use DaydreamLab\User\Requests\User\Admin\UserAdminRemovePost;
@@ -80,7 +81,7 @@ class UserAdminController extends BaseController
             $this->service->status,
             $this->service->response,
             [],
-            UserAdminExportResourceCollection::class
+            UserAdminExportExelResource::class
         );
     }
 
@@ -98,7 +99,7 @@ class UserAdminController extends BaseController
             $this->service->status,
             $this->service->response,
             [],
-            UserAdminExportResourceCollection::class
+            UserAdminExportExelResource::class
         );
     }
 
