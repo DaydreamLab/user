@@ -136,7 +136,7 @@ class UserGroupAdminService extends UserGroupService
     {
         $group = $this->find($group_id);
         $assets = $group->asset()->get();
-        if (! $assets->contains('path', $redirect)) {
+        if ($assets->isnotempty() && !$assets->contains('path', $redirect)) {
             $redirect = $assets
                 ->where('parent_id', 1)
                 ->sortBy('_lft')
