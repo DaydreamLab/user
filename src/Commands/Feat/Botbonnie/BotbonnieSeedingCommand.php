@@ -49,14 +49,15 @@ class BotbonnieSeedingCommand extends Command
      */
     public function handle()
     {
-        $this->info('同步 Botbonnie 標籤會員中...');
+        $this->info('同步 Botbonnie 會員資料中...');
+        $botbonnieUsers = BotbonnieHelper::getAllUsers();
+        $this->info('同步 Botbonnie 會員資料完成。會員人數：' . count($botbonnieUsers) . '人');
 
-//        $botbonnieUsers = BotbonnieHelper::getAllUsers();
-//        Storage::disk('public')->put('tags.json', json_encode(BotbonnieHelper::getTags($botbonnieUsers)));
-//        Storage::disk('public')->put('users.json', json_encode($botbonnieUsers));
+        Storage::disk('public')->put('tags.json', json_encode(BotbonnieHelper::getTags($botbonnieUsers)));
+        $botbonieTags = Helper::getJson(Storage::disk('public')->path('tags.json'));
+        Storage::disk('public')->put('users.json', json_encode($botbonnieUsers));
+        $botbonnieUsers = Helper::getJson(Storage::disk('public')->path('users.json'));
 
-        $botbonieTags = Helper::getJson(base_path() . '/public/tags.json');
-        $botbonnieUsers = Helper::getJson(base_path() . '/public/users.json');
         $lineBinds = Line::whereIn('line_user_id', collect($botbonnieUsers)->pluck('id')->all())
             ->with('users')->get();
         $autoBindLineUsers = [];

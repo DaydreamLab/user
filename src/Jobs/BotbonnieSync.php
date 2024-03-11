@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Jobs;
 
+use DaydreamLab\Cms\Models\Category\Category;
 use DaydreamLab\JJAJ\Database\QueryCapsule;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Helpers\BotbonnieHelper;
@@ -54,18 +55,45 @@ class BotbonnieSync implements ShouldQueue
         }
 
 
+
 //        Storage::disk('public')->put('tags.json', json_encode(BotbonnieHelper::getTags($botbonnieUsers)));
 //        Storage::disk('public')->put('users.json', json_encode($botbonnieUsers));
-//        $botbonieTags = Helper::getJson(base_path() . '/public/tags.json');
-//        $botbonnieUsers = Helper::getJson(base_path() . '/public/users.json', false);
-        $users = $this->handleLineUsers($botbonnieUsers);
-        foreach ($users as $user) {
-            $userTags = UserTag::whereIn('botbonnieId', collect($user->tags)->pluck('id')->all())->get();
-            if (!$user->user) {
-                continue;
-            }
-            $user->user->userTags()->syncWithoutDetaching($userTags->pluck('id')->all());
-        }
+        $botbonieTags = Helper::getJson(Storage::disk('public')->path('/tags.json'), false);
+        $parentTags = collect($botbonieTags)->values()->filter(function ($t) {
+            return property_exists($t, 'id');
+        })->map(function ($t) {
+            return [
+                'id' => $t->id,
+                'name' => $t->name,
+                'type' => $t->type
+            ];
+        });
+        show($parentTags);
+        $botbonnieUsers = Helper::getJson(Storage::disk('public')->path('/users.json'), false);
+
+        $newTagIds = array_keys(get_object_vars($botbonieTags));
+//        show($newTagIds);
+        # 取出當前所有邦妮的標籤
+//        $deleteTagCategories = Category::where('extension', 'usertag')
+//            ->whereJsonDoesntContain('params->BotBonnieId', $test)
+//            ->get();
+
+//        show($deleteTagCategories->count());
+//
+//        $deleteTags = UserTag::whereNotNull('botbonnieId')->whereNotIn('botbonnieId', $newTagIds)->get();
+//        if ($deleteTags->count()) {
+//            $deleteTags->each(function ())
+//        }
+
+
+//        $users = $this->handleLineUsers($botbonnieUsers);
+//        foreach ($users as $user) {
+//            $userTags = UserTag::whereIn('botbonnieId', collect($user->tags)->pluck('id')->all())->get();
+//            if (!$user->user) {
+//                continue;
+//            }
+//            $user->user->userTags()->syncWithoutDetaching($userTags->pluck('id')->all());
+//        }
     }
 
 

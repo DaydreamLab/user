@@ -52,6 +52,7 @@ class Company extends BaseModel
         'city',
         'district',
         'address',
+        'shippingAddress',
         'approvedAt',
         'expiredAt',
         'zipcode',
