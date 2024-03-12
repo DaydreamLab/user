@@ -272,18 +272,20 @@ class CompanyAdminService extends CompanyService
                 $message .= '列：' . $row . ' 原因：' . $error . PHP_EOL;
             }
             $this->response = $message;
-            DB::rollBack();
-        } else {
-            DB::table('company_orders')->insert($result['data']);
-            foreach ($result['existOrders'] as $orderData) {
-                DB::table('company_orders')->where('id', $orderData['id'])->update($orderData);
-            }
-            foreach ($result['existCompanies'] as $companyData) {
-                DB::table('companies')->where('id', $companyData['id'])->update($companyData);
-            }
+//            DB::rollBack();
         }
+//        else {
+        DB::table('company_orders')->insert($result['data']);
+        foreach ($result['existOrders'] as $orderData) {
+            DB::table('company_orders')->where('id', $orderData['id'])->update($orderData);
+        }
+        foreach ($result['existCompanies'] as $companyData) {
+            DB::table('companies')->where('id', $companyData['id'])->update($companyData);
+        }
+//        }
 
-        $this->status = 'ImportOrder' . (count($result['errors']) ? 'Fail' : 'Success');
+//        $this->status = 'ImportOrder' . (count($result['errors']) ? 'Fail' : 'Success');
+        $this->status = 'ImportOrderSuccess';
     }
 
 
