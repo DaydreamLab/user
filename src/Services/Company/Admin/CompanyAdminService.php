@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use DaydreamLab\Cms\Models\Brand\Brand;
 use DaydreamLab\User\Events\UpdateCompanyUsersUserGroupAndEdmEvent;
 use DaydreamLab\User\Helpers\EnumHelper;
+use DaydreamLab\User\Jobs\CompanyOrderSync;
 use DaydreamLab\User\Jobs\ImportCompany;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\User\Models\Company\Company;
@@ -261,30 +262,8 @@ class CompanyAdminService extends CompanyService
         $temp = $file->move('tmp', $file->hashName());
         $filePath = $temp->getRealPath();
 
-        $spreadsheet = $this->getXlsx($filePath);
-        unlink($filePath);
-        $result = $this->getCompanyOrderDataFromXlsx($spreadsheet);
+        dispatch(new CompanyOrderSync($filePath));
 
-        if (count($result['errors'])) {
-            $message = '';
-            $errors = $this->formatErrors($result['errors']);
-            foreach ($errors as $row => $error) {
-                $message .= '列：' . $row . ' 原因：' . $error . PHP_EOL;
-            }
-            $this->response = $message;
-//            DB::rollBack();
-        }
-//        else {
-        DB::table('company_orders')->insert($result['data']);
-        foreach ($result['existOrders'] as $orderData) {
-            DB::table('company_orders')->where('id', $orderData['id'])->update($orderData);
-        }
-        foreach ($result['existCompanies'] as $companyData) {
-            DB::table('companies')->where('id', $companyData['id'])->update($companyData);
-        }
-//        }
-
-//        $this->status = 'ImportOrder' . (count($result['errors']) ? 'Fail' : 'Success');
         $this->status = 'ImportOrderSuccess';
     }
 
