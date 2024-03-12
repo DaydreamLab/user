@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Http\File;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,7 @@ class CompanyOrderSync implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $tries = 1;
+    public $timeout = 900;
 
     protected $service;
     /**
@@ -30,7 +31,7 @@ class CompanyOrderSync implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(protected ?string $path = null)
     {
         $this->onQueue('import-job');
         $this->service = app(CompanyAdminService::class);
@@ -65,9 +66,10 @@ class CompanyOrderSync implements ShouldQueue
     public function handle()
     {
         ##### 這邊和 CompanyAdminService 高度相關 #####
-        $filepath = base_path('bbb.xlsx');
-        $this->download($filepath);
-
+        $filepath = $this->path ?: base_path('company_order.xlsx');
+        if (!$this->path) {
+            $this->download($filepath);
+        }
         $spreadsheet = $this->service->getXlsx($filepath);
         unlink($filepath);
 
@@ -78,7 +80,7 @@ class CompanyOrderSync implements ShouldQueue
         # 新增銷售紀錄
         DB::table('company_orders')->insert($data['data']);
 
-//        echo '更新銷售紀錄：' . count($data['existOrders']) . '筆' . PHP_EOL;
+//        echo '更新銷售紀錄：' . count($data['existOrders']) . '筆'  . PHP_EOL;
         Log::info('更新銷售紀錄：' . count($data['existOrders']) . '筆');
         # 更新銷售紀錄
         foreach ($data['existOrders'] as $orderData) {
