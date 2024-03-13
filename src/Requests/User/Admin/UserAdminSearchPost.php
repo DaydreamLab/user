@@ -13,7 +13,7 @@ class UserAdminSearchPost extends ListRequest
 
     protected $apiMethod = 'searchUser';
 
-    protected $searchKeys = ['email', 'name', 'mobilePhone'];
+    protected $searchKeys = ['email', 'name', 'mobilePhone', 'uuid'];
     /**
      * Determine if the user is authorized to make this request.
      *

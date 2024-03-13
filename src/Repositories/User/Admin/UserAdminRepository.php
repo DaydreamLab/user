@@ -21,7 +21,8 @@ class UserAdminRepository extends UserRepository
             $q->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('mobilePhone', 'like', "%{$search}%");
+                    ->orWhere('mobilePhone', 'like', "%{$search}%")
+                    ->orWhere('uuid', 'like', "%{$search}%");
             })->orWhere(function ($q) use ($search) {
                 $q->whereIn('id', function ($q) use ($search) {
                     $q->select('user_id')

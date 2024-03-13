@@ -20,6 +20,7 @@ use DaydreamLab\User\Notifications\RegisteredNotification;
 use DaydreamLab\User\Notifications\ResetPasswordNotification;
 use DaydreamLab\User\Notifications\User\UserCompanyEmailVerificationNotification;
 use DaydreamLab\User\Notifications\User\UserGetVerificationCodeNotification;
+use DaydreamLab\User\Repositories\BotbonnieBind\BotbonnieBindRepository;
 use DaydreamLab\User\Services\Password\PasswordResetService;
 use DaydreamLab\User\Services\Social\SocialUserService;
 use Carbon\Carbon;
@@ -55,18 +56,18 @@ class UserFrontService extends UserService
 
     protected $passwordResetService;
 
-    protected $lineRepo;
+    protected $botbonnieBindRepo;
 
     public function __construct(
         UserFrontRepository $repo,
         SocialUserService $socialUserService,
         PasswordResetService $passwordResetService,
-        LineRepository $lineRepo
+        BotbonnieBindRepository $botbonnieBindRepo
     ) {
         parent::__construct($repo);
         $this->socialUserService    = $socialUserService;
         $this->passwordResetService = $passwordResetService;
-        $this->lineRepo =  $lineRepo;
+        $this->botbonnieBindRepo =  $botbonnieBindRepo;
     }
 
 
@@ -697,21 +698,30 @@ class UserFrontService extends UserService
 
     public function lineBind(Collection $input)
     {
-        $liffUserId = $input->get('lineId');
         $userId = auth()->guard("api")->user()->id;
+        $botbonnieUserId = $input->get('userId');
+        $platform = $input->get('platform');
+        $pageId = $input->get('pId');
+        $data = [
+            'user_id' => $userId,
+            'botbonnie_user_id' => $botbonnieUserId,
+            'platform' => $platform,
+            'page_id' => $pageId
+        ];
 
-        $isBinded = $this->lineRepo->getModel()::where("user_id", "=", $userId)->exists();
+        $isBinded = $this->botbonnieBindRepo->getModel()
+            ->where('page_id', $data['page_id'])
+            ->where('user_id', $data['user_id'])
+            ->where('botbonnie_user_id', $data['botbonnie_user_id'])
+            ->where('platform', $data['platform'])
+            ->first();
         if ($isBinded) {
-            // 公司會員已綁定過 line
-            $this->status = "LineBindDuplicate";
+            $this->botbonnieBindRepo->modify($isBinded, collect($data));
         } else {
             // 公司會員尚未綁定過 line
-            $this->lineRepo->add(collect([
-                "line_user_id" => $liffUserId,
-                "user_id" => $userId,
-            ]));
-            $this->status = "LineBindSuccess";
+            $this->botbonnieBindRepo->add(collect($data));
         }
+        $this->status = "BotbonnieBindSuccess";
     }
 
 
