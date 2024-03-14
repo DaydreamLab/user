@@ -211,7 +211,7 @@ class User extends BaseModel implements
     {
         return $this->hasOne(BotbonnieBind::class, 'user_id', 'id')
             ->where('platform', 'LINE')
-            ->where('page_id', '302sosotzi');
+            ->where('page_id', config('app.botbonnie_line_page_id'));
     }
 
 

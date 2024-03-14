@@ -158,7 +158,19 @@ class BaseNotification extends Notification implements ShouldQueue
     }
 
 
-    public function toBotbonnie($notifiable)
+    public function toFacebook($notifiable)
+    {
+        return new MitakeMessage(
+            $this->category,
+            $this->type,
+            $this->getSmsContent(),
+            $this->creatorId,
+            []
+        );
+    }
+
+
+    public function toLine($notifiable)
     {
         return new MitakeMessage(
             $this->category,

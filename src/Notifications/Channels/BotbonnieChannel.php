@@ -6,30 +6,16 @@ use DaydreamLab\User\Models\SmsDebug\SmsDebug;
 use DaydreamLab\User\Models\SmsHistory\SmsHistory;
 use GuzzleHttp\Client;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Str;
 
 class BotbonnieChannel
 {
-    protected $client;
+    protected $baseUrl = 'https://api.botbonnie.com/v1/api/message/push';
 
-    public $baseUrl = 'https://api.botbonnie.com/v1/api/message/push';
 
-    public array $post = [];
-
-    public function __construct()
+    public function getPostData($to, $messageContent)
     {
-    }
-
-    public function send($notifiable, Notification $notification)
-    {
-        if (!$to = (($notifiable->routeNotificationFor('line', $notification))
-            ?:($notifiable->routeNotificationFor('facebook', $notification)) )) {
-            return false;
-        }
-
-        $message = $notification->toBotbonnie($notifiable);
-        $messageContent = strip_tags($message->content);
-        $messageLength = mb_strlen($messageContent, 'UTF-8');
-        $post = [
+        return [
             'headers' => [
                 'Authorization' => 'Bearer ' . config('app.botbonnie_token'),
                 'Content-Type' => 'application/json'
@@ -41,21 +27,30 @@ class BotbonnieChannel
                 'bot_channel' => $to['platform'] == 'LINE' ? 1 : 0,
                 'message' => [
                     'type' => 'text',
-                    'text' => '測試'
+                    'text' => $messageContent
                 ],
                 'category' => '活動課程通知'
             ]
         ];
+    }
 
-        show($post);
+    public function exec($notifiable, Notification $notification, $to)
+    {
+        $toChannel = 'to' . Str::ucfirst(Str::lower($to['platform']));
+        $message = $notification->$toChannel($notifiable);
+        $messageContent = strip_tags($message->content);
+        $messageLength = mb_strlen($messageContent, 'UTF-8');
+
+        $post = $this->getPostData($to, $messageContent);
+
         if (config('daydreamlab.user.sms.env') == 'local') {
             $sendResult = true;
             $msgId = '';
             $response = [];
         } else {
-            $response =  (new Client())->post($this->baseUrl, $post);
+            $response = (new Client())->post($this->baseUrl, $post);
             try {
-                $response_content = $response->getBody()->getContents();
+                $response_content = json_decode($response->getBody()->getContents());
             } catch (\Throwable $t) {
                 SmsDebug::create([
                     'payload' => $post['json'],
@@ -64,7 +59,6 @@ class BotbonnieChannel
                 ]);
             }
             $statusCode = $response->getStatusCode();
-            show($response->getBody()->getContents());
             $sendResult = $response_content->res;
             $msgId = '';
         }
@@ -81,7 +75,7 @@ class BotbonnieChannel
                 'message'       => $message->content,
                 'messageLength' => $messageLength,
                 'messageCount'  => 0,
-                'success'       => $sendResult ?: 1,
+                'success'       => $sendResult ? 1: 0,
                 'responseCode'  => $statusCode ?? '',
                 'created_by'    => $message->creatorId
             ];
@@ -93,7 +87,7 @@ class BotbonnieChannel
         if (config('daydreamlab.user.sms.debug')) {
             SmsDebug::create([
                 'payload' => $post['json'],
-                'response' => $response,
+                'response' => $sendResult,
                 'historyId' => isset($history) ? $history->id : null
             ]);
         }
