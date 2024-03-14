@@ -17,7 +17,7 @@ class CreateBotbonnieBindsTable extends Migration
             $table->bigIncrements('id');
             $table->string('platform');
             $table->string('page_id');
-            $table->unsignedBigInteger('botbonnie_user_id');
+            $table->string('botbonnie_user_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
