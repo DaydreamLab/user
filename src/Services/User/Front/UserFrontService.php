@@ -361,6 +361,9 @@ class UserFrontService extends UserService
             $this->repo->update($cpy, ['industry' => $industry]);
             $companyData['name'] = $cpy->name;
             $companyData['company_id'] = $cpy->id;
+        } else {
+            $companyData['company_id'] = null;
+            $companyData['validated'] = 0;
         }
 
         # 根據公司的身份決定使用者的群組
