@@ -7,6 +7,7 @@ use DaydreamLab\JJAJ\Middlewares\RestrictIP;
 use DaydreamLab\User\Middlewares\Admin;
 use DaydreamLab\User\Middlewares\Expired;
 use DaydreamLab\User\Middlewares\SuperUser;
+use DaydreamLab\User\Notifications\Channels\BotbonnieChannel;
 use DaydreamLab\User\Notifications\Channels\MitakeChannel;
 use DaydreamLab\User\Notifications\Channels\TruetelChannel;
 use DaydreamLab\User\Notifications\Channels\XsmsChannel;
@@ -74,19 +75,17 @@ class UserServiceProvider extends ServiceProvider
             $service->extend('mitake', function ($app) {
                 return new MitakeChannel();
             });
-        });
-
-        Notification::resolved(function (ChannelManager $service) {
             $service->extend('xsms', function ($app) {
                 return new XsmsChannel();
             });
-        });
-
-
-
-        Notification::resolved(function (ChannelManager $service) {
             $service->extend('truetel', function ($app) {
                 return new TruetelChannel();
+            });
+            $service->extend('line', function ($app) {
+                return new BotbonnieChannel();
+            });
+            $service->extend('facebook', function ($app) {
+                return new BotbonnieChannel();
             });
         });
 

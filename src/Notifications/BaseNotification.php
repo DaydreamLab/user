@@ -158,6 +158,18 @@ class BaseNotification extends Notification implements ShouldQueue
     }
 
 
+    public function toBotbonnie($notifiable)
+    {
+        return new MitakeMessage(
+            $this->category,
+            $this->type,
+            $this->getSmsContent(),
+            $this->creatorId,
+            []
+        );
+    }
+
+
     public function toMitake($notifiable)
     {
         return new MitakeMessage(
@@ -202,6 +214,6 @@ class BaseNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', 'mitake', 'xsms', 'truetel'];
+        return ['mail', 'mitake', 'xsms', 'truetel', 'line', 'facebook'];
     }
 }
