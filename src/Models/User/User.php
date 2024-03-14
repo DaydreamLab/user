@@ -17,6 +17,7 @@ use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\User\Database\Factories\UserFactory;
 use DaydreamLab\User\Helpers\CompanyHelper;
 use DaydreamLab\User\Helpers\EnumHelper;
+use DaydreamLab\User\Models\BotbonnieBind\BotbonnieBind;
 use DaydreamLab\User\Models\Line\Line;
 use DaydreamLab\User\Models\UserTag\UserTag;
 use DaydreamLab\User\Models\Viewlevel\Viewlevel;
@@ -208,7 +209,9 @@ class User extends BaseModel implements
 
     public function line()
     {
-        return $this->hasOne(Line::class, 'user_id', 'id');
+        return $this->hasOne(BotbonnieBind::class, 'user_id', 'id')
+            ->where('platform', 'LINE')
+            ->where('page_id', '302sosotzi');
     }
 
 

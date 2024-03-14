@@ -78,6 +78,8 @@ return [
 
     'LINE_BIND_SUCCESS' => 'Line 綁定成功',
     'LINE_BIND_DUPLICATE' => '此帳號已綁定過 Line',
+    'BOTBONNIE_BIND_SUCCESS' => '帳號綁定成功',
+    'BOTBONNIE_BIND_DUPLICATE' => '帳號已經綁定過',
 
     // 二階段驗證
     'SEND_TOTP_SECRET_SUCCESS' => '發送 TOTP 密鑰成功',
