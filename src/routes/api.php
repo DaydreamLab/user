@@ -16,6 +16,7 @@ use DaydreamLab\User\Controllers\CompanyOrderItem\Admin\CompanyOrderItemAdminCon
 use DaydreamLab\User\Controllers\UserTag\Admin\UserTagAdminController;
 use DaydreamLab\User\Controllers\NotificationTemplate\NotificationTemplateController;
 use DaydreamLab\User\Controllers\UserTagCategory\Admin\UserTagCategoryAdminController;
+use DaydreamLab\User\Controllers\Truetel\TruetelController;
 
 /************************************  前台 API  ************************************/
 // 啟用帳號
@@ -31,6 +32,8 @@ use DaydreamLab\User\Controllers\UserTagCategory\Admin\UserTagCategoryAdminContr
 //Route::post('/api/password/reset', [UserFrontController::class, 'resetPassword']);
 
 Route::post('api/xsms/querySms', [XsmsController::class, 'querySms'])->middleware(['admin']);
+
+Route::post('api/truetel/querySms', [TruetelController::class, 'querySms']);
 
 # 取得公司資訊
 Route::get('api/company/{vat}', [CompanyFrontController::class, 'getInfo']);
