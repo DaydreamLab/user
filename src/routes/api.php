@@ -33,7 +33,7 @@ use DaydreamLab\User\Controllers\Truetel\TruetelController;
 
 Route::post('api/xsms/querySms', [XsmsController::class, 'querySms'])->middleware(['admin']);
 
-Route::post('api/truetel/querySms', [TruetelController::class, 'querySms']);
+Route::post('/api/truetel/querySms', [TruetelController::class, 'querySms']);
 
 # 取得公司資訊
 Route::get('api/company/{vat}', [CompanyFrontController::class, 'getInfo']);

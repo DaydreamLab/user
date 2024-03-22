@@ -33,7 +33,7 @@ class TruetelController
                         [
                             'SysId' => config('daydreamlab.user.sms.truetel.sysid'),
                             'MessageId' => $messageId,
-                            'DestAddress' => $request->get('phone'),
+                            'DestAddress' => (int)$request->get('phone'),
                         ],
                         'SmsSubmitReq',
                         true,
