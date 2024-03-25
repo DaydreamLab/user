@@ -76,4 +76,21 @@ class BotbonnieHelper
 
         return $tags;
     }
+
+
+
+    public static function v2GetTags()
+    {
+        $response = (new Client())->get(
+            'https://api.botbonnie.com/v2/bot/tags',
+            [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . config('app.botbonnie_token'),
+                    'Content-Type' => 'application/json'
+                ]
+            ]
+        );
+
+        return json_decode($response->getBody()->getContents())->tags;
+    }
 }

@@ -90,6 +90,8 @@ class UserServiceProvider extends ServiceProvider
             });
         });
 
+
+
         $this->commands($this->commands);
     }
 }

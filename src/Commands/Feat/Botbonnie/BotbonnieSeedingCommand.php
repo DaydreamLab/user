@@ -2,17 +2,10 @@
 
 namespace DaydreamLab\User\Commands\Feat\Botbonnie;
 
-use DaydreamLab\JJAJ\Database\QueryCapsule;
-use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\User\Helpers\BotbonnieHelper;
+use DaydreamLab\User\Models\BotbonnieBind\BotbonnieBind;
 use DaydreamLab\User\Models\Line\Line;
-use DaydreamLab\User\Models\User\User;
-use DaydreamLab\User\Models\UserTag\UserTag;
-use DaydreamLab\User\Services\UserTag\Admin\UserTagAdminService;
-use DaydreamLab\User\Services\UserTagCategory\UserTagCategoryService;
-use GuzzleHttp\Client;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class BotbonnieSeedingCommand extends Command
 {
@@ -49,59 +42,17 @@ class BotbonnieSeedingCommand extends Command
      */
     public function handle()
     {
-        $this->info('同步 Botbonnie 會員資料中...');
-        $botbonnieUsers = BotbonnieHelper::getAllUsers();
-        $this->info('同步 Botbonnie 會員資料完成。會員人數：' . count($botbonnieUsers) . '人');
-
-        Storage::disk('public')->put('tags.json', json_encode(BotbonnieHelper::getTags($botbonnieUsers)));
-        $botbonieTags = Helper::getJson(Storage::disk('public')->path('tags.json'));
-        Storage::disk('public')->put('users.json', json_encode($botbonnieUsers));
-        $botbonnieUsers = Helper::getJson(Storage::disk('public')->path('users.json'));
-
-        $lineBinds = Line::whereIn('line_user_id', collect($botbonnieUsers)->pluck('id')->all())
-            ->with('users')->get();
-        $autoBindLineUsers = [];
-        $lineBindUsers = [];
-        $botbonnieLineUsers = collect($botbonnieUsers)->where('platform', 'LINE');
-        foreach ($botbonnieLineUsers as $botbonnieLineUser) {
-            $lineBind = $lineBinds->where('line_user_id', $botbonnieLineUser['id'])->first();
-            if ($lineBind) {
-                $lineBindUsers[] = $lineBind;
-            } else {
-                if (!$lineBind && isset($botbonnieLineUser['phone'])) {
-                    $user = User::where('mobilePhone', $botbonnieLineUser['phone'])->first();
-                    if ($user) {
-//                        Line::create([
-//                            'line_user_id' => $botbonnieLineUser->id,
-//                            'user_id' => $user->id,
-//                        ]);
-                        $autoBindLineUsers[] = $user->id;
-                    }
-                }
-            }
-        }
-
-        # 處理會員的標籤同步問題
-        foreach ($lineBindUsers as $lineBindUser) {
-            $user = $lineBindUser->users->first();
-            show($lineBindUser);
-            exit();
-        }
-
-        foreach ($botbonieTags as $botbonieTag) {
-            $tagUsers = $lineBindUsers->filter(function ($bindUser) use ($botbonieTag) {
-                return collect($botbonieTag['users'])->pluck('id')->contains($bindUser->line_user_id);
-            })->values();
-            show($botbonieTag);
-            exit();
-        }
-//show($lineBindUsers);
-
-
-        $fbUsers = collect($botbonnieUsers)->where('platform', 'FB');
-exit();
-        $this->info('同步 Botbonnie 標籤會員完成');
-        exit();
+        $lines = Line::all();
+        $data = [];
+        $lines->each(function ($line) use (&$data) {
+            $data[] = [
+                'platform' => 'LINE',
+                'page_id' => config('app.botbonnie_line_page_id'),
+                'botbonnie_user_id' => $line->line_user_id,
+                'user_id' => $line->user_id,
+                'created_at' => now()->toDateTimeString()
+            ];
+        });
+        DB::table('botbonnie_binds')->insert($data);
     }
-
 }

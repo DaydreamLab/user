@@ -19,6 +19,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class BotbonnieSync implements ShouldQueue
@@ -30,6 +31,9 @@ class BotbonnieSync implements ShouldQueue
 
     public $tries = 1;
 
+    # 這邊預設所有都是 line 的，如果未來有 facebook 就會很麻煩＝＝
+    const BOT_ID = 'bot-XasmCsjzY';
+
     protected $user;
     /**
      * Create a new job instance.
@@ -38,7 +42,7 @@ class BotbonnieSync implements ShouldQueue
      */
     public function __construct()
     {
-        $this->onQueue('botnonnie-sync');
+        $this->onQueue('import-job');
     }
 
     /**
@@ -47,59 +51,52 @@ class BotbonnieSync implements ShouldQueue
      */
     public function handle()
     {
-        # 處理標籤同步
-        $botbonnieUsers = BotbonnieHelper::getAllUsers();
-        $botbonnieTags = BotbonnieHelper::getTags($botbonnieUsers);
-        foreach ($botbonnieTags as $botbonnieTag) {
-            $this->recursiveVisit($botbonnieTag);
+        Log::info('同步邦妮標籤中...');
+        $botbonnieTagsData = collect(BotbonnieHelper::v2GetTags());
+
+        # 處理刪除的標籤分類
+        Category::where(function ($q) use ($botbonnieTagsData) {
+            $botbonnieCategoriesData = $botbonnieTagsData->where('type', 1);
+            foreach ($botbonnieCategoriesData as $botbonnieCategoryData) {
+                $q->whereJsonDoesntContain('params->BotBonnieId', $botbonnieCategoryData->id);
+            }
+        })->get()->each(function ($category) {
+            $category->children->each(function ($c){
+                $c->userTags->each(function ($tag) {
+                    $tag->users()->detach();
+                    $tag->delete();
+                });
+                $c->delete();
+            });
+            $category->delete();
+        });
+
+        # 處理刪除的標籤
+        UserTag::where(function ($q) use ($botbonnieTagsData) {
+            $botbonnieTagsData = $botbonnieTagsData->where('type', 0);
+            $q->whereNotNull('botbonnieId');
+            $q->whereNotIn('botbonnieId', $botbonnieTagsData->pluck('id')->all());
+        })->get()->each(function ($tag) {
+            $tag->users()->detach();
+            $tag->delete();
+        });
+
+        # 遞迴處理標籤分類 or 標籤的更新或新增
+        foreach($botbonnieTagsData as $botbonnieTagData) {
+            $this->recursiveVisit($botbonnieTagData);
         }
 
-
-
-//        Storage::disk('public')->put('tags.json', json_encode(BotbonnieHelper::getTags($botbonnieUsers)));
-//        Storage::disk('public')->put('users.json', json_encode($botbonnieUsers));
-        $botbonieTags = Helper::getJson(Storage::disk('public')->path('/tags.json'), false);
-        $parentTags = collect($botbonieTags)->values()->filter(function ($t) {
-            return property_exists($t, 'id');
-        })->map(function ($t) {
-            return [
-                'id' => $t->id,
-                'name' => $t->name,
-                'type' => $t->type
-            ];
-        });
-        show($parentTags);
-        $botbonnieUsers = Helper::getJson(Storage::disk('public')->path('/users.json'), false);
-
-        $newTagIds = array_keys(get_object_vars($botbonieTags));
-//        show($newTagIds);
-        # 取出當前所有邦妮的標籤
-//        $deleteTagCategories = Category::where('extension', 'usertag')
-//            ->whereJsonDoesntContain('params->BotBonnieId', $test)
-//            ->get();
-
-//        show($deleteTagCategories->count());
-//
-//        $deleteTags = UserTag::whereNotNull('botbonnieId')->whereNotIn('botbonnieId', $newTagIds)->get();
-//        if ($deleteTags->count()) {
-//            $deleteTags->each(function ())
-//        }
-
-
-//        $users = $this->handleLineUsers($botbonnieUsers);
-//        foreach ($users as $user) {
-//            $userTags = UserTag::whereIn('botbonnieId', collect($user->tags)->pluck('id')->all())->get();
-//            if (!$user->user) {
-//                continue;
-//            }
-//            $user->user->userTags()->syncWithoutDetaching($userTags->pluck('id')->all());
-//        }
-    }
-
-
-    public function getBotBonnieChannelUsers($channel, $botbonnieUsers): Collection
-    {
-        return collect($botbonnieUsers)->where('platform', $channel);
+        # 同步標籤會員資訊
+        $botbonnieUsers = BotbonnieHelper::getAllUsers();
+        $users = $this->handleLineUsers($botbonnieUsers);
+        foreach ($users as $user) {
+            $userTags = UserTag::whereIn('botbonnieId', collect($user->tags)->pluck('id')->all())->get();
+            if (!$user->user) {
+                continue;
+            }
+            $user->user->userTags()->syncWithoutDetaching($userTags->pluck('id')->all());
+        }
+        Log::info('同步邦妮標籤完成');
     }
 
 
@@ -138,7 +135,6 @@ class BotbonnieSync implements ShouldQueue
     }
 
 
-
     public function recursiveVisit($tag)
     {
         if (!property_exists($tag, 'type')) {
@@ -154,21 +150,21 @@ class BotbonnieSync implements ShouldQueue
                 $userTagCategory = app(UserTagCategoryService::class)
                   ->search(collect([
                       'q' => (new QueryCapsule())
-                          ->whereJsonContains('params', ['BotBonnieId' => $tag->parentId, 'BotId' => $tag->botId])
+                          ->whereJsonContains('params', ['BotBonnieId' => $tag->parentId, 'BotId' => self::BOT_ID])
                   ]))->first();
                 if (!$userTagCategory) {
                     $userTagCategory = $this->recursiveVisit(BotbonnieHelper::getTag($tag->parentId));
                 }
             }
             $userTag =  app(UserTagAdminService::class)->search(collect([
-                'q' => (new QueryCapsule())->where('botbonnieId', $tag->id)->where('botId', $tag->botId)
+                'q' => (new QueryCapsule())->where('botbonnieId', $tag->id)->where('botId', self::BOT_ID)
             ]))->first();
             if (!$userTag) {
                 $userTag = app(UserTagAdminService::class)->store(collect([
                    'title' => $tag->name,
                    'categoryId' => $userTagCategory ? $userTagCategory->id : null,
                    'botbonnieId' => $tag->id,
-                   'botId' => $tag->botId,
+                   'botId' => self::BOT_ID,
                    'type'  => 'manual',
                    'rules' => EnumHelper::DEFFAULT_CRM_RULES
                 ]));
@@ -184,7 +180,7 @@ class BotbonnieSync implements ShouldQueue
             $tagCategory = app(UserTagCategoryService::class)
                 ->search(collect([
                     'q' => (new QueryCapsule())
-                        ->whereJsonContains('params', ['BotBonnieId' => $tag->id, 'BotId' => $tag->botId])
+                        ->whereJsonContains('params', ['BotBonnieId' => $tag->id, 'BotId' => self::BOT_ID])
                 ]))->first();
             if (!$tagCategory) {
                 $tagCategory = app(UserTagCategoryService::class)->store(collect([
@@ -192,7 +188,7 @@ class BotbonnieSync implements ShouldQueue
                     'parent_id' => isset($parentTagCategory) ? $parentTagCategory->id : null,
                     'params' => [
                         'BotBonnieId' => $tag->id,
-                        'BotId' => $tag->botId
+                        'BotId' => self::BOT_ID
                     ]
                 ]));
             } else {
