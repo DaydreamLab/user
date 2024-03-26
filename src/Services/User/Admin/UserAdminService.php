@@ -264,6 +264,7 @@ class UserAdminService extends UserService
 
     public function modifyMapping($item, $input)
     {
+
         $dealerUserGroup =  $this->userGroupAdminRepo->findBy('title', '=', '經銷會員')->first();
         $normalUserGroup = $this->userGroupAdminRepo->findBy('title', '=', '一般會員')->first();
         $outerUserGroup = $this->userGroupAdminRepo->findBy('title', '=', '外部會員')->first();
@@ -296,7 +297,7 @@ class UserAdminService extends UserService
                     $company = $this->companyAdminRepo->add(collect([
                         'vat'   => $inputUserCompany['vat'],
                         'name'  => $inputUserCompany['name'],
-                        'category_id'   => $this->companyAdminRepo
+                        'category_id'   => $this->companyCategoryRepo
                             ->findBy('title', '=', '一般')
                             ->first()
                             ->id,
