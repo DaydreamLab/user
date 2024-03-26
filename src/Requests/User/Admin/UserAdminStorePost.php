@@ -120,6 +120,7 @@ class UserAdminStorePost extends AdminRequest
             'passwordConfirm'       => 'required_with:password|same:password',
             'company'               => 'nullable|array',
             'company.id'            => 'nullable|integer',
+            'company.name'          => 'nullable|string',
             'company.email'         => 'nullable|email',
             'company.vat'           => ['nullable', new TaiwanUnifiedBusinessNumber()],
             'company.quit'          => ['nullable', Rule::in([0,1])],
@@ -161,7 +162,6 @@ class UserAdminStorePost extends AdminRequest
                 UserEnumHelper::SUBSCRIBE_SALES_CANCEL,
             ])]
         ];
-
         return array_merge(parent::rules(), $rules);
     }
 
