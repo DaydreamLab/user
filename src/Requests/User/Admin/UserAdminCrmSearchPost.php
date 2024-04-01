@@ -120,8 +120,8 @@ class UserAdminCrmSearchPost extends ListRequest
                     EnumHelper::COMPANY_ORDER_BRAND_UNION
                 ])
             ],
-            'companyOrder.startDate' => 'nullable|date_format:Y-m-d',
-            'companyOrder.endDate' => 'nullable|date_format:Y-m-d',
+            'companyOrder.startDate' => 'nullable|date_format:Y-m',
+            'companyOrder.endDate' => 'nullable|date_format:Y-m',
 
             /**** 活動課程 ****/
             'event' => 'required|array',
