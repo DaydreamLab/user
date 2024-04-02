@@ -13,7 +13,7 @@ class BotbonnieChannel
     protected $baseUrl = 'https://api.botbonnie.com/v1/api/message/push';
 
 
-    public function getPostData($to, $messageContent)
+    public function getPostData($to, $message)
     {
         return [
             'headers' => [
@@ -27,9 +27,9 @@ class BotbonnieChannel
                 'bot_channel' => $to['platform'] == 'LINE' ? 1 : 0,
                 'message' => [
                     'type' => 'text',
-                    'text' => $messageContent
+                    'text' => strip_tags($message->content)
                 ],
-                'category' => '活動課程通知'
+                'category' => $message->category
             ]
         ];
     }
@@ -40,7 +40,7 @@ class BotbonnieChannel
         $message = $notification->$toChannel($notifiable);
         $messageContent = strip_tags($message->content);
 
-        $post = $this->getPostData($to, $messageContent);
+        $post = $this->getPostData($to, $message);
 
         try {
             $response = (new Client())->post($this->baseUrl, $post);
