@@ -93,10 +93,8 @@ class CompanyAdminService extends CompanyService
     public function formatErrors($errors): array
     {
         $errorsReason = [];
-        foreach ($errors as $e) {
-            foreach ($e['rows'] as $row) {
-                $errorsReason[$row] = $e['reason'];
-            }
+        foreach (collect($errors)->groupBy('reason') as $reason => $reasonErrors) {
+            $errorsReason[$reason] = $reasonErrors->pluck('rows')->flatten()->values()->all();
         }
 
         return collect($errorsReason)->sortKeys()->all();
@@ -109,7 +107,7 @@ class CompanyAdminService extends CompanyService
         $rows = $sheet->getHighestRow();
 
         $orderData = [];
-        for ($i = 1; $i <= $rows; $i++) {
+        for ($i = 2; $i <= $rows; $i++) {
             $rowData = [];
             for ($j = 'A'; $j <= 'J'; $j++) {
                 $key = $j . $i;
