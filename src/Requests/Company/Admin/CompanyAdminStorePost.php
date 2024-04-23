@@ -43,7 +43,8 @@ class CompanyAdminStorePost extends AdminRequest
             'city'          => 'nullable|string',
             'district'      => 'nullable|string',
             'address'       => 'nullable|string',
-//            'zipcode'       => 'nullable|string',
+            'shippingAddress' => 'nullable|string',
+            'zipcode'       => 'nullable|string',
 //            'introtext'     => 'nullable|string',
 //            'description'   => 'nullable|string',
             'categoryNote' => ['nullable', Rule::in([
