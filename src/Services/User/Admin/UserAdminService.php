@@ -717,7 +717,7 @@ class UserAdminService extends UserService
                         $q->whereIn('companies.categoryNote', $company['categoryNotes']);
                     }
                     if ($countExceptNotes) {
-                        $q->whereNotIn('companies.categoryNote', $company['categoryNotes']);
+                        $q->whereNotIn('companies.categoryNote', $except['companyCategoryNotes']);
                     }
                 }
 
