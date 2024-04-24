@@ -120,10 +120,9 @@ class CompanyAdminService extends CompanyService
                 'phone' => $rowData[3],
                 'zipcode' => $rowData[4],
                 'address' => $rowData[5],
-                'shippingAddress' => $rowData[6],
-                'brandCode' => $rowData[7],
-                'brand' => $rowData[8],
-                'total' => $rowData[9],
+                'brandCode' => $rowData[6],
+                'brand' => $rowData[7],
+                'total' => $rowData[8],
                 'row'   => $i
             ];
             $orderData[] = $temp;
@@ -169,7 +168,6 @@ class CompanyAdminService extends CompanyService
                     'phone' =>  $orders->first()['phone'],
                     'zipcode' =>  $orders->first()['zipcode'],
                     'address' =>  $orders->first()['address'],
-                    'shippingAddress' =>  $orders->first()['shippingAddress'],
                 ];
             }
 
