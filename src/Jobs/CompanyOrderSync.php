@@ -130,7 +130,7 @@ class CompanyOrderSync implements ShouldQueue
             ];
             Notification::route('mail', ['marketing@zerone.com.tw'])
                 ->notify(new CompanyOrderSyncReportNotification($mailResult, '零壹行銷企劃中心'));
-            Notification::route('mail', ['technique@daydream-lab.com'])
+            Notification::route('mail', ['technique@daydream-lab.com', 'jordan@daydream-lab.com'])
                 ->notify(new CompanyOrderSyncReportNotification($mailResult, '白日夢工程部'));
         } catch (\Exception $exception) {
             Notification::route('mail', 'technique@daydream-lab.com')
