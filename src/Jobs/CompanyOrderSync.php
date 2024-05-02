@@ -2,14 +2,14 @@
 
 namespace DaydreamLab\User\Jobs;
 
-use DaydreamLab\User\Models\User\User;
+use Carbon\Carbon;
+use DaydreamLab\Dsth\Notifications\DeveloperNotification;
+use DaydreamLab\Media\Traits\Service\AzureBlob;
 use DaydreamLab\User\Notifications\CompanyOrderSyncReportNotification;
 use DaydreamLab\User\Services\Company\Admin\CompanyAdminService;
-use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Http\File;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
@@ -22,10 +22,14 @@ class CompanyOrderSync implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+    use AzureBlob;
 
     public $timeout = 900;
 
     protected $service;
+
+    protected $saleContainer = 'monthlysales';
+
     /**
      * Create a new job instance.
      *
@@ -40,23 +44,40 @@ class CompanyOrderSync implements ShouldQueue
 
     public function download($path)
     {
-        $targetUrl = 'https://shyfood.com.tw/images/aaa.xlsx';
-        $client = new Client();
-        try {
-            $response = $client->post($targetUrl, [
-                'stream' => true,
-                'timeout' => 180
-            ]);
-        } catch (\Throwable $t) {
-            $response = null;
+        $client = $this->getAzureClient();
+        $blobs = $client->listBlobs($this->saleContainer);
+
+        $startOfMonth = now('Asia/Taipei')->startOfMonth();
+        $endOfMonth = now('Asia/Taipei')->endOfMonth();
+
+        $targets = [];
+        # 先找出本月上傳的檔案
+        foreach ($blobs->getBlobs() as $blob) {
+            $create_date = $blob->getProperties()->getCreationTime();
+            if (Carbon::parse($create_date)->tz('Asia/Taipei')->between($startOfMonth, $endOfMonth)) {
+                $targets[] = $blob;
+            }
         }
-        // 取得檔案二進位內容
-        $body = $response->getBody();
-        $fp = fopen($path, 'w');
-        while (!$body->eof()) {
-            fwrite($fp, $body->read(1024));
+        if (count($targets)) {
+            // 找出最新的
+            $newest = $targets[0];
+            foreach ($targets as $target) {
+                if (
+                    Carbon::parse($target->getProperties()->getCreationTime())
+                    > Carbon::parse($newest->getProperties()->getCreationTime())
+                ) {
+                    $newest = $target;
+                }
+            }
+
+            $target = $client->getBlob($this->saleContainer, $newest->getName());
+            $content = $target->getContentStream();
+            file_put_contents("company_order.xls", $content);
+        } else {
+            Notification::route('mail', 'technique@daydream-lab.com')
+                ->notify(new DeveloperNotification('[零壹]銷售紀錄未找到', '未找到上傳紀錄'));
+            throw new \Exception('找不到本月銷售紀錄');
         }
-        fclose($fp);
     }
 
     /**
@@ -66,46 +87,55 @@ class CompanyOrderSync implements ShouldQueue
     public function handle()
     {
         ##### 這邊和 CompanyAdminService 高度相關 #####
-        $filepath = $this->path ?: base_path('company_order.xlsx');
+        $filepath = $this->path ?: base_path('company_order.xls');
         if (!$this->path) {
             $this->download($filepath);
         }
-        $spreadsheet = $this->service->getXlsx($filepath);
-        unlink($filepath);
+        try {
+            $spreadsheet = $this->service->getXlsx($filepath);
+            unlink($filepath);
 
-        $data = $this->service->getCompanyOrderDataFromXlsx($spreadsheet);
+            $data = $this->service->getCompanyOrderDataFromXlsx($spreadsheet);
 
 //        echo '新增銷售紀錄：' . count($data['data']) . '筆' . PHP_EOL;
-        Log::info('新增銷售紀錄：' . count($data['data']) . '筆');
-        # 新增銷售紀錄
-        DB::table('company_orders')->insert($data['data']);
+            Log::info('新增銷售紀錄：' . count($data['data']) . '筆');
+            # 新增銷售紀錄
+            DB::table('company_orders')->insert($data['data']);
 
 //        echo '更新銷售紀錄：' . count($data['existOrders']) . '筆'  . PHP_EOL;
-        Log::info('更新銷售紀錄：' . count($data['existOrders']) . '筆');
-        # 更新銷售紀錄
-        foreach ($data['existOrders'] as $orderData) {
-            DB::table('company_orders')->where('id', $orderData['id'])->update($orderData);
-        }
+            Log::info('更新銷售紀錄：' . count($data['existOrders']) . '筆');
+            # 更新銷售紀錄
+            foreach ($data['existOrders'] as $orderData) {
+                DB::table('company_orders')->where('id', $orderData['id'])->update($orderData);
+            }
 
 //        echo '更新公司紀錄：' . count($data['existCompanies']) . '筆' . PHP_EOL;
-        Log::info('更新公司紀錄：' . count($data['existCompanies']) . '筆');
-        # 更新公司資料
-        foreach ($data['existCompanies'] as $companyData) {
-            DB::table('companies')->where('id', $companyData['id'])->update($companyData);
-        }
+            Log::info('更新公司紀錄：' . count($data['existCompanies']) . '筆');
+            # 更新公司資料
+            foreach ($data['existCompanies'] as $companyData) {
+                DB::table('companies')->where('id', $companyData['id'])->update($companyData);
+            }
 
-        $errorsReason = $this->service->formatErrors($data['errors']);
+            $errorsReason = $this->service->formatErrors($data['errors']);
 //        echo '更新資料失敗：' . count($errorsReason) . '筆' . PHP_EOL;
-        Log::info('更新資料失敗：' . count($errorsReason) . '筆');
+            Log::info('更新資料失敗：' . count($errorsReason) . '筆');
 
-        # 寄送失敗資料
-        Notification::route('mail', 'jordan@daydream-lab.com')
-            ->notify(new CompanyOrderSyncReportNotification([
+            # 寄送失敗資料
+            $mailResult = [
                 'addOrder' => count($data['data']),
                 'updateOrder' => count($data['existOrders']),
                 'updateCompany' => count($data['existCompanies']),
                 'fail' => count($errorsReason),
                 'errors' => $errorsReason
-            ], 'Jordan'));
+            ];
+            Notification::route('mail', ['marketing@zerone.com.tw'])
+                ->notify(new CompanyOrderSyncReportNotification($mailResult, '零壹行銷企劃中心'));
+            Notification::route('mail', ['technique@daydream-lab.com'])
+                ->notify(new CompanyOrderSyncReportNotification($mailResult, '白日夢工程部'));
+        } catch (\Exception $exception) {
+            Notification::route('mail', 'technique@daydream-lab.com')
+                ->notify(new DeveloperNotification('[零壹]同步銷售紀錄失敗', '更新過程失敗'));
+            throw new \Exception('同步銷售紀錄失敗');
+        }
     }
 }

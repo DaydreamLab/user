@@ -94,7 +94,7 @@ class CompanyAdminService extends CompanyService
     {
         $errorsReason = [];
         foreach (collect($errors)->groupBy('reason') as $reason => $reasonErrors) {
-            $errorsReason[$reason] = $reasonErrors->pluck('rows')->flatten()->values()->all();
+            $errorsReason[$reason] = $reasonErrors->pluck('rows')->flatten()->values()->sort()->all();
         }
 
         return collect($errorsReason)->sortKeys()->all();
@@ -179,8 +179,7 @@ class CompanyAdminService extends CompanyService
                     continue;
                 }
 
-                $brand = Brand::where('title', 'like', "{$order['brand']}")
-                    ->orWhereJsonContains('params', ['subBrands' => $order['brand']])
+                $brand = Brand::whereJsonContains('params->subBrands', ['title' => $order['brand']])
                     ->first();
                 if (!$brand) {
                     $errorRows[] = $order['row'];
@@ -245,7 +244,7 @@ class CompanyAdminService extends CompanyService
 
     public function getXlsx($path)
     {
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
         $reader->setReadDataOnly(true);
 
         return $reader->load($path);
