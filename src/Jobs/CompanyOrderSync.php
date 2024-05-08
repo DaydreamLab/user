@@ -26,9 +26,7 @@ class CompanyOrderSync implements ShouldQueue
 
     public $timeout = 900;
 
-    protected $errorType;
-
-    protected $error;
+    protected \Exception $exception;
 
     protected $service;
 
@@ -46,6 +44,9 @@ class CompanyOrderSync implements ShouldQueue
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function download($path)
     {
         $client = $this->getAzureClient();
@@ -79,9 +80,8 @@ class CompanyOrderSync implements ShouldQueue
             $content = $target->getContentStream();
             file_put_contents(base_path('/storage/app/uploads/company_order.xls'), $content);
         } else {
-            Notification::route('mail', 'technique@daydream-lab.com')
-                ->notify(new DeveloperNotification('[零壹]銷售紀錄未找到', '未找到上傳紀錄'));
-            throw new \Exception('找不到本月銷售紀錄');
+            $this->exception = new \Exception('找不到本月銷售紀錄');
+            throw $this->exception;
         }
     }
 
@@ -133,13 +133,19 @@ class CompanyOrderSync implements ShouldQueue
                 'fail' => count($errorsReason),
                 'errors' => $errorsReason
             ];
+        } catch (\Exception $exception) {
+            $this->exception = new \Exception('同步銷售紀錄失敗');
+            throw $this->exception;
+        }
+
+        if ($this->exception && in_array($this->exception->getMessage(), ['找不到本月銷售紀錄', '同步銷售紀錄失敗'])) {
+            Notification::route('mail', 'technique@daydream-lab.com')
+                ->notify(new DeveloperNotification('[零壹]同步銷售紀錄失敗', $this->exception->getMessage()));
+        } else {
             Notification::route('mail', ['marketing@zerone.com.tw'])
                 ->notify(new CompanyOrderSyncReportNotification($mailResult, '零壹行銷企劃中心'));
             Notification::route('mail', ['technique@daydream-lab.com', 'jordan@daydream-lab.com'])
                 ->notify(new CompanyOrderSyncReportNotification($mailResult, '白日夢工程部'));
-        } catch (\Exception $exception) {
-            Log::info($exception->getMessage());
-            throw new \Exception('同步銷售紀錄失敗');
         }
     }
 }
