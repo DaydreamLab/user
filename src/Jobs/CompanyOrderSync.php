@@ -26,7 +26,7 @@ class CompanyOrderSync implements ShouldQueue
 
     public $timeout = 900;
 
-    protected \Exception|null $exception = null;
+    public \Exception|null $exception;
 
     protected $service;
 
@@ -41,6 +41,7 @@ class CompanyOrderSync implements ShouldQueue
     {
         $this->onQueue('import-job');
         $this->service = app(CompanyAdminService::class);
+        $this->exception = null;
     }
 
 
