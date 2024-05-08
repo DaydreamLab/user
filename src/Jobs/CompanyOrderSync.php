@@ -88,7 +88,7 @@ class CompanyOrderSync implements ShouldQueue
     public function handle()
     {
         ##### 這邊和 CompanyAdminService 高度相關 #####
-        $filepath = $this->path ?: base_path('company_order.xls');
+        $filepath = $this->path ?: base_path('/storage/app/uploads/company_order.xls');
         if (!$this->path) {
             $this->download($filepath);
         }
@@ -134,6 +134,7 @@ class CompanyOrderSync implements ShouldQueue
             Notification::route('mail', ['technique@daydream-lab.com', 'jordan@daydream-lab.com'])
                 ->notify(new CompanyOrderSyncReportNotification($mailResult, '白日夢工程部'));
         } catch (\Exception $exception) {
+            show($exception->getMessage());
             Notification::route('mail', 'technique@daydream-lab.com')
                 ->notify(new DeveloperNotification('[零壹]同步銷售紀錄失敗', '更新過程失敗'));
             throw new \Exception('同步銷售紀錄失敗');
