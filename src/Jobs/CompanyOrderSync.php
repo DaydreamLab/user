@@ -73,7 +73,7 @@ class CompanyOrderSync implements ShouldQueue
 
             $target = $client->getBlob($this->saleContainer, $newest->getName());
             $content = $target->getContentStream();
-            file_put_contents("company_order.xls", $content);
+            file_put_contents(base_path('/storage/app/uploads/company_order.xls'), $content);
         } else {
             Notification::route('mail', 'technique@daydream-lab.com')
                 ->notify(new DeveloperNotification('[零壹]銷售紀錄未找到', '未找到上傳紀錄'));
