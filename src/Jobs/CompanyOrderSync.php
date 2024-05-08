@@ -53,11 +53,13 @@ class CompanyOrderSync implements ShouldQueue
         $targets = [];
         # 先找出本月上傳的檔案
         foreach ($blobs->getBlobs() as $blob) {
-            $create_date = $blob->getProperties()->getCreationTime();
+            $create_date = $blob->getProperties()->getLastModified();
+            show($create_date);
             if (Carbon::parse($create_date)->tz('Asia/Taipei')->between($startOfMonth, $endOfMonth)) {
                 $targets[] = $blob;
             }
         }
+
         if (count($targets)) {
             // 找出最新的
             $newest = $targets[0];
