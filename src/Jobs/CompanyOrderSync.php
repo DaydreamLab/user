@@ -26,6 +26,10 @@ class CompanyOrderSync implements ShouldQueue
 
     public $timeout = 900;
 
+    protected $errorType;
+
+    protected $error;
+
     protected $service;
 
     protected $saleContainer = 'monthlysales';
@@ -134,9 +138,7 @@ class CompanyOrderSync implements ShouldQueue
             Notification::route('mail', ['technique@daydream-lab.com', 'jordan@daydream-lab.com'])
                 ->notify(new CompanyOrderSyncReportNotification($mailResult, '白日夢工程部'));
         } catch (\Exception $exception) {
-            show($exception->getMessage());
-            Notification::route('mail', 'technique@daydream-lab.com')
-                ->notify(new DeveloperNotification('[零壹]同步銷售紀錄失敗', '更新過程失敗'));
+            Log::info($exception->getMessage());
             throw new \Exception('同步銷售紀錄失敗');
         }
     }
