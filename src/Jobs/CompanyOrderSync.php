@@ -26,7 +26,7 @@ class CompanyOrderSync implements ShouldQueue
 
     public $timeout = 900;
 
-    protected \Exception $exception;
+    protected \Exception|null $exception;
 
     protected $service;
 
