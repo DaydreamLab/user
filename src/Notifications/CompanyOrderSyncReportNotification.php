@@ -40,8 +40,7 @@ class CompanyOrderSyncReportNotification extends Notification implements ShouldQ
         return '以下為公司銷售紀錄同步結果：' . PHP_EOL
             . "新增公司銷售紀錄: " . $this->result['addOrder'] . '筆' . PHP_EOL
             . "更新公司銷售紀錄: " . $this->result['updateOrder'] . '筆' . PHP_EOL
-            . "更新公司紀錄: " . $this->result['updateCompany'] . '筆' . PHP_EOL
-            . "新增失敗: " . $this->result['fail'] . '筆' . PHP_EOL;
+            . "更新公司紀錄: " . $this->result['updateCompany'] . '筆' . PHP_EOL;
     }
 
     /**

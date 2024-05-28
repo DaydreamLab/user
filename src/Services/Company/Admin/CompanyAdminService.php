@@ -93,10 +93,8 @@ class CompanyAdminService extends CompanyService
     public function formatErrors($errors): array
     {
         $errorsReason = [];
-        foreach ($errors as $e) {
-            foreach ($e['rows'] as $row) {
-                $errorsReason[$row] = $e['reason'];
-            }
+        foreach (collect($errors)->groupBy('reason') as $reason => $reasonErrors) {
+            $errorsReason[$reason] = $reasonErrors->pluck('rows')->flatten()->values()->sort()->all();
         }
 
         return collect($errorsReason)->sortKeys()->all();
@@ -109,7 +107,7 @@ class CompanyAdminService extends CompanyService
         $rows = $sheet->getHighestRow();
 
         $orderData = [];
-        for ($i = 1; $i <= $rows; $i++) {
+        for ($i = 2; $i <= $rows; $i++) {
             $rowData = [];
             for ($j = 'A'; $j <= 'J'; $j++) {
                 $key = $j . $i;
@@ -122,10 +120,9 @@ class CompanyAdminService extends CompanyService
                 'phone' => $rowData[3],
                 'zipcode' => $rowData[4],
                 'address' => $rowData[5],
-                'shippingAddress' => $rowData[6],
-                'brandCode' => $rowData[7],
-                'brand' => $rowData[8],
-                'total' => $rowData[9],
+                'brandCode' => $rowData[6],
+                'brand' => $rowData[7],
+                'total' => $rowData[8],
                 'row'   => $i
             ];
             $orderData[] = $temp;
@@ -171,7 +168,6 @@ class CompanyAdminService extends CompanyService
                     'phone' =>  $orders->first()['phone'],
                     'zipcode' =>  $orders->first()['zipcode'],
                     'address' =>  $orders->first()['address'],
-                    'shippingAddress' =>  $orders->first()['shippingAddress'],
                 ];
             }
 
@@ -183,8 +179,7 @@ class CompanyAdminService extends CompanyService
                     continue;
                 }
 
-                $brand = Brand::where('title', 'like', "{$order['brand']}")
-                    ->orWhereJsonContains('params', ['subBrands' => $order['brand']])
+                $brand = Brand::whereJsonContains('params->subBrands', ['title' => $order['brand']])
                     ->first();
                 if (!$brand) {
                     $errorRows[] = $order['row'];
@@ -249,7 +244,7 @@ class CompanyAdminService extends CompanyService
 
     public function getXlsx($path)
     {
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
         $reader->setReadDataOnly(true);
 
         return $reader->load($path);
