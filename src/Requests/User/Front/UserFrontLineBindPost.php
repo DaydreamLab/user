@@ -3,6 +3,7 @@
 namespace DaydreamLab\User\Requests\User\Front;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
 class UserFrontLineBindPost extends AdminRequest
 {
@@ -19,18 +20,11 @@ class UserFrontLineBindPost extends AdminRequest
     public function rules()
     {
         $rules = [
-            'lineId' => 'required',
+            'userId'    => 'required|string',
+            'platform'  => ['required', Rule::in(['LINE', 'FACEBOOK'])],
+            'pId'    => 'required|string',
         ];
 
         return array_merge(parent::rules(), $rules);
     }
-
-
-    public function validated($key = null, $default = null)
-    {
-        $validated = parent::validated($key, $default);
-
-        return $validated;
-    }
-
 }

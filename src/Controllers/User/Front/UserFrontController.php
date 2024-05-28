@@ -56,17 +56,6 @@ class UserFrontController extends BaseController
     }
 
 
-    public function botbonnieBind(UserFrontBotbonnieBindPost $request)
-    {
-        try {
-            $this->service->botbonnieBind($request->validated());
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
-
-        return $this->response($this->service->status, $this->service->response);
-    }
-
 
     public function checkEmail(UserFrontCheckEmailPost $request)
     {
