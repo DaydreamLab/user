@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Controllers\User\Front;
 
+use DaydreamLab\User\Requests\User\Front\UserFrontBotbonnieBindPost;
 use DaydreamLab\User\Requests\User\Front\UserFrontDealerValidateRequest;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -47,6 +48,18 @@ class UserFrontController extends BaseController
     {
         try {
             $this->service->activate($token);
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function botbonnieBind(UserFrontBotbonnieBindPost $request)
+    {
+        try {
+            $this->service->botbonnieBind($request->validated());
         } catch (Throwable $t) {
             $this->handleException($t);
         }

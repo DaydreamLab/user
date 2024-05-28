@@ -58,16 +58,20 @@ class UserFrontService extends UserService
 
     protected $botbonnieBindRepo;
 
+    protected $lineRepo;
+
     public function __construct(
         UserFrontRepository $repo,
         SocialUserService $socialUserService,
         PasswordResetService $passwordResetService,
-        BotbonnieBindRepository $botbonnieBindRepo
+        BotbonnieBindRepository $botbonnieBindRepo,
+        LineRepository $lineRepository
     ) {
         parent::__construct($repo);
         $this->socialUserService    = $socialUserService;
         $this->passwordResetService = $passwordResetService;
         $this->botbonnieBindRepo =  $botbonnieBindRepo;
+        $this->lineRepo = $lineRepository;
     }
 
 
@@ -89,6 +93,35 @@ class UserFrontService extends UserService
         } else {
             throw new ForbiddenException('ActivationTokenInvalid', ['token' => $token]);
         }
+    }
+
+
+    public function botbonnieBind(Collection $input)
+    {
+        $userId = auth()->guard("api")->user()->id;
+        $botbonnieUserId = $input->get('userId');
+        $platform = $input->get('platform');
+        $pageId = $input->get('pId');
+        $data = [
+            'user_id' => $userId,
+            'botbonnie_user_id' => $botbonnieUserId,
+            'platform' => $platform,
+            'page_id' => $pageId
+        ];
+
+        $isBinded = $this->botbonnieBindRepo->getModel()
+            ->where('page_id', $data['page_id'])
+            ->where('user_id', $data['user_id'])
+            ->where('botbonnie_user_id', $data['botbonnie_user_id'])
+            ->where('platform', $data['platform'])
+            ->first();
+        if ($isBinded) {
+            $this->botbonnieBindRepo->modify($isBinded, collect($data));
+        } else {
+            // 公司會員尚未綁定過 line
+            $this->botbonnieBindRepo->add(collect($data));
+        }
+        $this->status = "BotbonnieBindSuccess";
     }
 
 
@@ -701,30 +734,21 @@ class UserFrontService extends UserService
 
     public function lineBind(Collection $input)
     {
+        $liffUserId = $input->get('lineId');
         $userId = auth()->guard("api")->user()->id;
-        $botbonnieUserId = $input->get('userId');
-        $platform = $input->get('platform');
-        $pageId = $input->get('pId');
-        $data = [
-            'user_id' => $userId,
-            'botbonnie_user_id' => $botbonnieUserId,
-            'platform' => $platform,
-            'page_id' => $pageId
-        ];
 
-        $isBinded = $this->botbonnieBindRepo->getModel()
-            ->where('page_id', $data['page_id'])
-            ->where('user_id', $data['user_id'])
-            ->where('botbonnie_user_id', $data['botbonnie_user_id'])
-            ->where('platform', $data['platform'])
-            ->first();
+        $isBinded = $this->lineRepo->getModel()::where("user_id", "=", $userId)->exists();
         if ($isBinded) {
-            $this->botbonnieBindRepo->modify($isBinded, collect($data));
+            // 公司會員已綁定過 line
+            $this->status = "LineBindDuplicate";
         } else {
             // 公司會員尚未綁定過 line
-            $this->botbonnieBindRepo->add(collect($data));
+            $this->lineRepo->add(collect([
+                "line_user_id" => $liffUserId,
+                "user_id" => $userId,
+            ]));
+            $this->status = "LineBindSuccess";
         }
-        $this->status = "BotbonnieBindSuccess";
     }
 
 
