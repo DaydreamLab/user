@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\User\Helpers;
 
+use DaydreamLab\User\Models\User\User;
 use GuzzleHttp\Client;
 
 class BotbonnieHelper
@@ -92,5 +93,26 @@ class BotbonnieHelper
         );
 
         return json_decode($response->getBody()->getContents())->tags;
+    }
+
+    public static function v2Unbind($uuid)
+    {
+        $user = User::where('uuid', $uuid)->first();
+        $response = (new Client())->post(
+            'https://api.botbonnie.com/v2/customer/accountLink/unbind',
+            [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . config('app.botbonnie_token'),
+                    'Content-Type' => 'application/json'
+                ],
+                'json' => [
+                    'platform' => 1,
+                    'pageId' => config('app.botbonnie_line_page_id'),
+                    'userId' => $user->line->botbonnie_user_id,
+                ]
+            ]
+        );
+
+        return json_decode($response->getBody()->getContents());
     }
 }
