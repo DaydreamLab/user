@@ -49,6 +49,7 @@ class UserAdminResource extends BaseJsonResource
             'activation'            => $this->activation,
             'block'                 => $this->block,
             'lineBind'              => $this->line ? 1 : 0,
+            'lineUserId'            => $this->line ?->botbonnie_user_id,
             'lastResetAt'           => $this->getDateTimeString($this->lastResetAt, $timezone),
             'lastLoginAt'           => $this->getDateTimeString($this->lastLoginAt, $timezone),
             'lastLoginIp'           => $this->lastLoginIp,
