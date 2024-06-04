@@ -136,7 +136,6 @@ class CompanyOrderSync implements ShouldQueue
             ];
         } catch (\Exception $exception) {
             $this->exception = new \Exception('同步銷售紀錄失敗');
-            throw $this->exception;
         }
 
         if ($this->exception && in_array($this->exception->getMessage(), ['找不到本月銷售紀錄', '同步銷售紀錄失敗'])) {
@@ -148,5 +147,7 @@ class CompanyOrderSync implements ShouldQueue
             Notification::route('mail', ['technique@daydream-lab.com', 'jordan@daydream-lab.com'])
                 ->notify(new CompanyOrderSyncReportNotification($mailResult, '白日夢工程部'));
         }
+
+        throw $this->exception;
     }
 }
